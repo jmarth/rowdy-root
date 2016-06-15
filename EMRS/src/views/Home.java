@@ -24,6 +24,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JList;
+import javax.swing.JToolBar;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Home extends JFrame {
 
@@ -56,6 +62,33 @@ public class Home extends JFrame {
 	public Home() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		
+		JMenu mnAccount = new JMenu("Account");
+		menuBar.add(mnAccount);
+		
+		JMenuItem mntmAccountInfo = new JMenuItem("Account Info");
+		mntmAccountInfo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				Profile profile = new Profile();
+				profile.NewWindow();
+			}
+		});
+		mnAccount.add(mntmAccountInfo);
+		
+		JMenuItem mntmLogout = new JMenuItem("Logout");
+		mntmLogout.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				dispose();
+				Login login = new Login();
+				login.show();
+			}
+		});
+		mnAccount.add(mntmLogout);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);

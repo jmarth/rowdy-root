@@ -69,6 +69,8 @@ public class Login extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				setVisible(false);
+				dispose();
 				Home home  = new Home();
 				home.NewScreen();
 			}

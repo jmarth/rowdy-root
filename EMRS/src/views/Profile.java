@@ -30,7 +30,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import net.miginfocom.swing.MigLayout;
 
-public class PatientInfo extends JFrame {
+public class Profile extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -44,7 +44,7 @@ public class PatientInfo extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PatientInfo frame = new PatientInfo();
+					Profile frame = new Profile();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,7 +56,7 @@ public class PatientInfo extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PatientInfo() {
+	public Profile() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
 		contentPane = new JPanel();
@@ -67,9 +67,9 @@ public class PatientInfo extends JFrame {
 		JPanel panel_3 = new JPanel();
 		contentPane.add(panel_3);
 		
-		JLabel lblPatientInformation = new JLabel("Patient Information");
-		lblPatientInformation.setFont(new Font("Roboto", Font.PLAIN, 30));
-		panel_3.add(lblPatientInformation);
+		JLabel lblProfileInformation = new JLabel("Account Information");
+		lblProfileInformation.setFont(new Font("Roboto", Font.PLAIN, 30));
+		panel_3.add(lblProfileInformation);
 		
 		JPanel panel = new JPanel();
 		contentPane.add(panel);
