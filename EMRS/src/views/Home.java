@@ -30,6 +30,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.UIManager;
 
 public class Home extends JFrame {
 
@@ -69,7 +70,7 @@ public class Home extends JFrame {
 		JMenu mnAccount = new JMenu("Account");
 		menuBar.add(mnAccount);
 		
-		JMenuItem mntmAccountInfo = new JMenuItem("Account Info");
+		JMenuItem mntmAccountInfo = new JMenuItem("My Profile");
 		mntmAccountInfo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -95,8 +96,8 @@ public class Home extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.LIGHT_GRAY);
-		contentPane.add(panel, BorderLayout.SOUTH);
+		panel.setBackground(UIManager.getColor("ComboBox.selectionBackground"));
+		contentPane.add(panel, BorderLayout.NORTH);
 		
 		
 		JLabel lblNewLabel = new JLabel("Patient Search");
@@ -120,23 +121,24 @@ public class Home extends JFrame {
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
+				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+					.addComponent(btnAddPatient)
+					.addPreferredGap(ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(textField, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnNewButton)
-					.addPreferredGap(ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-					.addComponent(btnAddPatient))
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnNewButton)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel)
 						.addComponent(btnAddPatient)))
 		);
 		panel.setLayout(gl_panel);

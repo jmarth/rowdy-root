@@ -171,6 +171,7 @@ public class Profile extends JFrame {
 		panel_1.add(panel_2);
 		
 		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
 		panel_2.add(textArea);
 		textArea.setRows(10);
 		textArea.setColumns(40);
