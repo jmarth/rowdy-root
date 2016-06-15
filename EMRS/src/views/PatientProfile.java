@@ -14,14 +14,16 @@ import java.awt.Font;
 public class PatientProfile extends JFrame {
 
 	private JPanel contentPane;
+	private static String pname;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void NewWindow(final String name) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					pname = name;
 					PatientProfile frame = new PatientProfile();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -35,7 +37,7 @@ public class PatientProfile extends JFrame {
 	 * Create the frame.
 	 */
 	public PatientProfile() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -63,7 +65,7 @@ public class PatientProfile extends JFrame {
 		JPanel panel_4 = new JPanel();
 		contentPane.add(panel_4, BorderLayout.NORTH);
 		
-		JLabel lblEnderWiggin = new JLabel("Ender Wiggin");
+		JLabel lblEnderWiggin = new JLabel(pname);
 		lblEnderWiggin.setFont(new Font("Roboto", Font.BOLD, 30));
 		panel_4.add(lblEnderWiggin);
 	}
