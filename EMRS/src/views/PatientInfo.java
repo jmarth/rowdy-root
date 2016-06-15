@@ -29,6 +29,8 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import net.miginfocom.swing.MigLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PatientInfo extends JFrame {
 
@@ -180,6 +182,16 @@ public class PatientInfo extends JFrame {
 		contentPane.add(panel_4);
 		
 		JButton btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String name = textField.getText()+" "+
+						      textField_2.getText()+" "+
+						      textField_1.getText();
+				PatientProfile pp = new PatientProfile();
+				pp.NewWindow(name);
+				dispose();
+			}
+		});
 		panel_4.add(btnSave);
 	}
 }
