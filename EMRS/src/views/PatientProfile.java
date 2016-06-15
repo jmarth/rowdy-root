@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -24,8 +25,8 @@ public class PatientProfile extends JFrame {
 			public void run() {
 				try {
 					pname = name;
-					PatientProfile frame = new PatientProfile();
-					frame.setVisible(true);
+					//PatientProfile frame = new PatientProfile();
+					//frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -36,7 +37,7 @@ public class PatientProfile extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PatientProfile() {
+	public PatientProfile(String pname) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -70,7 +71,7 @@ public class PatientProfile extends JFrame {
 		panel_4.add(lblEnderWiggin);
 	}
 	
-	public JPanel getContentPane() {
+	public Container getContentPane() {
 		return contentPane;
 	}
 

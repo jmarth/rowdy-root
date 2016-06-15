@@ -36,6 +36,7 @@ public class Home extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
+	private JPanel PatientProfilePane;
 
 	/**
 	 * Launch the application.
@@ -72,7 +73,7 @@ public class Home extends JFrame {
 		
 		JMenuItem mntmAccountInfo = new JMenuItem("My Profile");
 		mntmAccountInfo.addMouseListener(new MouseAdapter() {
-			@Override
+			//@Override
 			public void mouseReleased(MouseEvent arg0) {
 				Profile profile = new Profile();
 				profile.NewWindow();
@@ -82,7 +83,7 @@ public class Home extends JFrame {
 		
 		JMenuItem mntmLogout = new JMenuItem("Logout");
 		mntmLogout.addMouseListener(new MouseAdapter() {
-			@Override
+			//@Override
 			public void mouseReleased(MouseEvent e) {
 				dispose();
 				Login login = new Login();
@@ -115,7 +116,10 @@ public class Home extends JFrame {
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 PatientInfo pi = new PatientInfo();
-				 pi.NewWindow();
+				 //PatientProfile pp = new PatientProfile();
+				 pi.NewWindow(contentPane); 
+				 //contentPane.add(BorderLayout.CENTER,PatientProfilePane);
+				 //contentPane.revalidate();
 			}
 		});
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -144,7 +148,7 @@ public class Home extends JFrame {
 		panel.setLayout(gl_panel);
 		
 		JList list = new JList();
-		contentPane.add(list, BorderLayout.CENTER);
+		//contentPane.add(list, BorderLayout.CENTER);
 	}
 
 }

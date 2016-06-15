@@ -23,6 +23,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.CardLayout;
+import java.awt.Container;
+
 import javax.swing.border.TitledBorder;
 import java.awt.FlowLayout;
 import com.jgoodies.forms.layout.FormLayout;
@@ -35,19 +37,22 @@ import java.awt.event.ActionEvent;
 public class PatientInfo extends JFrame {
 
 	private JPanel contentPane;
+	private static JPanel homePane;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
+	private String pname;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void NewWindow() {
+	public static void NewWindow(final JPanel p) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					PatientInfo frame = new PatientInfo();
 					frame.setVisible(true);
+					homePane = p;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -184,14 +189,19 @@ public class PatientInfo extends JFrame {
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String name = textField.getText()+" "+
+				pname = textField.getText()+" "+
 						      textField_2.getText()+" "+
 						      textField_1.getText();
-				PatientProfile pp = new PatientProfile();
-				pp.NewWindow(name);
+				PatientProfile pp = new PatientProfile(pname);
 				dispose();
+				homePane.add(pp.getContentPane());
+				homePane.revalidate();
 			}
 		});
 		panel_4.add(btnSave);
+	}
+	
+	public String getPname() {
+		return pname;
 	}
 }
