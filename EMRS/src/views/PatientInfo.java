@@ -13,6 +13,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.LayoutManager;
+
 import javax.swing.DropMode;
 import java.awt.Font;
 import javax.swing.JFormattedTextField;
@@ -23,6 +25,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.CardLayout;
+import java.awt.Container;
+
 import javax.swing.border.TitledBorder;
 import java.awt.FlowLayout;
 import com.jgoodies.forms.layout.FormLayout;
@@ -35,30 +39,18 @@ import java.awt.event.ActionEvent;
 public class PatientInfo extends JFrame {
 
 	private JPanel contentPane;
+	private static JPanel homePane;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void NewWindow() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PatientInfo frame = new PatientInfo();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private String pname;
 
 	/**
 	 * Create the frame.
 	 */
-	public PatientInfo() {
+	public PatientInfo(JPanel p) {
+		homePane = p;
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
 		contentPane = new JPanel();
@@ -69,7 +61,7 @@ public class PatientInfo extends JFrame {
 		JPanel panel_3 = new JPanel();
 		contentPane.add(panel_3);
 		
-		JLabel lblPatientInformation = new JLabel("Patient Information");
+		JLabel lblPatientInformation = new JLabel("Add Patient Information");
 		lblPatientInformation.setFont(new Font("Roboto", Font.PLAIN, 30));
 		panel_3.add(lblPatientInformation);
 		
@@ -184,14 +176,23 @@ public class PatientInfo extends JFrame {
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String name = textField.getText()+" "+
+				pname = textField.getText()+" "+
 						      textField_2.getText()+" "+
 						      textField_1.getText();
-				PatientProfile pp = new PatientProfile();
-				pp.NewWindow(name);
-				dispose();
+				PatientProfile pp = new PatientProfile(pname);
+				homePane.remove(contentPane);
+				homePane.add(pp.getContentPane(),BorderLayout.CENTER);
+				homePane.revalidate();
 			}
 		});
 		panel_4.add(btnSave);
+	}
+	
+	public String getPname() {
+		return pname;
+	}
+	
+	public Container getContentPane() {
+		return contentPane;
 	}
 }
