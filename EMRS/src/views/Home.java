@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Panel;
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.Button;
 import java.awt.TextField;
 import java.awt.Toolkit;
@@ -21,6 +22,8 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 
 import javax.swing.JList;
@@ -36,8 +39,6 @@ public class Home extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
-	private JPanel PatientProfilePane;
-
 	/**
 	 * Launch the application.
 	 */
@@ -75,8 +76,14 @@ public class Home extends JFrame {
 		mntmAccountInfo.addMouseListener(new MouseAdapter() {
 			//@Override
 			public void mouseReleased(MouseEvent arg0) {
-				Profile profile = new Profile();
-				profile.NewWindow();
+				Profile p = new Profile();
+				 LayoutManager layout = contentPane.getLayout();
+				 Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
+				 if(centerComponent != null ) {
+					 contentPane.remove(centerComponent);
+				 }
+				 contentPane.add(p.getContentPane(), BorderLayout.CENTER);
+				 contentPane.revalidate();
 			}
 		});
 		mnAccount.add(mntmAccountInfo);
@@ -115,17 +122,37 @@ public class Home extends JFrame {
 		JButton btnAddPatient = new JButton("Add Patient");
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 PatientInfo pi = new PatientInfo();
-				 //PatientProfile pp = new PatientProfile();
-				 pi.NewWindow(contentPane); 
-				 //contentPane.add(BorderLayout.CENTER,PatientProfilePane);
-				 //contentPane.revalidate();
+				 PatientInfo pi = new PatientInfo(contentPane);
+				 LayoutManager layout = contentPane.getLayout();
+				 Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
+				 if(centerComponent != null ) {
+					 contentPane.remove(centerComponent);
+				 }
+				 contentPane.add(pi.getContentPane(), BorderLayout.CENTER);
+				 contentPane.revalidate();
+			}
+		});
+		
+		JButton btnHome = new JButton("Home");
+		btnHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JList list = new JList();
+				LayoutManager layout = contentPane.getLayout();
+				Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
+				 if(centerComponent != null ) {
+					 contentPane.remove(centerComponent);
+				 }
+				contentPane.repaint();
+				contentPane.revalidate();
 			}
 		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(btnHome)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnAddPatient)
 					.addPreferredGap(ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
 					.addComponent(lblNewLabel)
@@ -143,12 +170,9 @@ public class Home extends JFrame {
 						.addComponent(btnNewButton)
 						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel)
-						.addComponent(btnAddPatient)))
+						.addComponent(btnAddPatient)
+						.addComponent(btnHome)))
 		);
 		panel.setLayout(gl_panel);
-		
-		JList list = new JList();
-		//contentPane.add(list, BorderLayout.CENTER);
 	}
-
 }

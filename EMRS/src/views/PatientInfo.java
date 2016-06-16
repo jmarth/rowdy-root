@@ -13,6 +13,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.LayoutManager;
+
 import javax.swing.DropMode;
 import java.awt.Font;
 import javax.swing.JFormattedTextField;
@@ -44,26 +46,11 @@ public class PatientInfo extends JFrame {
 	private String pname;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void NewWindow(final JPanel p) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					PatientInfo frame = new PatientInfo();
-					frame.setVisible(true);
-					homePane = p;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
-	public PatientInfo() {
+	public PatientInfo(JPanel p) {
+		homePane = p;
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 500);
 		contentPane = new JPanel();
@@ -74,7 +61,7 @@ public class PatientInfo extends JFrame {
 		JPanel panel_3 = new JPanel();
 		contentPane.add(panel_3);
 		
-		JLabel lblPatientInformation = new JLabel("Patient Information");
+		JLabel lblPatientInformation = new JLabel("Add Patient Information");
 		lblPatientInformation.setFont(new Font("Roboto", Font.PLAIN, 30));
 		panel_3.add(lblPatientInformation);
 		
@@ -193,8 +180,8 @@ public class PatientInfo extends JFrame {
 						      textField_2.getText()+" "+
 						      textField_1.getText();
 				PatientProfile pp = new PatientProfile(pname);
-				dispose();
-				homePane.add(pp.getContentPane());
+				homePane.remove(contentPane);
+				homePane.add(pp.getContentPane(),BorderLayout.CENTER);
 				homePane.revalidate();
 			}
 		});
@@ -203,5 +190,9 @@ public class PatientInfo extends JFrame {
 	
 	public String getPname() {
 		return pname;
+	}
+	
+	public Container getContentPane() {
+		return contentPane;
 	}
 }

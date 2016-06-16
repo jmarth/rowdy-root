@@ -17,22 +17,6 @@ public class PatientProfile extends JFrame {
 	private JPanel contentPane;
 	private static String pname;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void NewWindow(final String name) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					pname = name;
-					//PatientProfile frame = new PatientProfile();
-					//frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.

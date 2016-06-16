@@ -11,6 +11,8 @@ import java.awt.GridLayout;
 import javax.swing.SpringLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.DropMode;
@@ -29,6 +31,8 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import net.miginfocom.swing.MigLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Profile extends JFrame {
 
@@ -36,22 +40,6 @@ public class Profile extends JFrame {
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void NewWindow() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Profile frame = new Profile();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -180,6 +168,12 @@ public class Profile extends JFrame {
 		contentPane.add(panel_4);
 		
 		JButton btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(contentPane,
+					    "Your profile has been updated");
+			}
+		});
 		panel_4.add(btnSave);
 	}
 }
