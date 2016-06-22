@@ -35,15 +35,21 @@ import com.jgoodies.forms.layout.RowSpec;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JScrollPane;
+import com.jgoodies.forms.layout.FormSpecs;
+import javax.swing.SwingConstants;
 
 public class PatientInfo extends JFrame {
 
 	private JPanel contentPane;
 	private static JPanel homePane;
+	private String pname;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	private String pname;
 
 	/**
 	 * Create the frame.
@@ -56,136 +62,164 @@ public class PatientInfo extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(new GridLayout(0, 1, 0, 0));
+		GridBagLayout gbl_contentPane = new GridBagLayout();
+		gbl_contentPane.columnWidths = new int[]{674, 0};
+		gbl_contentPane.rowHeights = new int[]{451, 0};
+		gbl_contentPane.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		contentPane.setLayout(gbl_contentPane);
 		
-		JPanel panel_3 = new JPanel();
-		contentPane.add(panel_3);
-		
-		JLabel lblPatientInformation = new JLabel("Add Patient Information");
-		lblPatientInformation.setFont(new Font("Roboto", Font.PLAIN, 30));
-		panel_3.add(lblPatientInformation);
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 0;
+		contentPane.add(scrollPane, gbc_scrollPane);
 		
 		JPanel panel = new JPanel();
-		contentPane.add(panel);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] {0, 0, 50, 50, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0};
-		panel.setLayout(gbl_panel);
+		scrollPane.setViewportView(panel);
+		panel.setLayout(new FormLayout(new ColumnSpec[] {
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),}));
 		
-		JLabel lblNewLabel = new JLabel("First Name");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 0;
-		gbc_lblNewLabel.gridy = 1;
-		panel.add(lblNewLabel, gbc_lblNewLabel);
+		JPanel panel_12 = new JPanel();
+		panel_12.setBorder(new TitledBorder(null, "Name", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.add(panel_12, "2, 2, fill, fill");
+		panel_12.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("default:grow"),}));
+		
+		JPanel panel_10 = new JPanel();
+		panel_12.add(panel_10, "1, 1, fill, fill");
+		GridBagLayout gbl_panel_10 = new GridBagLayout();
+		gbl_panel_10.columnWidths = new int[]{0, 0, 0, 0};
+		gbl_panel_10.rowHeights = new int[]{0, 0, 0, 0, 0};
+		gbl_panel_10.columnWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_10.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		panel_10.setLayout(gbl_panel_10);
+		
+		JLabel lblWhatsThePatients = new JLabel("What's the patient's name?");
+		GridBagConstraints gbc_lblWhatsThePatients = new GridBagConstraints();
+		gbc_lblWhatsThePatients.insets = new Insets(0, 0, 5, 5);
+		gbc_lblWhatsThePatients.gridx = 0;
+		gbc_lblWhatsThePatients.gridy = 0;
+		panel_10.add(lblWhatsThePatients, gbc_lblWhatsThePatients);
+		
+		JLabel lblGiven = new JLabel("GIven (required)");
+		GridBagConstraints gbc_lblGiven = new GridBagConstraints();
+		gbc_lblGiven.insets = new Insets(0, 0, 5, 5);
+		gbc_lblGiven.anchor = GridBagConstraints.WEST;
+		gbc_lblGiven.gridx = 0;
+		gbc_lblGiven.gridy = 1;
+		panel_10.add(lblGiven, gbc_lblGiven);
+		
+		JLabel lblMiddle = new JLabel("Middle");
+		GridBagConstraints gbc_lblMiddle = new GridBagConstraints();
+		gbc_lblMiddle.anchor = GridBagConstraints.WEST;
+		gbc_lblMiddle.insets = new Insets(0, 0, 5, 5);
+		gbc_lblMiddle.gridx = 1;
+		gbc_lblMiddle.gridy = 1;
+		panel_10.add(lblMiddle, gbc_lblMiddle);
+		
+		JLabel lblFamilyName = new JLabel("Family Name (required)");
+		lblFamilyName.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc_lblFamilyName = new GridBagConstraints();
+		gbc_lblFamilyName.anchor = GridBagConstraints.WEST;
+		gbc_lblFamilyName.insets = new Insets(0, 0, 5, 0);
+		gbc_lblFamilyName.gridx = 2;
+		gbc_lblFamilyName.gridy = 1;
+		panel_10.add(lblFamilyName, gbc_lblFamilyName);
 		
 		textField = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.anchor = GridBagConstraints.WEST;
+		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.gridx = 1;
-		gbc_textField.gridy = 1;
-		panel.add(textField, gbc_textField);
+		gbc_textField.gridx = 0;
+		gbc_textField.gridy = 2;
+		panel_10.add(textField, gbc_textField);
 		textField.setColumns(10);
-		
-		JLabel lblNewLabel_2 = new JLabel("M.I");
-		GridBagConstraints gbc_lblNewLabel_2 = new GridBagConstraints();
-		gbc_lblNewLabel_2.anchor = GridBagConstraints.EAST;
-		gbc_lblNewLabel_2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_2.gridx = 2;
-		gbc_lblNewLabel_2.gridy = 1;
-		panel.add(lblNewLabel_2, gbc_lblNewLabel_2);
-		
-		textField_2 = new JTextField();
-		textField_2.setDropMode(DropMode.INSERT);
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.anchor = GridBagConstraints.WEST;
-		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_2.gridx = 3;
-		gbc_textField_2.gridy = 1;
-		panel.add(textField_2, gbc_textField_2);
-		textField_2.setColumns(1);
-		
-		JLabel lblNewLabel_1 = new JLabel("Last Name");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 4;
-		gbc_lblNewLabel_1.gridy = 1;
-		panel.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
 		textField_1 = new JTextField();
 		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_1.anchor = GridBagConstraints.WEST;
-		gbc_textField_1.gridx = 5;
-		gbc_textField_1.gridy = 1;
-		panel.add(textField_1, gbc_textField_1);
+		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_1.gridx = 1;
+		gbc_textField_1.gridy = 2;
+		panel_10.add(textField_1, gbc_textField_1);
 		textField_1.setColumns(10);
 		
-		JLabel lblNewLabel_3 = new JLabel("D.O.B");
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_3.anchor = GridBagConstraints.WEST;
-		gbc_lblNewLabel_3.gridx = 0;
-		gbc_lblNewLabel_3.gridy = 2;
-		panel.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		textField_2 = new JTextField();
+		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
+		gbc_textField_2.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_2.gridx = 2;
+		gbc_textField_2.gridy = 2;
+		panel_10.add(textField_2, gbc_textField_2);
+		textField_2.setColumns(10);
 		
-		JFormattedTextField formattedTextField = new JFormattedTextField();
-		GridBagConstraints gbc_formattedTextField = new GridBagConstraints();
-		gbc_formattedTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_formattedTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_formattedTextField.gridx = 1;
-		gbc_formattedTextField.gridy = 2;
-		panel.add(formattedTextField, gbc_formattedTextField);
+		JPanel panel_11 = new JPanel();
+		panel_11.setBorder(new TitledBorder(null, "Gender", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.add(panel_11, "2, 4, fill, fill");
+		panel_11.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("default:grow"),}));
 		
-		JLabel lblPhone = new JLabel("Phone");
-		GridBagConstraints gbc_lblPhone = new GridBagConstraints();
-		gbc_lblPhone.anchor = GridBagConstraints.WEST;
-		gbc_lblPhone.insets = new Insets(0, 0, 5, 5);
-		gbc_lblPhone.gridx = 4;
-		gbc_lblPhone.gridy = 2;
-		panel.add(lblPhone, gbc_lblPhone);
+		JPanel panel_9 = new JPanel();
+		panel_11.add(panel_9, "1, 1, fill, fill");
 		
-		JFormattedTextField formattedTextField_1 = new JFormattedTextField();
-		formattedTextField_1.setColumns(10);
-		GridBagConstraints gbc_formattedTextField_1 = new GridBagConstraints();
-		gbc_formattedTextField_1.insets = new Insets(0, 0, 5, 0);
-		gbc_formattedTextField_1.anchor = GridBagConstraints.WEST;
-		gbc_formattedTextField_1.gridx = 5;
-		gbc_formattedTextField_1.gridy = 2;
-		panel.add(formattedTextField_1, gbc_formattedTextField_1);
-		
-		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1);
-		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(null, "Notes", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.add(panel_2);
-		
-		JTextArea textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		panel_2.add(textArea);
-		textArea.setRows(10);
-		textArea.setColumns(40);
+		JPanel panel_5 = new JPanel();
+		panel_5.setBorder(new TitledBorder(null, "Brithdate", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.add(panel_5, "2, 6, fill, fill");
+		panel_5.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("default:grow"),}));
 		
 		JPanel panel_4 = new JPanel();
-		contentPane.add(panel_4);
+		panel_5.add(panel_4, "1, 1, fill, fill");
 		
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				pname = textField.getText()+" "+
-						      textField_2.getText()+" "+
-						      textField_1.getText();
-				PatientProfile pp = new PatientProfile(pname);
-				homePane.remove(contentPane);
-				homePane.add(pp.getContentPane(),BorderLayout.CENTER);
-				homePane.revalidate();
-			}
-		});
-		panel_4.add(btnSave);
+		JPanel panel_6 = new JPanel();
+		panel.add(panel_6, "2, 8, fill, fill");
+		panel_6.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("default:grow"),}));
+		
+		JPanel panel_7 = new JPanel();
+		panel_7.setBorder(new TitledBorder(null, "Address", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_6.add(panel_7, "1, 1, fill, fill");
+		panel_7.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("default:grow"),}));
+		
+		JPanel panel_3 = new JPanel();
+		panel_7.add(panel_3, "1, 1, fill, fill");
+		
+		JPanel panel_8 = new JPanel();
+		panel_8.setBorder(new TitledBorder(null, "Phone Number", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.add(panel_8, "2, 10, fill, fill");
+		panel_8.setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				RowSpec.decode("default:grow"),}));
+		
+		JPanel panel_1 = new JPanel();
+		panel_8.add(panel_1, "1, 1, default, fill");
+		panel_1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 	}
 	
 	public String getPname() {
