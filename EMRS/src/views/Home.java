@@ -6,6 +6,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import database.GatewayException;
+import database.PatientTableGateway;
+import database.PatientTableGatewayMySQL;
+import models.Patient;
+import models.PatientList;
+
 import java.awt.Panel;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
@@ -31,14 +38,21 @@ import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.List;
+
 import javax.swing.UIManager;
 
 public class Home extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
+	private PatientTableGateway ptg;
+	private PatientList patientList;
 	/**
 	 * Launch the application.
 	 */
@@ -65,6 +79,28 @@ public class Home extends JFrame {
 	public Home() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		
+		ptg = null;
+		
+		//Try to connect to database
+		try {
+			ptg = new PatientTableGatewayMySQL();
+		} catch (GatewayException e) {
+			JOptionPane.showMessageDialog(null, "Database is not responding. Please reboot your computer and maybe the database will magically appear (not really).", "Database Offline!", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Database is not responding. Please reboot your computer and maybe the database will magically appear (not really).", "Database Offline!", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
+		
+		//Set patients from database
+		patientList = new PatientList();
+		patientList.setGateway(ptg);
+		patientList.loadFromGateway();
+		List<Patient> pl = patientList.getPatientList();
+		System.out.print(pl.size());
+		for(int i=0; i<pl.size(); i++)
+			System.out.print(pl.get(i).getAddress());
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -120,9 +156,10 @@ public class Home extends JFrame {
 		});
 		
 		JButton btnAddPatient = new JButton("Add Patient");
+		final Home home = this;
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 PatientInfo pi = new PatientInfo(contentPane);
+				 PatientInfo pi = new PatientInfo(home);
 				 LayoutManager layout = contentPane.getLayout();
 				 Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
 				 if(centerComponent != null ) {
@@ -174,5 +211,13 @@ public class Home extends JFrame {
 						.addComponent(btnHome)))
 		);
 		panel.setLayout(gl_panel);
+	}
+	
+	public PatientTableGateway getPatientTableGateway() {
+		return ptg;
+	}
+	
+	public JPanel getContentPane() {
+		return contentPane;
 	}
 }

@@ -1,10 +1,11 @@
 package models;
 
 public class Patient {
-	private int id;
+	private long id;
 	private boolean hasPatientName;
 	private String firstName;
 	private String middleName;
+	private String lastName;
 	private String gender;
 	private int birthDay;
 	private String birthMonth;
@@ -19,7 +20,7 @@ public class Patient {
 	private String postalCode;
 	private String phoneNumber;
 	
-	public Patient(int id, boolean hasPatientName, String firstName, String middleName, String gender, int birthDay,
+	public Patient(long id, boolean hasPatientName, String firstName, String middleName, String lastName, String gender, int birthDay,
 			String birthMonth, int birthYear, int estBirthYears, int estBirthMonths, String address, String address2,
 			String city, String state, String country, String postalCode, String phoneNumber) {
 		super();
@@ -27,6 +28,7 @@ public class Patient {
 		this.hasPatientName = hasPatientName;
 		this.firstName = firstName;
 		this.middleName = middleName;
+		this.lastName = lastName;
 		this.gender = gender;
 		this.birthDay = birthDay;
 		this.birthMonth = birthMonth;
@@ -42,15 +44,38 @@ public class Patient {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	public int getId() {
+	public Patient(boolean hasPatientName, String firstName, String middleName, String lastName, String gender, int birthDay,
+			String birthMonth, int birthYear, int estBirthYears, int estBirthMonths, String address, String address2,
+			String city, String state, String country, String postalCode, String phoneNumber) {
+		super();
+		this.hasPatientName = hasPatientName;
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.birthDay = birthDay;
+		this.birthMonth = birthMonth;
+		this.birthYear = birthYear;
+		this.estBirthYears = estBirthYears;
+		this.estBirthMonths = estBirthMonths;
+		this.address = address;
+		this.address2 = address2;
+		this.city = city;
+		this.state = state;
+		this.country = country;
+		this.postalCode = postalCode;
+		this.phoneNumber = phoneNumber;
+	}
+	
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
-	public boolean isHasPatientName() {
+	public boolean getHasPatientName() {
 		return hasPatientName;
 	}
 
@@ -72,6 +97,14 @@ public class Patient {
 
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 	public String getGender() {
