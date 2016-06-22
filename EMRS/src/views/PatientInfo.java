@@ -32,6 +32,10 @@ import java.awt.FlowLayout;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import database.GatewayException;
+import models.Patient;
+import models.PatientList;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -45,29 +49,32 @@ import javax.swing.JTextPane;
 
 public class PatientInfo extends JFrame {
 
+	private Home home;
 	private JPanel contentPane;
 	private static JPanel homePane;
 	private String pname;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_4;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
+	private JTextField firstNameTextField;
+	private JTextField middleNameTextField;
+	private JTextField lastNameTextField;
+	private JTextField birthDayTextField;
+	private JTextField birthYearTextField;
+	private JTextField estYearsTextField;
+	private JTextField estMonthsTextField;
+	private JTextField addressTextField;
+	private JTextField address2TextField;
+	private JTextField cityTextField;
+	private JTextField countryTextField;
+	private JTextField postalCodeTextField;
+	private JTextField stateTextField;
+	private JTextField phoneNumberTextField;
+	private PatientList pl;
 
 	/**
 	 * Create the frame.
 	 */
-	public PatientInfo(JPanel p) {
-		homePane = p;
+	public PatientInfo(final Home home) {
+		homePane = home.getContentPane();
+		this.home = home;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 710, 727);
@@ -92,9 +99,9 @@ public class PatientInfo extends JFrame {
 		scrollPane.setViewportView(panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] {672, 0};
-		gbl_panel.rowHeights = new int[] {81, 81, 81, 81, 81, 0};
+		gbl_panel.rowHeights = new int[] {81, 81, 81, 81, 81, 0, 0};
 		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{5, 5, 5, 5, 1.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0, 0, 0, 0, 0, 0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		JPanel panel_7 = new JPanel();
@@ -129,13 +136,13 @@ public class PatientInfo extends JFrame {
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
-		JCheckBox chckbxUnidentifiedPatient = new JCheckBox("Unidentified Patient");
-		GridBagConstraints gbc_chckbxUnidentifiedPatient = new GridBagConstraints();
-		gbc_chckbxUnidentifiedPatient.anchor = GridBagConstraints.WEST;
-		gbc_chckbxUnidentifiedPatient.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxUnidentifiedPatient.gridx = 0;
-		gbc_chckbxUnidentifiedPatient.gridy = 1;
-		panel_1.add(chckbxUnidentifiedPatient, gbc_chckbxUnidentifiedPatient);
+		final JCheckBox hasNameCheckBox = new JCheckBox("Unidentified Patient");
+		GridBagConstraints gbc_hasNameCheckBox = new GridBagConstraints();
+		gbc_hasNameCheckBox.anchor = GridBagConstraints.WEST;
+		gbc_hasNameCheckBox.insets = new Insets(0, 0, 5, 5);
+		gbc_hasNameCheckBox.gridx = 0;
+		gbc_hasNameCheckBox.gridy = 1;
+		panel_1.add(hasNameCheckBox, gbc_hasNameCheckBox);
 		
 		JLabel lblNewLabel = new JLabel("Given (required)");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
@@ -161,32 +168,32 @@ public class PatientInfo extends JFrame {
 		gbc_lblNewLabel_2.gridy = 2;
 		panel_1.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
-		textField = new JTextField();
-		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.insets = new Insets(0, 0, 5, 5);
-		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 0;
-		gbc_textField.gridy = 3;
-		panel_1.add(textField, gbc_textField);
-		textField.setColumns(10);
+		firstNameTextField = new JTextField();
+		GridBagConstraints gbc_firstNameTextField = new GridBagConstraints();
+		gbc_firstNameTextField.insets = new Insets(0, 0, 5, 5);
+		gbc_firstNameTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_firstNameTextField.gridx = 0;
+		gbc_firstNameTextField.gridy = 3;
+		panel_1.add(firstNameTextField, gbc_firstNameTextField);
+		firstNameTextField.setColumns(10);
 		
-		textField_1 = new JTextField();
-		GridBagConstraints gbc_textField_1 = new GridBagConstraints();
-		gbc_textField_1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_1.gridx = 1;
-		gbc_textField_1.gridy = 3;
-		panel_1.add(textField_1, gbc_textField_1);
-		textField_1.setColumns(10);
+		middleNameTextField = new JTextField();
+		GridBagConstraints gbc_middleNameTextField = new GridBagConstraints();
+		gbc_middleNameTextField.insets = new Insets(0, 0, 5, 5);
+		gbc_middleNameTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_middleNameTextField.gridx = 1;
+		gbc_middleNameTextField.gridy = 3;
+		panel_1.add(middleNameTextField, gbc_middleNameTextField);
+		middleNameTextField.setColumns(10);
 		
-		textField_2 = new JTextField();
-		GridBagConstraints gbc_textField_2 = new GridBagConstraints();
-		gbc_textField_2.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_2.gridx = 2;
-		gbc_textField_2.gridy = 3;
-		panel_1.add(textField_2, gbc_textField_2);
-		textField_2.setColumns(10);
+		lastNameTextField = new JTextField();
+		GridBagConstraints gbc_lastNameTextField = new GridBagConstraints();
+		gbc_lastNameTextField.insets = new Insets(0, 0, 5, 5);
+		gbc_lastNameTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_lastNameTextField.gridx = 2;
+		gbc_lastNameTextField.gridy = 3;
+		panel_1.add(lastNameTextField, gbc_lastNameTextField);
+		lastNameTextField.setColumns(10);
 		
 		JPanel panel_2 = new JPanel();
 		TitledBorder tb_2 = new TitledBorder(null, "What's the patient's gender?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
@@ -226,13 +233,13 @@ public class PatientInfo extends JFrame {
 		gbc_lblNewLabel_3.gridy = 1;
 		panel_3.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"male", "female"}));
-		GridBagConstraints gbc_comboBox = new GridBagConstraints();
-		gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_comboBox.gridx = 9;
-		gbc_comboBox.gridy = 2;
-		panel_3.add(comboBox, gbc_comboBox);
+		final JComboBox genderComboBox = new JComboBox();
+		genderComboBox.setModel(new DefaultComboBoxModel(new String[] {"male", "female"}));
+		GridBagConstraints gbc_genderComboBox = new GridBagConstraints();
+		gbc_genderComboBox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_genderComboBox.gridx = 9;
+		gbc_genderComboBox.gridy = 2;
+		panel_3.add(genderComboBox, gbc_genderComboBox);
 		
 		JPanel panel_8 = new JPanel();
 		TitledBorder tb_3 = new TitledBorder(null, "What's the patient's birth date?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
@@ -289,32 +296,32 @@ public class PatientInfo extends JFrame {
 		gbc_lblYear.gridy = 1;
 		panel_4.add(lblYear, gbc_lblYear);
 		
-		textField_3 = new JTextField();
-		GridBagConstraints gbc_textField_3 = new GridBagConstraints();
-		gbc_textField_3.anchor = GridBagConstraints.WEST;
-		gbc_textField_3.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_3.gridx = 0;
-		gbc_textField_3.gridy = 2;
-		panel_4.add(textField_3, gbc_textField_3);
-		textField_3.setColumns(10);
+		birthDayTextField = new JTextField();
+		GridBagConstraints gbc_birthDayTextField = new GridBagConstraints();
+		gbc_birthDayTextField.anchor = GridBagConstraints.WEST;
+		gbc_birthDayTextField.insets = new Insets(0, 0, 5, 5);
+		gbc_birthDayTextField.gridx = 0;
+		gbc_birthDayTextField.gridy = 2;
+		panel_4.add(birthDayTextField, gbc_birthDayTextField);
+		birthDayTextField.setColumns(10);
 		
-		JComboBox comboBox_1 = new JComboBox();
-		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}));
-		GridBagConstraints gbc_comboBox_1 = new GridBagConstraints();
-		gbc_comboBox_1.anchor = GridBagConstraints.WEST;
-		gbc_comboBox_1.insets = new Insets(0, 0, 5, 5);
-		gbc_comboBox_1.gridx = 1;
-		gbc_comboBox_1.gridy = 2;
-		panel_4.add(comboBox_1, gbc_comboBox_1);
+		final JComboBox birthMonthComboBox = new JComboBox();
+		birthMonthComboBox.setModel(new DefaultComboBoxModel(new String[] {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}));
+		GridBagConstraints gbc_birthMonthComboBox = new GridBagConstraints();
+		gbc_birthMonthComboBox.anchor = GridBagConstraints.WEST;
+		gbc_birthMonthComboBox.insets = new Insets(0, 0, 5, 5);
+		gbc_birthMonthComboBox.gridx = 1;
+		gbc_birthMonthComboBox.gridy = 2;
+		panel_4.add(birthMonthComboBox, gbc_birthMonthComboBox);
 		
-		textField_5 = new JTextField();
-		GridBagConstraints gbc_textField_5 = new GridBagConstraints();
-		gbc_textField_5.anchor = GridBagConstraints.WEST;
-		gbc_textField_5.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_5.gridx = 2;
-		gbc_textField_5.gridy = 2;
-		panel_4.add(textField_5, gbc_textField_5);
-		textField_5.setColumns(10);
+		birthYearTextField = new JTextField();
+		GridBagConstraints gbc_birthYearTextField = new GridBagConstraints();
+		gbc_birthYearTextField.anchor = GridBagConstraints.WEST;
+		gbc_birthYearTextField.insets = new Insets(0, 0, 5, 0);
+		gbc_birthYearTextField.gridx = 2;
+		gbc_birthYearTextField.gridy = 2;
+		panel_4.add(birthYearTextField, gbc_birthYearTextField);
+		birthYearTextField.setColumns(10);
 		
 		JLabel lblOr = new JLabel("Or");
 		GridBagConstraints gbc_lblOr = new GridBagConstraints();
@@ -339,22 +346,22 @@ public class PatientInfo extends JFrame {
 		gbc_lblEstimatedMonths.gridy = 4;
 		panel_4.add(lblEstimatedMonths, gbc_lblEstimatedMonths);
 		
-		textField_6 = new JTextField();
-		GridBagConstraints gbc_textField_6 = new GridBagConstraints();
-		gbc_textField_6.anchor = GridBagConstraints.WEST;
-		gbc_textField_6.insets = new Insets(0, 0, 0, 5);
-		gbc_textField_6.gridx = 0;
-		gbc_textField_6.gridy = 5;
-		panel_4.add(textField_6, gbc_textField_6);
-		textField_6.setColumns(10);
+		estYearsTextField = new JTextField();
+		GridBagConstraints gbc_estYearsTextField = new GridBagConstraints();
+		gbc_estYearsTextField.anchor = GridBagConstraints.WEST;
+		gbc_estYearsTextField.insets = new Insets(0, 0, 0, 5);
+		gbc_estYearsTextField.gridx = 0;
+		gbc_estYearsTextField.gridy = 5;
+		panel_4.add(estYearsTextField, gbc_estYearsTextField);
+		estYearsTextField.setColumns(10);
 		
-		textField_7 = new JTextField();
-		GridBagConstraints gbc_textField_7 = new GridBagConstraints();
-		gbc_textField_7.anchor = GridBagConstraints.WEST;
-		gbc_textField_7.gridx = 2;
-		gbc_textField_7.gridy = 5;
-		panel_4.add(textField_7, gbc_textField_7);
-		textField_7.setColumns(10);
+		estMonthsTextField = new JTextField();
+		GridBagConstraints gbc_estMonthsTextField = new GridBagConstraints();
+		gbc_estMonthsTextField.anchor = GridBagConstraints.WEST;
+		gbc_estMonthsTextField.gridx = 2;
+		gbc_estMonthsTextField.gridy = 5;
+		panel_4.add(estMonthsTextField, gbc_estMonthsTextField);
+		estMonthsTextField.setColumns(10);
 		
 		JPanel panel_9 = new JPanel();
 		TitledBorder tb_4 = new TitledBorder(null, "What's the patient's address?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
@@ -396,14 +403,14 @@ public class PatientInfo extends JFrame {
 		gbc_lblAddress.gridy = 1;
 		panel_5.add(lblAddress, gbc_lblAddress);
 		
-		textField_4 = new JTextField();
-		GridBagConstraints gbc_textField_4 = new GridBagConstraints();
-		gbc_textField_4.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_4.gridx = 1;
-		gbc_textField_4.gridy = 1;
-		panel_5.add(textField_4, gbc_textField_4);
-		textField_4.setColumns(25);
+		addressTextField = new JTextField();
+		GridBagConstraints gbc_addressTextField = new GridBagConstraints();
+		gbc_addressTextField.insets = new Insets(0, 0, 5, 0);
+		gbc_addressTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_addressTextField.gridx = 1;
+		gbc_addressTextField.gridy = 1;
+		panel_5.add(addressTextField, gbc_addressTextField);
+		addressTextField.setColumns(25);
 		
 		JLabel lblAddress_1 = new JLabel("Address 2");
 		GridBagConstraints gbc_lblAddress_1 = new GridBagConstraints();
@@ -413,13 +420,13 @@ public class PatientInfo extends JFrame {
 		gbc_lblAddress_1.gridy = 2;
 		panel_5.add(lblAddress_1, gbc_lblAddress_1);
 		
-		textField_8 = new JTextField();
-		GridBagConstraints gbc_textField_8 = new GridBagConstraints();
-		gbc_textField_8.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_8.gridx = 1;
-		gbc_textField_8.gridy = 2;
-		panel_5.add(textField_8, gbc_textField_8);
-		textField_8.setColumns(10);
+		address2TextField = new JTextField();
+		GridBagConstraints gbc_address2TextField = new GridBagConstraints();
+		gbc_address2TextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_address2TextField.gridx = 1;
+		gbc_address2TextField.gridy = 2;
+		panel_5.add(address2TextField, gbc_address2TextField);
+		address2TextField.setColumns(10);
 		
 		JPanel panel_11 = new JPanel();
 		GridBagConstraints gbc_panel_11 = new GridBagConstraints();
@@ -463,41 +470,41 @@ public class PatientInfo extends JFrame {
 		gbc_lblPostalCode.gridy = 0;
 		panel_11.add(lblPostalCode, gbc_lblPostalCode);
 		
-		textField_9 = new JTextField();
-		GridBagConstraints gbc_textField_9 = new GridBagConstraints();
-		gbc_textField_9.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_9.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_9.gridx = 0;
-		gbc_textField_9.gridy = 1;
-		panel_11.add(textField_9, gbc_textField_9);
-		textField_9.setColumns(10);
+		cityTextField = new JTextField();
+		GridBagConstraints gbc_cityTextField = new GridBagConstraints();
+		gbc_cityTextField.insets = new Insets(0, 0, 5, 5);
+		gbc_cityTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_cityTextField.gridx = 0;
+		gbc_cityTextField.gridy = 1;
+		panel_11.add(cityTextField, gbc_cityTextField);
+		cityTextField.setColumns(10);
 		
-		textField_12 = new JTextField();
-		GridBagConstraints gbc_textField_12 = new GridBagConstraints();
-		gbc_textField_12.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_12.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_12.gridx = 1;
-		gbc_textField_12.gridy = 1;
-		panel_11.add(textField_12, gbc_textField_12);
-		textField_12.setColumns(10);
+		stateTextField = new JTextField();
+		GridBagConstraints gbc_stateTextField = new GridBagConstraints();
+		gbc_stateTextField.insets = new Insets(0, 0, 5, 5);
+		gbc_stateTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_stateTextField.gridx = 1;
+		gbc_stateTextField.gridy = 1;
+		panel_11.add(stateTextField, gbc_stateTextField);
+		stateTextField.setColumns(10);
 		
-		textField_10 = new JTextField();
-		GridBagConstraints gbc_textField_10 = new GridBagConstraints();
-		gbc_textField_10.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_10.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_10.gridx = 2;
-		gbc_textField_10.gridy = 1;
-		panel_11.add(textField_10, gbc_textField_10);
-		textField_10.setColumns(10);
+		countryTextField = new JTextField();
+		GridBagConstraints gbc_countryTextField = new GridBagConstraints();
+		gbc_countryTextField.insets = new Insets(0, 0, 5, 5);
+		gbc_countryTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_countryTextField.gridx = 2;
+		gbc_countryTextField.gridy = 1;
+		panel_11.add(countryTextField, gbc_countryTextField);
+		countryTextField.setColumns(10);
 		
-		textField_11 = new JTextField();
-		GridBagConstraints gbc_textField_11 = new GridBagConstraints();
-		gbc_textField_11.insets = new Insets(0, 0, 5, 0);
-		gbc_textField_11.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_11.gridx = 3;
-		gbc_textField_11.gridy = 1;
-		panel_11.add(textField_11, gbc_textField_11);
-		textField_11.setColumns(10);
+		postalCodeTextField = new JTextField();
+		GridBagConstraints gbc_postalCodeTextField = new GridBagConstraints();
+		gbc_postalCodeTextField.insets = new Insets(0, 0, 5, 0);
+		gbc_postalCodeTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_postalCodeTextField.gridx = 3;
+		gbc_postalCodeTextField.gridy = 1;
+		panel_11.add(postalCodeTextField, gbc_postalCodeTextField);
+		postalCodeTextField.setColumns(10);
 		
 		JPanel panel_6 = new JPanel();
 		TitledBorder tb_5 = new TitledBorder(null, "What's the patient's phone number?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
@@ -505,6 +512,7 @@ public class PatientInfo extends JFrame {
 		tb_5.setTitleFont(new Font("Tahoma", Font.BOLD, 14));
 		panel_6.setBorder(tb_5);
 		GridBagConstraints gbc_panel_6 = new GridBagConstraints();
+		gbc_panel_6.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_6.fill = GridBagConstraints.BOTH;
 		gbc_panel_6.gridx = 0;
 		gbc_panel_6.gridy = 4;
@@ -542,13 +550,48 @@ public class PatientInfo extends JFrame {
 		gbl_panel_12.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_12.setLayout(gbl_panel_12);
 		
-		textField_13 = new JTextField();
-		GridBagConstraints gbc_textField_13 = new GridBagConstraints();
-		gbc_textField_13.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_13.gridx = 0;
-		gbc_textField_13.gridy = 0;
-		panel_12.add(textField_13, gbc_textField_13);
-		textField_13.setColumns(10);
+		phoneNumberTextField = new JTextField();
+		GridBagConstraints gbc_phoneNumberTextField = new GridBagConstraints();
+		gbc_phoneNumberTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_phoneNumberTextField.gridx = 0;
+		gbc_phoneNumberTextField.gridy = 0;
+		panel_12.add(phoneNumberTextField, gbc_phoneNumberTextField);
+		phoneNumberTextField.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Save");
+		btnNewButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			  {
+				  Patient patient = new Patient(hasNameCheckBox.isSelected(),
+						  firstNameTextField.getText(),
+						  middleNameTextField.getText(),
+						  lastNameTextField.getText(),
+						  genderComboBox.getSelectedItem().toString(),
+						  Integer.parseInt(birthDayTextField.getText()),
+						  birthMonthComboBox.getSelectedItem().toString(),
+						  Integer.parseInt(birthYearTextField.getText()),
+						  Integer.parseInt(estYearsTextField.getText()),
+						  Integer.parseInt(estMonthsTextField.getText()),
+						  addressTextField.getText(),
+						  address2TextField.getText(),
+						  cityTextField.getText(),
+						  stateTextField.getText(),
+						  countryTextField.getText(),
+						  postalCodeTextField.getText(),
+						  phoneNumberTextField.getText());
+				  try {
+					home.getPatientTableGateway().insertPatient(patient);
+				} catch (GatewayException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			  }
+		});
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.gridx = 0;
+		gbc_btnNewButton.gridy = 5;
+		panel.add(btnNewButton, gbc_btnNewButton);
 	}
 	
 	public String getPname() {

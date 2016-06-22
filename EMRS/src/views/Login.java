@@ -11,17 +11,27 @@ import javax.swing.JTextField;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import database.GatewayException;
+import database.PatientTableGateway;
+import database.PatientTableGatewayMySQL;
+import models.Patient;
+import models.PatientList;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.BoxLayout;
 import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
 
@@ -33,16 +43,13 @@ public class Login extends JFrame {
 
 	/**
 	 * Launch the application.
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void newWindow() throws IOException {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try {
-					Login frame = new Login();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				Login frame = new Login();
+				frame.setVisible(true);
 			}
 		});
 	}
@@ -73,6 +80,7 @@ public class Login extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
 				dispose();
+				//Create home view
 				Home home  = new Home();
 				home.NewScreen();
 			}
