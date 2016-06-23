@@ -9,12 +9,15 @@ import javax.swing.border.EmptyBorder;
 import java.awt.FlowLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
 import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.BalloonTipStyle;
+import net.java.balloontip.styles.RoundedBalloonStyle;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import java.awt.GridLayout;
@@ -224,4 +227,18 @@ public class NewAccountView extends JFrame {
 			}
 		});
 	}
+	
+	public boolean checkForErrors() {
+		if(true) {
+			JOptionPane.showMessageDialog(null, "Please fix all errors before saving.", "Field Errors!", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
+	public static BalloonTip createBalloonTip(JTextField component, String contents) {
+			BalloonTipStyle tipStyle = new RoundedBalloonStyle(1, 1,
+				new Color(255, 100, 100, 200), Color.gray);
+			return new BalloonTip(component, contents, tipStyle, true);
+}
 }
