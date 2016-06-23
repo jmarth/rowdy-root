@@ -11,6 +11,8 @@ import java.awt.GridLayout;
 import javax.swing.SpringLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.LayoutManager;
@@ -47,6 +49,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.JTextPane;
 import javax.swing.event.ChangeListener;
 import javax.swing.text.JTextComponent;
@@ -80,7 +83,7 @@ public class PatientInfo extends JFrame {
 	private JTextField phoneNumberTextField;
 	private PatientList pl;
 	private final String NAME_PATTERN = "^[a-z ,.'-]+$";
-	private final String NAME_PATTERN_2 = "(^[a-z ,.'-]+$)?";
+	private final String NAME_PATTERN_2 = "^$|(^[a-z ,.'-]+$)";
 	private BalloonTip firstNameBalloon;
 	private BalloonTip middleNameBalloon;
 	private BalloonTip lastNameBalloon;
@@ -204,8 +207,9 @@ public class PatientInfo extends JFrame {
 		panel_1.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
 		firstNameTextField = new JTextField();
-		BalloonTip firstNameBalloon = new BalloonTip(firstNameTextField, "Invalid name");
+		firstNameBalloon = new BalloonTip(firstNameTextField, "Invalid name");
 		firstNameBalloon.setVisible(false);
+		firstNameBalloon.setCloseButton(null);
 		addBalloonTip(firstNameTextField, firstNameBalloon, NAME_PATTERN);
 		GridBagConstraints gbc_firstNameTextField = new GridBagConstraints();
 		gbc_firstNameTextField.insets = new Insets(0, 0, 5, 5);
@@ -216,8 +220,9 @@ public class PatientInfo extends JFrame {
 		firstNameTextField.setColumns(10);
 		
 		middleNameTextField = new JTextField();
-		BalloonTip middleNameBalloon = new BalloonTip(middleNameTextField, "Invalid name");
+		middleNameBalloon = new BalloonTip(middleNameTextField, "Invalid name");
 		middleNameBalloon.setVisible(false);
+		middleNameBalloon.setCloseButton(null);
 		addBalloonTip(middleNameTextField, middleNameBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_middleNameTextField = new GridBagConstraints();
 		gbc_middleNameTextField.insets = new Insets(0, 0, 5, 5);
@@ -228,8 +233,9 @@ public class PatientInfo extends JFrame {
 		middleNameTextField.setColumns(10);
 		
 		lastNameTextField = new JTextField();
-		BalloonTip lastNameBalloon = new BalloonTip(lastNameTextField, "Invalid name");
+		lastNameBalloon = new BalloonTip(lastNameTextField, "Invalid name");
 		lastNameBalloon.setVisible(false);
+		lastNameBalloon.setCloseButton(null);
 		addBalloonTip(lastNameTextField, lastNameBalloon, NAME_PATTERN);
 		GridBagConstraints gbc_lastNameTextField = new GridBagConstraints();
 		gbc_lastNameTextField.insets = new Insets(0, 0, 5, 5);
@@ -341,8 +347,9 @@ public class PatientInfo extends JFrame {
 		panel_4.add(lblYear, gbc_lblYear);
 		
 		birthDayTextField = new JTextField();
-		BalloonTip dateDayBalloon = new BalloonTip(birthDayTextField, "Day must be 1-31");
+		dateDayBalloon = new BalloonTip(birthDayTextField, "Day must be 1-31");
 		dateDayBalloon.setVisible(false);
+		dateDayBalloon.setCloseButton(null);
 		addBalloonTip(birthDayTextField, dateDayBalloon, "^(([1-9]|[12][0-9]|3[01])$)?");
 		GridBagConstraints gbc_birthDayTextField = new GridBagConstraints();
 		gbc_birthDayTextField.anchor = GridBagConstraints.WEST;
@@ -362,8 +369,9 @@ public class PatientInfo extends JFrame {
 		panel_4.add(birthMonthComboBox, gbc_birthMonthComboBox);
 		
 		birthYearTextField = new JTextField();
-		BalloonTip dateYearBalloon = new BalloonTip(birthYearTextField, "Invalid year");
+		dateYearBalloon = new BalloonTip(birthYearTextField, "Invalid year");
 		dateYearBalloon.setVisible(false);
+		dateYearBalloon.setCloseButton(null);
 		addBalloonTip(birthYearTextField, dateYearBalloon, "(^\\d{4}$)?");
 		GridBagConstraints gbc_birthYearTextField = new GridBagConstraints();
 		gbc_birthYearTextField.anchor = GridBagConstraints.WEST;
@@ -397,8 +405,9 @@ public class PatientInfo extends JFrame {
 		panel_4.add(lblEstimatedMonths, gbc_lblEstimatedMonths);
 		
 		estYearsTextField = new JTextField();
-		BalloonTip estYearBalloon = new BalloonTip(estYearsTextField, "Invalid age");
+		estYearBalloon = new BalloonTip(estYearsTextField, "Invalid age");
 		estYearBalloon.setVisible(false);
+		estYearBalloon.setCloseButton(null);
 		addBalloonTip(estYearsTextField, estYearBalloon, "(^\\d{3}$)?");
 		GridBagConstraints gbc_estYearsTextField = new GridBagConstraints();
 		gbc_estYearsTextField.anchor = GridBagConstraints.WEST;
@@ -409,8 +418,9 @@ public class PatientInfo extends JFrame {
 		estYearsTextField.setColumns(10);
 		
 		estMonthsTextField = new JTextField();
-		BalloonTip estMonthBalloon = new BalloonTip(estMonthsTextField, "Month must be 1-12");
+		estMonthBalloon = new BalloonTip(estMonthsTextField, "Month must be 1-12");
 		estMonthBalloon.setVisible(false);
+		estMonthBalloon.setCloseButton(null);
 		addBalloonTip(estMonthsTextField, estMonthBalloon, "(1[0-2]|[1-9])?");
 		GridBagConstraints gbc_estMonthsTextField = new GridBagConstraints();
 		gbc_estMonthsTextField.anchor = GridBagConstraints.WEST;
@@ -527,8 +537,9 @@ public class PatientInfo extends JFrame {
 		panel_11.add(lblPostalCode, gbc_lblPostalCode);
 		
 		cityTextField = new JTextField();
-		BalloonTip cityBalloon = new BalloonTip(cityTextField, "Invalid name");
+		cityBalloon = new BalloonTip(cityTextField, "Invalid name");
 		cityBalloon.setVisible(false);
+		cityBalloon.setCloseButton(null);
 		addBalloonTip(cityTextField, cityBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_cityTextField = new GridBagConstraints();
 		gbc_cityTextField.insets = new Insets(0, 0, 5, 5);
@@ -539,9 +550,10 @@ public class PatientInfo extends JFrame {
 		cityTextField.setColumns(10);
 		
 		stateTextField = new JTextField();
-		BalloonTip stateBalloon = new BalloonTip(stateTextField, "Invalid name");
+		stateBalloon = new BalloonTip(stateTextField, "Invalid name");
 		stateBalloon.setVisible(false);
-		addBalloonTip(stateTextField, stateBalloon, "NAME_PATTERN_2");
+		stateBalloon.setCloseButton(null);
+		addBalloonTip(stateTextField, stateBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_stateTextField = new GridBagConstraints();
 		gbc_stateTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_stateTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -551,9 +563,10 @@ public class PatientInfo extends JFrame {
 		stateTextField.setColumns(10);
 		
 		countryTextField = new JTextField();
-		BalloonTip countryBalloon = new BalloonTip(countryTextField, "Invalid name");
+		countryBalloon = new BalloonTip(countryTextField, "Invalid name");
 		countryBalloon.setVisible(false);
-		addBalloonTip(countryTextField, countryBalloon, "NAME_PATTERN_2");
+		countryBalloon.setCloseButton(null);
+		addBalloonTip(countryTextField, countryBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_countryTextField = new GridBagConstraints();
 		gbc_countryTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_countryTextField.fill = GridBagConstraints.HORIZONTAL;
@@ -623,40 +636,57 @@ public class PatientInfo extends JFrame {
 		panel_12.add(phoneNumberTextField, gbc_phoneNumberTextField);
 		phoneNumberTextField.setColumns(10);
 		
+		SwingUtilities.invokeLater(new Runnable() {
+		      public void run() {
+		    	  firstNameTextField.requestFocus();
+		      }
+		});
+		
 		JButton btnNewButton = new JButton("Save");
 		btnNewButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			  {
-				//focus and unfocus all textfields to show any errors
-				for (Component C : contentPane.getComponents()) {  
-				    if (C instanceof JTextField || C instanceof JTextArea){
-
-				        //((JTextComponent) C)..setfo; //abstract superclass
-				    }
-				}
-				  Patient patient = new Patient(hasNameCheckBox.isSelected(),
-						  firstNameTextField.getText(),
-						  middleNameTextField.getText(),
-						  lastNameTextField.getText(),
-						  genderComboBox.getSelectedItem().toString(),
-						  Integer.parseInt(birthDayTextField.getText()),
-						  birthMonthComboBox.getSelectedItem().toString(),
-						  Integer.parseInt(birthYearTextField.getText()),
-						  Integer.parseInt(estYearsTextField.getText()),
-						  Integer.parseInt(estMonthsTextField.getText()),
-						  addressTextField.getText(),
-						  address2TextField.getText(),
-						  cityTextField.getText(),
-						  stateTextField.getText(),
-						  countryTextField.getText(),
-						  postalCodeTextField.getText(),
-						  phoneNumberTextField.getText());
-				  try {
-					home.getPatientTableGateway().insertPatient(patient);
-				} catch (GatewayException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				//set default values
+				Integer birthDay = null;
+				Integer birthYear = null;
+				Integer estYear = null;
+				Integer estMonth = null;
+				//Parse text fields if they are not empty
+				if(!birthDayTextField.getText().equals("")) 
+					birthDay = Integer.parseInt(birthDayTextField.getText());
+				if(!birthYearTextField.getText().equals("")) 
+					birthYear = Integer.parseInt(birthYearTextField.getText());
+				if(!estMonthsTextField.getText().equals("")) 
+					estYear = Integer.parseInt(estYearsTextField.getText());
+				if(!estMonthsTextField.getText().equals("")) 
+					estMonth = Integer.parseInt(estMonthsTextField.getText());
+				//check for fields errors
+				boolean hasErrors = checkForErrors();
+				if(!hasErrors) {
+					  Patient patient = new Patient(hasNameCheckBox.isSelected(),
+							  firstNameTextField.getText(),
+							  middleNameTextField.getText(),
+							  lastNameTextField.getText(),
+							  genderComboBox.getSelectedItem().toString(),
+							  birthDay,
+							  birthMonthComboBox.getSelectedItem().toString(),
+							  birthYear,
+							  estYear,
+							  estMonth,
+							  addressTextField.getText(),
+							  address2TextField.getText(),
+							  cityTextField.getText(),
+							  stateTextField.getText(),
+							  countryTextField.getText(),
+							  postalCodeTextField.getText(),
+							  phoneNumberTextField.getText());
+					  try {
+						home.getPatientTableGateway().insertPatient(patient);
+					} catch (GatewayException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			  }
 		});
@@ -691,4 +721,20 @@ public class PatientInfo extends JFrame {
 		});
 	}
 	
+	public boolean checkForErrors() {
+		if(firstNameBalloon.isVisible() ||
+			middleNameBalloon.isVisible() ||
+			lastNameBalloon.isVisible() ||
+			dateDayBalloon.isVisible() ||
+			dateYearBalloon.isVisible() || 
+			estYearBalloon.isVisible() ||
+			estMonthBalloon.isVisible() ||
+			cityBalloon.isVisible() ||
+			stateBalloon.isVisible() ||
+			countryBalloon.isVisible()) {
+			JOptionPane.showMessageDialog(null, "Please fix all errors before saving.", "Field Errors!", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+		return true;
+	}
 }
