@@ -27,6 +27,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 
@@ -40,11 +41,14 @@ import database.GatewayException;
 import models.Patient;
 import models.PatientList;
 import net.java.balloontip.BalloonTip;
+import net.java.balloontip.styles.BalloonTipStyle;
+import net.java.balloontip.styles.RoundedBalloonStyle;
 import net.miginfocom.swing.MigLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
 import com.jgoodies.forms.layout.FormSpecs;
@@ -94,6 +98,8 @@ public class PatientInfo extends JFrame {
 	private BalloonTip cityBalloon;
 	private BalloonTip stateBalloon;
 	private BalloonTip countryBalloon;
+	final JCheckBox hasNameCheckBox = new JCheckBox("Unidentified Patient");
+	private JLabel birtDateErrorLabel;
 	
 	/**
 	 * Create the frame.
@@ -163,7 +169,6 @@ public class PatientInfo extends JFrame {
 		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
-		final JCheckBox hasNameCheckBox = new JCheckBox("Unidentified Patient");
 		hasNameCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
@@ -173,6 +178,12 @@ public class PatientInfo extends JFrame {
 				middleNameTextField.setEditable(!hasNameCheckBox.isSelected());
 				lastNameTextField.setEnabled(!hasNameCheckBox.isSelected());
 				lastNameTextField.setEditable(!hasNameCheckBox.isSelected());
+				firstNameTextField.setText("");
+				middleNameTextField.setText("");
+				lastNameTextField.setText("");
+				firstNameBalloon.setVisible(false);
+				middleNameBalloon.setVisible(false);
+				lastNameBalloon.setVisible(false);
 			}
 		});
 		GridBagConstraints gbc_hasNameCheckBox = new GridBagConstraints();
@@ -207,7 +218,8 @@ public class PatientInfo extends JFrame {
 		panel_1.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
 		firstNameTextField = new JTextField();
-		firstNameBalloon = new BalloonTip(firstNameTextField, "Invalid name");
+		Color ERROR_MESSAGE_FILL_COLOUR = new Color(255, 204, 204);
+		firstNameBalloon = createBalloonTip(firstNameTextField, "Invalid name");
 		firstNameBalloon.setVisible(false);
 		firstNameBalloon.setCloseButton(null);
 		addBalloonTip(firstNameTextField, firstNameBalloon, NAME_PATTERN);
@@ -220,7 +232,7 @@ public class PatientInfo extends JFrame {
 		firstNameTextField.setColumns(10);
 		
 		middleNameTextField = new JTextField();
-		middleNameBalloon = new BalloonTip(middleNameTextField, "Invalid name");
+		middleNameBalloon = createBalloonTip(middleNameTextField, "Invalid name");
 		middleNameBalloon.setVisible(false);
 		middleNameBalloon.setCloseButton(null);
 		addBalloonTip(middleNameTextField, middleNameBalloon, NAME_PATTERN_2);
@@ -233,7 +245,7 @@ public class PatientInfo extends JFrame {
 		middleNameTextField.setColumns(10);
 		
 		lastNameTextField = new JTextField();
-		lastNameBalloon = new BalloonTip(lastNameTextField, "Invalid name");
+		lastNameBalloon = createBalloonTip(lastNameTextField, "Invalid name");
 		lastNameBalloon.setVisible(false);
 		lastNameBalloon.setCloseButton(null);
 		addBalloonTip(lastNameTextField, lastNameBalloon, NAME_PATTERN);
@@ -304,16 +316,29 @@ public class PatientInfo extends JFrame {
 		panel.add(panel_8, gbc_panel_8);
 		GridBagLayout gbl_panel_8 = new GridBagLayout();
 		gbl_panel_8.columnWidths = new int[]{672, 0};
-		gbl_panel_8.rowHeights = new int[]{81, 0};
+		gbl_panel_8.rowHeights = new int[]{0, 0, 0, 0, 0, 81, 0};
 		gbl_panel_8.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_8.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_8.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_8.setLayout(gbl_panel_8);
+		
+		JPanel panel_13 = new JPanel();
+		GridBagConstraints gbc_panel_13 = new GridBagConstraints();
+		gbc_panel_13.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_13.fill = GridBagConstraints.BOTH;
+		gbc_panel_13.gridx = 0;
+		gbc_panel_13.gridy = 0;
+		panel_8.add(panel_13, gbc_panel_13);
+		
+		birtDateErrorLabel = new JLabel("");
+		birtDateErrorLabel.setForeground(Color.RED);
+		panel_13.add(birtDateErrorLabel);
 		
 		JPanel panel_4 = new JPanel();
 		GridBagConstraints gbc_panel_4 = new GridBagConstraints();
+		gbc_panel_4.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_4.fill = GridBagConstraints.VERTICAL;
 		gbc_panel_4.gridx = 0;
-		gbc_panel_4.gridy = 0;
+		gbc_panel_4.gridy = 1;
 		panel_8.add(panel_4, gbc_panel_4);
 		GridBagLayout gbl_panel_4 = new GridBagLayout();
 		gbl_panel_4.columnWidths = new int[]{0, 0, 0, 0};
@@ -347,9 +372,7 @@ public class PatientInfo extends JFrame {
 		panel_4.add(lblYear, gbc_lblYear);
 		
 		birthDayTextField = new JTextField();
-		dateDayBalloon = new BalloonTip(birthDayTextField, "Day must be 1-31");
-		dateDayBalloon.setVisible(false);
-		dateDayBalloon.setCloseButton(null);
+		dateDayBalloon = createBalloonTip(birthDayTextField, "Day must be 1-31");
 		addBalloonTip(birthDayTextField, dateDayBalloon, "^(([1-9]|[12][0-9]|3[01])$)?");
 		GridBagConstraints gbc_birthDayTextField = new GridBagConstraints();
 		gbc_birthDayTextField.anchor = GridBagConstraints.WEST;
@@ -369,9 +392,7 @@ public class PatientInfo extends JFrame {
 		panel_4.add(birthMonthComboBox, gbc_birthMonthComboBox);
 		
 		birthYearTextField = new JTextField();
-		dateYearBalloon = new BalloonTip(birthYearTextField, "Invalid year");
-		dateYearBalloon.setVisible(false);
-		dateYearBalloon.setCloseButton(null);
+		dateYearBalloon = createBalloonTip(birthYearTextField, "Invalid year");
 		addBalloonTip(birthYearTextField, dateYearBalloon, "(^\\d{4}$)?");
 		GridBagConstraints gbc_birthYearTextField = new GridBagConstraints();
 		gbc_birthYearTextField.anchor = GridBagConstraints.WEST;
@@ -405,10 +426,8 @@ public class PatientInfo extends JFrame {
 		panel_4.add(lblEstimatedMonths, gbc_lblEstimatedMonths);
 		
 		estYearsTextField = new JTextField();
-		estYearBalloon = new BalloonTip(estYearsTextField, "Invalid age");
-		estYearBalloon.setVisible(false);
-		estYearBalloon.setCloseButton(null);
-		addBalloonTip(estYearsTextField, estYearBalloon, "(^\\d{3}$)?");
+		estYearBalloon = createBalloonTip(estYearsTextField, "Invalid age");
+		addBalloonTip(estYearsTextField, estYearBalloon, "(^[0-9]*$)?");
 		GridBagConstraints gbc_estYearsTextField = new GridBagConstraints();
 		gbc_estYearsTextField.anchor = GridBagConstraints.WEST;
 		gbc_estYearsTextField.insets = new Insets(0, 0, 0, 5);
@@ -418,9 +437,7 @@ public class PatientInfo extends JFrame {
 		estYearsTextField.setColumns(10);
 		
 		estMonthsTextField = new JTextField();
-		estMonthBalloon = new BalloonTip(estMonthsTextField, "Month must be 1-12");
-		estMonthBalloon.setVisible(false);
-		estMonthBalloon.setCloseButton(null);
+		estMonthBalloon = createBalloonTip(estMonthsTextField, "Month must be 1-12");
 		addBalloonTip(estMonthsTextField, estMonthBalloon, "(1[0-2]|[1-9])?");
 		GridBagConstraints gbc_estMonthsTextField = new GridBagConstraints();
 		gbc_estMonthsTextField.anchor = GridBagConstraints.WEST;
@@ -428,6 +445,14 @@ public class PatientInfo extends JFrame {
 		gbc_estMonthsTextField.gridy = 5;
 		panel_4.add(estMonthsTextField, gbc_estMonthsTextField);
 		estMonthsTextField.setColumns(10);
+		dateDayBalloon.setVisible(false);
+		dateDayBalloon.setCloseButton(null);
+		dateYearBalloon.setVisible(false);
+		dateYearBalloon.setCloseButton(null);
+		estYearBalloon.setVisible(false);
+		estYearBalloon.setCloseButton(null);
+		estMonthBalloon.setVisible(false);
+		estMonthBalloon.setCloseButton(null);
 		
 		JPanel panel_9 = new JPanel();
 		TitledBorder tb_4 = new TitledBorder(null, "What's the patient's address?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
@@ -539,7 +564,7 @@ public class PatientInfo extends JFrame {
 		cityTextField = new JTextField();
 		cityBalloon = new BalloonTip(cityTextField, "Invalid name");
 		cityBalloon.setVisible(false);
-		cityBalloon.setCloseButton(null);
+		//cityBalloon.setCloseButton(null);
 		addBalloonTip(cityTextField, cityBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_cityTextField = new GridBagConstraints();
 		gbc_cityTextField.insets = new Insets(0, 0, 5, 5);
@@ -552,7 +577,7 @@ public class PatientInfo extends JFrame {
 		stateTextField = new JTextField();
 		stateBalloon = new BalloonTip(stateTextField, "Invalid name");
 		stateBalloon.setVisible(false);
-		stateBalloon.setCloseButton(null);
+		//stateBalloon.setCloseButton(null);
 		addBalloonTip(stateTextField, stateBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_stateTextField = new GridBagConstraints();
 		gbc_stateTextField.insets = new Insets(0, 0, 5, 5);
@@ -565,7 +590,7 @@ public class PatientInfo extends JFrame {
 		countryTextField = new JTextField();
 		countryBalloon = new BalloonTip(countryTextField, "Invalid name");
 		countryBalloon.setVisible(false);
-		countryBalloon.setCloseButton(null);
+		//countryBalloon.setCloseButton(null);
 		addBalloonTip(countryTextField, countryBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_countryTextField = new GridBagConstraints();
 		gbc_countryTextField.insets = new Insets(0, 0, 5, 5);
@@ -722,6 +747,22 @@ public class PatientInfo extends JFrame {
 	}
 	
 	public boolean checkForErrors() {
+		boolean needsDOB = false;
+		//Show balloon messages if required fields are empty
+		if(firstNameTextField.getText().equals("") && !hasNameCheckBox.isSelected())
+			firstNameBalloon.setVisible(true);
+		if(lastNameTextField.getText().equals("") && !hasNameCheckBox.isSelected())
+			lastNameBalloon.setVisible(true);
+		if((birthDayTextField.getText().equals("") || birthYearTextField.getText().equals("")) &&
+				(estYearsTextField.getText().equals("") || estMonthsTextField.getText().equals(""))) {
+			birtDateErrorLabel.setText("**You must enter the exact DOB or an estimated DOB**" );
+			System.out.print("in he3eere");
+		}
+		else {
+			System.out.print("in here");
+			birtDateErrorLabel.setText("");
+		}
+		
 		if(firstNameBalloon.isVisible() ||
 			middleNameBalloon.isVisible() ||
 			lastNameBalloon.isVisible() ||
@@ -737,4 +778,10 @@ public class PatientInfo extends JFrame {
 		}
 		return true;
 	}
+	
+	public static BalloonTip createBalloonTip(JTextField component, String contents) {
+			BalloonTipStyle tipStyle = new RoundedBalloonStyle(1, 1,
+				new Color(255, 100, 100, 200), Color.gray);
+			return new BalloonTip(component, contents, tipStyle, true);
+}
 }
