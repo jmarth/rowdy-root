@@ -42,6 +42,7 @@ import javax.swing.JPasswordField;
 
 public class NewAccountView extends JFrame {
 
+	// Components used within the GUI
 	private JPanel contentPane;
 	private JTextField usernameTextField;
 	private JTextField firstNameTextField;
@@ -50,10 +51,11 @@ public class NewAccountView extends JFrame {
 	private JTextField dobTextField;
 	private JPasswordField passwordField;
 	
-	private BalloonTip firstNameBalloon;
+	// BalloonTips for each JTextField
+	private static BalloonTip firstNameBalloon;
 
 	/**
-	 * Create the frame.
+	 * Create NewAccountView
 	 */
 	public NewAccountView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,6 +128,7 @@ public class NewAccountView extends JFrame {
 		
 		firstNameTextField = new JTextField();
 		firstNameBalloon = createBalloonTip(firstNameTextField, "First name required!");
+		firstNameBalloon.setCloseButton(null);
 		addBalloonTip(firstNameTextField, firstNameBalloon, ".+"); // not sure what the regex argument is for
 		panel_3.add(firstNameTextField);
 		firstNameTextField.setColumns(10);
@@ -198,6 +201,9 @@ public class NewAccountView extends JFrame {
 		gbc_panel_6.gridy = 11;
 		panel.add(panel_6, gbc_panel_6);
 		
+		// Set all balloons visible to false
+		setBalloonsVisibility(false);
+		
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -216,6 +222,12 @@ public class NewAccountView extends JFrame {
 		panel_6.add(btnCancel);
 	}
 	
+	/**
+	 * Add a BalloonTip to a JTextField
+	 * @param textField JTextField to add BalloonTip
+	 * @param balloonTip BalloonTip to add
+	 * @param regex Regular expression to match to JTextField content to determine validity
+	 */
 	public void addBalloonTip(final JTextField textField, final BalloonTip balloonTip, final String regex) {
 		textField.addFocusListener(new FocusAdapter() {
 			@Override
@@ -233,19 +245,36 @@ public class NewAccountView extends JFrame {
 		});
 	}
 	
-	public boolean checkForErrors() {
-		firstNameBalloon.setVisible(true);
-		
-		if(true) {
+	/**
+	 * Checks all TextFields for valid content
+	 * @return
+	 */
+	public boolean checkForErrors() {		  
+		// If any of the BalloonTips are visible, not all of the fields have valid data
+		if(firstNameBalloon.isVisible()) {
 			JOptionPane.showMessageDialog(null, "Please fix all errors before saving.", "Field Errors!", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
 		return true;
 	}
 	
+	/**
+	 * Create a BalloonTip
+	 * @param component JTextField to add BalloonTip
+	 * @param contents Content displayed inside of BalloonTip
+	 * @return
+	 */
 	public static BalloonTip createBalloonTip(JTextField component, String contents) {
 			BalloonTipStyle tipStyle = new RoundedBalloonStyle(1, 1,
 				new Color(255, 100, 100, 200), Color.gray);
 			return new BalloonTip(component, contents, tipStyle, true);
+	}
+	
+	/**
+	 * Set all BalloonTip objects visibility
+	 * @param b
+	 */
+	public static void setBalloonsVisibility(Boolean b){
+		firstNameBalloon.setVisible(b);
 	}
 }
