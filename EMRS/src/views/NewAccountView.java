@@ -49,6 +49,8 @@ public class NewAccountView extends JFrame {
 	private JTextField lastNameTextField;
 	private JTextField dobTextField;
 	private JPasswordField passwordField;
+	
+	private BalloonTip firstNameBalloon;
 
 	/**
 	 * Create the frame.
@@ -123,8 +125,8 @@ public class NewAccountView extends JFrame {
 		panel_3.add(lblFirstName);
 		
 		firstNameTextField = new JTextField();
-		BalloonTip firstNameBalloon = createBalloonTip(firstNameTextField, "First name required!");
-		addBalloonTip(firstNameTextField, firstNameBalloon, ""); // not sure what the regex argument is for
+		firstNameBalloon = createBalloonTip(firstNameTextField, "First name required!");
+		addBalloonTip(firstNameTextField, firstNameBalloon, ".+"); // not sure what the regex argument is for
 		panel_3.add(firstNameTextField);
 		firstNameTextField.setColumns(10);
 		
@@ -200,6 +202,7 @@ public class NewAccountView extends JFrame {
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Save Button");
+				checkForErrors();
 			}
 		});
 		panel_6.add(btnSave);
@@ -231,6 +234,8 @@ public class NewAccountView extends JFrame {
 	}
 	
 	public boolean checkForErrors() {
+		firstNameBalloon.setVisible(true);
+		
 		if(true) {
 			JOptionPane.showMessageDialog(null, "Please fix all errors before saving.", "Field Errors!", JOptionPane.ERROR_MESSAGE);
 			return false;
@@ -242,5 +247,5 @@ public class NewAccountView extends JFrame {
 			BalloonTipStyle tipStyle = new RoundedBalloonStyle(1, 1,
 				new Color(255, 100, 100, 200), Color.gray);
 			return new BalloonTip(component, contents, tipStyle, true);
-}
+	}
 }
