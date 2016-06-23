@@ -123,6 +123,8 @@ public class NewAccountView extends JFrame {
 		panel_3.add(lblFirstName);
 		
 		firstNameTextField = new JTextField();
+		BalloonTip firstNameBalloon = createBalloonTip(firstNameTextField, "First name required!");
+		addBalloonTip(firstNameTextField, firstNameBalloon, ""); // not sure what the regex argument is for
 		panel_3.add(firstNameTextField);
 		firstNameTextField.setColumns(10);
 		
