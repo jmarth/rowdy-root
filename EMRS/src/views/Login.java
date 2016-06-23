@@ -12,9 +12,12 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
+import database.AccountTableGateway;
+import database.AccountTableGatewayMySQL;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
+import models.Account;
 import models.Patient;
 import models.PatientList;
 
@@ -40,6 +43,8 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
+	
+	private AccountTableGateway atg;
 
 	/**
 	 * Launch the application.
@@ -61,6 +66,19 @@ public class Login extends JFrame {
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
+		
+		// Try connect to database
+		// wow this is bad, why we do this twice...??
+		try {
+			atg = new AccountTableGatewayMySQL();
+		} catch (GatewayException e) {
+			JOptionPane.showMessageDialog(null, "Database is not responding for User Account.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Database is not responding for User Account.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
+		
 		contentPane = new JPanel();
 		contentPane.setForeground(new Color(51, 102, 153));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -78,11 +96,36 @@ public class Login extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			
+				boolean success = false;
+				// login from here, check if account in DB
+				try {
+					// don't use getText for p/w, returns string, string = immutable = in memory 'til garbage collection
+					// use getPassword, returns char array, then hash with salt or something, hopefully
+					// Dr. Robinson got web services for this, so for now its fine...until we get something better
+					success = atg.loginCheck(textField.getText(), passwordField.getText());
+				} catch (GatewayException e1) {
+					// you blew it up
+					e1.printStackTrace();
+				}
+				
 				setVisible(false);
 				dispose();
+				
 				//Create home view
-				Home home  = new Home();
-				home.NewScreen();
+				
+				if (success) {
+					Home home  = new Home();
+					home.NewScreen();
+				} else {
+					JOptionPane.showMessageDialog(null, "Invalid Login Username or Password.", "Invalid Login", JOptionPane.ERROR_MESSAGE);
+					
+					// TODO: 
+					// display attempts remaining before locked out, then its contact administrator
+					
+				}
+					
+				
 			}
 		});
 		

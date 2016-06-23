@@ -7,9 +7,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import database.AccountTableGateway;
+import database.AccountTableGatewayMySQL;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
+import models.Account;
 import models.Patient;
 import models.PatientList;
 
@@ -51,8 +54,13 @@ public class Home extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
+	
+	private AccountTableGateway atg;
+	private Account myAccount;
+	
 	private PatientTableGateway ptg;
 	private PatientList patientList;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -76,14 +84,35 @@ public class Home extends JFrame {
 	 * Create the frame.
 	 */
 	public Home() {
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		
-		ptg = null;
+		// Try connect to database
+		
+		try {
+			atg = new AccountTableGatewayMySQL();
+		} catch (GatewayException e) {
+			JOptionPane.showMessageDialog(null, "Database is not responding for User Account.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Database is not responding for User Account.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}		
+		//Set User's Account from Database
+		myAccount = new Account();
+		myAccount.setGateway(atg);
+		//account.loadAccountFromGateway();
+		
 		
 		//Try to connect to database
+		
+		ptg = null;
+		
 		try {
+			
 			ptg = new PatientTableGatewayMySQL();
+			
 		} catch (GatewayException e) {
 			JOptionPane.showMessageDialog(null, "Database is not responding. Please reboot your computer and maybe the database will magically appear (not really).", "Database Offline!", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
