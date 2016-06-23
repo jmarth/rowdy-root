@@ -61,10 +61,11 @@ public class Home extends JFrame {
 			public void run() {
 				try {
 					Home frame = new Home();
+					frame.setVisible(true);
 					//Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 					//frame.setSize(screenSize.width, screenSize.height);
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-					frame.setVisible(true);
+					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
