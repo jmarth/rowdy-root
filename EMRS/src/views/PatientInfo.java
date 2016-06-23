@@ -69,8 +69,8 @@ public class PatientInfo extends JFrame {
 
 	private Home home;
 	private JPanel contentPane;
-	private static JPanel homePane;
 	private String pname;
+	//Text fields
 	private JTextField firstNameTextField;
 	private JTextField middleNameTextField;
 	private JTextField lastNameTextField;
@@ -86,18 +86,20 @@ public class PatientInfo extends JFrame {
 	private JTextField stateTextField;
 	private JTextField phoneNumberTextField;
 	private PatientList pl;
+	//Regex
 	private final String NAME_PATTERN = "^[a-z ,.'-]+$";
 	private final String NAME_PATTERN_2 = "^$|(^[a-z ,.'-]+$)";
-	private BalloonTip firstNameBalloon;
-	private BalloonTip middleNameBalloon;
-	private BalloonTip lastNameBalloon;
-	private BalloonTip dateDayBalloon;
-	private BalloonTip dateYearBalloon ;
-	private BalloonTip estYearBalloon;
-	private BalloonTip estMonthBalloon;
-	private BalloonTip cityBalloon;
-	private BalloonTip stateBalloon;
-	private BalloonTip countryBalloon;
+	//Balloon tips for each textfield
+	private static BalloonTip firstNameBalloon;
+	private static BalloonTip middleNameBalloon;
+	private static BalloonTip lastNameBalloon;
+	private static BalloonTip dateDayBalloon;
+	private static BalloonTip dateYearBalloon ;
+	private static BalloonTip estYearBalloon;
+	private static BalloonTip estMonthBalloon;
+	private static BalloonTip cityBalloon;
+	private static BalloonTip stateBalloon;
+	private static BalloonTip countryBalloon;
 	final JCheckBox hasNameCheckBox = new JCheckBox("Unidentified Patient");
 	private JLabel birtDateErrorLabel;
 	
@@ -106,7 +108,6 @@ public class PatientInfo extends JFrame {
 	 */
 	public PatientInfo(final Home home) {
 		System.out.print("here");
-		homePane = home.getContentPane();
 		this.home = home;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -673,10 +674,10 @@ public class PatientInfo extends JFrame {
 			public void actionPerformed(ActionEvent e)
 			  {
 				//set default values
-				Integer birthDay = null;
-				Integer birthYear = null;
-				Integer estYear = null;
-				Integer estMonth = null;
+				int birthDay = -1;
+				int birthYear = -1;
+				int estYear = -1;
+				int estMonth = -1;
 				//Parse text fields if they are not empty
 				if(!birthDayTextField.getText().equals("")) 
 					birthDay = Integer.parseInt(birthDayTextField.getText());
@@ -707,11 +708,19 @@ public class PatientInfo extends JFrame {
 							  postalCodeTextField.getText(),
 							  phoneNumberTextField.getText());
 					  try {
+						  String fullName =  firstNameTextField.getText()+" "+
+								   middleNameTextField.getText()+" "+
+								   lastNameTextField.getText();
+						PatientProfile pp = new PatientProfile(fullName);
+						System.out.print("aaaaaaaa");
+						home.setCenterPanel(pp.getContentPane());
 						home.getPatientTableGateway().insertPatient(patient);
+						
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					
 				}
 			  }
 		});
@@ -774,14 +783,27 @@ public class PatientInfo extends JFrame {
 			stateBalloon.isVisible() ||
 			countryBalloon.isVisible()) {
 			JOptionPane.showMessageDialog(null, "Please fix all errors before saving.", "Field Errors!", JOptionPane.ERROR_MESSAGE);
-			return false;
+			return true;
 		}
-		return true;
+		return false;
 	}
 	
 	public static BalloonTip createBalloonTip(JTextField component, String contents) {
-			BalloonTipStyle tipStyle = new RoundedBalloonStyle(1, 1,
-				new Color(255, 100, 100, 200), Color.gray);
-			return new BalloonTip(component, contents, tipStyle, true);
-}
+		BalloonTipStyle tipStyle = new RoundedBalloonStyle(1, 1,
+			new Color(255, 100, 100, 200), Color.gray);
+		return new BalloonTip(component, contents, tipStyle, true);
+	}
+	
+	public static void removeBalloonTips() {
+		firstNameBalloon.closeBalloon();
+		middleNameBalloon.closeBalloon();
+		lastNameBalloon.closeBalloon();
+		dateDayBalloon.closeBalloon();
+		dateYearBalloon.closeBalloon();
+		estYearBalloon.closeBalloon();
+		estMonthBalloon.closeBalloon();
+		cityBalloon.closeBalloon();
+		stateBalloon.closeBalloon();
+		countryBalloon.closeBalloon();
+	}
 }

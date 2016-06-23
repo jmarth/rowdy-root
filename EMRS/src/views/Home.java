@@ -50,9 +50,10 @@ import javax.swing.UIManager;
 public class Home extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
+	private JTextField textFieldSearch;
 	private PatientTableGateway ptg;
 	private PatientList patientList;
+	private PatientInfo pi;
 	/**
 	 * Launch the application.
 	 */
@@ -78,7 +79,7 @@ public class Home extends JFrame {
 	 */
 	public Home() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 576, 434);
 		
 		ptg = null;
 		
@@ -113,13 +114,7 @@ public class Home extends JFrame {
 			//@Override
 			public void mouseReleased(MouseEvent arg0) {
 				Profile p = new Profile();
-				 LayoutManager layout = contentPane.getLayout();
-				 Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
-				 if(centerComponent != null ) {
-					 contentPane.remove(centerComponent);
-				 }
-				 contentPane.add(p.getContentPane(), BorderLayout.CENTER);
-				 contentPane.revalidate();
+				setCenterPanel(p.getContentPane());
 			}
 		});
 		mnAccount.add(mntmAccountInfo);
@@ -144,29 +139,28 @@ public class Home extends JFrame {
 		contentPane.add(panel, BorderLayout.NORTH);
 		
 		
-		JLabel lblNewLabel = new JLabel("Patient Search");
+		final JLabel lblPatientSearch= new JLabel("Patient Search");
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		textFieldSearch = new JTextField();
+		textFieldSearch.setColumns(10);
 		
-		JButton btnNewButton = new JButton("Search");
-		btnNewButton.addActionListener(new ActionListener() {
+		final JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		JButton btnAddPatient = new JButton("Add Patient");
+		final JButton btnAddPatient = new JButton("Add Patient");
 		final Home home = this;
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 PatientInfo pi = new PatientInfo(home);
-				 LayoutManager layout = contentPane.getLayout();
-				 Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
-				 if(centerComponent != null ) {
-					 contentPane.remove(centerComponent);
-				 }
-				 contentPane.add(pi.getContentPane(), BorderLayout.CENTER);
-				 contentPane.revalidate();
+				 pi = new PatientInfo(home);
+				 setCenterPanel(pi.getContentPane());
+				 
+				 btnAddPatient.setVisible(false);
+				 lblPatientSearch.setVisible(false);
+				 textFieldSearch.setVisible(false);
+				 btnSearch.setVisible(false);
 			}
 		});
 		
@@ -179,6 +173,11 @@ public class Home extends JFrame {
 				 if(centerComponent != null ) {
 					 contentPane.remove(centerComponent);
 				 }
+				btnAddPatient.setVisible(true);
+				lblPatientSearch.setVisible(true);
+				textFieldSearch.setVisible(true);
+				btnSearch.setVisible(true);
+				pi.removeBalloonTips();
 				contentPane.repaint();
 				contentPane.revalidate();
 			}
@@ -191,12 +190,12 @@ public class Home extends JFrame {
 					.addComponent(btnHome)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnAddPatient)
-					.addPreferredGap(ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
-					.addComponent(lblNewLabel)
+					.addPreferredGap(ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+					.addComponent(lblPatientSearch)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textField, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
+					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnNewButton)
+					.addComponent(btnSearch)
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -204,9 +203,9 @@ public class Home extends JFrame {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnNewButton)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel)
+						.addComponent(btnSearch)
+						.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblPatientSearch)
 						.addComponent(btnAddPatient)
 						.addComponent(btnHome)))
 		);
@@ -219,5 +218,15 @@ public class Home extends JFrame {
 	
 	public JPanel getContentPane() {
 		return contentPane;
+	}
+	
+	public void setCenterPanel(Container container) {
+		LayoutManager layout = contentPane.getLayout();
+		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
+		if(centerComponent != null ) {
+			contentPane.remove(centerComponent);
+		}
+		contentPane.add(container, BorderLayout.CENTER);
+		contentPane.revalidate();
 	}
 }
