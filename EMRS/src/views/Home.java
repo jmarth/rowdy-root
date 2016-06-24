@@ -46,6 +46,8 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.swing.UIManager;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class Home extends JFrame {
 
@@ -96,12 +98,6 @@ public class Home extends JFrame {
 			JOptionPane.showMessageDialog(null, "Database is not responding. Please reboot your computer and maybe the database will magically appear (not really).", "Database Offline!", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
-		
-		//Set patients from database
-		patientList = new PatientList();
-		patientList.setGateway(ptg);
-		patientList.loadFromGateway();
-		List<Patient> pl = patientList.getPatientList();
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -178,6 +174,14 @@ public class Home extends JFrame {
 				}
 			}
 		});
+		
+		JButton btnFindPatient = new JButton("Find Patient");
+		btnFindPatient.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				PatientsView pv = new PatientsView(home);
+				setCenterPanel(pv.getContentPane());
+			}
+		});
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
@@ -188,7 +192,9 @@ public class Home extends JFrame {
 					.addComponent(btnHome)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnAddPatient)
-					.addPreferredGap(ComponentPlacement.RELATED, 77, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnFindPatient)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(lblPatientSearch)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
@@ -206,9 +212,13 @@ public class Home extends JFrame {
 						.addComponent(lblPatientSearch)
 						.addComponent(btnAddPatient)
 						.addComponent(btnHome)
-						.addComponent(btnLogout)))
+						.addComponent(btnLogout)
+						.addComponent(btnFindPatient)))
 		);
 		panel.setLayout(gl_panel);
+		
+		JPanel panel_1 = new JPanel();
+		contentPane.add(panel_1, BorderLayout.CENTER);
 	}
 	
 	public PatientTableGateway getPatientTableGateway() {

@@ -1,5 +1,11 @@
 package models;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
+
 public class Patient {
 	private long id;
 	private boolean hasPatientName;
@@ -19,6 +25,7 @@ public class Patient {
 	private String country;
 	private String postalCode;
 	private String phoneNumber;
+	private boolean hasEstBirthDate;
 	
 	public Patient(long id, boolean hasPatientName, String firstName, String middleName, String lastName, String gender, int birthDay,
 			String birthMonth, int birthYear, int estBirthYears, int estBirthMonths, String address, String address2,
@@ -42,6 +49,7 @@ public class Patient {
 		this.country = country;
 		this.postalCode = postalCode;
 		this.phoneNumber = phoneNumber;
+		setBirthDayDate();
 	}
 	
 	public Patient(boolean hasPatientName, String firstName, String middleName, String lastName, String gender, int birthDay,
@@ -65,6 +73,7 @@ public class Patient {
 		this.country = country;
 		this.postalCode = postalCode;
 		this.phoneNumber = phoneNumber;
+		setBirthDayDate();
 	}
 	
 	public long getId() {
@@ -209,6 +218,49 @@ public class Patient {
 
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
+	}
+	
+	public boolean getHasEstBirthDate() {
+		return hasEstBirthDate;
+	}
+	
+	public void setBirthDayDate() {
+		//If exact DOB is not given
+		if(birthDay == -1 || birthYear == -1) {
+			hasEstBirthDate = true;
+			//get estimated birthDay
+			Calendar now = Calendar.getInstance();
+			System.out.println(now.get(Calendar.MONTH));
+			if(estBirthYears != -1) {
+				now.add(Calendar.YEAR, -1*estBirthYears);
+			}
+			if(estBirthMonths != -1) {
+				now.add(Calendar.MONTH, -1*estBirthMonths);
+			}
+			birthDay = now.get(Calendar.DATE);
+			birthMonth = now.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+			birthYear = now.get(Calendar.YEAR);
+		  }
+	}
+	
+	public int getAge() {
+		Calendar dob = Calendar.getInstance();
+		try {
+			dob.setTime(new SimpleDateFormat("MMM").parse(birthMonth));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		dob.set(Calendar.YEAR, birthYear);
+		dob.set(Calendar.MONTH, dob.get(Calendar.MONTH)+1);
+		dob.set(Calendar.DAY_OF_MONTH, birthDay);
+		//calculate age
+		Calendar today = Calendar.getInstance();
+		int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+		if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)) {
+			age--;
+		}
+		return age;
 	}
 }
 

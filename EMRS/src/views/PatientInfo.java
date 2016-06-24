@@ -708,7 +708,7 @@ public class PatientInfo extends JFrame {
 					birthDay = Integer.parseInt(birthDayTextField.getText());
 				if(!birthYearTextField.getText().equals("")) 
 					birthYear = Integer.parseInt(birthYearTextField.getText());
-				if(!estMonthsTextField.getText().equals("")) 
+				if(!estYearsTextField.getText().equals("")) 
 					estYear = Integer.parseInt(estYearsTextField.getText());
 				if(!estMonthsTextField.getText().equals("")) 
 					estMonth = Integer.parseInt(estMonthsTextField.getText());
@@ -769,6 +769,7 @@ public class PatientInfo extends JFrame {
 				}
 				else {
 					balloonTip.setVisible(true);
+					System.out.print("here");
 				}
 
 			}
