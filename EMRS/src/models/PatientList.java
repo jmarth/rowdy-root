@@ -25,6 +25,7 @@ public class PatientList {
 			List<Patient> patients = gateway.fetchPatients();
 			for(Patient patient: patients){
 				this.addPartToList(patient);
+				patient.setBirthDayDate();
 				myIdMap.put(patient.getId(), patient);
 			}
 		} catch (GatewayException e) {

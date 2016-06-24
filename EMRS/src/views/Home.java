@@ -253,5 +253,6 @@ public class Home extends JFrame {
 		btnSearch.setVisible(true);
 		contentPane.repaint();
 		contentPane.revalidate();
+		pi.removeBalloonTips();
 	}
 }

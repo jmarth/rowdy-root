@@ -73,7 +73,6 @@ public class Patient {
 		this.country = country;
 		this.postalCode = postalCode;
 		this.phoneNumber = phoneNumber;
-		setBirthDayDate();
 	}
 	
 	public long getId() {
