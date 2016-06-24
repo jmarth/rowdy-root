@@ -22,7 +22,11 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.RowSorter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import database.GatewayException;
 import database.PatientTableGateway;
@@ -83,7 +87,7 @@ public class PatientsView extends JFrame {
 		pl.setGateway(ptg);
 		pl.loadFromGateway();
 		patientList = pl.getPatientList();
-		populatePatientTable();
+		populatePatientTable(home);
 		
 		table.addMouseMotionListener(new MouseMotionAdapter() {
 			   public void mouseMoved(MouseEvent e) {
@@ -105,7 +109,7 @@ public class PatientsView extends JFrame {
 			        System.out.println("id is "+patientId);
 			        Patient patient = pl.findById(patientId);
 			        System.out.println("name is "+patient.getFirstName());
-			        PatientProfile pp = new PatientProfile(patient.getFirstName());
+			        PatientProfile pp = new PatientProfile(home, patient.getFirstName());
 			        home.setCenterPanel(pp.getContentPane());
 				}
 			});
@@ -116,13 +120,13 @@ public class PatientsView extends JFrame {
 		return contentPane;
 	}
 	
-	public void populatePatientTable() {
+	public void populatePatientTable(Home home) {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		for(Patient patient : patientList) {
 			String fullName =  patient.getFirstName()+" "+
 					patient.getMiddleName()+" "+
 					patient.getLastName();
-			PatientProfile pp = new PatientProfile(fullName);
+			PatientProfile pp = new PatientProfile(home, fullName);
 			String age = patient.getAge()+"";
 			String birthDate = patient.getBirthMonth()+"-"+
 					patient.getBirthDay()+"-"+
@@ -134,6 +138,14 @@ public class PatientsView extends JFrame {
 			model.addRow(new Object[]{patient.getId(), fullName, patient.getGender(), age, birthDate});
 		}
 		
+	}
+	
+	public void filter(String searchText) {
+		DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+		TableRowSorter<DefaultTableModel> trs = new TableRowSorter<DefaultTableModel>(dtm);
+		table.setRowSorter(trs);
+		
+		trs.setRowFilter(RowFilter.regexFilter(searchText));
 	}
 
 }
