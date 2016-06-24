@@ -107,7 +107,6 @@ public class PatientInfo extends JFrame {
 	 * Create the frame.
 	 */
 	public PatientInfo(final Home home) {
-		System.out.print("here");
 		this.home = home;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -135,7 +134,7 @@ public class PatientInfo extends JFrame {
 		gbl_panel.columnWidths = new int[] {672, 0};
 		gbl_panel.rowHeights = new int[] {81, 81, 81, 81, 81, 0, 0};
 		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0, 0, 0, 0, 0, 0.0, Double.MIN_VALUE};
+		gbl_panel.rowWeights = new double[]{0, 0, 0, 0, 0, 1.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		JPanel panel_7 = new JPanel();
@@ -668,7 +667,33 @@ public class PatientInfo extends JFrame {
 		      }
 		});
 		
+		JPanel panel_14 = new JPanel();
+		GridBagConstraints gbc_panel_14 = new GridBagConstraints();
+		gbc_panel_14.fill = GridBagConstraints.BOTH;
+		gbc_panel_14.gridx = 0;
+		gbc_panel_14.gridy = 5;
+		panel.add(panel_14, gbc_panel_14);;
+		
+		JButton btnCancelButton = new JButton("Cancel");
+		GridBagConstraints gbc_btnCancelButton = new GridBagConstraints();
+		gbc_btnCancelButton.insets = new Insets(0, 0, 0, 5);
+		gbc_btnCancelButton.gridx = 0;
+		gbc_btnCancelButton.gridy = 0;
+		panel_14.add(btnCancelButton, gbc_btnCancelButton);
+		btnCancelButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			  {
+				home.showHomeView();
+				removeBalloonTips();
+			  }
+		});
+		
 		JButton btnNewButton = new JButton("Save");
+		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+		gbc_btnNewButton.gridx = 1;
+		gbc_btnNewButton.gridy = 0;
+		panel_14.add(btnNewButton, gbc_btnNewButton);
 		btnNewButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -712,7 +737,6 @@ public class PatientInfo extends JFrame {
 								   middleNameTextField.getText()+" "+
 								   lastNameTextField.getText();
 						PatientProfile pp = new PatientProfile(fullName);
-						System.out.print("aaaaaaaa");
 						home.setCenterPanel(pp.getContentPane());
 						home.getPatientTableGateway().insertPatient(patient);
 						
@@ -724,10 +748,6 @@ public class PatientInfo extends JFrame {
 				}
 			  }
 		});
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.gridx = 0;
-		gbc_btnNewButton.gridy = 5;
-		panel.add(btnNewButton, gbc_btnNewButton);
 	}
 	
 	public String getPname() {
@@ -765,10 +785,8 @@ public class PatientInfo extends JFrame {
 		if((birthDayTextField.getText().equals("") || birthYearTextField.getText().equals("")) &&
 				(estYearsTextField.getText().equals("") || estMonthsTextField.getText().equals(""))) {
 			birtDateErrorLabel.setText("**You must enter the exact DOB or an estimated DOB**" );
-			System.out.print("in he3eere");
 		}
 		else {
-			System.out.print("in here");
 			birtDateErrorLabel.setText("");
 		}
 		

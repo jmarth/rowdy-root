@@ -54,6 +54,9 @@ public class Home extends JFrame {
 	private PatientTableGateway ptg;
 	private PatientList patientList;
 	private PatientInfo pi;
+	final JButton btnAddPatient = new JButton("Add Patient");
+	final JLabel lblPatientSearch= new JLabel("Patient Search");
+	final JButton btnSearch = new JButton("Search");
 	/**
 	 * Launch the application.
 	 */
@@ -99,9 +102,6 @@ public class Home extends JFrame {
 		patientList.setGateway(ptg);
 		patientList.loadFromGateway();
 		List<Patient> pl = patientList.getPatientList();
-		System.out.print(pl.size());
-		for(int i=0; i<pl.size(); i++)
-			System.out.print(pl.get(i).getAddress());
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -138,19 +138,14 @@ public class Home extends JFrame {
 		panel.setBackground(UIManager.getColor("ComboBox.selectionBackground"));
 		contentPane.add(panel, BorderLayout.NORTH);
 		
-		
-		final JLabel lblPatientSearch= new JLabel("Patient Search");
-		
 		textFieldSearch = new JTextField();
 		textFieldSearch.setColumns(10);
 		
-		final JButton btnSearch = new JButton("Search");
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		
-		final JButton btnAddPatient = new JButton("Add Patient");
 		final Home home = this;
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -167,19 +162,20 @@ public class Home extends JFrame {
 		JButton btnHome = new JButton("Home");
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JList list = new JList();
-				LayoutManager layout = contentPane.getLayout();
-				Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
-				 if(centerComponent != null ) {
-					 contentPane.remove(centerComponent);
-				 }
-				btnAddPatient.setVisible(true);
-				lblPatientSearch.setVisible(true);
-				textFieldSearch.setVisible(true);
-				btnSearch.setVisible(true);
-				pi.removeBalloonTips();
-				contentPane.repaint();
-				contentPane.revalidate();
+				showHomeView();
+			}
+		});
+		
+		JButton btnLogout = new JButton("Logout");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to close all windows and logout?", "Confirm",
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (response == JOptionPane.YES_OPTION) {
+					dispose();
+					Login login = new Login();
+					login.show();
+				}
 			}
 		});
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -187,6 +183,8 @@ public class Home extends JFrame {
 			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap()
+					.addComponent(btnLogout)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnHome)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnAddPatient)
@@ -207,7 +205,8 @@ public class Home extends JFrame {
 						.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblPatientSearch)
 						.addComponent(btnAddPatient)
-						.addComponent(btnHome)))
+						.addComponent(btnHome)
+						.addComponent(btnLogout)))
 		);
 		panel.setLayout(gl_panel);
 	}
@@ -227,6 +226,22 @@ public class Home extends JFrame {
 			contentPane.remove(centerComponent);
 		}
 		contentPane.add(container, BorderLayout.CENTER);
+		contentPane.revalidate();
+	}
+	
+	//Sets up the center panel for the home view
+	public void showHomeView() {
+		JList list = new JList();
+		LayoutManager layout = contentPane.getLayout();
+		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
+		 if(centerComponent != null ) {
+			 contentPane.remove(centerComponent);
+		 }
+		btnAddPatient.setVisible(true);
+		lblPatientSearch.setVisible(true);
+		textFieldSearch.setVisible(true);
+		btnSearch.setVisible(true);
+		contentPane.repaint();
 		contentPane.revalidate();
 	}
 }
