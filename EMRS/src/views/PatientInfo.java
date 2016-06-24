@@ -685,7 +685,7 @@ public class PatientInfo extends JFrame {
 			public void actionPerformed(ActionEvent e)
 			  {
 				home.showHomeView();
-				removeBalloonTips();
+				hideBalloonTips();
 			  }
 		});
 		
@@ -736,9 +736,9 @@ public class PatientInfo extends JFrame {
 						  String fullName =  firstNameTextField.getText()+" "+
 								   middleNameTextField.getText()+" "+
 								   lastNameTextField.getText();
-						PatientProfile pp = new PatientProfile(fullName);
+						PatientProfile pp = new PatientProfile(home,fullName);
 						home.setCenterPanel(pp.getContentPane());
-						home.getPatientTableGateway().insertPatient(patient);
+						home.getHomeModel().getPatientTableGateway().insertPatient(patient);
 						
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
@@ -813,16 +813,16 @@ public class PatientInfo extends JFrame {
 		return new BalloonTip(component, contents, tipStyle, true);
 	}
 	
-	public static void removeBalloonTips() {
-		firstNameBalloon.closeBalloon();
-		middleNameBalloon.closeBalloon();
-		lastNameBalloon.closeBalloon();
-		dateDayBalloon.closeBalloon();
-		dateYearBalloon.closeBalloon();
-		estYearBalloon.closeBalloon();
-		estMonthBalloon.closeBalloon();
-		cityBalloon.closeBalloon();
-		stateBalloon.closeBalloon();
-		countryBalloon.closeBalloon();
+	public void hideBalloonTips() {
+		firstNameBalloon.setVisible(false);
+		middleNameBalloon.setVisible(false);
+		lastNameBalloon.setVisible(false);
+		dateDayBalloon.setVisible(false);
+		dateYearBalloon.setVisible(false);
+		estYearBalloon.setVisible(false);
+		estMonthBalloon.setVisible(false);
+		cityBalloon.setVisible(false);
+		stateBalloon.setVisible(false);
+		countryBalloon.setVisible(false);
 	}
 }

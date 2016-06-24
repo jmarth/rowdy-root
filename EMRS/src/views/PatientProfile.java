@@ -21,7 +21,7 @@ public class PatientProfile extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PatientProfile(String pname) {
+	public PatientProfile(Home home, String pname) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();

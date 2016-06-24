@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
+import models.HomeModel;
 import models.Patient;
 import models.PatientList;
 
@@ -48,29 +49,31 @@ import java.util.List;
 import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Home extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textFieldSearch;
-	private PatientTableGateway ptg;
-	private PatientList patientList;
-	private PatientInfo pi;
+	final JButton btnHome = new JButton("Home");
 	final JButton btnAddPatient = new JButton("Add Patient");
 	final JLabel lblPatientSearch= new JLabel("Patient Search");
-	final JButton btnSearch = new JButton("Search");
+	final JButton btnFindPatient = new JButton("Find Patient");
+	JButton btnLogout = new JButton("Logout");
+	final JTextField textFieldSearch = new JTextField();
+	private HomeModel homeModel;
+
+	
 	/**
-	 * Launch the application.
+	 * Creates new home window
 	 */
 	public static void NewScreen() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Home frame = new Home();
-					frame.setVisible(true);
-					//Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-					//frame.setSize(screenSize.width, screenSize.height);
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+					frame.setVisible(true);
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -80,89 +83,61 @@ public class Home extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Home constructor
 	 */
 	public Home() {
+		homeModel = new HomeModel(this);
+		final Home home = this;
+		
+		//Set up gateway
+		homeModel.setPatientTableGateway();
+		
+		//hide patient search
+		textFieldSearch.setVisible(false);
+		lblPatientSearch.setVisible(false);
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 576, 434);
+		setBounds(100, 100, 683, 513);
 		
-		ptg = null;
-		
-		//Try to connect to database
-		try {
-			ptg = new PatientTableGatewayMySQL();
-		} catch (GatewayException e) {
-			JOptionPane.showMessageDialog(null, "Database is not responding. Please reboot your computer and maybe the database will magically appear (not really).", "Database Offline!", JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Database is not responding. Please reboot your computer and maybe the database will magically appear (not really).", "Database Offline!", JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
-		}
-		
-		JMenuBar menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		
-		JMenu mnAccount = new JMenu("Account");
-		menuBar.add(mnAccount);
-		
-		JMenuItem mntmAccountInfo = new JMenuItem("My Profile");
-		mntmAccountInfo.addMouseListener(new MouseAdapter() {
-			//@Override
-			public void mouseReleased(MouseEvent arg0) {
-				Profile p = new Profile();
-				setCenterPanel(p.getContentPane());
-			}
-		});
-		mnAccount.add(mntmAccountInfo);
-		
-		JMenuItem mntmLogout = new JMenuItem("Logout");
-		mntmLogout.addMouseListener(new MouseAdapter() {
-			//@Override
-			public void mouseReleased(MouseEvent e) {
-				dispose();
-				Login login = new Login();
-				login.show();
-			}
-		});
-		mnAccount.add(mntmLogout);
+		//set up main panel
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
+		//set up top bar panel
 		JPanel panel = new JPanel();
 		panel.setBackground(UIManager.getColor("ComboBox.selectionBackground"));
 		contentPane.add(panel, BorderLayout.NORTH);
 		
-		textFieldSearch = new JTextField();
-		textFieldSearch.setColumns(10);
-		
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		//search filter
+		textFieldSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				String searchText = textFieldSearch.getText().toLowerCase();
+				homeModel.getPatientsView().filter(searchText);
 			}
 		});
-		
-		final Home home = this;
+		textFieldSearch.setColumns(10);
+	
+		//add patient button on click
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 pi = new PatientInfo(home);
-				 setCenterPanel(pi.getContentPane());
-				 
-				 btnAddPatient.setVisible(false);
+				 homeModel.setPatientInfo(new PatientInfo(home));
+				 setCenterPanel(homeModel.getPatientInfo().getContentPane());
 				 lblPatientSearch.setVisible(false);
 				 textFieldSearch.setVisible(false);
-				 btnSearch.setVisible(false);
 			}
 		});
 		
-		JButton btnHome = new JButton("Home");
+		//home button on click
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				showHomeView();
 			}
 		});
 		
-		JButton btnLogout = new JButton("Logout");
+		//logout button on click
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to close all windows and logout?", "Confirm",
@@ -175,31 +150,33 @@ public class Home extends JFrame {
 			}
 		});
 		
-		JButton btnFindPatient = new JButton("Find Patient");
+		//find patient button on click
 		btnFindPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				PatientsView pv = new PatientsView(home);
-				setCenterPanel(pv.getContentPane());
+				homeModel.setPatientsView(new PatientsView(home));
+				setCenterPanel(homeModel.getPatientsView().getContentPane());
+				textFieldSearch.setVisible(true);
+				lblPatientSearch.setVisible(true);
 			}
 		});
+		
+		//set up top bar panel layout
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(btnLogout)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(2)
 					.addComponent(btnHome)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnAddPatient)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnFindPatient)
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
 					.addComponent(lblPatientSearch)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnSearch)
+					.addGap(32)
+					.addComponent(btnLogout)
 					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
@@ -207,52 +184,73 @@ public class Home extends JFrame {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnSearch)
-						.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblPatientSearch)
-						.addComponent(btnAddPatient)
-						.addComponent(btnHome)
 						.addComponent(btnLogout)
+						.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnHome)
+						.addComponent(btnAddPatient)
 						.addComponent(btnFindPatient)))
 		);
 		panel.setLayout(gl_panel);
 		
+		//set up center/main panel
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.CENTER);
 	}
 	
-	public PatientTableGateway getPatientTableGateway() {
-		return ptg;
-	}
-	
+	/**
+	 * Returns JPanel
+	 */
 	public JPanel getContentPane() {
 		return contentPane;
 	}
 	
+	/**
+	 * replaces center/main panel with given jpanel
+	 * @param container
+	 */
 	public void setCenterPanel(Container container) {
 		LayoutManager layout = contentPane.getLayout();
 		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
 		if(centerComponent != null ) {
 			contentPane.remove(centerComponent);
 		}
+		if(homeModel.getPatientInfo() != null)
+			homeModel.getPatientInfo().hideBalloonTips();
 		contentPane.add(container, BorderLayout.CENTER);
+		contentPane.repaint();
 		contentPane.revalidate();
 	}
 	
 	//Sets up the center panel for the home view
 	public void showHomeView() {
-		JList list = new JList();
+		textFieldSearch.setVisible(false);
+		lblPatientSearch.setVisible(false);
 		LayoutManager layout = contentPane.getLayout();
 		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
 		 if(centerComponent != null ) {
 			 contentPane.remove(centerComponent);
 		 }
-		btnAddPatient.setVisible(true);
-		lblPatientSearch.setVisible(true);
-		textFieldSearch.setVisible(true);
-		btnSearch.setVisible(true);
+		 if(homeModel.getPatientInfo() != null)
+				homeModel.getPatientInfo().hideBalloonTips();
 		contentPane.repaint();
 		contentPane.revalidate();
-		pi.removeBalloonTips();
 	}
+	
+	/**
+	 * gets the homeModel
+	 * @return HomeModel
+	 */
+	public HomeModel getHomeModel() {
+		return homeModel;
+	}
+	
+	public JButton getFindPatientButton() {
+		return btnFindPatient;
+	}
+	
+	public JButton getAddPatientButton() {
+		return btnAddPatient;
+	}
+	
 }
