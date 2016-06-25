@@ -78,7 +78,7 @@ public class PatientProfile extends JFrame {
 		
 		System.out.println("pic path "+patient.getPicPath());
 		JLabel lblNewLabel_5 = new JLabel("");
-		if(patient.getPicPath() == null)
+		if(patient.getPicPath() == null || patient.getPicPath().equals(""))
 			patient.setPicPath("user.png");
 		if(patient.getPicPath() != null && !patient.getPicPath().equals("") ) {
 			System.out.println("in this statment");
@@ -285,22 +285,13 @@ public class PatientProfile extends JFrame {
 		gbc_panel_7.gridy = 2;
 		panel_4.add(panel_7, gbc_panel_7);
 		GridBagLayout gbl_panel_7 = new GridBagLayout();
-		gbl_panel_7.columnWidths = new int[]{0, 46, 0};
-		gbl_panel_7.rowHeights = new int[]{14, 0, 0, 0, 14, 0};
-		gbl_panel_7.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_7.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_7.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 46, 0};
+		gbl_panel_7.rowHeights = new int[]{14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 0};
+		gbl_panel_7.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_7.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_7.setLayout(gbl_panel_7);
-		String address = patient.getAddress()+" "+patient.getAddress2();
-		JLabel lblNewLabel_7 = new JLabel();
-		if(!patient.getCity().equals(""))
-			address+=" "+patient.getCity();
-		if(!patient.getState().equals(""))
-			address+=" "+patient.getState();
-		if(!patient.getCountry().equals(""))
-			address+=" "+patient.getCountry();
-		if(!patient.getPostalCode().equals(""))
-			address+=" "+patient.getPostalCode();
-		lblNewLabel_7.setText(address);
+		
+		JLabel lblNewLabel_7 = new JLabel(patient.getAddress());
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
 		gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
@@ -308,20 +299,177 @@ public class PatientProfile extends JFrame {
 		gbc_lblNewLabel_7.gridy = 0;
 		panel_7.add(lblNewLabel_7, gbc_lblNewLabel_7);
 		
+		JLabel lblNewLabel_8 = new JLabel(patient.getAddress2());
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
+		gbc_lblNewLabel_8.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_8.gridx = 1;
+		gbc_lblNewLabel_8.gridy = 0;
+		panel_7.add(lblNewLabel_8, gbc_lblNewLabel_8);
+		
+		JLabel lblCity = new JLabel(patient.getCity());
+		lblCity.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		GridBagConstraints gbc_lblCity = new GridBagConstraints();
+		gbc_lblCity.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCity.gridx = 2;
+		gbc_lblCity.gridy = 0;
+		panel_7.add(lblCity, gbc_lblCity);
+		
+		JLabel lblState = new JLabel(patient.getState());
+		lblState.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		GridBagConstraints gbc_lblState = new GridBagConstraints();
+		gbc_lblState.insets = new Insets(0, 0, 5, 5);
+		gbc_lblState.gridx = 3;
+		gbc_lblState.gridy = 0;
+		panel_7.add(lblState, gbc_lblState);
+		
+		JLabel lblPostal = new JLabel(patient.getPostalCode());
+		lblPostal.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		GridBagConstraints gbc_lblPostal = new GridBagConstraints();
+		gbc_lblPostal.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPostal.gridx = 4;
+		gbc_lblPostal.gridy = 0;
+		panel_7.add(lblPostal, gbc_lblPostal);
+		
+		JLabel lblCountry = new JLabel(patient.getCountry());
+		lblCountry.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		GridBagConstraints gbc_lblCountry = new GridBagConstraints();
+		gbc_lblCountry.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCountry.gridx = 5;
+		gbc_lblCountry.gridy = 0;
+		panel_7.add(lblCountry, gbc_lblCountry);
+		
 		JLabel lblPhone = new JLabel(patient.getPhoneNumber());
 		lblPhone.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblPhone = new GridBagConstraints();
 		gbc_lblPhone.insets = new Insets(0, 0, 5, 0);
-		gbc_lblPhone.gridx = 1;
+		gbc_lblPhone.gridx = 6;
 		gbc_lblPhone.gridy = 0;
 		panel_7.add(lblPhone, gbc_lblPhone);
+		
+		JSeparator separator_11 = new JSeparator();
+		separator_11.setBorder(border);
+		GridBagConstraints gbc_separator_11 = new GridBagConstraints();
+		gbc_separator_11.fill = GridBagConstraints.HORIZONTAL;
+		gbc_separator_11.insets = new Insets(0, 0, 5, 5);
+		gbc_separator_11.gridx = 3;
+		gbc_separator_11.gridy = 1;
+		panel_7.add(separator_11, gbc_separator_11);
+		
+		JSeparator separator_13 = new JSeparator();
+		separator_13.setBorder(border);
+		GridBagConstraints gbc_separator_13 = new GridBagConstraints();
+		gbc_separator_13.fill = GridBagConstraints.HORIZONTAL;
+		gbc_separator_13.insets = new Insets(0, 0, 5, 5);
+		gbc_separator_13.gridx = 5;
+		gbc_separator_13.gridy = 1;
+		panel_7.add(separator_13, gbc_separator_13);
+		
+		JSeparator separator_12 = new JSeparator();
+		separator_12.setBorder(border);
+		GridBagConstraints gbc_separator_12 = new GridBagConstraints();
+		gbc_separator_12.fill = GridBagConstraints.HORIZONTAL;
+		gbc_separator_12.insets = new Insets(0, 0, 5, 5);
+		gbc_separator_12.gridx = 4;
+		gbc_separator_12.gridy = 1;
+		panel_7.add(separator_12, gbc_separator_12);
+		
+		JSeparator separator_10 = new JSeparator();
+		separator_10.setBorder(border);
+		GridBagConstraints gbc_separator_10 = new GridBagConstraints();
+		gbc_separator_10.fill = GridBagConstraints.HORIZONTAL;
+		gbc_separator_10.insets = new Insets(0, 0, 5, 5);
+		gbc_separator_10.gridx = 2;
+		gbc_separator_10.gridy = 1;
+		panel_7.add(separator_10, gbc_separator_10);
+		
+		JLabel lblNewLabel_6 = new JLabel("Address");
+		lblNewLabel_6.setForeground(Color.GRAY);
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
+		gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_6.gridx = 0;
+		gbc_lblNewLabel_6.gridy = 2;
+		panel_7.add(lblNewLabel_6, gbc_lblNewLabel_6);
+		
+		JLabel lblAddress = new JLabel("Address 2");
+		lblAddress.setForeground(Color.GRAY);
+		lblAddress.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
+		gbc_lblAddress.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAddress.gridx = 1;
+		gbc_lblAddress.gridy = 2;
+		panel_7.add(lblAddress, gbc_lblAddress);
+		
+		JLabel lblNewLabel_9 = new JLabel("City/Village");
+		lblNewLabel_9.setForeground(Color.GRAY);
+		lblNewLabel_9.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		GridBagConstraints gbc_lblNewLabel_9 = new GridBagConstraints();
+		gbc_lblNewLabel_9.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNewLabel_9.gridx = 2;
+		gbc_lblNewLabel_9.gridy = 2;
+		panel_7.add(lblNewLabel_9, gbc_lblNewLabel_9);
+		
+		JLabel lblStateprovince = new JLabel("State/Province");
+		lblStateprovince.setForeground(Color.GRAY);
+		lblStateprovince.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		GridBagConstraints gbc_lblStateprovince = new GridBagConstraints();
+		gbc_lblStateprovince.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStateprovince.gridx = 3;
+		gbc_lblStateprovince.gridy = 2;
+		panel_7.add(lblStateprovince, gbc_lblStateprovince);
+		
+		JLabel lblPostalCode = new JLabel("Postal Code");
+		lblPostalCode.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		lblPostalCode.setForeground(Color.GRAY);
+		GridBagConstraints gbc_lblPostalCode = new GridBagConstraints();
+		gbc_lblPostalCode.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPostalCode.gridx = 4;
+		gbc_lblPostalCode.gridy = 2;
+		panel_7.add(lblPostalCode, gbc_lblPostalCode);
+		
+		JLabel lblCountry_1 = new JLabel("Country");
+		lblCountry_1.setForeground(Color.GRAY);
+		lblCountry_1.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		GridBagConstraints gbc_lblCountry_1 = new GridBagConstraints();
+		gbc_lblCountry_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblCountry_1.gridx = 5;
+		gbc_lblCountry_1.gridy = 2;
+		panel_7.add(lblCountry_1, gbc_lblCountry_1);
+		
+		JLabel lblTelephoneNumber = new JLabel("Telephone Number");
+		lblTelephoneNumber.setForeground(Color.GRAY);
+		lblTelephoneNumber.setFont(new Font("Tahoma", Font.ITALIC, 12));
+		GridBagConstraints gbc_lblTelephoneNumber = new GridBagConstraints();
+		gbc_lblTelephoneNumber.insets = new Insets(0, 0, 5, 0);
+		gbc_lblTelephoneNumber.gridx = 6;
+		gbc_lblTelephoneNumber.gridy = 2;
+		panel_7.add(lblTelephoneNumber, gbc_lblTelephoneNumber);
+		
+		JSeparator separator_9 = new JSeparator();
+		separator_9.setBorder(border);
+		GridBagConstraints gbc_separator_9 = new GridBagConstraints();
+		gbc_separator_9.fill = GridBagConstraints.HORIZONTAL;
+		gbc_separator_9.insets = new Insets(0, 0, 5, 5);
+		gbc_separator_9.gridx = 1;
+		gbc_separator_9.gridy = 1;
+		panel_7.add(separator_9, gbc_separator_9);
+		
+		JSeparator separator_8 = new JSeparator();
+		separator_8.setBorder(border);
+		GridBagConstraints gbc_separator_8 = new GridBagConstraints();
+		gbc_separator_8.fill = GridBagConstraints.HORIZONTAL;
+		gbc_separator_8.insets = new Insets(0, 0, 5, 5);
+		gbc_separator_8.gridx = 1;
+		gbc_separator_8.gridy = 1;
+		panel_7.add(separator_8, gbc_separator_8);
 		
 		JSeparator separator_7 = new JSeparator();
 		separator_7.setBorder(border);
 		GridBagConstraints gbc_separator_7 = new GridBagConstraints();
 		gbc_separator_7.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_7.insets = new Insets(0, 0, 5, 0);
-		gbc_separator_7.gridx = 1;
+		gbc_separator_7.gridx = 6;
 		gbc_separator_7.gridy = 1;
 		panel_7.add(separator_7, gbc_separator_7);
 		
@@ -333,24 +481,6 @@ public class PatientProfile extends JFrame {
 		gbc_separator_6.gridx = 0;
 		gbc_separator_6.gridy = 1;
 		panel_7.add(separator_6, gbc_separator_6);
-		
-		JLabel lblNewLabel_6 = new JLabel("Address");
-		lblNewLabel_6.setForeground(Color.GRAY);
-		lblNewLabel_6.setFont(new Font("Tahoma", Font.ITALIC, 12));
-		GridBagConstraints gbc_lblNewLabel_6 = new GridBagConstraints();
-		gbc_lblNewLabel_6.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_6.gridx = 0;
-		gbc_lblNewLabel_6.gridy = 2;
-		panel_7.add(lblNewLabel_6, gbc_lblNewLabel_6);
-		
-		JLabel lblTelephoneNumber = new JLabel("Telephone Number");
-		lblTelephoneNumber.setForeground(Color.GRAY);
-		lblTelephoneNumber.setFont(new Font("Tahoma", Font.ITALIC, 12));
-		GridBagConstraints gbc_lblTelephoneNumber = new GridBagConstraints();
-		gbc_lblTelephoneNumber.insets = new Insets(0, 0, 5, 0);
-		gbc_lblTelephoneNumber.gridx = 1;
-		gbc_lblTelephoneNumber.gridy = 2;
-		panel_7.add(lblTelephoneNumber, gbc_lblTelephoneNumber);
 		
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("History", null, panel_5, null);
