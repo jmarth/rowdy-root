@@ -35,6 +35,7 @@ import models.Patient;
 import models.PatientList;
 
 import java.awt.Font;
+import javax.swing.JTextField;
 
 public class PatientsView extends JFrame {
 
@@ -109,7 +110,7 @@ public class PatientsView extends JFrame {
 			        System.out.println("id is "+patientId);
 			        Patient patient = pl.findById(patientId);
 			        System.out.println("name is "+patient.getFirstName());
-			        PatientProfile pp = new PatientProfile(home, patient.getFirstName());
+			        PatientProfile pp = new PatientProfile(home, patient);
 			        home.setCenterPanel(pp.getContentPane());
 				}
 			});
@@ -126,7 +127,7 @@ public class PatientsView extends JFrame {
 			String fullName =  patient.getFirstName()+" "+
 					patient.getMiddleName()+" "+
 					patient.getLastName();
-			PatientProfile pp = new PatientProfile(home, fullName);
+			//PatientProfile pp = new PatientProfile(home, patient);
 			String age = patient.getAge()+"";
 			String birthDate = patient.getBirthMonth()+"-"+
 					patient.getBirthDay()+"-"+

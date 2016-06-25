@@ -736,7 +736,7 @@ public class PatientInfo extends JFrame {
 						  String fullName =  firstNameTextField.getText()+" "+
 								   middleNameTextField.getText()+" "+
 								   lastNameTextField.getText();
-						PatientProfile pp = new PatientProfile(home,fullName);
+						PatientProfile pp = new PatientProfile(home,patient);
 						home.setCenterPanel(pp.getContentPane());
 						home.getHomeModel().getPatientTableGateway().insertPatient(patient);
 						
@@ -784,8 +784,9 @@ public class PatientInfo extends JFrame {
 		if(lastNameTextField.getText().equals("") && !hasNameCheckBox.isSelected())
 			lastNameBalloon.setVisible(true);
 		if((birthDayTextField.getText().equals("") || birthYearTextField.getText().equals("")) &&
-				(estYearsTextField.getText().equals("") || estMonthsTextField.getText().equals(""))) {
+				(estYearsTextField.getText().equals("") && estMonthsTextField.getText().equals(""))) {
 			birtDateErrorLabel.setText("**You must enter the exact DOB or an estimated DOB**" );
+			return true;
 		}
 		else {
 			birtDateErrorLabel.setText("");
