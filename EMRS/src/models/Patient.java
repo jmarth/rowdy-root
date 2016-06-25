@@ -26,10 +26,11 @@ public class Patient {
 	private String postalCode;
 	private String phoneNumber;
 	private boolean hasEstBirthDate;
-	
+	private String picPath;
+
 	public Patient(long id, boolean hasPatientName, String firstName, String middleName, String lastName, String gender, int birthDay,
 			String birthMonth, int birthYear, int estBirthYears, int estBirthMonths, String address, String address2,
-			String city, String state, String country, String postalCode, String phoneNumber) {
+			String city, String state, String country, String postalCode, String phoneNumber, String picPath) {
 		super();
 		this.id = id;
 		this.hasPatientName = hasPatientName;
@@ -49,12 +50,13 @@ public class Patient {
 		this.country = country;
 		this.postalCode = postalCode;
 		this.phoneNumber = phoneNumber;
+		this.picPath = picPath;
 		setBirthDayDate();
 	}
 	
 	public Patient(boolean hasPatientName, String firstName, String middleName, String lastName, String gender, int birthDay,
 			String birthMonth, int birthYear, int estBirthYears, int estBirthMonths, String address, String address2,
-			String city, String state, String country, String postalCode, String phoneNumber) {
+			String city, String state, String country, String postalCode, String phoneNumber, String picPath) {
 		super();
 		this.hasPatientName = hasPatientName;
 		this.firstName = firstName;
@@ -73,6 +75,7 @@ public class Patient {
 		this.country = country;
 		this.postalCode = postalCode;
 		this.phoneNumber = phoneNumber;
+		this.picPath = picPath;
 		setBirthDayDate();
 	}
 	
@@ -222,6 +225,14 @@ public class Patient {
 	
 	public boolean getHasEstBirthDate() {
 		return hasEstBirthDate;
+	}
+	
+	public String getPicPath() {
+		return picPath;
+	}
+
+	public void setPicPath(String picPath) {
+		this.picPath = picPath;
 	}
 	
 	public void setBirthDayDate() {

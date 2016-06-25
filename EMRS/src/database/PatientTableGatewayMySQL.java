@@ -109,7 +109,8 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 						rs.getString("state_province"),
 						rs.getString("country"),
 						rs.getString("postal_code"),
-						rs.getString("phone_number"));
+						rs.getString("phone_number"),
+						rs.getString("pic_path"));
 				patients.add(p);
 			}
 		} catch (SQLException e) {
@@ -150,8 +151,9 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 					+ " state_province,"
 					+ " country,"
 					+ " postal_code,"
-					+ " phone_number) "
-					+ " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
+					+ " phone_number, "
+					+ " pic_path) "
+					+ " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setInt(1, p.getHasPatientName() ? 1 : 0);
 			st.setString(2, p.getFirstName());
 			st.setString(3,  p.getMiddleName());
@@ -169,7 +171,8 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 			st.setString(15, p.getCountry());
 			st.setString(16, p.getPostalCode());
 			st.setString(17, p.getPhoneNumber());
-			
+			st.setString(18, p.getPicPath());
+	
 			st.executeUpdate();
 			//get the generated key
 			rs = st.getGeneratedKeys();
