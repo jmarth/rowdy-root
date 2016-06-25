@@ -160,6 +160,14 @@ public class Home extends JFrame {
 			}
 		});
 		
+		JButton btnSketch = new JButton("Sketch");
+		btnSketch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Paint paint = new Paint();
+				setCenterPanel(paint.getContentPane());
+			}
+		});
+		
 		//set up top bar panel layout
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -171,7 +179,9 @@ public class Home extends JFrame {
 					.addComponent(btnAddPatient)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnFindPatient)
-					.addPreferredGap(ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnSketch)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(lblPatientSearch)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
@@ -189,7 +199,8 @@ public class Home extends JFrame {
 						.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(btnHome)
 						.addComponent(btnAddPatient)
-						.addComponent(btnFindPatient)))
+						.addComponent(btnFindPatient)
+						.addComponent(btnSketch)))
 		);
 		panel.setLayout(gl_panel);
 		
@@ -252,5 +263,4 @@ public class Home extends JFrame {
 	public JButton getAddPatientButton() {
 		return btnAddPatient;
 	}
-	
 }

@@ -116,6 +116,8 @@ public class PatientInfo extends JFrame {
 	public PatientInfo(final Home home) {
 		this.home = home;
 		
+		imagePath = "";
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 710, 727);
 		contentPane = new JPanel();
@@ -129,6 +131,11 @@ public class PatientInfo extends JFrame {
 		contentPane.setLayout(gbl_contentPane);
 		
 		final JLabel label = new JLabel("");
+		ImageIcon imageIcon = new ImageIcon("user.png");
+        Image image = imageIcon.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        imageIcon = new ImageIcon(newimg);  // transform it back
+        label.setIcon(imageIcon);
 		GridBagConstraints gbc_label = new GridBagConstraints();
 		gbc_label.insets = new Insets(0, 0, 5, 0);
 		gbc_label.gridx = 0;

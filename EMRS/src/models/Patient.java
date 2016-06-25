@@ -50,7 +50,6 @@ public class Patient {
 		this.country = country;
 		this.postalCode = postalCode;
 		this.phoneNumber = phoneNumber;
-		this.picPath = picPath;
 		setBirthDayDate();
 	}
 	
@@ -76,6 +75,7 @@ public class Patient {
 		this.postalCode = postalCode;
 		this.phoneNumber = phoneNumber;
 		this.picPath = picPath;
+		if(picPath == null)
 		setBirthDayDate();
 	}
 	
