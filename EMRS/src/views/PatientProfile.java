@@ -10,10 +10,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.Color;
@@ -69,17 +71,29 @@ public class PatientProfile extends JFrame {
 		panel.add(panel_4, gbc_panel_4);
 		GridBagLayout gbl_panel_4 = new GridBagLayout();
 		gbl_panel_4.columnWidths = new int[]{281, 0};
-		gbl_panel_4.rowHeights = new int[]{54, 0, 0, 0, 0, 0};
+		gbl_panel_4.rowHeights = new int[]{0, 54, 0, 0, 0, 0, 0};
 		gbl_panel_4.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_4.rowWeights = new double[]{0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_4.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_4.setLayout(gbl_panel_4);
+		
+		JLabel lblNewLabel_5 = new JLabel("");
+		ImageIcon imageIcon = new ImageIcon(patient.getPicPath());
+        Image image = imageIcon.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        imageIcon = new ImageIcon(newimg);  // transform it back
+        lblNewLabel_5.setIcon(imageIcon);
+		GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
+		gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNewLabel_5.gridx = 0;
+		gbc_lblNewLabel_5.gridy = 0;
+		panel_4.add(lblNewLabel_5, gbc_lblNewLabel_5);
 		
 		JPanel panel_6 = new JPanel();
 		GridBagConstraints gbc_panel_6 = new GridBagConstraints();
 		gbc_panel_6.fill = GridBagConstraints.VERTICAL;
 		gbc_panel_6.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_6.gridx = 0;
-		gbc_panel_6.gridy = 0;
+		gbc_panel_6.gridy = 1;
 		panel_4.add(panel_6, gbc_panel_6);
 		GridBagLayout gbl_panel_6 = new GridBagLayout();
 		gbl_panel_6.columnWidths = new int[]{78, 96, 77, 0};
@@ -263,7 +277,7 @@ public class PatientProfile extends JFrame {
 		gbc_panel_7.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_7.fill = GridBagConstraints.VERTICAL;
 		gbc_panel_7.gridx = 0;
-		gbc_panel_7.gridy = 1;
+		gbc_panel_7.gridy = 2;
 		panel_4.add(panel_7, gbc_panel_7);
 		GridBagLayout gbl_panel_7 = new GridBagLayout();
 		gbl_panel_7.columnWidths = new int[]{0, 46, 0};

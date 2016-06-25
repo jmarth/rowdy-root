@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.SpringLayout;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -25,6 +27,7 @@ import javax.swing.JTextArea;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -49,6 +52,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
 import com.jgoodies.forms.layout.FormSpecs;
@@ -56,10 +60,12 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.JTextPane;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.JTextComponent;
 import javax.swing.event.ChangeEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.awt.event.FocusAdapter;
@@ -102,6 +108,7 @@ public class PatientInfo extends JFrame {
 	private static BalloonTip countryBalloon;
 	final JCheckBox hasNameCheckBox = new JCheckBox("Unidentified Patient");
 	private JLabel birtDateErrorLabel;
+	private String imagePath;
 	
 	/**
 	 * Create the frame.
@@ -116,16 +123,55 @@ public class PatientInfo extends JFrame {
 		setContentPane(contentPane);
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{674, 0};
-		gbl_contentPane.rowHeights = new int[] {451, 0};
+		gbl_contentPane.rowHeights = new int[] {0, 0, 0, 451, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_contentPane.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
+		
+		final JLabel label = new JLabel("");
+		GridBagConstraints gbc_label = new GridBagConstraints();
+		gbc_label.insets = new Insets(0, 0, 5, 0);
+		gbc_label.gridx = 0;
+		gbc_label.gridy = 1;
+		contentPane.add(label, gbc_label);
+		
+		JButton btnUploadPatientPic = new JButton("Upload Picture");
+		btnUploadPatientPic.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser file = new JFileChooser();
+		        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+		        //filter the files
+		        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg","gif","png");
+		        file.addChoosableFileFilter(filter);
+		        int result = file.showSaveDialog(null);
+		        //if the user click on save in Jfilechooser
+		        if(result == JFileChooser.APPROVE_OPTION){
+		        	File selectedFile = file.getSelectedFile();
+		        	imagePath = selectedFile.getAbsolutePath();
+		            ImageIcon imageIcon = new ImageIcon(imagePath);
+		            Image image = imageIcon.getImage(); // transform it 
+		            Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		            imageIcon = new ImageIcon(newimg);  // transform it back
+		            label.setIcon(imageIcon);
+		         }
+		         //if the user click on save in Jfilechooser
+		        else if(result == JFileChooser.CANCEL_OPTION){
+		             System.out.println("No File Select");
+		        }
+			}
+		});
+		GridBagConstraints gbc_btnUploadPatientPic = new GridBagConstraints();
+		gbc_btnUploadPatientPic.insets = new Insets(0, 0, 5, 0);
+		gbc_btnUploadPatientPic.gridx = 0;
+		gbc_btnUploadPatientPic.gridy = 2;
+		contentPane.add(btnUploadPatientPic, gbc_btnUploadPatientPic);
+		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 0;
+		gbc_scrollPane.gridy = 3;
 		contentPane.add(scrollPane, gbc_scrollPane);
 		
 		JPanel panel = new JPanel();
@@ -731,7 +777,8 @@ public class PatientInfo extends JFrame {
 							  stateTextField.getText(),
 							  countryTextField.getText(),
 							  postalCodeTextField.getText(),
-							  phoneNumberTextField.getText());
+							  phoneNumberTextField.getText(),
+							  imagePath);
 					  try {
 						  String fullName =  firstNameTextField.getText()+" "+
 								   middleNameTextField.getText()+" "+
