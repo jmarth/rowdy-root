@@ -51,6 +51,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class Home extends JFrame {
 
@@ -92,10 +94,6 @@ public class Home extends JFrame {
 		//Set up gateway
 		homeModel.setPatientTableGateway();
 		
-		//hide patient search
-		textFieldSearch.setVisible(false);
-		lblPatientSearch.setVisible(false);
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 683, 513);
 		
@@ -109,6 +107,13 @@ public class Home extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBackground(UIManager.getColor("ComboBox.selectionBackground"));
 		contentPane.add(panel, BorderLayout.NORTH);
+		textFieldSearch.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				homeModel.setPatientsView(new PatientsView(home));
+				setCenterPanel(homeModel.getPatientsView().getContentPane());
+			}
+		});
 		
 		//search filter
 		textFieldSearch.addKeyListener(new KeyAdapter() {
@@ -125,8 +130,6 @@ public class Home extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				 homeModel.setPatientInfo(new PatientInfo(home));
 				 setCenterPanel(homeModel.getPatientInfo().getContentPane());
-				 lblPatientSearch.setVisible(false);
-				 textFieldSearch.setVisible(false);
 			}
 		});
 		
@@ -155,8 +158,6 @@ public class Home extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				homeModel.setPatientsView(new PatientsView(home));
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
-				textFieldSearch.setVisible(true);
-				lblPatientSearch.setVisible(true);
 			}
 		});
 		
@@ -235,8 +236,6 @@ public class Home extends JFrame {
 	
 	//Sets up the center panel for the home view
 	public void showHomeView() {
-		textFieldSearch.setVisible(false);
-		lblPatientSearch.setVisible(false);
 		LayoutManager layout = contentPane.getLayout();
 		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
 		 if(centerComponent != null ) {
