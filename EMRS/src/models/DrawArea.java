@@ -73,7 +73,9 @@ public class DrawArea extends JComponent {
       // clear draw area
       clear();
     }
-    g.drawImage(image, 0, 0, null);
+    // Draw image with width and size of container
+    g.drawImage(image, 0, 0, getSize().width, getSize().height, null);
+    //g.drawImage(image, 0, 0, null); // old way
   }
  
   // now we create exposed methods
