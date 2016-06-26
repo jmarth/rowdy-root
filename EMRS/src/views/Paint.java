@@ -3,7 +3,10 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
@@ -71,16 +74,18 @@ public class Paint extends JFrame{
  
   public Paint() {
     contentPane = new JPanel();
-    // set layout on content pane
-    contentPane.setLayout(new BorderLayout());
-    
+	contentPane.setLayout(new BorderLayout());
+	
+	JScrollPane scrollPane = new JScrollPane();
+	
     // create draw area
     drawArea = new DrawArea();
-
+    // add drawArea to scrollpane
+    scrollPane.add(drawArea);
+    scrollPane.setViewportView(drawArea);
     // add to content pane
-    contentPane.add(drawArea, BorderLayout.CENTER);
-    //scrollPane.add(drawArea);
- 
+    contentPane.add(scrollPane, BorderLayout.CENTER);
+
     // create controls to apply colors and call clear feature
     JPanel controls = new JPanel();
  
