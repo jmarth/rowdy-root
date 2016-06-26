@@ -23,6 +23,7 @@ public class Launcher {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
+	    
 		//initComponents();
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
