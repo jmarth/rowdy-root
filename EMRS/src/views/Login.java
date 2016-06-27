@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import javax.swing.ImageIcon;
 
 public class Login extends JFrame {
 
@@ -62,6 +63,7 @@ public class Login extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
+		contentPane.setBackground(new Color(0, 153, 204));
 		contentPane.setForeground(new Color(51, 102, 153));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -86,7 +88,8 @@ public class Login extends JFrame {
 			}
 		});
 		
-		JLabel lblEmrc = new JLabel("EMRC");
+		JLabel lblEmrc = new JLabel("");
+		lblEmrc.setIcon(new ImageIcon("logo.png"));
 		lblEmrc.setFont(new Font("Roboto", Font.BOLD, 30));
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(

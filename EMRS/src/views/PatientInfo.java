@@ -864,7 +864,7 @@ public class PatientInfo extends JFrame {
 	
 	public static BalloonTip createBalloonTip(JTextField component, String contents) {
 		BalloonTipStyle tipStyle = new RoundedBalloonStyle(1, 1,
-			new Color(255, 100, 100, 200), Color.gray);
+			new Color(255, 100, 100), Color.gray);
 		return new BalloonTip(component, contents, tipStyle, true);
 	}
 	

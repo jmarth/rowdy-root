@@ -51,6 +51,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.ImageIcon;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class Home extends JFrame {
 
@@ -62,6 +65,7 @@ public class Home extends JFrame {
 	JButton btnLogout = new JButton("Logout");
 	final JTextField textFieldSearch = new JTextField();
 	private HomeModel homeModel;
+	private final JLabel lblNewLabel = new JLabel("");
 
 	
 	/**
@@ -86,18 +90,15 @@ public class Home extends JFrame {
 	 * Home constructor
 	 */
 	public Home() {
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\marth\\Downloads\\LogoMakr (5).png"));
 		homeModel = new HomeModel(this);
 		final Home home = this;
 		
 		//Set up gateway
 		homeModel.setPatientTableGateway();
 		
-		//hide patient search
-		textFieldSearch.setVisible(false);
-		lblPatientSearch.setVisible(false);
-		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 683, 513);
+		setBounds(100, 100, 968, 902);
 		
 		//set up main panel
 		contentPane = new JPanel();
@@ -107,8 +108,15 @@ public class Home extends JFrame {
 		
 		//set up top bar panel
 		JPanel panel = new JPanel();
-		panel.setBackground(UIManager.getColor("ComboBox.selectionBackground"));
+		panel.setBackground(new Color(0, 153, 204));
 		contentPane.add(panel, BorderLayout.NORTH);
+		textFieldSearch.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				homeModel.setPatientsView(new PatientsView(home));
+				setCenterPanel(homeModel.getPatientsView().getContentPane());
+			}
+		});
 		
 		//search filter
 		textFieldSearch.addKeyListener(new KeyAdapter() {
@@ -125,8 +133,6 @@ public class Home extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				 homeModel.setPatientInfo(new PatientInfo(home));
 				 setCenterPanel(homeModel.getPatientInfo().getContentPane());
-				 lblPatientSearch.setVisible(false);
-				 textFieldSearch.setVisible(false);
 			}
 		});
 		
@@ -155,8 +161,6 @@ public class Home extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				homeModel.setPatientsView(new PatientsView(home));
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
-				textFieldSearch.setVisible(true);
-				lblPatientSearch.setVisible(true);
 			}
 		});
 		
@@ -175,36 +179,39 @@ public class Home extends JFrame {
 		//set up top bar panel layout
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
+			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(2)
+					.addContainerGap()
+					.addComponent(lblNewLabel)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnHome)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnAddPatient)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnFindPatient)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSketch)
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
 					.addComponent(lblPatientSearch)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-					.addGap(32)
-					.addComponent(btnLogout)
-					.addContainerGap())
+					.addGap(33)
+					.addComponent(btnLogout))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblPatientSearch)
-						.addComponent(btnLogout)
-						.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnHome)
-						.addComponent(btnAddPatient)
-						.addComponent(btnFindPatient)
-						.addComponent(btnSketch)))
+					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblNewLabel)
+						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+							.addComponent(btnHome)
+							.addComponent(btnAddPatient)
+							.addComponent(btnFindPatient)
+							.addComponent(btnSketch)
+							.addComponent(btnLogout)
+							.addComponent(lblPatientSearch)
+							.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
 		);
 		panel.setLayout(gl_panel);
 		
@@ -239,8 +246,6 @@ public class Home extends JFrame {
 	
 	//Sets up the center panel for the home view
 	public void showHomeView() {
-		textFieldSearch.setVisible(false);
-		lblPatientSearch.setVisible(false);
 		LayoutManager layout = contentPane.getLayout();
 		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
 		 if(centerComponent != null ) {
