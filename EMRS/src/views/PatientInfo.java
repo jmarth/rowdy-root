@@ -44,6 +44,8 @@ import database.GatewayException;
 import models.Patient;
 import models.PatientList;
 import net.java.balloontip.BalloonTip;
+import net.java.balloontip.BalloonTip.AttachLocation;
+import net.java.balloontip.BalloonTip.Orientation;
 import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.RoundedBalloonStyle;
 import net.miginfocom.swing.MigLayout;
@@ -75,7 +77,6 @@ public class PatientInfo extends JFrame {
 
 	private Home home;
 	private JPanel contentPane;
-	private String pname;
 	//Text fields
 	private JTextField firstNameTextField;
 	private JTextField middleNameTextField;
@@ -161,10 +162,6 @@ public class PatientInfo extends JFrame {
 		            imageIcon = new ImageIcon(newimg);  // transform it back
 		            label.setIcon(imageIcon);
 		         }
-		         //if the user click on save in Jfilechooser
-		        else if(result == JFileChooser.CANCEL_OPTION){
-		             System.out.println("No File Select");
-		        }
 			}
 		});
 		GridBagConstraints gbc_btnUploadPatientPic = new GridBagConstraints();
@@ -272,9 +269,9 @@ public class PatientInfo extends JFrame {
 		
 		firstNameTextField = new JTextField();
 		Color ERROR_MESSAGE_FILL_COLOUR = new Color(255, 204, 204);
+		
 		firstNameBalloon = createBalloonTip(firstNameTextField, "Invalid name");
 		firstNameBalloon.setVisible(false);
-		firstNameBalloon.setCloseButton(null);
 		addBalloonTip(firstNameTextField, firstNameBalloon, NAME_PATTERN);
 		GridBagConstraints gbc_firstNameTextField = new GridBagConstraints();
 		gbc_firstNameTextField.insets = new Insets(0, 0, 5, 5);
@@ -287,7 +284,6 @@ public class PatientInfo extends JFrame {
 		middleNameTextField = new JTextField();
 		middleNameBalloon = createBalloonTip(middleNameTextField, "Invalid name");
 		middleNameBalloon.setVisible(false);
-		middleNameBalloon.setCloseButton(null);
 		addBalloonTip(middleNameTextField, middleNameBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_middleNameTextField = new GridBagConstraints();
 		gbc_middleNameTextField.insets = new Insets(0, 0, 5, 5);
@@ -300,7 +296,6 @@ public class PatientInfo extends JFrame {
 		lastNameTextField = new JTextField();
 		lastNameBalloon = createBalloonTip(lastNameTextField, "Invalid name");
 		lastNameBalloon.setVisible(false);
-		lastNameBalloon.setCloseButton(null);
 		addBalloonTip(lastNameTextField, lastNameBalloon, NAME_PATTERN);
 		GridBagConstraints gbc_lastNameTextField = new GridBagConstraints();
 		gbc_lastNameTextField.insets = new Insets(0, 0, 5, 5);
@@ -499,13 +494,9 @@ public class PatientInfo extends JFrame {
 		panel_4.add(estMonthsTextField, gbc_estMonthsTextField);
 		estMonthsTextField.setColumns(10);
 		dateDayBalloon.setVisible(false);
-		dateDayBalloon.setCloseButton(null);
 		dateYearBalloon.setVisible(false);
-		dateYearBalloon.setCloseButton(null);
 		estYearBalloon.setVisible(false);
-		estYearBalloon.setCloseButton(null);
 		estMonthBalloon.setVisible(false);
-		estMonthBalloon.setCloseButton(null);
 		
 		JPanel panel_9 = new JPanel();
 		TitledBorder tb_4 = new TitledBorder(null, "What's the patient's address?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
@@ -615,9 +606,8 @@ public class PatientInfo extends JFrame {
 		panel_11.add(lblPostalCode, gbc_lblPostalCode);
 		
 		cityTextField = new JTextField();
-		cityBalloon = new BalloonTip(cityTextField, "Invalid name");
+		cityBalloon = createBalloonTip(cityTextField, "Invalid city");
 		cityBalloon.setVisible(false);
-		//cityBalloon.setCloseButton(null);
 		addBalloonTip(cityTextField, cityBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_cityTextField = new GridBagConstraints();
 		gbc_cityTextField.insets = new Insets(0, 0, 5, 5);
@@ -628,9 +618,8 @@ public class PatientInfo extends JFrame {
 		cityTextField.setColumns(10);
 		
 		stateTextField = new JTextField();
-		stateBalloon = new BalloonTip(stateTextField, "Invalid name");
+		stateBalloon = createBalloonTip(stateTextField, "Invalid state");
 		stateBalloon.setVisible(false);
-		//stateBalloon.setCloseButton(null);
 		addBalloonTip(stateTextField, stateBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_stateTextField = new GridBagConstraints();
 		gbc_stateTextField.insets = new Insets(0, 0, 5, 5);
@@ -639,11 +628,10 @@ public class PatientInfo extends JFrame {
 		gbc_stateTextField.gridy = 1;
 		panel_11.add(stateTextField, gbc_stateTextField);
 		stateTextField.setColumns(10);
-		
+
 		countryTextField = new JTextField();
-		countryBalloon = new BalloonTip(countryTextField, "Invalid name");
+		countryBalloon = createBalloonTip(countryTextField, "Invalid country");
 		countryBalloon.setVisible(false);
-		//countryBalloon.setCloseButton(null);
 		addBalloonTip(countryTextField, countryBalloon, NAME_PATTERN_2);
 		GridBagConstraints gbc_countryTextField = new GridBagConstraints();
 		gbc_countryTextField.insets = new Insets(0, 0, 5, 5);
@@ -751,45 +739,44 @@ public class PatientInfo extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e)
 			  {
-				//set default values
-				int birthDay = -1;
-				int birthYear = -1;
-				int estYear = -1;
-				int estMonth = -1;
-				//Parse text fields if they are not empty
-				if(!birthDayTextField.getText().equals("")) 
-					birthDay = Integer.parseInt(birthDayTextField.getText());
-				if(!birthYearTextField.getText().equals("")) 
-					birthYear = Integer.parseInt(birthYearTextField.getText());
-				if(!estYearsTextField.getText().equals("")) 
-					estYear = Integer.parseInt(estYearsTextField.getText());
-				if(!estMonthsTextField.getText().equals("")) 
-					estMonth = Integer.parseInt(estMonthsTextField.getText());
 				//check for fields errors
-				boolean hasErrors = checkForErrors();
-				if(!hasErrors) {
-					  Patient patient = new Patient(hasNameCheckBox.isSelected(),
-							  firstNameTextField.getText(),
-							  middleNameTextField.getText(),
-							  lastNameTextField.getText(),
-							  genderComboBox.getSelectedItem().toString(),
-							  birthDay,
-							  birthMonthComboBox.getSelectedItem().toString(),
-							  birthYear,
-							  estYear,
-							  estMonth,
-							  addressTextField.getText(),
-							  address2TextField.getText(),
-							  cityTextField.getText(),
-							  stateTextField.getText(),
-							  countryTextField.getText(),
-							  postalCodeTextField.getText(),
-							  phoneNumberTextField.getText(),
-							  imagePath);
-					  try {
-						  String fullName =  firstNameTextField.getText()+" "+
-								   middleNameTextField.getText()+" "+
-								   lastNameTextField.getText();
+				if(!checkForErrors()) {
+					//set default values
+					int birthDay = -1;
+					int birthYear = -1;
+					int estYear = -1;
+					int estMonth = -1;
+					//Parse text fields if they are not empty
+					if(!birthDayTextField.getText().equals("")) 
+						birthDay = Integer.parseInt(birthDayTextField.getText());
+					if(!birthYearTextField.getText().equals("")) 
+						birthYear = Integer.parseInt(birthYearTextField.getText());
+					if(!estYearsTextField.getText().equals("")) 
+						estYear = Integer.parseInt(estYearsTextField.getText());
+					if(!estMonthsTextField.getText().equals("")) 
+						estMonth = Integer.parseInt(estMonthsTextField.getText());
+					Patient patient = new Patient(hasNameCheckBox.isSelected(),
+							firstNameTextField.getText(),
+							middleNameTextField.getText(),
+							lastNameTextField.getText(),
+							genderComboBox.getSelectedItem().toString(),
+							birthDay,
+							birthMonthComboBox.getSelectedItem().toString(),
+							birthYear,
+							estYear,
+							estMonth,
+							addressTextField.getText(),
+							address2TextField.getText(),
+							cityTextField.getText(),
+							stateTextField.getText(),
+							countryTextField.getText(),
+							postalCodeTextField.getText(),
+							phoneNumberTextField.getText(),
+							imagePath);
+					try {
+						String fullName =  firstNameTextField.getText()+" "+
+								middleNameTextField.getText()+" "+
+								lastNameTextField.getText();
 						PatientProfile pp = new PatientProfile(home,patient);
 						home.setCenterPanel(pp.getContentPane());
 						home.getHomeModel().getPatientTableGateway().insertPatient(patient);
@@ -804,14 +791,21 @@ public class PatientInfo extends JFrame {
 		});
 	}
 	
-	public String getPname() {
-		return pname;
-	}
-	
+	/**
+	 * @return (contentPane)
+	 */
 	public Container getContentPane() {
 		return contentPane;
 	}
 	
+	/**
+	 * adds balloontip to textfield and shows when
+	 * textfield loses focus and does not match regex
+	 * and hides when it matches the regex
+	 * @param textField (jTextField)
+	 * @param balloonTip (balloon tip to show or hide)
+	 * @param regex (regex string that checks against textField text)
+	 */
 	public void addBalloonTip(final JTextField textField, final BalloonTip balloonTip, final String regex) {
 		textField.addFocusListener(new FocusAdapter() {
 			@Override
@@ -823,20 +817,43 @@ public class PatientInfo extends JFrame {
 				}
 				else {
 					balloonTip.setVisible(true);
-					System.out.print("here");
 				}
 
 			}
 		});
 	}
 	
-	public boolean checkForErrors() {
+	/**
+	 * recursively looks for all jtextfields and request focus
+	 * @param container 
+	 */
+	private void focusAllTextFields(Container container) {
+		System.out.print("thisfunccalled\n");
+	    for (Component c : container.getComponents()) {
+	        if (c instanceof JTextField) {
+	        	((JTextField)c).requestFocus();
+	        	System.out.print(((JTextField)c).getText()+"\n");
+	        } else if (c instanceof Container) {
+	        	focusAllTextFields((Container)c);
+	        }
+	    }
+	}
+	
+	/**
+	 * Checks to see if everything has been filled out correctly
+	 * @return (boolean if error was found or not)
+	 */
+	private boolean checkForErrors() {
 		boolean needsDOB = false;
-		//Show balloon messages if required fields are empty
-		if(firstNameTextField.getText().equals("") && !hasNameCheckBox.isSelected())
-			firstNameBalloon.setVisible(true);
-		if(lastNameTextField.getText().equals("") && !hasNameCheckBox.isSelected())
-			lastNameBalloon.setVisible(true);
+		
+		/*
+		 * not sure if genius or idiotic
+		 * This will focus all the textFields forcing
+		 * the focus out listener to check for field errors
+		 */
+		focusAllTextFields(contentPane);
+		
+		//Check if DOB has been entered show error if it has not been entered
 		if((birthDayTextField.getText().equals("") || birthYearTextField.getText().equals("")) &&
 				(estYearsTextField.getText().equals("") && estMonthsTextField.getText().equals(""))) {
 			birtDateErrorLabel.setText("**You must enter the exact DOB or an estimated DOB**" );
@@ -846,6 +863,7 @@ public class PatientInfo extends JFrame {
 			birtDateErrorLabel.setText("");
 		}
 		
+		//If a balloonTip is showing the there is a field error
 		if(firstNameBalloon.isVisible() ||
 			middleNameBalloon.isVisible() ||
 			lastNameBalloon.isVisible() ||
@@ -862,12 +880,33 @@ public class PatientInfo extends JFrame {
 		return false;
 	}
 	
+	/**
+	 * creates styled balloontip
+	 * @param component (a jtextfield)
+	 * @param contents (text to be shown in the balloon tip)
+	 * @return (a new balloontip with given data)
+	 */
 	public static BalloonTip createBalloonTip(JTextField component, String contents) {
 		BalloonTipStyle tipStyle = new RoundedBalloonStyle(1, 1,
-			new Color(255, 100, 100), Color.gray);
-		return new BalloonTip(component, contents, tipStyle, true);
+			new Color(0,153,204), new Color(112,154,208));
+		//BalloonTip bt = new BalloonTip(component, contents, tipStyle, Orientation.RIGHT_BELOW, AttachLocation.ALIGNED, 40, 20, true);
+		//BalloonTipStyle edgedLook = new EdgedBalloonStyle(Color.WHITE, Color.BLUE);
+		JLabel lbl = new JLabel("<html><b>"+contents+"</b></html>");
+		lbl.setForeground(new Color(255,255,255));
+		BalloonTip bt = new BalloonTip(component, lbl, tipStyle, Orientation.LEFT_ABOVE, AttachLocation.ALIGNED, 10, 10, false);
+		JButton button = new JButton();
+		ImageIcon imageIcon = new ImageIcon("closeIcon.png");
+		button.setOpaque(false);
+		button.setContentAreaFilled(false);
+		button.setBorderPainted(false);
+		button.setIcon(imageIcon);
+		bt.setCloseButton(button, false);
+		return bt;
 	}
 	
+	/**
+	 * hides all balloontips
+	 */
 	public void hideBalloonTips() {
 		firstNameBalloon.setVisible(false);
 		middleNameBalloon.setVisible(false);

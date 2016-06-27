@@ -241,7 +241,6 @@ public class Patient {
 			hasEstBirthDate = true;
 			//get estimated birthDay
 			Calendar now = Calendar.getInstance();
-			System.out.println(now.get(Calendar.MONTH));
 			if(estBirthYears != -1) {
 				now.add(Calendar.YEAR, -1*estBirthYears);
 			}

@@ -47,13 +47,11 @@ public class DrawArea extends JComponent {
  
     addMouseMotionListener(new MouseMotionAdapter() {
       public void mouseDragged(MouseEvent e) {
-    	 System.out.println("moving");
         // coord x,y when drag mouse
         currentX = e.getX();
         currentY = e.getY();
  
         if (g2 != null) {
-        	System.out.println("not null");
           // draw line if g2 context not null
           g2.drawLine(oldX, oldY, currentX, currentY);
           // refresh draw area to repaint
@@ -73,7 +71,6 @@ public class DrawArea extends JComponent {
       // image to draw null ==> we create
       image = createImage(getSize().width, getSize().height);
       g2 = (Graphics2D) image.getGraphics();
-      System.out.print("g2 set");
       // enable antialiasing
       g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
       
