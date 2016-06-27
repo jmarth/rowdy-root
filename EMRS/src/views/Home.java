@@ -5,7 +5,9 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import database.GatewayException;
 import database.PatientTableGateway;
@@ -21,12 +23,16 @@ import java.awt.Button;
 import java.awt.TextField;
 import java.awt.Toolkit;
 import java.awt.FlowLayout;
+
+import javax.swing.AbstractButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
@@ -43,6 +49,7 @@ import javax.swing.JOptionPane;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -54,18 +61,19 @@ import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 public class Home extends JFrame {
 
 	private JPanel contentPane;
-	final JButton btnHome = new JButton("Home");
 	final JButton btnAddPatient = new JButton("Add Patient");
 	final JLabel lblPatientSearch= new JLabel("Patient Search");
 	final JButton btnFindPatient = new JButton("Find Patient");
 	JButton btnLogout = new JButton("Logout");
 	final JTextField textFieldSearch = new JTextField();
 	private HomeModel homeModel;
-	private final JLabel lblNewLabel = new JLabel("");
+	private final JButton btnHome = new JButton("");
 
 	
 	/**
@@ -90,7 +98,6 @@ public class Home extends JFrame {
 	 * Home constructor
 	 */
 	public Home() {
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\marth\\Downloads\\LogoMakr (5).png"));
 		homeModel = new HomeModel(this);
 		final Home home = this;
 		
@@ -127,7 +134,44 @@ public class Home extends JFrame {
 			}
 		});
 		textFieldSearch.setColumns(10);
-	
+		MouseListener ml = (new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				((Component) arg0.getSource()).setBackground(new Color(2,108,143));
+				((JComponent) arg0.getSource()).setOpaque(true);
+				//btnAddPatient.setContentAreaFilled(true);
+				((AbstractButton) arg0.getSource()).setBorderPainted(false);
+				System.out.println("mouse over");
+			}
+			public void mouseExited(MouseEvent arg0) {
+				((Component) arg0.getSource()).setBackground(new Color(0, 153, 204));
+				((JComponent) arg0.getSource()).setOpaque(true);
+				//btnAddPatient.setContentAreaFilled(true);
+				((AbstractButton) arg0.getSource()).setBorderPainted(false);
+				System.out.println("mouse over");
+			}
+		});
+		
+		btnHome.setIcon(new ImageIcon("logo1.png"));
+		btnHome.setOpaque(true);
+		btnHome.setContentAreaFilled(false);
+		btnHome.setBorderPainted(false);
+		btnHome.addMouseListener(ml);
+		//home button on click
+		btnHome.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				showHomeView();
+			}
+		});
+		
+		btnAddPatient.addMouseListener(ml);
+		btnAddPatient.setToolTipText("Add Patient");
+		btnAddPatient.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		btnAddPatient.setForeground(new Color(255, 255, 255));
+		btnAddPatient.setOpaque(true);
+		btnAddPatient.setContentAreaFilled(false);
+		btnAddPatient.setBorderPainted(false);
+
 		//add patient button on click
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -135,13 +179,12 @@ public class Home extends JFrame {
 				 setCenterPanel(homeModel.getPatientInfo().getContentPane());
 			}
 		});
-		
-		//home button on click
-		btnHome.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				showHomeView();
-			}
-		});
+		btnLogout.setForeground(new Color(255, 255, 255));
+		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		btnLogout.setOpaque(true);
+		btnLogout.setContentAreaFilled(false);
+		btnLogout.setBorderPainted(false);
+		btnLogout.addMouseListener(ml);
 		
 		//logout button on click
 		btnLogout.addActionListener(new ActionListener() {
@@ -155,6 +198,12 @@ public class Home extends JFrame {
 				}
 			}
 		});
+		btnFindPatient.addMouseListener(ml);
+		btnFindPatient.setForeground(new Color(255, 255, 255));
+		btnFindPatient.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		btnFindPatient.setOpaque(true);
+		btnFindPatient.setContentAreaFilled(false);
+		btnFindPatient.setBorderPainted(false);
 		
 		//find patient button on click
 		btnFindPatient.addActionListener(new ActionListener() {
@@ -165,6 +214,12 @@ public class Home extends JFrame {
 		});
 		
 		JButton btnSketch = new JButton("Sketch");
+		btnSketch.addMouseListener(ml);
+		btnSketch.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		btnSketch.setForeground(new Color(255, 255, 255));
+		btnSketch.setOpaque(true);
+		btnSketch.setContentAreaFilled(false);
+		btnSketch.setBorderPainted(false);
 		btnSketch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//need to maximize at first for sketch scaling to work correctly
@@ -181,38 +236,35 @@ public class Home extends JFrame {
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(6)
 					.addComponent(btnHome)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnAddPatient)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnFindPatient)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnSketch)
-					.addPreferredGap(ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
 					.addComponent(lblPatientSearch)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-					.addGap(33)
+					.addGap(19)
 					.addComponent(btnLogout))
 		);
 		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addGroup(gl_panel.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblNewLabel)
-						.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-							.addComponent(btnHome)
-							.addComponent(btnAddPatient)
-							.addComponent(btnFindPatient)
-							.addComponent(btnSketch)
-							.addComponent(btnLogout)
-							.addComponent(lblPatientSearch)
-							.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+					.addComponent(btnAddPatient, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+					.addComponent(btnFindPatient, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+					.addComponent(btnSketch, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
+				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
+					.addComponent(btnLogout, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(lblPatientSearch))
+				.addComponent(btnHome, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
 		);
+		lblPatientSearch.setForeground(new Color(255, 255, 255));
+		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panel.setLayout(gl_panel);
 		
 		//set up center/main panel
@@ -248,11 +300,11 @@ public class Home extends JFrame {
 	public void showHomeView() {
 		LayoutManager layout = contentPane.getLayout();
 		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
-		 if(centerComponent != null ) {
-			 contentPane.remove(centerComponent);
-		 }
-		 if(homeModel.getPatientInfo() != null)
-				homeModel.getPatientInfo().hideBalloonTips();
+		if(centerComponent != null ) {
+			contentPane.remove(centerComponent);
+		}
+		if(homeModel.getPatientInfo() != null)
+			homeModel.getPatientInfo().hideBalloonTips();
 		contentPane.repaint();
 		contentPane.revalidate();
 	}
