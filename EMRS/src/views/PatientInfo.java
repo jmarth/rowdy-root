@@ -511,16 +511,16 @@ public class PatientInfo extends JFrame {
 		panel_9.add(panel_5, gbc_panel_5);
 		GridBagLayout gbl_panel_5 = new GridBagLayout();
 		gbl_panel_5.columnWidths = new int[] {0, 0, 0};
-		gbl_panel_5.rowHeights = new int[]{0, 0, 0, 0};
+		gbl_panel_5.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_panel_5.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_5.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_5.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_5.setLayout(gbl_panel_5);
 		
 		JLabel lblAddress = new JLabel("Address");
 		GridBagConstraints gbc_lblAddress = new GridBagConstraints();
-		gbc_lblAddress.insets = new Insets(0, 0, 5, 5);
+		gbc_lblAddress.insets = new Insets(0, 0, 5, 0);
 		gbc_lblAddress.anchor = GridBagConstraints.WEST;
-		gbc_lblAddress.gridx = 0;
+		gbc_lblAddress.gridx = 1;
 		gbc_lblAddress.gridy = 1;
 		panel_5.add(lblAddress, gbc_lblAddress);
 		
@@ -529,23 +529,23 @@ public class PatientInfo extends JFrame {
 		gbc_addressTextField.insets = new Insets(0, 0, 5, 0);
 		gbc_addressTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_addressTextField.gridx = 1;
-		gbc_addressTextField.gridy = 1;
+		gbc_addressTextField.gridy = 2;
 		panel_5.add(addressTextField, gbc_addressTextField);
 		addressTextField.setColumns(25);
 		
 		JLabel lblAddress_1 = new JLabel("Address 2");
 		GridBagConstraints gbc_lblAddress_1 = new GridBagConstraints();
-		gbc_lblAddress_1.anchor = GridBagConstraints.EAST;
-		gbc_lblAddress_1.insets = new Insets(0, 0, 0, 5);
-		gbc_lblAddress_1.gridx = 0;
-		gbc_lblAddress_1.gridy = 2;
+		gbc_lblAddress_1.insets = new Insets(0, 0, 5, 0);
+		gbc_lblAddress_1.anchor = GridBagConstraints.WEST;
+		gbc_lblAddress_1.gridx = 1;
+		gbc_lblAddress_1.gridy = 3;
 		panel_5.add(lblAddress_1, gbc_lblAddress_1);
 		
 		address2TextField = new JTextField();
 		GridBagConstraints gbc_address2TextField = new GridBagConstraints();
 		gbc_address2TextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_address2TextField.gridx = 1;
-		gbc_address2TextField.gridy = 2;
+		gbc_address2TextField.gridy = 4;
 		panel_5.add(address2TextField, gbc_address2TextField);
 		address2TextField.setColumns(25);
 		
