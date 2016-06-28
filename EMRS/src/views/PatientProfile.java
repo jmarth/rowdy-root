@@ -113,6 +113,7 @@ public class PatientProfile extends JFrame {
 		
 		JLabel lblfirstname = new JLabel(patient.getFirstName());
 		lblfirstname.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblfirstname.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lblfirstname = new GridBagConstraints();
 		gbc_lblfirstname.insets = new Insets(5, 0, 5, 5);
 		gbc_lblfirstname.gridx = 0;
@@ -121,6 +122,7 @@ public class PatientProfile extends JFrame {
 		
 		JLabel lblmiddlename = new JLabel(patient.getMiddleName());
 		lblmiddlename.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lblmiddlename.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lblmiddlename = new GridBagConstraints();
 		gbc_lblmiddlename.insets = new Insets(5, 0, 5, 5);
 		gbc_lblmiddlename.gridx = 1;
@@ -129,6 +131,7 @@ public class PatientProfile extends JFrame {
 		
 		JLabel lbllastname = new JLabel(patient.getLastName());
 		lbllastname.setFont(new Font("Tahoma", Font.BOLD, 18));
+		lbllastname.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lbllastname = new GridBagConstraints();
 		gbc_lbllastname.insets = new Insets(5, 0, 5, 0);
 		gbc_lbllastname.gridx = 2;

@@ -191,6 +191,7 @@ public class PatientInfo extends JFrame {
 		TitledBorder tb_1 = new TitledBorder(null, "Requried Patient Information", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
 		tb_1.setTitleJustification(TitledBorder.CENTER);
 		tb_1.setTitleFont(new Font("Tahoma", Font.BOLD, 14));
+		tb_1.setTitleColor(new Color(2,108,143));
 		panel_7.setBorder(tb_1);
 		
 		GridBagConstraints gbc_panel_7 = new GridBagConstraints();
@@ -237,7 +238,7 @@ public class PatientInfo extends JFrame {
 			}
 		});
 		GridBagConstraints gbc_hasNameCheckBox = new GridBagConstraints();
-		gbc_hasNameCheckBox.anchor = GridBagConstraints.WEST;
+		gbc_hasNameCheckBox.anchor = GridBagConstraints.SOUTHWEST;
 		gbc_hasNameCheckBox.insets = new Insets(0, 0, 5, 5);
 		gbc_hasNameCheckBox.gridx = 0;
 		gbc_hasNameCheckBox.gridy = 1;
@@ -253,7 +254,7 @@ public class PatientInfo extends JFrame {
 		GridBagLayout gbl_panel_15 = new GridBagLayout();
 		gbl_panel_15.columnWidths = new int[]{0, 0};
 		gbl_panel_15.rowHeights = new int[]{0, 0, 0};
-		gbl_panel_15.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_15.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel_15.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		panel_15.setLayout(gbl_panel_15);
 		
@@ -266,7 +267,7 @@ public class PatientInfo extends JFrame {
 		
 		final JComboBox genderComboBox = new JComboBox();
 		GridBagConstraints gbc_genderComboBox = new GridBagConstraints();
-		gbc_genderComboBox.anchor = GridBagConstraints.WEST;
+		gbc_genderComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_genderComboBox.gridx = 0;
 		gbc_genderComboBox.gridy = 1;
 		panel_15.add(genderComboBox, gbc_genderComboBox);
@@ -308,7 +309,7 @@ public class PatientInfo extends JFrame {
 		gbc_firstNameTextField.gridx = 0;
 		gbc_firstNameTextField.gridy = 3;
 		panel_1.add(firstNameTextField, gbc_firstNameTextField);
-		firstNameTextField.setColumns(10);
+		firstNameTextField.setColumns(15);
 		
 		middleNameTextField = new JTextField();
 		middleNameBalloon = createBalloonTip(middleNameTextField, "Invalid name");
@@ -320,7 +321,7 @@ public class PatientInfo extends JFrame {
 		gbc_middleNameTextField.gridx = 1;
 		gbc_middleNameTextField.gridy = 3;
 		panel_1.add(middleNameTextField, gbc_middleNameTextField);
-		middleNameTextField.setColumns(10);
+		middleNameTextField.setColumns(9);
 		
 		lastNameTextField = new JTextField();
 		lastNameBalloon = createBalloonTip(lastNameTextField, "Invalid name");
@@ -332,15 +333,17 @@ public class PatientInfo extends JFrame {
 		gbc_lastNameTextField.gridx = 2;
 		gbc_lastNameTextField.gridy = 3;
 		panel_1.add(lastNameTextField, gbc_lastNameTextField);
-		lastNameTextField.setColumns(10);
+		lastNameTextField.setColumns(15);
 		TitledBorder tb_2 = new TitledBorder(null, "What's the patient's gender?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
 		tb_2.setTitleJustification(TitledBorder.CENTER);
 		tb_2.setTitleFont(new Font("Tahoma", Font.BOLD, 14));
+		tb_2.setTitleColor(new Color(2,108,143));
 		
 		JPanel panel_8 = new JPanel();
-		TitledBorder tb_3 = new TitledBorder(null, "What's the patient's birth date?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
+		TitledBorder tb_3 = new TitledBorder(null, "Patient's birth date", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
 		tb_3.setTitleJustification(TitledBorder.CENTER);
 		tb_3.setTitleFont(new Font("Tahoma", Font.BOLD, 14));
+		tb_3.setTitleColor(new Color(2,108,143));
 		panel_8.setBorder(tb_3);
 		GridBagConstraints gbc_panel_8 = new GridBagConstraints();
 		gbc_panel_8.fill = GridBagConstraints.HORIZONTAL;
@@ -409,17 +412,17 @@ public class PatientInfo extends JFrame {
 		dateDayBalloon = createBalloonTip(birthDayTextField, "Day must be 1-31");
 		addBalloonTip(birthDayTextField, dateDayBalloon, "^(([1-9]|[12][0-9]|3[01])$)?");
 		GridBagConstraints gbc_birthDayTextField = new GridBagConstraints();
-		gbc_birthDayTextField.anchor = GridBagConstraints.WEST;
+		gbc_birthDayTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_birthDayTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_birthDayTextField.gridx = 0;
 		gbc_birthDayTextField.gridy = 2;
 		panel_4.add(birthDayTextField, gbc_birthDayTextField);
-		birthDayTextField.setColumns(10);
+		birthDayTextField.setColumns(15);
 		
 		final JComboBox birthMonthComboBox = new JComboBox();
 		birthMonthComboBox.setModel(new DefaultComboBoxModel(new String[] {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}));
 		GridBagConstraints gbc_birthMonthComboBox = new GridBagConstraints();
-		gbc_birthMonthComboBox.anchor = GridBagConstraints.WEST;
+		gbc_birthMonthComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_birthMonthComboBox.insets = new Insets(0, 0, 5, 5);
 		gbc_birthMonthComboBox.gridx = 1;
 		gbc_birthMonthComboBox.gridy = 2;
@@ -429,12 +432,12 @@ public class PatientInfo extends JFrame {
 		dateYearBalloon = createBalloonTip(birthYearTextField, "Invalid year");
 		addBalloonTip(birthYearTextField, dateYearBalloon, "(^\\d{4}$)?");
 		GridBagConstraints gbc_birthYearTextField = new GridBagConstraints();
-		gbc_birthYearTextField.anchor = GridBagConstraints.WEST;
+		gbc_birthYearTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_birthYearTextField.insets = new Insets(0, 0, 5, 0);
 		gbc_birthYearTextField.gridx = 2;
 		gbc_birthYearTextField.gridy = 2;
 		panel_4.add(birthYearTextField, gbc_birthYearTextField);
-		birthYearTextField.setColumns(10);
+		birthYearTextField.setColumns(15);
 		
 		JLabel lblOr = new JLabel("Or");
 		GridBagConstraints gbc_lblOr = new GridBagConstraints();
@@ -463,7 +466,7 @@ public class PatientInfo extends JFrame {
 		estYearBalloon = createBalloonTip(estYearsTextField, "Invalid age");
 		addBalloonTip(estYearsTextField, estYearBalloon, "(^[0-9]*$)?");
 		GridBagConstraints gbc_estYearsTextField = new GridBagConstraints();
-		gbc_estYearsTextField.anchor = GridBagConstraints.WEST;
+		gbc_estYearsTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_estYearsTextField.insets = new Insets(0, 0, 0, 5);
 		gbc_estYearsTextField.gridx = 0;
 		gbc_estYearsTextField.gridy = 5;
@@ -474,7 +477,7 @@ public class PatientInfo extends JFrame {
 		estMonthBalloon = createBalloonTip(estMonthsTextField, "Month must be 1-12");
 		addBalloonTip(estMonthsTextField, estMonthBalloon, "(1[0-2]|[1-9])?");
 		GridBagConstraints gbc_estMonthsTextField = new GridBagConstraints();
-		gbc_estMonthsTextField.anchor = GridBagConstraints.WEST;
+		gbc_estMonthsTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_estMonthsTextField.gridx = 2;
 		gbc_estMonthsTextField.gridy = 5;
 		panel_4.add(estMonthsTextField, gbc_estMonthsTextField);
@@ -485,9 +488,10 @@ public class PatientInfo extends JFrame {
 		estMonthBalloon.setVisible(false);
 		
 		JPanel panel_9 = new JPanel();
-		TitledBorder tb_4 = new TitledBorder(null, "What's the patient's address?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
+		TitledBorder tb_4 = new TitledBorder(null, "Patient's address", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
 		tb_4.setTitleJustification(TitledBorder.CENTER);
 		tb_4.setTitleFont(new Font("Tahoma", Font.BOLD, 14));
+		tb_4.setTitleColor(new Color(2,108,143));
 		panel_9.setBorder(tb_4);
 		GridBagConstraints gbc_panel_9 = new GridBagConstraints();
 		gbc_panel_9.fill = GridBagConstraints.HORIZONTAL;
@@ -531,7 +535,7 @@ public class PatientInfo extends JFrame {
 		gbc_addressTextField.gridx = 1;
 		gbc_addressTextField.gridy = 2;
 		panel_5.add(addressTextField, gbc_addressTextField);
-		addressTextField.setColumns(25);
+		addressTextField.setColumns(42);
 		
 		JLabel lblAddress_1 = new JLabel("Address 2");
 		GridBagConstraints gbc_lblAddress_1 = new GridBagConstraints();
@@ -572,6 +576,7 @@ public class PatientInfo extends JFrame {
 		
 		JLabel lblStateprovince = new JLabel("State/Province");
 		GridBagConstraints gbc_lblStateprovince = new GridBagConstraints();
+		gbc_lblStateprovince.anchor = GridBagConstraints.WEST;
 		gbc_lblStateprovince.insets = new Insets(0, 0, 5, 5);
 		gbc_lblStateprovince.gridx = 1;
 		gbc_lblStateprovince.gridy = 0;
@@ -579,6 +584,7 @@ public class PatientInfo extends JFrame {
 		
 		JLabel lblCountry = new JLabel("Country");
 		GridBagConstraints gbc_lblCountry = new GridBagConstraints();
+		gbc_lblCountry.anchor = GridBagConstraints.WEST;
 		gbc_lblCountry.insets = new Insets(0, 0, 5, 5);
 		gbc_lblCountry.gridx = 2;
 		gbc_lblCountry.gridy = 0;
@@ -586,6 +592,7 @@ public class PatientInfo extends JFrame {
 		
 		JLabel lblPostalCode = new JLabel("Postal Code");
 		GridBagConstraints gbc_lblPostalCode = new GridBagConstraints();
+		gbc_lblPostalCode.anchor = GridBagConstraints.WEST;
 		gbc_lblPostalCode.insets = new Insets(0, 0, 5, 0);
 		gbc_lblPostalCode.gridx = 3;
 		gbc_lblPostalCode.gridy = 0;
@@ -613,7 +620,7 @@ public class PatientInfo extends JFrame {
 		gbc_stateTextField.gridx = 1;
 		gbc_stateTextField.gridy = 1;
 		panel_11.add(stateTextField, gbc_stateTextField);
-		stateTextField.setColumns(10);
+		stateTextField.setColumns(9);
 
 		countryTextField = new JTextField();
 		countryBalloon = createBalloonTip(countryTextField, "Invalid country");
@@ -634,12 +641,13 @@ public class PatientInfo extends JFrame {
 		gbc_postalCodeTextField.gridx = 3;
 		gbc_postalCodeTextField.gridy = 1;
 		panel_11.add(postalCodeTextField, gbc_postalCodeTextField);
-		postalCodeTextField.setColumns(10);
+		postalCodeTextField.setColumns(9);
 		
 		JPanel panel_6 = new JPanel();
-		TitledBorder tb_5 = new TitledBorder(null, "What's the patient's phone number?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
+		TitledBorder tb_5 = new TitledBorder(null, "Patient's phone number", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
 		tb_5.setTitleJustification(TitledBorder.CENTER);
 		tb_5.setTitleFont(new Font("Tahoma", Font.BOLD, 14));
+		tb_5.setTitleColor(new Color(2,108,143));
 		panel_6.setBorder(tb_5);
 		GridBagConstraints gbc_panel_6 = new GridBagConstraints();
 		gbc_panel_6.insets = new Insets(0, 0, 5, 0);
@@ -649,44 +657,23 @@ public class PatientInfo extends JFrame {
 		panel.add(panel_6, gbc_panel_6);
 		GridBagLayout gbl_panel_6 = new GridBagLayout();
 		gbl_panel_6.columnWidths = new int[]{672, 0};
-		gbl_panel_6.rowHeights = new int[]{81, 0};
+		gbl_panel_6.rowHeights = new int[]{0, 81, 0};
 		gbl_panel_6.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_6.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		gbl_panel_6.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		panel_6.setLayout(gbl_panel_6);
-		
-		JPanel panel_10 = new JPanel();
-		GridBagConstraints gbc_panel_10 = new GridBagConstraints();
-		gbc_panel_10.fill = GridBagConstraints.BOTH;
-		gbc_panel_10.gridx = 0;
-		gbc_panel_10.gridy = 0;
-		panel_6.add(panel_10, gbc_panel_10);
-		GridBagLayout gbl_panel_10 = new GridBagLayout();
-		gbl_panel_10.columnWidths = new int[]{672, 0};
-		gbl_panel_10.rowHeights = new int[]{20, 0};
-		gbl_panel_10.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_10.rowWeights = new double[]{1.0, Double.MIN_VALUE};
-		panel_10.setLayout(gbl_panel_10);
 		
 		JPanel panel_12 = new JPanel();
 		GridBagConstraints gbc_panel_12 = new GridBagConstraints();
-		gbc_panel_12.fill = GridBagConstraints.VERTICAL;
+		gbc_panel_12.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_12.gridx = 0;
 		gbc_panel_12.gridy = 0;
-		panel_10.add(panel_12, gbc_panel_12);
-		GridBagLayout gbl_panel_12 = new GridBagLayout();
-		gbl_panel_12.columnWidths = new int[]{0, 0};
-		gbl_panel_12.rowHeights = new int[]{0, 0};
-		gbl_panel_12.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_panel_12.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel_12.setLayout(gbl_panel_12);
+		panel_6.add(panel_12, gbc_panel_12);
+		panel_12.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		phoneNumberTextField = new JTextField();
-		GridBagConstraints gbc_phoneNumberTextField = new GridBagConstraints();
-		gbc_phoneNumberTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_phoneNumberTextField.gridx = 0;
-		gbc_phoneNumberTextField.gridy = 0;
-		panel_12.add(phoneNumberTextField, gbc_phoneNumberTextField);
-		phoneNumberTextField.setColumns(10);
+		phoneNumberTextField.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_12.add(phoneNumberTextField);
+		phoneNumberTextField.setColumns(20);
 		
 		SwingUtilities.invokeLater(new Runnable() {
 		      public void run() {
