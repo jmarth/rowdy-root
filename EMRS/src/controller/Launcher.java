@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import database.GatewayException;
@@ -17,14 +18,22 @@ import views.Login;
 
 public class Launcher {
 	public static void main(String[] args) {
-		
 		try {
-	        UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-	    
-		//initComponents();
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				Login login = new Login();

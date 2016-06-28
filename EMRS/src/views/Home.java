@@ -105,7 +105,7 @@ public class Home extends JFrame {
 		homeModel.setPatientTableGateway();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 968, 902);
+		setBounds(100, 100, 1139, 1124);
 		
 		//set up main panel
 		contentPane = new JPanel();
@@ -117,6 +117,7 @@ public class Home extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(0, 153, 204));
 		contentPane.add(panel, BorderLayout.NORTH);
+		textFieldSearch.setHorizontalAlignment(SwingConstants.RIGHT);
 		textFieldSearch.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
@@ -166,7 +167,7 @@ public class Home extends JFrame {
 		
 		btnAddPatient.addMouseListener(ml);
 		btnAddPatient.setToolTipText("Add Patient");
-		btnAddPatient.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		btnAddPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnAddPatient.setForeground(new Color(255, 255, 255));
 		btnAddPatient.setOpaque(true);
 		btnAddPatient.setContentAreaFilled(false);
@@ -179,8 +180,9 @@ public class Home extends JFrame {
 				 setCenterPanel(homeModel.getPatientInfo().getContentPane());
 			}
 		});
+		btnLogout.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnLogout.setForeground(new Color(255, 255, 255));
-		btnLogout.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		btnLogout.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnLogout.setOpaque(true);
 		btnLogout.setContentAreaFilled(false);
 		btnLogout.setBorderPainted(false);
@@ -200,7 +202,7 @@ public class Home extends JFrame {
 		});
 		btnFindPatient.addMouseListener(ml);
 		btnFindPatient.setForeground(new Color(255, 255, 255));
-		btnFindPatient.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		btnFindPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnFindPatient.setOpaque(true);
 		btnFindPatient.setContentAreaFilled(false);
 		btnFindPatient.setBorderPainted(false);
@@ -215,7 +217,7 @@ public class Home extends JFrame {
 		
 		JButton btnSketch = new JButton("Sketch");
 		btnSketch.addMouseListener(ml);
-		btnSketch.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		btnSketch.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnSketch.setForeground(new Color(255, 255, 255));
 		btnSketch.setOpaque(true);
 		btnSketch.setContentAreaFilled(false);
@@ -238,30 +240,31 @@ public class Home extends JFrame {
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(6)
 					.addComponent(btnHome)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(btnAddPatient)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnFindPatient)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnSketch)
-					.addPreferredGap(ComponentPlacement.RELATED, 123, Short.MAX_VALUE)
-					.addComponent(lblPatientSearch)
+					.addComponent(btnSketch, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 314, Short.MAX_VALUE)
+					.addComponent(lblPatientSearch, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
-					.addGap(19)
-					.addComponent(btnLogout))
+					.addGap(40)
+					.addComponent(btnLogout)
+					.addContainerGap())
 		);
 		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-					.addComponent(btnAddPatient, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-					.addComponent(btnFindPatient, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
-					.addComponent(btnSketch, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
+					.addComponent(btnAddPatient, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+					.addComponent(btnFindPatient, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
 				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-					.addComponent(btnLogout, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(lblPatientSearch))
-				.addComponent(btnHome, GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+					.addComponent(lblPatientSearch, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+					.addComponent(btnLogout, 0, 0, Short.MAX_VALUE))
+				.addComponent(btnHome, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+				.addComponent(btnSketch, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
 		);
 		lblPatientSearch.setForeground(new Color(255, 255, 255));
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -269,7 +272,7 @@ public class Home extends JFrame {
 		
 		//set up center/main panel
 		JPanel panel_1 = new JPanel();
-		contentPane.add(panel_1, BorderLayout.CENTER);
+		contentPane.add(panel_1, BorderLayout.EAST);
 	}
 	
 	/**

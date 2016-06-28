@@ -120,7 +120,7 @@ public class PatientInfo extends JFrame {
 		imagePath = "";
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 710, 727);
+		setBounds(100, 100, 710, 1118);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -182,13 +182,13 @@ public class PatientInfo extends JFrame {
 		scrollPane.setViewportView(panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] {672, 0};
-		gbl_panel.rowHeights = new int[] {81, 81, 81, 81, 81, 0, 0};
+		gbl_panel.rowHeights = new int[] {0, 0, 0, 0, 0, 0, 0};
 		gbl_panel.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel.rowWeights = new double[]{0, 0, 0, 0, 0, 1.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
 		JPanel panel_7 = new JPanel();
-		TitledBorder tb_1 = new TitledBorder(null, "What's the patient's name?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
+		TitledBorder tb_1 = new TitledBorder(null, "Requried Patient Information", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
 		tb_1.setTitleJustification(TitledBorder.CENTER);
 		tb_1.setTitleFont(new Font("Tahoma", Font.BOLD, 14));
 		panel_7.setBorder(tb_1);
@@ -215,8 +215,8 @@ public class PatientInfo extends JFrame {
 		GridBagLayout gbl_panel_1 = new GridBagLayout();
 		gbl_panel_1.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_1.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
-		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_1.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_1.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_1.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
 		hasNameCheckBox.addMouseListener(new MouseAdapter() {
@@ -242,6 +242,35 @@ public class PatientInfo extends JFrame {
 		gbc_hasNameCheckBox.gridx = 0;
 		gbc_hasNameCheckBox.gridy = 1;
 		panel_1.add(hasNameCheckBox, gbc_hasNameCheckBox);
+		
+		JPanel panel_15 = new JPanel();
+		GridBagConstraints gbc_panel_15 = new GridBagConstraints();
+		gbc_panel_15.insets = new Insets(0, 0, 5, 5);
+		gbc_panel_15.fill = GridBagConstraints.BOTH;
+		gbc_panel_15.gridx = 2;
+		gbc_panel_15.gridy = 1;
+		panel_1.add(panel_15, gbc_panel_15);
+		GridBagLayout gbl_panel_15 = new GridBagLayout();
+		gbl_panel_15.columnWidths = new int[]{0, 0};
+		gbl_panel_15.rowHeights = new int[]{0, 0, 0};
+		gbl_panel_15.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_15.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		panel_15.setLayout(gbl_panel_15);
+		
+		JLabel lblNewLabel_3 = new JLabel("Gender (required)");
+		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
+		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 0);
+		gbc_lblNewLabel_3.gridx = 0;
+		gbc_lblNewLabel_3.gridy = 0;
+		panel_15.add(lblNewLabel_3, gbc_lblNewLabel_3);
+		
+		final JComboBox genderComboBox = new JComboBox();
+		GridBagConstraints gbc_genderComboBox = new GridBagConstraints();
+		gbc_genderComboBox.anchor = GridBagConstraints.WEST;
+		gbc_genderComboBox.gridx = 0;
+		gbc_genderComboBox.gridy = 1;
+		panel_15.add(genderComboBox, gbc_genderComboBox);
+		genderComboBox.setModel(new DefaultComboBoxModel(new String[] {"male", "female"}));
 		
 		JLabel lblNewLabel = new JLabel("Given (required)");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
@@ -304,52 +333,9 @@ public class PatientInfo extends JFrame {
 		gbc_lastNameTextField.gridy = 3;
 		panel_1.add(lastNameTextField, gbc_lastNameTextField);
 		lastNameTextField.setColumns(10);
-		
-		JPanel panel_2 = new JPanel();
 		TitledBorder tb_2 = new TitledBorder(null, "What's the patient's gender?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
 		tb_2.setTitleJustification(TitledBorder.CENTER);
 		tb_2.setTitleFont(new Font("Tahoma", Font.BOLD, 14));
-		panel_2.setBorder(tb_2);
-		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
-		gbc_panel_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel_2.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_2.gridx = 0;
-		gbc_panel_2.gridy = 1;
-		panel.add(panel_2, gbc_panel_2);
-		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{672, 0};
-		gbl_panel_2.rowHeights = new int[]{81, 0};
-		gbl_panel_2.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel_2.setLayout(gbl_panel_2);
-		
-		JPanel panel_3 = new JPanel();
-		GridBagConstraints gbc_panel_3 = new GridBagConstraints();
-		gbc_panel_3.fill = GridBagConstraints.VERTICAL;
-		gbc_panel_3.gridx = 0;
-		gbc_panel_3.gridy = 0;
-		panel_2.add(panel_3, gbc_panel_3);
-		GridBagLayout gbl_panel_3 = new GridBagLayout();
-		gbl_panel_3.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_3.rowHeights = new int[]{0, 0, 0, 0};
-		gbl_panel_3.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_3.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
-		panel_3.setLayout(gbl_panel_3);
-		
-		JLabel lblNewLabel_3 = new JLabel("(required)");
-		GridBagConstraints gbc_lblNewLabel_3 = new GridBagConstraints();
-		gbc_lblNewLabel_3.insets = new Insets(0, 0, 5, 0);
-		gbc_lblNewLabel_3.gridx = 9;
-		gbc_lblNewLabel_3.gridy = 1;
-		panel_3.add(lblNewLabel_3, gbc_lblNewLabel_3);
-		
-		final JComboBox genderComboBox = new JComboBox();
-		genderComboBox.setModel(new DefaultComboBoxModel(new String[] {"male", "female"}));
-		GridBagConstraints gbc_genderComboBox = new GridBagConstraints();
-		gbc_genderComboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_genderComboBox.gridx = 9;
-		gbc_genderComboBox.gridy = 2;
-		panel_3.add(genderComboBox, gbc_genderComboBox);
 		
 		JPanel panel_8 = new JPanel();
 		TitledBorder tb_3 = new TitledBorder(null, "What's the patient's birth date?", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
@@ -364,7 +350,7 @@ public class PatientInfo extends JFrame {
 		panel.add(panel_8, gbc_panel_8);
 		GridBagLayout gbl_panel_8 = new GridBagLayout();
 		gbl_panel_8.columnWidths = new int[]{672, 0};
-		gbl_panel_8.rowHeights = new int[]{0, 0, 0, 0, 0, 81, 0};
+		gbl_panel_8.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_8.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel_8.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_8.setLayout(gbl_panel_8);
@@ -561,7 +547,7 @@ public class PatientInfo extends JFrame {
 		gbc_address2TextField.gridx = 1;
 		gbc_address2TextField.gridy = 2;
 		panel_5.add(address2TextField, gbc_address2TextField);
-		address2TextField.setColumns(10);
+		address2TextField.setColumns(25);
 		
 		JPanel panel_11 = new JPanel();
 		GridBagConstraints gbc_panel_11 = new GridBagConstraints();
@@ -725,7 +711,7 @@ public class PatientInfo extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e)
 			  {
-				home.showHomeView();
+				//home.showHomeView();
 				hideBalloonTips();
 			  }
 		});
