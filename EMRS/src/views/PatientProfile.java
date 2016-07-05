@@ -24,11 +24,19 @@ import javax.swing.border.TitledBorder;
 
 import models.Patient;
 import javax.swing.JSeparator;
+import java.awt.GridLayout;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PatientProfile extends JFrame {
 
 	private JPanel contentPane;
 	private static String pname;
+	private JTable allergyTable;
 
 
 	/**
@@ -485,6 +493,10 @@ public class PatientProfile extends JFrame {
 		gbc_separator_6.gridy = 1;
 		panel_7.add(separator_6, gbc_separator_6);
 		
+		// Create tab for Allergies
+		JTable allergyTable = createAllergyTab(tabbedPane);
+		
+		
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("History", null, panel_5, null);
 		
@@ -502,6 +514,49 @@ public class PatientProfile extends JFrame {
 		gbl_panel_3.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panel_3.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_3.setLayout(gbl_panel_3);
+	}
+	
+	/**
+	 * Create Allergy tab filled in with GUI elements/ActionListeners
+	 * @param tabbedPane JTabbedPane to add Allergy tab
+	 * @return JTable of Allergies to be filled in
+	 */
+	private JTable createAllergyTab(JTabbedPane tabbedPane){
+		// Create new tab for Allergies that has a scrollPane inside
+		JPanel allergiesPanel = new JPanel();
+		tabbedPane.addTab("Allergies", null, allergiesPanel, null);
+		GridBagLayout gbl_allergiesPanel = new GridBagLayout();
+		gbl_allergiesPanel.columnWeights = new double[]{1.0};
+		gbl_allergiesPanel.rowWeights = new double[]{0.0, 1.0};
+		allergiesPanel.setLayout(gbl_allergiesPanel);
+				
+		// Create button to add a New Allergy to a Patient
+		JButton btnNewAllergy = new JButton("New Allergy");
+		btnNewAllergy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("New Allergy?!");
+			}
+		});
+		GridBagConstraints gbc_btnNewAllergy = new GridBagConstraints();
+		gbc_btnNewAllergy.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnNewAllergy.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewAllergy.gridx = 0;
+		gbc_btnNewAllergy.gridy = 0;
+		allergiesPanel.add(btnNewAllergy, gbc_btnNewAllergy);
+				
+		// Add scrollPane to fit JTable inside of for list of Allergies
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 1;
+		allergiesPanel.add(scrollPane, gbc_scrollPane);
+				
+		// Add JTable to scrollPane
+		allergyTable = new JTable();
+		scrollPane.setViewportView(allergyTable);
+		
+		return allergyTable;
 	}
 	
 	public Container getContentPane() {
