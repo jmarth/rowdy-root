@@ -502,7 +502,7 @@ public class PatientProfile extends JFrame {
 		panel_7.add(separator_6, gbc_separator_6);
 		
 		// Create tab for Allergies
-		JTable allergyTable = createAllergyTab(tabbedPane);
+		JTable allergyTable = createAllergyTab(tabbedPane, patient);
 		populateAllergyTable(allergyTable, patient);
 		
 		
@@ -530,7 +530,7 @@ public class PatientProfile extends JFrame {
 	 * @param tabbedPane JTabbedPane to add Allergy tab
 	 * @return JTable of Allergies to be filled in
 	 */
-	private JTable createAllergyTab(JTabbedPane tabbedPane){
+	private JTable createAllergyTab(final JTabbedPane tabbedPane, final Patient patient){
 		// Create new tab for Allergies that has a scrollPane inside
 		JPanel allergiesPanel = new JPanel();
 		tabbedPane.addTab("Allergies", null, allergiesPanel, null);
@@ -543,7 +543,9 @@ public class PatientProfile extends JFrame {
 		JButton btnNewAllergy = new JButton("New Allergy");
 		btnNewAllergy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("New Allergy?!");
+				int index = tabbedPane.indexOfTab("Allergies");
+				System.out.println(index);
+				tabbedPane.setComponentAt(index, new NewAllergyFormView(tabbedPane, patient));
 			}
 		});
 		GridBagConstraints gbc_btnNewAllergy = new GridBagConstraints();
