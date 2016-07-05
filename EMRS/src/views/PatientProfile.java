@@ -22,6 +22,8 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.border.TitledBorder;
 
+import models.Allergy;
+import models.AllergyList;
 import models.Patient;
 import javax.swing.JSeparator;
 import java.awt.GridLayout;
@@ -30,7 +32,13 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
 import java.awt.event.ActionEvent;
+import javax.swing.table.DefaultTableModel;
+
+import database.AllergyTableGatewayMySQL;
+import database.GatewayException;
 
 public class PatientProfile extends JFrame {
 
@@ -495,6 +503,7 @@ public class PatientProfile extends JFrame {
 		
 		// Create tab for Allergies
 		JTable allergyTable = createAllergyTab(tabbedPane);
+		populateAllergyTable(allergyTable, patient);
 		
 		
 		JPanel panel_5 = new JPanel();
@@ -554,9 +563,75 @@ public class PatientProfile extends JFrame {
 				
 		// Add JTable to scrollPane
 		allergyTable = new JTable();
+		allergyTable.setToolTipText("");
+		allergyTable.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Allergy", "Severity", "Adverse Reaction", "Date"
+			}
+		) {
+			private static final long serialVersionUID = 1L;
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		allergyTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+		allergyTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+		allergyTable.getColumnModel().getColumn(2).setPreferredWidth(175);
+		allergyTable.getColumnModel().getColumn(3).setPreferredWidth(135);
 		scrollPane.setViewportView(allergyTable);
 		
 		return allergyTable;
+	}
+	
+	/**
+	 * Populates the AllergyTable with all allergies related current Patient
+	 * @param allergyTable JTable to populate
+	 * @param patient Patient JTable to populate
+	 */
+	private void populateAllergyTable(JTable allergyTable, Patient patient){
+		// Get model of AllergyTable in order to add rows
+		// Declare variables
+		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
+		AllergyTableGatewayMySQL atg;
+		AllergyList al = new AllergyList();
+		List<Allergy> allergyList;
+		
+		/**
+		 * Try to connect to DB through AllergyTableGateway
+		 * Set the gateway of the AllergyList
+		 * Load Allergies into the AllergyList
+		 */
+		try {
+			atg = new AllergyTableGatewayMySQL();
+			al.setGateway(atg);
+			al.loadFromGateway();
+		} catch (GatewayException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		}
+		
+		// Find all allergies for the given patient
+		allergyList = al.getAllergyListForPatient(patient);
+		
+		/**
+		 * For every allergy in the allergyList
+		 * .. Add that model the JTable
+		 */
+		for(Allergy allergy : allergyList) {
+			model.addRow(new Object[]{
+					allergy.getAllergy(), 
+					allergy.getSeverity(), 
+					allergy.getAdverseReaction()
+				});
+		}
 	}
 	
 	public Container getContentPane() {
