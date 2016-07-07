@@ -22,15 +22,37 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.border.TitledBorder;
 
+import models.Allergy;
+import models.AllergyList;
 import models.Patient;
 import javax.swing.JSeparator;
+import java.awt.GridLayout;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.List;
+import java.awt.event.ActionEvent;
+import javax.swing.table.DefaultTableModel;
+
+import database.AllergyTableGatewayMySQL;
+import database.GatewayException;
 
 public class PatientProfile extends JFrame {
 
 	private JPanel contentPane;
 	private static String pname;
-
-
+	
+	
+	// Variables for Allergy tab
+	JPanel allergiesPanel;
+	private JTable allergyTable;
+	AllergyList al = new AllergyList();
+	List<Allergy> allergyList;
+	AllergyTableGatewayMySQL atg;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -485,6 +507,11 @@ public class PatientProfile extends JFrame {
 		gbc_separator_6.gridy = 1;
 		panel_7.add(separator_6, gbc_separator_6);
 		
+		// Create tab for Allergies
+		allergyTable = createAllergyTab(tabbedPane, patient);
+		populateAllergyTable(allergyTable, patient);
+		
+		
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("History", null, panel_5, null);
 		
@@ -502,6 +529,118 @@ public class PatientProfile extends JFrame {
 		gbl_panel_3.columnWeights = new double[]{0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gbl_panel_3.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_3.setLayout(gbl_panel_3);
+	}
+	
+	/**
+	 * Create Allergy tab filled in with GUI elements/ActionListeners
+	 * @param tabbedPane JTabbedPane to add Allergy tab
+	 * @return JTable of Allergies to be filled in
+	 */
+	private JTable createAllergyTab(final JTabbedPane tabbedPane, final Patient patient){
+		// Create new tab for Allergies that has a scrollPane inside
+		allergiesPanel = new JPanel();
+		tabbedPane.addTab("Allergies", null, allergiesPanel, null);
+		GridBagLayout gbl_allergiesPanel = new GridBagLayout();
+		gbl_allergiesPanel.columnWeights = new double[]{1.0};
+		gbl_allergiesPanel.rowWeights = new double[]{0.0, 1.0};
+		allergiesPanel.setLayout(gbl_allergiesPanel);
+				
+		// Create button to add a New Allergy to a Patient
+		JButton btnNewAllergy = new JButton("New Allergy");
+		btnNewAllergy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int index = tabbedPane.indexOfTab("Allergies");
+				System.out.println(index);
+				tabbedPane.setComponentAt(index, new NewAllergyFormView(tabbedPane, patient, allergiesPanel, atg));
+			}
+		});
+		GridBagConstraints gbc_btnNewAllergy = new GridBagConstraints();
+		gbc_btnNewAllergy.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnNewAllergy.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewAllergy.gridx = 0;
+		gbc_btnNewAllergy.gridy = 0;
+		allergiesPanel.add(btnNewAllergy, gbc_btnNewAllergy);
+				
+		// Add scrollPane to fit JTable inside of for list of Allergies
+		JScrollPane scrollPane = new JScrollPane();
+		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+		gbc_scrollPane.gridx = 0;
+		gbc_scrollPane.gridy = 1;
+		allergiesPanel.add(scrollPane, gbc_scrollPane);
+				
+		// Add JTable to scrollPane
+		allergyTable = new JTable();
+		allergyTable.setToolTipText("");
+		allergyTable.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Allergy", "Severity", "Adverse Reaction", "Date"
+			}
+		) {
+			private static final long serialVersionUID = 1L;
+			Class[] columnTypes = new Class[] {
+				String.class, String.class, String.class, String.class
+			};
+			public Class getColumnClass(int columnIndex) {
+				return columnTypes[columnIndex];
+			}
+		});
+		allergyTable.getColumnModel().getColumn(0).setPreferredWidth(100);
+		allergyTable.getColumnModel().getColumn(1).setPreferredWidth(100);
+		allergyTable.getColumnModel().getColumn(2).setPreferredWidth(175);
+		allergyTable.getColumnModel().getColumn(3).setPreferredWidth(135);
+		scrollPane.setViewportView(allergyTable);
+		
+		return allergyTable;
+	}
+	
+	/**
+	 * Populates the AllergyTable with all allergies related current Patient
+	 * @param allergyTable JTable to populate
+	 * @param patient Patient JTable to populate
+	 */
+	private void populateAllergyTable(JTable allergyTable, Patient patient){
+		// Get model of AllergyTable in order to add rows
+		// Declare variables
+		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
+		
+		/**
+		 * Try to connect to DB through AllergyTableGateway
+		 * Set the gateway of the AllergyList
+		 * Load Allergies into the AllergyList
+		 */
+		try {
+			atg = new AllergyTableGatewayMySQL();
+			al.setGateway(atg);
+			al.loadFromGateway();
+		} catch (GatewayException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		}
+		
+		// Find all allergies for the given patient
+		allergyList = al.getAllergyListForPatient(patient);
+		
+		/**
+		 * For every allergy in the allergyList
+		 * .. Add that model the JTable
+		 */
+		for(Allergy allergy : allergyList) {
+			model.addRow(new Object[]{
+					allergy.getAllergy(), 
+					allergy.getSeverity(), 
+					allergy.getAdverseReaction()
+				});
+		}
+	}
+	
+	public void update(){
+		this.update();
 	}
 	
 	public Container getContentPane() {
