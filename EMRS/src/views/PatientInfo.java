@@ -750,9 +750,11 @@ public class PatientInfo extends JFrame {
 						String fullName =  firstNameTextField.getText()+" "+
 								middleNameTextField.getText()+" "+
 								lastNameTextField.getText();
+						
+						long newId = home.getHomeModel().getPatientTableGateway().insertPatient(patient);
+						patient.setId(newId);
 						PatientProfile pp = new PatientProfile(home,patient);
 						home.setCenterPanel(pp.getContentPane());
-						home.getHomeModel().getPatientTableGateway().insertPatient(patient);
 						
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
@@ -784,7 +786,7 @@ public class PatientInfo extends JFrame {
 			@Override
 			public void focusLost(FocusEvent arg0) {
 				Pattern pattern = Pattern.compile(regex);
-				Matcher matcher = pattern.matcher(textField.getText());
+				Matcher matcher = pattern.matcher(textField.getText().toLowerCase());
 				if(matcher.matches()) {
 					balloonTip.setVisible(false);
 				}
