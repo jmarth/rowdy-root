@@ -551,7 +551,7 @@ public class PatientProfile extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int index = tabbedPane.indexOfTab("Allergies");
 				System.out.println(index);
-				tabbedPane.setComponentAt(index, new NewAllergyFormView(tabbedPane, patient, allergiesPanel, atg));
+				tabbedPane.setComponentAt(index, new NewAllergyFormView(tabbedPane, patient, allergiesPanel, atg, allergyTable));
 			}
 		});
 		GridBagConstraints gbc_btnNewAllergy = new GridBagConstraints();
@@ -637,10 +637,6 @@ public class PatientProfile extends JFrame {
 					allergy.getAdverseReaction()
 				});
 		}
-	}
-	
-	public void update(){
-		this.update();
 	}
 	
 	public Container getContentPane() {

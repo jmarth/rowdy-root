@@ -12,6 +12,7 @@ import javax.swing.JTable;
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
@@ -57,13 +58,17 @@ public class NewAllergyFormView extends JPanel {
 	private JRadioButton rdbtnSevere;
 	private JRadioButton rdbtnModerate;
 	private JRadioButton rdbtnMild;
+	
+	// JTable from caller
+	JTable allergyTable;
 
 	/**
 	 * Create the panel.
 	 */
-	public NewAllergyFormView(final JTabbedPane tabbedPane, Patient patient, JPanel allergiesPanel, AllergyTableGatewayMySQL gateway) {
+	public NewAllergyFormView(final JTabbedPane tabbedPane, Patient patient, JPanel allergiesPanel, AllergyTableGatewayMySQL gateway, JTable allergyTable) {
 		this.patient = patient;
 		this.atg = gateway;
+		this.allergyTable = allergyTable;
 		oldPanel = allergiesPanel;
 		
 		/**
@@ -82,7 +87,7 @@ public class NewAllergyFormView extends JPanel {
 		}
 		
 		// Put all GUI lines in a seperate method to keep clean :)
-		createView(tabbedPane, patient, allergiesPanel, atg);
+		createView(tabbedPane, patient, allergiesPanel, atg, allergyTable);
 
 	}
 	
@@ -104,7 +109,7 @@ public class NewAllergyFormView extends JPanel {
 	 * @param tabbedPane JTabbedPane to change when done saving
 	 * @param oldPanel JPanel to change back to when done saving
 	 */
-	public void save(Patient patient, AllergyTableGatewayMySQL atg, JTabbedPane tabbedPane, JPanel oldPanel){
+	public void save(Patient patient, AllergyTableGatewayMySQL atg, JTabbedPane tabbedPane, JPanel oldPanel, JTable allergyTable){
 		StringBuilder strBuild = new StringBuilder();
 		
 		/**
@@ -147,9 +152,21 @@ public class NewAllergyFormView extends JPanel {
 			e.printStackTrace();
 		}
 		
+		
 		// Change the panel back to allergy table
 		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
 		int index = tabbedPane.indexOfTab("Allergies");
+		
+		// Add the allergy to the JTable
+		// Get model of AllergyTable in order to add rows
+		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
+		// Add row		
+		model.addRow(new Object[]{
+				allergy.getAllergy(), 
+				allergy.getSeverity(), 
+				allergy.getAdverseReaction()
+		});
+		
 		tabbedPane.setComponentAt(index, null);
 		tabbedPane.setComponentAt(index, oldPanel);
 	}
@@ -161,7 +178,7 @@ public class NewAllergyFormView extends JPanel {
 	 * @param allergiesPanel Old JPanel to set back to on cancel or save
 	 * @param atg Gateway for Allergy table
 	 */
-	public void createView(final JTabbedPane tabbedPane, final Patient patient, JPanel allergiesPanel, final AllergyTableGatewayMySQL atg){
+	public void createView(final JTabbedPane tabbedPane, final Patient patient, JPanel allergiesPanel, final AllergyTableGatewayMySQL atg, final JTable allergyTable){
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -313,7 +330,7 @@ public class NewAllergyFormView extends JPanel {
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				save(patient, atg, tabbedPane, oldPanel);
+				save(patient, atg, tabbedPane, oldPanel, allergyTable);
 			}
 		});
 		btnSave.setFont(new Font("Tahoma", Font.BOLD, 11));
