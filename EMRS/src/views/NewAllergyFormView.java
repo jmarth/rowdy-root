@@ -13,21 +13,155 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 
+import database.AllergyTableGatewayMySQL;
+import database.GatewayException;
+import models.Allergy;
 import models.Patient;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
 public class NewAllergyFormView extends JPanel {
 	private final ButtonGroup severityButtonGroup = new ButtonGroup();
+	
+	// Variable for Allergy Name textfield
 	private JTextField textField;
+	
+	// Patient this Allergy corresponds to
+	Patient patient;
+	
+	JPanel oldPanel;
+	
+	// Table Gateway
+	AllergyTableGatewayMySQL atg;
+	
+	// Variables for JCheckBoxes
+	List<JCheckBox> checkboxes = new ArrayList<JCheckBox>();
+	private JCheckBox chckbxNaseua;
+	private JCheckBox chckbxAchy;
+	private JCheckBox chckbxTired;
+	private JCheckBox chckbxCoughing;
+	private JCheckBox chckbxChills;
+	private JCheckBox chckbxHeartPalpitations;
+	private JCheckBox chckbxAnxiety;
+	private JCheckBox chckbxWheezing;
+
+	// Variables for JRadioButtons
+	private String severity;
+	private JRadioButton rdbtnSevere;
+	private JRadioButton rdbtnModerate;
+	private JRadioButton rdbtnMild;
 
 	/**
 	 * Create the panel.
 	 */
-	public NewAllergyFormView(final JTabbedPane tabbedPane, Patient patient) {
+	public NewAllergyFormView(final JTabbedPane tabbedPane, Patient patient, JPanel allergiesPanel, AllergyTableGatewayMySQL gateway) {
+		this.patient = patient;
+		this.atg = gateway;
+		oldPanel = allergiesPanel;
+		
+		/**
+		 * Try to connect to DB through AllergyTableGateway
+		 * Set the gateway of the AllergyList
+		 * Load Allergies into the AllergyList
+		 */
+		try {
+			atg = new AllergyTableGatewayMySQL();
+		} catch (GatewayException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		}
+		
+		// Put all GUI lines in a seperate method to keep clean :)
+		createView(tabbedPane, patient, allergiesPanel, atg);
+
+	}
+	
+	/**
+	 * Called from ActionListener for Cancel button
+	 * @param tabbedPane JTabbedPane to alter
+	 * @param oldPanel Panel to switch back to
+	 */
+	public void cancel(JTabbedPane tabbedPane, JPanel oldPanel){
+		int index = tabbedPane.indexOfTab("Allergies");
+		tabbedPane.setComponentAt(index, null);
+		tabbedPane.setComponentAt(index, oldPanel);
+	}
+	
+	/**
+	 * Save Allergy to database for patient
+	 * @param patient Patient that Allergy belongs to
+	 * @param atg AllergyTableGateway
+	 * @param tabbedPane JTabbedPane to change when done saving
+	 * @param oldPanel JPanel to change back to when done saving
+	 */
+	public void save(Patient patient, AllergyTableGatewayMySQL atg, JTabbedPane tabbedPane, JPanel oldPanel){
+		StringBuilder strBuild = new StringBuilder();
+		
+		/**
+		 * Iterate over collection of JCheckBoxes and if the check box is selected, append the label of the chckbox to the string (adverse_reaction)
+		 */
+		Iterator<JCheckBox> chckbxIterator = checkboxes.iterator();
+		while(chckbxIterator.hasNext()){
+			JCheckBox tmpBox = chckbxIterator.next();
+			if(tmpBox.isSelected()){
+				//System.out.println(tmpBox.getLabel());
+				strBuild.append(tmpBox.getLabel());
+				strBuild.append("/");
+			}
+		}
+		
+		// Need to delete last "/" in adverse_reaction string
+		strBuild.deleteCharAt(strBuild.length()-1);
+		
+		/**
+		 * Determine what severity radio button is selected
+		 * Set severity string accordingly
+		 */
+		if(rdbtnSevere.isSelected()){
+			severity = "Severe";
+		} else if (rdbtnModerate.isSelected()){
+			severity = "Moderate";
+		} else {
+			severity = "Mild";
+		}
+		
+		/**
+		 * Create new Allergy object with correct parameters
+		 * Insert the allery to the DB through the Gateway
+		 */
+		Allergy allergy = new Allergy(0, patient.getId(), textField.getText(), severity, strBuild.toString());
+		try {
+			atg.insertAllergy(allergy);
+		} catch (GatewayException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// Change the panel back to allergy table
+		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
+		int index = tabbedPane.indexOfTab("Allergies");
+		tabbedPane.setComponentAt(index, null);
+		tabbedPane.setComponentAt(index, oldPanel);
+	}
+	
+	/**
+	 * Creates NewAllergyFormView GUI
+	 * @param tabbedPane JTabbedPane to alter
+	 * @param patient Patient that allergy regards to
+	 * @param allergiesPanel Old JPanel to set back to on cancel or save
+	 * @param atg Gateway for Allergy table
+	 */
+	public void createView(final JTabbedPane tabbedPane, final Patient patient, JPanel allergiesPanel, final AllergyTableGatewayMySQL atg){
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -61,7 +195,7 @@ public class NewAllergyFormView extends JPanel {
 		gbc_lblSeverity.gridy = 3;
 		add(lblSeverity, gbc_lblSeverity);
 		
-		JRadioButton rdbtnSevere = new JRadioButton("Severe");
+		rdbtnSevere = new JRadioButton("Severe");
 		severityButtonGroup.add(rdbtnSevere);
 		GridBagConstraints gbc_rdbtnSevere = new GridBagConstraints();
 		gbc_rdbtnSevere.anchor = GridBagConstraints.WEST;
@@ -70,7 +204,7 @@ public class NewAllergyFormView extends JPanel {
 		gbc_rdbtnSevere.gridy = 3;
 		add(rdbtnSevere, gbc_rdbtnSevere);
 		
-		JRadioButton rdbtnModerate = new JRadioButton("Moderate");
+		rdbtnModerate = new JRadioButton("Moderate");
 		severityButtonGroup.add(rdbtnModerate);
 		GridBagConstraints gbc_rdbtnModerate = new GridBagConstraints();
 		gbc_rdbtnModerate.anchor = GridBagConstraints.WEST;
@@ -79,7 +213,7 @@ public class NewAllergyFormView extends JPanel {
 		gbc_rdbtnModerate.gridy = 4;
 		add(rdbtnModerate, gbc_rdbtnModerate);
 		
-		JRadioButton rdbtnMild = new JRadioButton("Mild");
+		rdbtnMild = new JRadioButton("Mild");
 		severityButtonGroup.add(rdbtnMild);
 		GridBagConstraints gbc_rdbtnMild = new GridBagConstraints();
 		gbc_rdbtnMild.anchor = GridBagConstraints.WEST;
@@ -96,7 +230,8 @@ public class NewAllergyFormView extends JPanel {
 		gbc_lblReactions.gridy = 7;
 		add(lblReactions, gbc_lblReactions);
 		
-		JCheckBox chckbxWheezing = new JCheckBox("Wheezing");
+		chckbxWheezing = new JCheckBox("Wheezing");
+		checkboxes.add(chckbxWheezing);
 		chckbxWheezing.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxWheezing = new GridBagConstraints();
 		gbc_chckbxWheezing.anchor = GridBagConstraints.BASELINE_LEADING;
@@ -105,7 +240,8 @@ public class NewAllergyFormView extends JPanel {
 		gbc_chckbxWheezing.gridy = 7;
 		add(chckbxWheezing, gbc_chckbxWheezing);
 		
-		JCheckBox chckbxAnxiety = new JCheckBox("Anxiety");
+		chckbxAnxiety = new JCheckBox("Anxiety");
+		checkboxes.add(chckbxAnxiety);
 		chckbxAnxiety.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxAnxiety = new GridBagConstraints();
 		gbc_chckbxAnxiety.anchor = GridBagConstraints.WEST;
@@ -114,7 +250,8 @@ public class NewAllergyFormView extends JPanel {
 		gbc_chckbxAnxiety.gridy = 7;
 		add(chckbxAnxiety, gbc_chckbxAnxiety);
 		
-		JCheckBox chckbxHeartPalpitations = new JCheckBox("Heart Palpitations");
+		chckbxHeartPalpitations = new JCheckBox("Heart Palpitations");
+		checkboxes.add(chckbxHeartPalpitations);
 		chckbxHeartPalpitations.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxHeartPalpitations = new GridBagConstraints();
 		gbc_chckbxHeartPalpitations.anchor = GridBagConstraints.WEST;
@@ -123,7 +260,8 @@ public class NewAllergyFormView extends JPanel {
 		gbc_chckbxHeartPalpitations.gridy = 7;
 		add(chckbxHeartPalpitations, gbc_chckbxHeartPalpitations);
 		
-		JCheckBox chckbxChills = new JCheckBox("Chills");
+		chckbxChills = new JCheckBox("Chills");
+		checkboxes.add(chckbxChills);
 		chckbxChills.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxChills = new GridBagConstraints();
 		gbc_chckbxChills.anchor = GridBagConstraints.WEST;
@@ -132,7 +270,8 @@ public class NewAllergyFormView extends JPanel {
 		gbc_chckbxChills.gridy = 7;
 		add(chckbxChills, gbc_chckbxChills);
 		
-		JCheckBox chckbxCoughing = new JCheckBox("Coughing");
+		chckbxCoughing = new JCheckBox("Coughing");
+		checkboxes.add(chckbxCoughing);
 		chckbxCoughing.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxCoughing = new GridBagConstraints();
 		gbc_chckbxCoughing.anchor = GridBagConstraints.BASELINE_LEADING;
@@ -141,7 +280,8 @@ public class NewAllergyFormView extends JPanel {
 		gbc_chckbxCoughing.gridy = 8;
 		add(chckbxCoughing, gbc_chckbxCoughing);
 		
-		JCheckBox chckbxTired = new JCheckBox("Tired");
+		chckbxTired = new JCheckBox("Tired");
+		checkboxes.add(chckbxTired);
 		chckbxTired.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxTired = new GridBagConstraints();
 		gbc_chckbxTired.anchor = GridBagConstraints.WEST;
@@ -150,7 +290,8 @@ public class NewAllergyFormView extends JPanel {
 		gbc_chckbxTired.gridy = 8;
 		add(chckbxTired, gbc_chckbxTired);
 		
-		JCheckBox chckbxAchy = new JCheckBox("Achy");
+		chckbxAchy = new JCheckBox("Achy");
+		checkboxes.add(chckbxAchy);
 		chckbxAchy.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxAchy = new GridBagConstraints();
 		gbc_chckbxAchy.anchor = GridBagConstraints.WEST;
@@ -159,7 +300,8 @@ public class NewAllergyFormView extends JPanel {
 		gbc_chckbxAchy.gridy = 8;
 		add(chckbxAchy, gbc_chckbxAchy);
 		
-		JCheckBox chckbxNaseua = new JCheckBox("Naseua");
+		chckbxNaseua = new JCheckBox("Naseua");
+		checkboxes.add(chckbxNaseua);
 		chckbxNaseua.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxNaseua = new GridBagConstraints();
 		gbc_chckbxNaseua.insets = new Insets(0, 0, 5, 0);
@@ -169,6 +311,11 @@ public class NewAllergyFormView extends JPanel {
 		add(chckbxNaseua, gbc_chckbxNaseua);
 		
 		JButton btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				save(patient, atg, tabbedPane, oldPanel);
+			}
+		});
 		btnSave.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.insets = new Insets(50, 0, 0, 5);
@@ -176,11 +323,13 @@ public class NewAllergyFormView extends JPanel {
 		gbc_btnSave.gridy = 11;
 		add(btnSave, gbc_btnSave);
 		
+		/**
+		 * Sets the tabbed pane at the Allergy index back to default allergy panel
+		 */
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				int index = tabbedPane.indexOfTab("Allergies");
-				
+				cancel(tabbedPane, oldPanel);
 			}
 		});
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
@@ -188,7 +337,6 @@ public class NewAllergyFormView extends JPanel {
 		gbc_btnCancel.gridx = 4;
 		gbc_btnCancel.gridy = 11;
 		add(btnCancel, gbc_btnCancel);
-
 	}
 
 }

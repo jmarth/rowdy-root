@@ -135,6 +135,50 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
 	}
 	
 	/**
+	 * Insert Allergy into Database
+	 */
+	public long insertAllergy(Allergy a) throws GatewayException {
+		//init new id to invalid
+		long newId = 0;
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("insert INTO allergies (pid,"
+					+ " allergy,"
+					+ " severity,"
+					+ " adverse_reaction) "
+					+ " values ( ?, ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
+			//st.setInt(1, p.getHasPatientName() ? 1 : 0);
+			st.setLong(1, a.getPid());
+			st.setString(2, a.getAllergy());
+			st.setString(3, a.getSeverity());
+			st.setString(4, a.getAdverseReaction());
+	
+			st.executeUpdate();
+			//get the generated key
+			rs = st.getGeneratedKeys();
+			if(rs != null && rs.next()) {
+			    newId = rs.getLong(1);
+			    System.out.println("Allergy is ID: " + newId + "");
+			} else {
+				throw new GatewayException("Could not insert new record.");
+			}
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		return newId;
+	}
+	
+	/**
 	 * create a MySQL datasource with credentials and DB URL in db.properties file
 	 * @return
 	 * @throws RuntimeException

@@ -44,9 +44,15 @@ public class PatientProfile extends JFrame {
 
 	private JPanel contentPane;
 	private static String pname;
+	
+	
+	// Variables for Allergy tab
+	JPanel allergiesPanel;
 	private JTable allergyTable;
-
-
+	AllergyList al = new AllergyList();
+	List<Allergy> allergyList;
+	AllergyTableGatewayMySQL atg;
+	
 	/**
 	 * Create the frame.
 	 */
@@ -502,7 +508,7 @@ public class PatientProfile extends JFrame {
 		panel_7.add(separator_6, gbc_separator_6);
 		
 		// Create tab for Allergies
-		JTable allergyTable = createAllergyTab(tabbedPane, patient);
+		allergyTable = createAllergyTab(tabbedPane, patient);
 		populateAllergyTable(allergyTable, patient);
 		
 		
@@ -532,7 +538,7 @@ public class PatientProfile extends JFrame {
 	 */
 	private JTable createAllergyTab(final JTabbedPane tabbedPane, final Patient patient){
 		// Create new tab for Allergies that has a scrollPane inside
-		JPanel allergiesPanel = new JPanel();
+		allergiesPanel = new JPanel();
 		tabbedPane.addTab("Allergies", null, allergiesPanel, null);
 		GridBagLayout gbl_allergiesPanel = new GridBagLayout();
 		gbl_allergiesPanel.columnWeights = new double[]{1.0};
@@ -545,7 +551,7 @@ public class PatientProfile extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int index = tabbedPane.indexOfTab("Allergies");
 				System.out.println(index);
-				tabbedPane.setComponentAt(index, new NewAllergyFormView(tabbedPane, patient));
+				tabbedPane.setComponentAt(index, new NewAllergyFormView(tabbedPane, patient, allergiesPanel, atg));
 			}
 		});
 		GridBagConstraints gbc_btnNewAllergy = new GridBagConstraints();
@@ -599,9 +605,6 @@ public class PatientProfile extends JFrame {
 		// Get model of AllergyTable in order to add rows
 		// Declare variables
 		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
-		AllergyTableGatewayMySQL atg;
-		AllergyList al = new AllergyList();
-		List<Allergy> allergyList;
 		
 		/**
 		 * Try to connect to DB through AllergyTableGateway
@@ -634,6 +637,10 @@ public class PatientProfile extends JFrame {
 					allergy.getAdverseReaction()
 				});
 		}
+	}
+	
+	public void update(){
+		this.update();
 	}
 	
 	public Container getContentPane() {
