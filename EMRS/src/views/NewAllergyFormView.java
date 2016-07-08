@@ -44,14 +44,29 @@ public class NewAllergyFormView extends JPanel {
 	
 	// Variables for JCheckBoxes
 	List<JCheckBox> checkboxes = new ArrayList<JCheckBox>();
-	private JCheckBox chckbxNaseua;
-	private JCheckBox chckbxAchy;
-	private JCheckBox chckbxTired;
-	private JCheckBox chckbxCoughing;
-	private JCheckBox chckbxChills;
-	private JCheckBox chckbxHeartPalpitations;
+	private JCheckBox chckbxAbnormalBreathing;
+	private JCheckBox chckbxAbPain;
+	private JCheckBox chckbxRedEyes;
+	private JCheckBox chckbxWateryEyes;
+	private JCheckBox chckbxRashes;
+	private JCheckBox chckbxNasalCongestion;
+	private JCheckBox chckbxItching;
+	private JCheckBox chckbxHives;
 	private JCheckBox chckbxAnxiety;
+	private JCheckBox chckbxChestDiscomfort;
+	private JCheckBox chckbxCough;
+	private JCheckBox chckbxDiarrhea;
+	private JCheckBox chckbxDifficultyBreathing;
+	private JCheckBox chckbxDifficultySwallowing;
+	private JCheckBox chckbxDizziness;
+	private JCheckBox chckbxFlushing;
+	private JCheckBox chckbxNausea;
+	private JCheckBox chckbxPalpitations;
+	private JCheckBox chckbxSwelling;
+	private JCheckBox chckbxUnconsciousness;
 	private JCheckBox chckbxWheezing;
+	private JLabel lblOther;
+	private JTextField otherTextField;
 
 	// Variables for JRadioButtons
 	private String severity;
@@ -61,6 +76,7 @@ public class NewAllergyFormView extends JPanel {
 	
 	// JTable from caller
 	JTable allergyTable;
+	
 
 	/**
 	 * Create the panel.
@@ -125,6 +141,11 @@ public class NewAllergyFormView extends JPanel {
 			}
 		}
 		
+		if(!otherTextField.getText().isEmpty()){
+			strBuild.append(otherTextField.getText());
+			strBuild.append("/");
+		}
+		
 		// Need to delete last "/" in adverse_reaction string
 		strBuild.deleteCharAt(strBuild.length()-1);
 		
@@ -181,9 +202,9 @@ public class NewAllergyFormView extends JPanel {
 	public void createView(final JTabbedPane tabbedPane, final Patient patient, JPanel allergiesPanel, final AllergyTableGatewayMySQL atg, final JTable allergyTable){
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		JLabel lblAllergy = new JLabel("Allergy");
@@ -247,85 +268,220 @@ public class NewAllergyFormView extends JPanel {
 		gbc_lblReactions.gridy = 7;
 		add(lblReactions, gbc_lblReactions);
 		
-		chckbxWheezing = new JCheckBox("Wheezing");
-		checkboxes.add(chckbxWheezing);
-		chckbxWheezing.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxWheezing = new GridBagConstraints();
-		gbc_chckbxWheezing.anchor = GridBagConstraints.BASELINE_LEADING;
-		gbc_chckbxWheezing.insets = new Insets(25, 0, 5, 5);
-		gbc_chckbxWheezing.gridx = 1;
-		gbc_chckbxWheezing.gridy = 7;
-		add(chckbxWheezing, gbc_chckbxWheezing);
+		chckbxHives = new JCheckBox("Hives");
+		checkboxes.add(chckbxHives);
+		chckbxHives.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxHives = new GridBagConstraints();
+		gbc_chckbxHives.anchor = GridBagConstraints.BASELINE_LEADING;
+		gbc_chckbxHives.insets = new Insets(25, 0, 5, 5);
+		gbc_chckbxHives.gridx = 1;
+		gbc_chckbxHives.gridy = 7;
+		add(chckbxHives, gbc_chckbxHives);
+		
+		chckbxItching = new JCheckBox("Itching");
+		checkboxes.add(chckbxItching);
+		chckbxItching.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxItching = new GridBagConstraints();
+		gbc_chckbxItching.anchor = GridBagConstraints.WEST;
+		gbc_chckbxItching.insets = new Insets(25, 0, 5, 5);
+		gbc_chckbxItching.gridx = 2;
+		gbc_chckbxItching.gridy = 7;
+		add(chckbxItching, gbc_chckbxItching);
+		
+		chckbxNasalCongestion = new JCheckBox("Nasal Congestion");
+		checkboxes.add(chckbxNasalCongestion);
+		chckbxNasalCongestion.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxNasalCongestion = new GridBagConstraints();
+		gbc_chckbxNasalCongestion.anchor = GridBagConstraints.WEST;
+		gbc_chckbxNasalCongestion.insets = new Insets(25, 0, 5, 5);
+		gbc_chckbxNasalCongestion.gridx = 3;
+		gbc_chckbxNasalCongestion.gridy = 7;
+		add(chckbxNasalCongestion, gbc_chckbxNasalCongestion);
+		
+		chckbxRashes = new JCheckBox("Rashes");
+		checkboxes.add(chckbxRashes);
+		chckbxRashes.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxRashes = new GridBagConstraints();
+		gbc_chckbxRashes.anchor = GridBagConstraints.WEST;
+		gbc_chckbxRashes.insets = new Insets(25, 0, 5, 0);
+		gbc_chckbxRashes.gridx = 4;
+		gbc_chckbxRashes.gridy = 7;
+		add(chckbxRashes, gbc_chckbxRashes);
+		
+		chckbxWateryEyes = new JCheckBox("Watery Eyes");
+		checkboxes.add(chckbxWateryEyes);
+		chckbxWateryEyes.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxWateryEyes = new GridBagConstraints();
+		gbc_chckbxWateryEyes.anchor = GridBagConstraints.BASELINE_LEADING;
+		gbc_chckbxWateryEyes.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxWateryEyes.gridx = 1;
+		gbc_chckbxWateryEyes.gridy = 8;
+		add(chckbxWateryEyes, gbc_chckbxWateryEyes);
+		
+		chckbxRedEyes = new JCheckBox("Red Eyes");
+		checkboxes.add(chckbxRedEyes);
+		chckbxRedEyes.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxRedEyes = new GridBagConstraints();
+		gbc_chckbxRedEyes.anchor = GridBagConstraints.WEST;
+		gbc_chckbxRedEyes.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxRedEyes.gridx = 2;
+		gbc_chckbxRedEyes.gridy = 8;
+		add(chckbxRedEyes, gbc_chckbxRedEyes);
+		
+		chckbxAbPain = new JCheckBox("Abdominal Pain");
+		checkboxes.add(chckbxAbPain);
+		chckbxAbPain.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxAbPain = new GridBagConstraints();
+		gbc_chckbxAbPain.anchor = GridBagConstraints.WEST;
+		gbc_chckbxAbPain.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxAbPain.gridx = 3;
+		gbc_chckbxAbPain.gridy = 8;
+		add(chckbxAbPain, gbc_chckbxAbPain);
+		
+		chckbxAbnormalBreathing = new JCheckBox("Abnormal Breathing");
+		checkboxes.add(chckbxAbnormalBreathing);
+		chckbxAbnormalBreathing.setHorizontalAlignment(SwingConstants.LEFT);
+		GridBagConstraints gbc_chckbxAbnormalBreathing = new GridBagConstraints();
+		gbc_chckbxAbnormalBreathing.insets = new Insets(0, 0, 5, 0);
+		gbc_chckbxAbnormalBreathing.anchor = GridBagConstraints.BASELINE_LEADING;
+		gbc_chckbxAbnormalBreathing.gridx = 4;
+		gbc_chckbxAbnormalBreathing.gridy = 8;
+		add(chckbxAbnormalBreathing, gbc_chckbxAbnormalBreathing);
 		
 		chckbxAnxiety = new JCheckBox("Anxiety");
 		checkboxes.add(chckbxAnxiety);
-		chckbxAnxiety.setHorizontalAlignment(SwingConstants.LEFT);
 		GridBagConstraints gbc_chckbxAnxiety = new GridBagConstraints();
 		gbc_chckbxAnxiety.anchor = GridBagConstraints.WEST;
-		gbc_chckbxAnxiety.insets = new Insets(25, 0, 5, 5);
-		gbc_chckbxAnxiety.gridx = 2;
-		gbc_chckbxAnxiety.gridy = 7;
+		gbc_chckbxAnxiety.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxAnxiety.gridx = 1;
+		gbc_chckbxAnxiety.gridy = 9;
 		add(chckbxAnxiety, gbc_chckbxAnxiety);
 		
-		chckbxHeartPalpitations = new JCheckBox("Heart Palpitations");
-		checkboxes.add(chckbxHeartPalpitations);
-		chckbxHeartPalpitations.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxHeartPalpitations = new GridBagConstraints();
-		gbc_chckbxHeartPalpitations.anchor = GridBagConstraints.WEST;
-		gbc_chckbxHeartPalpitations.insets = new Insets(25, 0, 5, 5);
-		gbc_chckbxHeartPalpitations.gridx = 3;
-		gbc_chckbxHeartPalpitations.gridy = 7;
-		add(chckbxHeartPalpitations, gbc_chckbxHeartPalpitations);
+		chckbxChestDiscomfort = new JCheckBox("Chest Discomfort");
+		checkboxes.add(chckbxChestDiscomfort);
+		GridBagConstraints gbc_chckbxChestDiscomfort = new GridBagConstraints();
+		gbc_chckbxChestDiscomfort.anchor = GridBagConstraints.WEST;
+		gbc_chckbxChestDiscomfort.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxChestDiscomfort.gridx = 2;
+		gbc_chckbxChestDiscomfort.gridy = 9;
+		add(chckbxChestDiscomfort, gbc_chckbxChestDiscomfort);
 		
-		chckbxChills = new JCheckBox("Chills");
-		checkboxes.add(chckbxChills);
-		chckbxChills.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxChills = new GridBagConstraints();
-		gbc_chckbxChills.anchor = GridBagConstraints.WEST;
-		gbc_chckbxChills.insets = new Insets(25, 0, 5, 0);
-		gbc_chckbxChills.gridx = 4;
-		gbc_chckbxChills.gridy = 7;
-		add(chckbxChills, gbc_chckbxChills);
+		chckbxCough = new JCheckBox("Cough");
+		checkboxes.add(chckbxCough);
+		GridBagConstraints gbc_chckbxCough = new GridBagConstraints();
+		gbc_chckbxCough.anchor = GridBagConstraints.WEST;
+		gbc_chckbxCough.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxCough.gridx = 3;
+		gbc_chckbxCough.gridy = 9;
+		add(chckbxCough, gbc_chckbxCough);
 		
-		chckbxCoughing = new JCheckBox("Coughing");
-		checkboxes.add(chckbxCoughing);
-		chckbxCoughing.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxCoughing = new GridBagConstraints();
-		gbc_chckbxCoughing.anchor = GridBagConstraints.BASELINE_LEADING;
-		gbc_chckbxCoughing.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxCoughing.gridx = 1;
-		gbc_chckbxCoughing.gridy = 8;
-		add(chckbxCoughing, gbc_chckbxCoughing);
+		chckbxDiarrhea = new JCheckBox("Diarrhea");
+		checkboxes.add(chckbxDiarrhea);
+		GridBagConstraints gbc_chckbxDiarrhea = new GridBagConstraints();
+		gbc_chckbxDiarrhea.anchor = GridBagConstraints.WEST;
+		gbc_chckbxDiarrhea.insets = new Insets(0, 0, 5, 0);
+		gbc_chckbxDiarrhea.gridx = 4;
+		gbc_chckbxDiarrhea.gridy = 9;
+		add(chckbxDiarrhea, gbc_chckbxDiarrhea);
 		
-		chckbxTired = new JCheckBox("Tired");
-		checkboxes.add(chckbxTired);
-		chckbxTired.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxTired = new GridBagConstraints();
-		gbc_chckbxTired.anchor = GridBagConstraints.WEST;
-		gbc_chckbxTired.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxTired.gridx = 2;
-		gbc_chckbxTired.gridy = 8;
-		add(chckbxTired, gbc_chckbxTired);
+		chckbxDifficultyBreathing = new JCheckBox("Difficulty breathing");
+		checkboxes.add(chckbxDifficultyBreathing);
+		GridBagConstraints gbc_chckbxDifficultyBreathing = new GridBagConstraints();
+		gbc_chckbxDifficultyBreathing.anchor = GridBagConstraints.WEST;
+		gbc_chckbxDifficultyBreathing.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxDifficultyBreathing.gridx = 1;
+		gbc_chckbxDifficultyBreathing.gridy = 10;
+		add(chckbxDifficultyBreathing, gbc_chckbxDifficultyBreathing);
 		
-		chckbxAchy = new JCheckBox("Achy");
-		checkboxes.add(chckbxAchy);
-		chckbxAchy.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxAchy = new GridBagConstraints();
-		gbc_chckbxAchy.anchor = GridBagConstraints.WEST;
-		gbc_chckbxAchy.insets = new Insets(0, 0, 5, 5);
-		gbc_chckbxAchy.gridx = 3;
-		gbc_chckbxAchy.gridy = 8;
-		add(chckbxAchy, gbc_chckbxAchy);
+		chckbxDifficultySwallowing = new JCheckBox("Difficulty swallowing");
+		checkboxes.add(chckbxDifficultySwallowing);
+		GridBagConstraints gbc_chckbxDifficultySwallowing = new GridBagConstraints();
+		gbc_chckbxDifficultySwallowing.anchor = GridBagConstraints.WEST;
+		gbc_chckbxDifficultySwallowing.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxDifficultySwallowing.gridx = 2;
+		gbc_chckbxDifficultySwallowing.gridy = 10;
+		add(chckbxDifficultySwallowing, gbc_chckbxDifficultySwallowing);
 		
-		chckbxNaseua = new JCheckBox("Naseua");
-		checkboxes.add(chckbxNaseua);
-		chckbxNaseua.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_chckbxNaseua = new GridBagConstraints();
-		gbc_chckbxNaseua.insets = new Insets(0, 0, 5, 0);
-		gbc_chckbxNaseua.anchor = GridBagConstraints.BASELINE;
-		gbc_chckbxNaseua.gridx = 4;
-		gbc_chckbxNaseua.gridy = 8;
-		add(chckbxNaseua, gbc_chckbxNaseua);
+		chckbxDizziness = new JCheckBox("Dizziness");
+		checkboxes.add(chckbxDizziness);
+		GridBagConstraints gbc_chckbxDizziness = new GridBagConstraints();
+		gbc_chckbxDizziness.anchor = GridBagConstraints.WEST;
+		gbc_chckbxDizziness.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxDizziness.gridx = 3;
+		gbc_chckbxDizziness.gridy = 10;
+		add(chckbxDizziness, gbc_chckbxDizziness);
+		
+		chckbxFlushing = new JCheckBox("Flushing");
+		checkboxes.add(chckbxFlushing);
+		GridBagConstraints gbc_chckbxFlushing = new GridBagConstraints();
+		gbc_chckbxFlushing.anchor = GridBagConstraints.WEST;
+		gbc_chckbxFlushing.insets = new Insets(0, 0, 5, 0);
+		gbc_chckbxFlushing.gridx = 4;
+		gbc_chckbxFlushing.gridy = 10;
+		add(chckbxFlushing, gbc_chckbxFlushing);
+		
+		chckbxNausea = new JCheckBox("Nausea");
+		checkboxes.add(chckbxNausea);
+		GridBagConstraints gbc_chckbxNausea = new GridBagConstraints();
+		gbc_chckbxNausea.anchor = GridBagConstraints.WEST;
+		gbc_chckbxNausea.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxNausea.gridx = 1;
+		gbc_chckbxNausea.gridy = 11;
+		add(chckbxNausea, gbc_chckbxNausea);
+		
+		chckbxPalpitations = new JCheckBox("Palpitations");
+		checkboxes.add(chckbxPalpitations);
+		GridBagConstraints gbc_chckbxPalpitations = new GridBagConstraints();
+		gbc_chckbxPalpitations.anchor = GridBagConstraints.WEST;
+		gbc_chckbxPalpitations.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxPalpitations.gridx = 2;
+		gbc_chckbxPalpitations.gridy = 11;
+		add(chckbxPalpitations, gbc_chckbxPalpitations);
+		
+		chckbxSwelling = new JCheckBox("Swelling");
+		checkboxes.add(chckbxSwelling);
+		GridBagConstraints gbc_chckbxSwelling = new GridBagConstraints();
+		gbc_chckbxSwelling.anchor = GridBagConstraints.WEST;
+		gbc_chckbxSwelling.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxSwelling.gridx = 3;
+		gbc_chckbxSwelling.gridy = 11;
+		add(chckbxSwelling, gbc_chckbxSwelling);
+		
+		chckbxUnconsciousness = new JCheckBox("Unconsciousness");
+		checkboxes.add(chckbxUnconsciousness);
+		GridBagConstraints gbc_chckbxUnconsciousness = new GridBagConstraints();
+		gbc_chckbxUnconsciousness.anchor = GridBagConstraints.WEST;
+		gbc_chckbxUnconsciousness.insets = new Insets(0, 0, 5, 0);
+		gbc_chckbxUnconsciousness.gridx = 4;
+		gbc_chckbxUnconsciousness.gridy = 11;
+		add(chckbxUnconsciousness, gbc_chckbxUnconsciousness);
+		
+		chckbxWheezing = new JCheckBox("Wheezing");
+		checkboxes.add(chckbxWheezing);
+		GridBagConstraints gbc_chckbxWheezing = new GridBagConstraints();
+		gbc_chckbxWheezing.anchor = GridBagConstraints.WEST;
+		gbc_chckbxWheezing.insets = new Insets(0, 0, 5, 5);
+		gbc_chckbxWheezing.gridx = 1;
+		gbc_chckbxWheezing.gridy = 12;
+		add(chckbxWheezing, gbc_chckbxWheezing);
+		
+		lblOther = new JLabel("Other");
+		GridBagConstraints gbc_lblOther = new GridBagConstraints();
+		gbc_lblOther.anchor = GridBagConstraints.EAST;
+		gbc_lblOther.insets = new Insets(0, 0, 5, 5);
+		gbc_lblOther.gridx = 1;
+		gbc_lblOther.gridy = 13;
+		add(lblOther, gbc_lblOther);
+		
+		otherTextField = new JTextField();
+		GridBagConstraints gbc_otherTextField = new GridBagConstraints();
+		gbc_otherTextField.gridwidth = 2;
+		gbc_otherTextField.insets = new Insets(0, 0, 5, 0);
+		gbc_otherTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_otherTextField.gridx = 2;
+		gbc_otherTextField.gridy = 13;
+		add(otherTextField, gbc_otherTextField);
+		otherTextField.setColumns(10);
 		
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
@@ -333,11 +489,12 @@ public class NewAllergyFormView extends JPanel {
 				save(patient, atg, tabbedPane, oldPanel, allergyTable);
 			}
 		});
+		
 		btnSave.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.insets = new Insets(50, 0, 0, 5);
 		gbc_btnSave.gridx = 3;
-		gbc_btnSave.gridy = 11;
+		gbc_btnSave.gridy = 16;
 		add(btnSave, gbc_btnSave);
 		
 		/**
@@ -352,7 +509,7 @@ public class NewAllergyFormView extends JPanel {
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.insets = new Insets(50, 0, 0, 0);
 		gbc_btnCancel.gridx = 4;
-		gbc_btnCancel.gridy = 11;
+		gbc_btnCancel.gridy = 16;
 		add(btnCancel, gbc_btnCancel);
 	}
 
