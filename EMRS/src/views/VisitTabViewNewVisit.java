@@ -36,6 +36,8 @@ import models.Visit;
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
 import java.awt.Component;
+import java.awt.Container;
+
 import javax.swing.Box;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -53,36 +55,87 @@ public class VisitTabViewNewVisit extends JPanel {
 	
 	// sphere and cylinder = floats
 	// axis = int
-	private JTextArea txtrCC;
-	private JTextField textField_Od_Sphere_Autoref;
-	private JTextField textField_Od_Cylinder_Autoref;
-	private JTextField textField_Od_Axis_Autoref;
-	private JTextField textField_Os_Sphere_Autoref;
-	private JTextField textField_Os_Cylinder_Autoref;
-	private JTextField textField_Os_Axis_Autoref;
-	private JTextField textField_Od_Sphere_Arc;
-	private JTextField textField_Od_Cylin_Arc;
-	private JTextField textField_Os_Sphere_Arc;
-	private JTextField textField_Os_Cylin_Arc;
-	private JTextField textField_FE1_1_1;
-	private JTextField textField_FE1_1_2;
-	private JTextField textField_FE1_2_1;
-	private JTextField textField_FE1_2_2;
-	private JTextField textField_Od_Axis_Od;
-	private JTextField textField_Os_Axis_Arc;
-	private JTextArea txtrTextarea;
+	private JTextArea txtrCC = new JTextArea();
+	private JTextField textField_Od_Sphere_Autoref = new JTextField();
+	private JTextField textField_Od_Cylinder_Autoref = new JTextField();
+	private JTextField textField_Od_Axis_Autoref = new JTextField();
+	private JTextField textField_Os_Sphere_Autoref = new JTextField();
+	private JTextField textField_Os_Cylinder_Autoref = new JTextField();
+	private JTextField textField_Os_Axis_Autoref = new JTextField();
+	private JTextField textField_Od_Sphere_Arc = new JTextField();
+	private JTextField textField_Od_Cylin_Arc = new JTextField();
+	private JTextField textField_Od_Axis_Od = new JTextField();
+	private JTextField textField_Os_Sphere_Arc = new JTextField();
+	private JTextField textField_Os_Cylin_Arc = new JTextField();
+	private JTextField textField_Os_Axis_Arc = new JTextField();
+	private JTextField textField_FE1_1_1 = new JTextField();
+	private JTextField textField_FE1_1_2 = new JTextField();
+	private JTextField textField_FE1_2_1 = new JTextField();
+	private JTextField textField_FE1_2_2 = new JTextField();
+	private JTextArea txtrTextarea = new JTextArea();
 	private JTabbedPane tabbedPane;
+	private JButton btnCancel = new JButton("Cancel");
+	private JButton btnSave = new JButton("Save");
+	
+	public VisitTabViewNewVisit(String cc, 
+			String string_Od_Sphere_Autoref, String string_Od_Cylinder_Autoref, String string_Od_Axis_Autoref,
+			String string_Os_Sphere_Autoref, String string_Os_Cylinder_Autoref, String string_Os_Axis_Autoref,
+			String string_Od_Sphere_Arc, String string_Od_Cylin_Arc, String string_Od_Axis_Arc, 
+			String string_Os_Sphere_Arc, String string_Os_Cylin_Arc, String string_Os_Axis_Arc, 
+			String string_FE1_1_1, String string_FE1_1_2, String string_FE1_2_1, String string_FE1_2_2, 
+			String txtr, Patient patient, JTabbedPane tabbedPane) {
+		super();
+		
+		this.txtrCC.setText(cc);
+		this.textField_Od_Sphere_Autoref.setText(string_Od_Sphere_Autoref);
+		this.textField_Od_Cylinder_Autoref.setText(string_Od_Cylinder_Autoref);
+		this.textField_Od_Axis_Autoref.setText(string_Od_Axis_Autoref);
+		this.textField_Os_Sphere_Autoref.setText(string_Os_Sphere_Autoref);
+		this.textField_Os_Cylinder_Autoref.setText(string_Os_Cylinder_Autoref);
+		this.textField_Os_Axis_Autoref.setText(string_Os_Axis_Autoref);
+		this.textField_Od_Sphere_Arc.setText(string_Od_Sphere_Arc);
+		this.textField_Od_Cylin_Arc.setText(string_Od_Cylin_Arc);
+		this.textField_FE1_1_1.setText(string_FE1_1_1);
+		this.textField_FE1_1_2.setText(string_FE1_1_2);
+		this.textField_FE1_2_1.setText(string_FE1_2_1);
+		this.textField_FE1_2_2.setText(string_FE1_2_2);
+		this.textField_Od_Axis_Od.setText(string_Od_Axis_Arc);
+		this.textField_Os_Cylin_Arc.setText(string_Os_Cylin_Arc);
+		this.textField_Os_Sphere_Arc.setText(string_Os_Sphere_Arc);
+		this.textField_Os_Axis_Arc.setText(string_Os_Axis_Arc);
+		this.txtrTextarea.setText(txtr);
+		this.tabbedPane = tabbedPane;
+		this.patient = patient;
+		createView();
+		disableFields(this);
+		btnSave.setVisible(false);
+		btnCancel.setText("Back");
+	}
 	
 	public VisitTabViewNewVisit(final JTabbedPane tabbedPane, Patient patient) {
 		this.patient = patient;
 		this.tabbedPane = tabbedPane;
 		
 		// Put all GUI lines in a seperate method to keep clean :)
-		createView(tabbedPane, patient);//, atg, allergyTable);
+		createView();
 
 	}
 	
-	public void createView(final JTabbedPane tabbedPane, final Patient patient){
+	void disableFields (Container container) {
+	    for (Component c : container.getComponents()) {
+	        if (c instanceof JTextField) {
+	           ((JTextField)c).setEditable(false);
+	        } 
+	        else if (c instanceof JTextArea) {
+		           ((JTextArea)c).setEditable(false);
+		    }
+	        else if (c instanceof Container) {
+	        	disableFields((Container)c);
+	        }
+	    }
+	}
+	
+	public void createView(){
 		setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -114,13 +167,13 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_scrollPane_Cc.gridx = 0;
 		gbc_scrollPane_Cc.gridy = 1;
 		mainPane.add(scrollPane_Cc, gbc_scrollPane_Cc);
-		txtrCC = new JTextArea();
+
 		txtrCC.setColumns(80);
 		txtrCC.setRows(4);
 		txtrCC.setWrapStyleWord(true);
 		txtrCC.setLineWrap(true);
 		scrollPane_Cc.setViewportView(txtrCC);
-		txtrCC.setText("textArea");
+
 		
 		JLabel lblPed = new JLabel("Physical Exam Detail:");
 		lblPed.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -191,7 +244,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblAutoref_Od.gridy = 1;
 		visionPanel.add(lblAutoref_Od, gbc_lblAutoref_Od);
 		
-		textField_Od_Sphere_Autoref = new JTextField();
 		GridBagConstraints gbc_textField_Od_Sphere_Autoref = new GridBagConstraints();
 		gbc_textField_Od_Sphere_Autoref.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Od_Sphere_Autoref.fill = GridBagConstraints.HORIZONTAL;
@@ -200,7 +252,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		visionPanel.add(textField_Od_Sphere_Autoref, gbc_textField_Od_Sphere_Autoref);
 		textField_Od_Sphere_Autoref.setColumns(5);
 		
-		textField_Od_Cylinder_Autoref = new JTextField();
 		GridBagConstraints gbc_textField_Od_Cylinder_Autoref = new GridBagConstraints();
 		gbc_textField_Od_Cylinder_Autoref.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Od_Cylinder_Autoref.fill = GridBagConstraints.HORIZONTAL;
@@ -209,7 +260,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		visionPanel.add(textField_Od_Cylinder_Autoref, gbc_textField_Od_Cylinder_Autoref);
 		textField_Od_Cylinder_Autoref.setColumns(5);
 		
-		textField_Od_Axis_Autoref = new JTextField();
 		GridBagConstraints gbc_textField_Od_Axis_Autoref = new GridBagConstraints();
 		gbc_textField_Od_Axis_Autoref.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_Od_Axis_Autoref.insets = new Insets(0, 0, 5, 5);
@@ -226,7 +276,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblAutoref_Os.gridy = 2;
 		visionPanel.add(lblAutoref_Os, gbc_lblAutoref_Os);
 		
-		textField_Os_Sphere_Autoref = new JTextField();
 		GridBagConstraints gbc_textField_Os_Sphere_Autoref = new GridBagConstraints();
 		gbc_textField_Os_Sphere_Autoref.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Os_Sphere_Autoref.fill = GridBagConstraints.HORIZONTAL;
@@ -235,7 +284,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		visionPanel.add(textField_Os_Sphere_Autoref, gbc_textField_Os_Sphere_Autoref);
 		textField_Os_Sphere_Autoref.setColumns(5);
 		
-		textField_Os_Cylinder_Autoref = new JTextField();
 		GridBagConstraints gbc_textField_Os_Cylinder_Autoref = new GridBagConstraints();
 		gbc_textField_Os_Cylinder_Autoref.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Os_Cylinder_Autoref.fill = GridBagConstraints.HORIZONTAL;
@@ -244,7 +292,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		visionPanel.add(textField_Os_Cylinder_Autoref, gbc_textField_Os_Cylinder_Autoref);
 		textField_Os_Cylinder_Autoref.setColumns(5);
 		
-		textField_Os_Axis_Autoref = new JTextField();
 		GridBagConstraints gbc_textField_Os_Axis_Autoref = new GridBagConstraints();
 		gbc_textField_Os_Axis_Autoref.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_Os_Axis_Autoref.insets = new Insets(0, 0, 5, 5);
@@ -291,7 +338,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblOd_Arc.gridy = 5;
 		visionPanel.add(lblOd_Arc, gbc_lblOd_Arc);
 		
-		textField_Od_Sphere_Arc = new JTextField();
 		GridBagConstraints gbc_textField_Od_Sphere_Arc = new GridBagConstraints();
 		gbc_textField_Od_Sphere_Arc.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Od_Sphere_Arc.fill = GridBagConstraints.HORIZONTAL;
@@ -300,7 +346,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		visionPanel.add(textField_Od_Sphere_Arc, gbc_textField_Od_Sphere_Arc);
 		textField_Od_Sphere_Arc.setColumns(5);
 		
-		textField_Od_Cylin_Arc = new JTextField();
 		GridBagConstraints gbc_textField_Od_Cylin_Arc = new GridBagConstraints();
 		gbc_textField_Od_Cylin_Arc.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Od_Cylin_Arc.fill = GridBagConstraints.HORIZONTAL;
@@ -309,7 +354,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		visionPanel.add(textField_Od_Cylin_Arc, gbc_textField_Od_Cylin_Arc);
 		textField_Od_Cylin_Arc.setColumns(5);
 		
-		textField_Od_Axis_Od = new JTextField();
 		textField_Od_Axis_Od.setColumns(5);
 		GridBagConstraints gbc_textField_Od_Axis_Od = new GridBagConstraints();
 		gbc_textField_Od_Axis_Od.fill = GridBagConstraints.HORIZONTAL;
@@ -326,7 +370,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblOs_Arc.gridy = 6;
 		visionPanel.add(lblOs_Arc, gbc_lblOs_Arc);
 		
-		textField_Os_Sphere_Arc = new JTextField();
 		GridBagConstraints gbc_textField_Os_Sphere_Arc = new GridBagConstraints();
 		gbc_textField_Os_Sphere_Arc.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Os_Sphere_Arc.fill = GridBagConstraints.HORIZONTAL;
@@ -335,7 +378,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		visionPanel.add(textField_Os_Sphere_Arc, gbc_textField_Os_Sphere_Arc);
 		textField_Os_Sphere_Arc.setColumns(5);
 		
-		textField_Os_Cylin_Arc = new JTextField();
 		GridBagConstraints gbc_textField_Os_Cylin_Arc = new GridBagConstraints();
 		gbc_textField_Os_Cylin_Arc.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Os_Cylin_Arc.fill = GridBagConstraints.HORIZONTAL;
@@ -344,7 +386,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		visionPanel.add(textField_Os_Cylin_Arc, gbc_textField_Os_Cylin_Arc);
 		textField_Os_Cylin_Arc.setColumns(5);
 		
-		textField_Os_Axis_Arc = new JTextField();
 		textField_Os_Axis_Arc.setColumns(5);
 		GridBagConstraints gbc_textField_Os_Axis_Arc = new GridBagConstraints();
 		gbc_textField_Os_Axis_Arc.fill = GridBagConstraints.HORIZONTAL;
@@ -432,7 +473,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblFE1_r1.gridy = 2;
 		panel_FundusExam.add(lblFE1_r1, gbc_lblFE1_r1);
 		
-		textField_FE1_1_1 = new JTextField();
 		GridBagConstraints gbc_textField_FE1_1_1 = new GridBagConstraints();
 		gbc_textField_FE1_1_1.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_FE1_1_1.fill = GridBagConstraints.HORIZONTAL;
@@ -441,7 +481,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		panel_FundusExam.add(textField_FE1_1_1, gbc_textField_FE1_1_1);
 		textField_FE1_1_1.setColumns(5);
 		
-		textField_FE1_1_2 = new JTextField();
 		GridBagConstraints gbc_textField_FE1_1_2 = new GridBagConstraints();
 		gbc_textField_FE1_1_2.insets = new Insets(0, 0, 5, 0);
 		gbc_textField_FE1_1_2.fill = GridBagConstraints.HORIZONTAL;
@@ -457,7 +496,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblFE1_r2.gridy = 4;
 		panel_FundusExam.add(lblFE1_r2, gbc_lblFE1_r2);
 		
-		textField_FE1_2_1 = new JTextField();
 		GridBagConstraints gbc_textField_FE1_2_1 = new GridBagConstraints();
 		gbc_textField_FE1_2_1.insets = new Insets(0, 0, 0, 5);
 		gbc_textField_FE1_2_1.fill = GridBagConstraints.HORIZONTAL;
@@ -466,7 +504,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		panel_FundusExam.add(textField_FE1_2_1, gbc_textField_FE1_2_1);
 		textField_FE1_2_1.setColumns(5);
 		
-		textField_FE1_2_2 = new JTextField();
 		GridBagConstraints gbc_textField_FE1_2_2 = new GridBagConstraints();
 		gbc_textField_FE1_2_2.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_FE1_2_2.gridx = 4;
@@ -506,29 +543,27 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_scrollPane_AP.gridy = 12;
 		mainPane.add(scrollPane_AP, gbc_scrollPane_AP);
 		
-		txtrTextarea = new JTextArea();
 		txtrTextarea.setColumns(80);
 		txtrTextarea.setRows(4);
 		txtrTextarea.setWrapStyleWord(true);
 		txtrTextarea.setLineWrap(true);
 		scrollPane_AP.setViewportView(txtrTextarea);
-		txtrTextarea.setText("textArea");
 		
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JButton btnNewButton = new JButton("Cancel");
-		btnNewButton.addMouseListener(new MouseAdapter() {
+		
+		btnCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				showVisitTabView();
 			}
 		});
-		panel.add(btnNewButton);
+		panel.add(btnCancel);
 		
-		JButton btnNewButton_1 = new JButton("Save");
-		btnNewButton_1.addMouseListener(new MouseAdapter() {
+		
+		btnSave.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -563,9 +598,12 @@ public class VisitTabViewNewVisit extends JPanel {
 				}
 			}
 		});
-		panel.add(btnNewButton_1);
+		panel.add(btnSave);
 	}
 	
+	/**
+	 * sets Visit tab to VisitsTabView
+	 */
 	public void showVisitTabView() {
 		int index = tabbedPane.indexOfTab("Visits");
 		tabbedPane.setComponentAt(index, null);

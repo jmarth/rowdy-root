@@ -110,7 +110,8 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 						rs.getDouble("feRow1Col2"),
 						rs.getDouble("feRow2Col1"),
 						rs.getDouble("feRow2Col2"),
-						rs.getString("assessment"));
+						rs.getString("assessment"),
+						rs.getString("dateCreated"));
 				visits.add(v);
 			}
 		} catch (SQLException e) {
@@ -165,7 +166,8 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 						rs.getDouble("feRow1Col2"),
 						rs.getDouble("feRow2Col1"),
 						rs.getDouble("feRow2Col2"),
-						rs.getString("assessment"));
+						rs.getString("assessment"),
+						rs.getString("dateCreated"));
 				visits.add(v);
 			}
 		} catch (SQLException e) {

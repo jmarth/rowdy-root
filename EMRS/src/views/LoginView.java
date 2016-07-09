@@ -46,13 +46,8 @@ public class LoginView extends JFrame {
 	 * Launch the application.
 	 * @throws IOException 
 	 */
-	public static void newWindow() throws IOException {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				LoginView frame = new LoginView();
-				frame.setVisible(true);
-			}
-		});
+	public  void newWindow() throws IOException {
+		setVisible(true);
 	}
 
 	/**

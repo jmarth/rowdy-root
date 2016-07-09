@@ -27,6 +27,7 @@ public class Visit {
 	private double feRow2Col1;
 	private double feRow2Col2;
 	private String assessment;
+	private String dateCreated;
 	private VisitTableGatewayMySQL vtg;
 	
 	/**
@@ -54,7 +55,7 @@ public class Visit {
 			double autorefractionOdAxis, double autorefractionOsSphere, double autorefractionOsCylinder,
 			double autorefractionOsdAxis, double arcOdSphere, double arcOdCylinder, double arcOdAxis,
 			double arcOsSphere, double arcOsCylinder, double arcOsAxis, double feRow1Col1, double feRow1Col2,
-			double feRow2Col1, double feRow2Col2, String assessment) {
+			double feRow2Col1, double feRow2Col2, String assessment, String dateCreated) {
 		super();
 		this.id = id;
 		this.pid = pid;
@@ -76,6 +77,7 @@ public class Visit {
 		this.feRow2Col1 = feRow2Col1;
 		this.feRow2Col2 = feRow2Col2;
 		this.assessment = assessment;
+		this.dateCreated = dateCreated;
 		vtg = null;
 		setGateway();
 	}
@@ -472,5 +474,21 @@ public class Visit {
 	 */
 	public VisitTableGateway getGateway() {
 		return vtg;
+	}
+	
+	/**
+	 * getter for dateCreated
+	 * @return dateCreated
+	 */
+	public String getDateCreated() {
+		return dateCreated;
+	}
+
+	/**
+	 * setter for dateCreated
+	 * @param dateCreated
+	 */
+	public void setDateCreated(String dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 }
