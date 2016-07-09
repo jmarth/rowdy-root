@@ -1,5 +1,14 @@
 package models;
 
+import java.awt.List;
+import java.io.IOException;
+
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
+import database.AllergyTableGatewayMySQL;
+import database.GatewayException;
+
 public class Allergy {
 	
 	private long id;
@@ -25,7 +34,6 @@ public class Allergy {
 		this.adverseReaction = adverseReaction;
 	}
 
-	
 	/**
 	 * 
 	 * GETTERS AND SETTERS
@@ -67,9 +75,4 @@ public class Allergy {
 	public long getId() {
 		return id;
 	}
-	
-	
-	
-	
-
 }

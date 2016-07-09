@@ -36,7 +36,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
-public class Login extends JFrame {
+public class LoginView extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -49,7 +49,7 @@ public class Login extends JFrame {
 	public static void newWindow() throws IOException {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				Login frame = new Login();
+				LoginView frame = new LoginView();
 				frame.setVisible(true);
 			}
 		});
@@ -58,7 +58,7 @@ public class Login extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Login() {
+	public LoginView() {
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -83,7 +83,7 @@ public class Login extends JFrame {
 				setVisible(false);
 				dispose();
 				//Create home view
-				Home home  = new Home();
+				HomeView home  = new HomeView();
 				home.NewScreen();
 			}
 		});

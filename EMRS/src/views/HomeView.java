@@ -64,7 +64,7 @@ import java.awt.event.FocusEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 
-public class Home extends JFrame {
+public class HomeView extends JFrame {
 
 	private JPanel contentPane;
 	final JButton btnAddPatient = new JButton("Add Patient");
@@ -83,7 +83,7 @@ public class Home extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Home frame = new Home();
+					HomeView frame = new HomeView();
 					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 					frame.setVisible(true);
 					
@@ -97,9 +97,9 @@ public class Home extends JFrame {
 	/**
 	 * Home constructor
 	 */
-	public Home() {
+	public HomeView() {
 		homeModel = new HomeModel(this);
-		final Home home = this;
+		final HomeView home = this;
 		
 		//Set up gateway
 		homeModel.setPatientTableGateway();
@@ -121,7 +121,7 @@ public class Home extends JFrame {
 		textFieldSearch.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				homeModel.setPatientsView(new PatientsView(home));
+				homeModel.setPatientsView(new FIndPatientsView(home));
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
 			}
 		});
@@ -176,7 +176,7 @@ public class Home extends JFrame {
 		//add patient button on click
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 homeModel.setPatientInfo(new PatientInfo(home));
+				 homeModel.setPatientInfo(new AddPatientView(home));
 				 setCenterPanel(homeModel.getPatientInfo().getContentPane());
 			}
 		});
@@ -195,7 +195,7 @@ public class Home extends JFrame {
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (response == JOptionPane.YES_OPTION) {
 					dispose();
-					Login login = new Login();
+					LoginView login = new LoginView();
 					login.show();
 				}
 			}
@@ -210,7 +210,7 @@ public class Home extends JFrame {
 		//find patient button on click
 		btnFindPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				homeModel.setPatientsView(new PatientsView(home));
+				homeModel.setPatientsView(new FIndPatientsView(home));
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
 			}
 		});

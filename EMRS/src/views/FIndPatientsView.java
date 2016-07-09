@@ -37,7 +37,7 @@ import models.PatientList;
 import java.awt.Font;
 import javax.swing.JTextField;
 
-public class PatientsView extends JFrame {
+public class FIndPatientsView extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
@@ -47,7 +47,7 @@ public class PatientsView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PatientsView(final Home home) {
+	public FIndPatientsView(final HomeView home) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -88,7 +88,7 @@ public class PatientsView extends JFrame {
 		pl.setGateway(ptg);
 		pl.loadFromGateway();
 		patientList = pl.getPatientList();
-		populatePatientTable(home);
+		populatePatientTable();
 		
 		table.addMouseMotionListener(new MouseMotionAdapter() {
 			   public void mouseMoved(MouseEvent e) {
@@ -108,8 +108,8 @@ public class PatientsView extends JFrame {
 					int row = table.rowAtPoint(evt.getPoint());
 			        Long patientId = (Long) table.getValueAt(row, 0);
 			        Patient patient = pl.findById(patientId);
-			        PatientProfile pp = new PatientProfile(home, patient);
-			        home.setCenterPanel(pp.getContentPane());
+			        PatientRecordView prv = new PatientRecordView(patient);
+			        home.setCenterPanel(prv);
 				}
 			});
 		
@@ -119,13 +119,12 @@ public class PatientsView extends JFrame {
 		return contentPane;
 	}
 	
-	public void populatePatientTable(Home home) {
+	public void populatePatientTable() {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		for(Patient patient : patientList) {
 			String fullName =  patient.getFirstName()+" "+
 					patient.getMiddleName()+" "+
 					patient.getLastName();
-			//PatientProfile pp = new PatientProfile(home, patient);
 			String age = patient.getAge()+"";
 			String birthDate = patient.getBirthMonth()+"-"+
 					patient.getBirthDay()+"-"+

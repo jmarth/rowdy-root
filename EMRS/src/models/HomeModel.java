@@ -11,21 +11,21 @@ import javax.swing.JTextField;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
-import views.Home;
-import views.PatientInfo;
-import views.PatientsView;
+import views.HomeView;
+import views.AddPatientView;
+import views.FIndPatientsView;
 
 public class HomeModel {
 	private PatientTableGateway patientTableGateway;
 	private PatientList patientList;
-	private PatientInfo patientInfo;
-	private PatientsView patientsView;
+	private AddPatientView patientInfo;
+	private FIndPatientsView patientsView;
 	
-	public HomeModel(Home home) {
+	public HomeModel(HomeView homeView) {
 		super();
 		patientList = new PatientList();
-		patientInfo = new PatientInfo(home);
-		patientsView = new PatientsView(home);
+		patientInfo = new AddPatientView(homeView);
+		patientsView = new FIndPatientsView(homeView);
 	}
 
 	public void setPatientTableGateway() {
@@ -54,19 +54,19 @@ public class HomeModel {
 		this.patientList = patientList;
 	}
 
-	public PatientInfo getPatientInfo() {
+	public AddPatientView getPatientInfo() {
 		return patientInfo;
 	}
 
-	public void setPatientInfo(PatientInfo patientInfo) {
+	public void setPatientInfo(AddPatientView patientInfo) {
 		this.patientInfo = patientInfo;
 	}
 
-	public PatientsView getPatientsView() {
+	public FIndPatientsView getPatientsView() {
 		return patientsView;
 	}
 
-	public void setPatientsView(PatientsView patientView) {
+	public void setPatientsView(FIndPatientsView patientView) {
 		this.patientsView = patientView;
 	}
 }

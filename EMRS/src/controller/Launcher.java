@@ -14,7 +14,7 @@ import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
 import models.Patient;
 import models.PatientList;
-import views.Login;
+import views.LoginView;
 
 public class Launcher {
 	public static void main(String[] args) {
@@ -36,7 +36,7 @@ public class Launcher {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				Login login = new Login();
+				LoginView login = new LoginView();
 				try {
 					login.newWindow();
 				} catch (IOException e) {

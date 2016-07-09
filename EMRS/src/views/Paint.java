@@ -27,6 +27,8 @@ import javax.swing.ScrollPaneLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import models.DrawArea;
+import javax.swing.JLabel;
+import java.awt.Insets;
  
 public class Paint extends JFrame{
  
@@ -71,6 +73,13 @@ public class Paint extends JFrame{
       }
     }
   };
+  private JPanel panel;
+  private JLabel lblNewLabel;
+  private JButton btnNewButton;
+  private JButton btnBrownEye;
+  private JButton btnGreenEye;
+  private JButton btnBlueEye;
+  private JButton btnNewButton_1;
  
   public Paint() {
     contentPane = new JPanel();
@@ -85,6 +94,60 @@ public class Paint extends JFrame{
     scrollPane.setViewportView(drawArea);
     // add to content pane
     contentPane.add(scrollPane, BorderLayout.CENTER);
+    
+    panel = new JPanel();
+    scrollPane.setRowHeaderView(panel);
+    GridBagLayout gbl_panel = new GridBagLayout();
+    gbl_panel.columnWidths = new int[]{46, 0};
+    gbl_panel.rowHeights = new int[]{14, 0, 0, 0, 0, 0, 0};
+    gbl_panel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+    gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+    panel.setLayout(gbl_panel);
+    
+    lblNewLabel = new JLabel("Backgrounds ");
+    GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
+    gbc_lblNewLabel.insets = new Insets(0, 0, 5, 0);
+    gbc_lblNewLabel.anchor = GridBagConstraints.NORTH;
+    gbc_lblNewLabel.gridx = 0;
+    gbc_lblNewLabel.gridy = 0;
+    panel.add(lblNewLabel, gbc_lblNewLabel);
+    
+    btnNewButton = new JButton("Circle");
+    GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
+    gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
+    gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
+    gbc_btnNewButton.gridx = 0;
+    gbc_btnNewButton.gridy = 1;
+    panel.add(btnNewButton, gbc_btnNewButton);
+    
+    btnBrownEye = new JButton("Brown Eye");
+    GridBagConstraints gbc_btnBrownEye = new GridBagConstraints();
+    gbc_btnBrownEye.insets = new Insets(0, 0, 5, 0);
+    gbc_btnBrownEye.fill = GridBagConstraints.HORIZONTAL;
+    gbc_btnBrownEye.gridx = 0;
+    gbc_btnBrownEye.gridy = 2;
+    panel.add(btnBrownEye, gbc_btnBrownEye);
+    
+    btnGreenEye = new JButton("Hazel Eye");
+    GridBagConstraints gbc_btnGreenEye = new GridBagConstraints();
+    gbc_btnGreenEye.insets = new Insets(0, 0, 5, 0);
+    gbc_btnGreenEye.gridx = 0;
+    gbc_btnGreenEye.gridy = 3;
+    panel.add(btnGreenEye, gbc_btnGreenEye);
+    
+    btnBlueEye = new JButton("Blue Eye");
+    GridBagConstraints gbc_btnBlueEye = new GridBagConstraints();
+    gbc_btnBlueEye.fill = GridBagConstraints.HORIZONTAL;
+    gbc_btnBlueEye.insets = new Insets(0, 0, 5, 0);
+    gbc_btnBlueEye.gridx = 0;
+    gbc_btnBlueEye.gridy = 4;
+    panel.add(btnBlueEye, gbc_btnBlueEye);
+    
+    btnNewButton_1 = new JButton("New button");
+    GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
+    gbc_btnNewButton_1.gridx = 0;
+    gbc_btnNewButton_1.gridy = 5;
+    panel.add(btnNewButton_1, gbc_btnNewButton_1);
 
     // create controls to apply colors and call clear feature
     JPanel controls = new JPanel();

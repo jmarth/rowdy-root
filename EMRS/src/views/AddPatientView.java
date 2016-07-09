@@ -73,9 +73,8 @@ import java.util.regex.Pattern;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class PatientInfo extends JFrame {
-
-	private Home home;
+public class AddPatientView extends JFrame {
+	private HomeView home;
 	private JPanel contentPane;
 	//Text fields
 	private JTextField firstNameTextField;
@@ -114,7 +113,7 @@ public class PatientInfo extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PatientInfo(final Home home) {
+	public AddPatientView(final HomeView home) {
 		this.home = home;
 		
 		imagePath = "";
@@ -753,8 +752,8 @@ public class PatientInfo extends JFrame {
 						
 						long newId = home.getHomeModel().getPatientTableGateway().insertPatient(patient);
 						patient.setId(newId);
-						PatientProfile pp = new PatientProfile(home,patient);
-						home.setCenterPanel(pp.getContentPane());
+						PatientRecordView pr = new PatientRecordView(patient);
+						home.setCenterPanel(pr);
 						
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
