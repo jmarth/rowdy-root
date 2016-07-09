@@ -1,6 +1,8 @@
 package models;
 
 public class Visit {
+	private long id;
+	private long pid;
 	private String chiefComplaint;
 	private double autorefractionOdSphere;
 	private double autorefractionOdCylinder;
@@ -41,12 +43,14 @@ public class Visit {
 	 * @param feRow2Col2
 	 * @param assessment
 	 */
-	public Visit(String chiefComplaint, double autorefractionOdSphere, double autorefractionOdCylinder,
+	public Visit(Long id, Long pid, String chiefComplaint, double autorefractionOdSphere, double autorefractionOdCylinder,
 			double autorefractionOdAxis, double autorefractionOsSphere, double autorefractionOsCylinder,
 			double autorefractionOsdAxis, double arcOdSphere, double arcOdCylinder, double arcOdAxis,
 			double arcOsSphere, double arcOsCylinder, double arcOsAxis, double feRow1Col1, double feRow1Col2,
 			double feRow2Col1, double feRow2Col2, String assessment) {
 		super();
+		this.id = id;
+		this.pid = pid;
 		this.chiefComplaint = chiefComplaint;
 		this.autorefractionOdSphere = autorefractionOdSphere;
 		this.autorefractionOdCylinder = autorefractionOdCylinder;
@@ -65,6 +69,38 @@ public class Visit {
 		this.feRow2Col1 = feRow2Col1;
 		this.feRow2Col2 = feRow2Col2;
 		this.assessment = assessment;
+	}
+	
+	/**
+	 * getter for id;
+	 * @return id
+	 */
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * setter for id
+	 * @param id
+	 */
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	/**
+	 * getter for pid
+	 * @return pid
+	 */
+	public long getPid() {
+		return pid;
+	}
+
+	/**
+	 * setter for pid
+	 * @param pid
+	 */
+	public void setPid(long pid) {
+		this.pid = pid;
 	}
 
 	/**
@@ -343,7 +379,7 @@ public class Visit {
 	 * getter for assessment
 	 * @return assessment
 	 */
-	public String getassessment() {
+	public String getAssessment() {
 		return assessment;
 	}
 
@@ -351,7 +387,7 @@ public class Visit {
 	 * setter for assessment
 	 * @param assessment
 	 */
-	public void setassessment(String assessment) {
+	public void setAssessment(String assessment) {
 		this.assessment = assessment;
 	}
 }
