@@ -6,27 +6,48 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.io.IOException;
+import java.util.Iterator;
+
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import java.awt.GridLayout;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+
 import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.table.DefaultTableModel;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import database.AllergyTableGatewayMySQL;
+import database.GatewayException;
+import models.Allergy;
+import models.Patient;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 
 public class NewVisitFormView extends JPanel {
 	
+	Patient patient;
 	
+	//gateway
+	
+	// sphere and cylinder = floats
+	// axis = int
 	private JTextField textField_Od_Sphere_Autoref;
 	private JTextField textField_Od_Cylinder_Autoref;
 	private JTextField textField_Od_Axis_Autoref;
@@ -43,12 +64,49 @@ public class NewVisitFormView extends JPanel {
 	private JTextField textField_FE1_2_2;
 	private JTextField textField_Od_Axis_Od;
 	private JTextField textField_Os_Axis_Arc;
-	public NewVisitFormView() {
+	
+	
+	public NewVisitFormView(final JTabbedPane tabbedPane, Patient patient, JPanel newVisitPanel/*, VisitTableGateway gateway, final JTable allergyTable*/) {
+		this.patient = patient;
+		/*
+		this.atg = gateway;
+		this.allergyTable = allergyTable;
+		oldPanel = allergiesPanel;
+		*/
+		/**
+		 * Try to connect to DB through AllergyTableGateway
+		 * Set the gateway of the AllergyList
+		 * Load Allergies into the AllergyList
+		 */
+		
+		/*
+		try {
+			atg = new AllergyTableGatewayMySQL();
+		} catch (GatewayException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		}
+		*/
+		
+		// Put all GUI lines in a seperate method to keep clean :)
+		createView(tabbedPane, patient, newVisitPanel);//, atg, allergyTable);
+
+	}
+	
+	public void createView(final JTabbedPane tabbedPane, final Patient patient, JPanel newVisitPanel/*, final AllergyTableGatewayMySQL atg, final JTable allergyTable*/){
+		
+		JPanel mainPanel = new JPanel();
+		
+		mainPanel.add(this);
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		JLabel lblCc = new JLabel("Chief Complaint:");
@@ -69,10 +127,12 @@ public class NewVisitFormView extends JPanel {
 		add(scrollPane_Cc, gbc_scrollPane_Cc);
 		
 		JTextArea txtrCC = new JTextArea();
+		txtrCC.setColumns(80);
+		txtrCC.setRows(4);
 		txtrCC.setWrapStyleWord(true);
 		txtrCC.setLineWrap(true);
 		scrollPane_Cc.setViewportView(txtrCC);
-		txtrCC.setText("textArea, scrollable");
+		txtrCC.setText("textArea");
 		
 		JLabel lblPed = new JLabel("Physical Exam Detail:");
 		lblPed.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -91,20 +151,17 @@ public class NewVisitFormView extends JPanel {
 		gbc_lblVision.gridy = 3;
 		add(lblVision, gbc_lblVision);
 		
-		JScrollPane scrollPane_VisionPanel = new JScrollPane();
-		GridBagConstraints gbc_scrollPane_VisionPanel = new GridBagConstraints();
-		gbc_scrollPane_VisionPanel.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_VisionPanel.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane_VisionPanel.gridx = 0;
-		gbc_scrollPane_VisionPanel.gridy = 4;
-		add(scrollPane_VisionPanel, gbc_scrollPane_VisionPanel);
-		
 		JPanel visionPanel = new JPanel();
-		scrollPane_VisionPanel.setViewportView(visionPanel);
+		GridBagConstraints gbc_visionPanel = new GridBagConstraints();
+		gbc_visionPanel.anchor = GridBagConstraints.WEST;
+		gbc_visionPanel.insets = new Insets(0, 0, 5, 0);
+		gbc_visionPanel.gridx = 0;
+		gbc_visionPanel.gridy = 4;
+		add(visionPanel, gbc_visionPanel);
 		GridBagLayout gbl_visionPanel = new GridBagLayout();
 		gbl_visionPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_visionPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_visionPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_visionPanel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_visionPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		visionPanel.setLayout(gbl_visionPanel);
 		
@@ -130,8 +187,9 @@ public class NewVisitFormView extends JPanel {
 		gbc_lblCylinder_Autoref.gridy = 0;
 		visionPanel.add(lblCylinder_Autoref, gbc_lblCylinder_Autoref);
 		
-		JLabel lblAxis_Autoref = new JLabel("Axis");
+		JLabel lblAxis_Autoref = new JLabel("Axis     ");
 		GridBagConstraints gbc_lblAxis_Autoref = new GridBagConstraints();
+		gbc_lblAxis_Autoref.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblAxis_Autoref.insets = new Insets(0, 0, 5, 5);
 		gbc_lblAxis_Autoref.gridx = 4;
 		gbc_lblAxis_Autoref.gridy = 0;
@@ -165,8 +223,8 @@ public class NewVisitFormView extends JPanel {
 		
 		textField_Od_Axis_Autoref = new JTextField();
 		GridBagConstraints gbc_textField_Od_Axis_Autoref = new GridBagConstraints();
-		gbc_textField_Od_Axis_Autoref.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Od_Axis_Autoref.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_Od_Axis_Autoref.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Od_Axis_Autoref.gridx = 4;
 		gbc_textField_Od_Axis_Autoref.gridy = 1;
 		visionPanel.add(textField_Od_Axis_Autoref, gbc_textField_Od_Axis_Autoref);
@@ -200,8 +258,8 @@ public class NewVisitFormView extends JPanel {
 		
 		textField_Os_Axis_Autoref = new JTextField();
 		GridBagConstraints gbc_textField_Os_Axis_Autoref = new GridBagConstraints();
-		gbc_textField_Os_Axis_Autoref.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Os_Axis_Autoref.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_Os_Axis_Autoref.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Os_Axis_Autoref.gridx = 4;
 		gbc_textField_Os_Axis_Autoref.gridy = 2;
 		visionPanel.add(textField_Os_Axis_Autoref, gbc_textField_Os_Axis_Autoref);
@@ -209,6 +267,7 @@ public class NewVisitFormView extends JPanel {
 		
 		JLabel lblARc = new JLabel("ARc");
 		GridBagConstraints gbc_lblARc = new GridBagConstraints();
+		gbc_lblARc.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblARc.insets = new Insets(0, 0, 5, 5);
 		gbc_lblARc.gridx = 0;
 		gbc_lblARc.gridy = 4;
@@ -230,6 +289,7 @@ public class NewVisitFormView extends JPanel {
 		
 		JLabel lblArc_Axis = new JLabel("Axis");
 		GridBagConstraints gbc_lblArc_Axis = new GridBagConstraints();
+		gbc_lblArc_Axis.fill = GridBagConstraints.HORIZONTAL;
 		gbc_lblArc_Axis.insets = new Insets(0, 0, 5, 5);
 		gbc_lblArc_Axis.gridx = 4;
 		gbc_lblArc_Axis.gridy = 4;
@@ -264,8 +324,8 @@ public class NewVisitFormView extends JPanel {
 		textField_Od_Axis_Od = new JTextField();
 		textField_Od_Axis_Od.setColumns(5);
 		GridBagConstraints gbc_textField_Od_Axis_Od = new GridBagConstraints();
-		gbc_textField_Od_Axis_Od.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Od_Axis_Od.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_Od_Axis_Od.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Od_Axis_Od.gridx = 4;
 		gbc_textField_Od_Axis_Od.gridy = 5;
 		visionPanel.add(textField_Od_Axis_Od, gbc_textField_Od_Axis_Od);
@@ -299,8 +359,8 @@ public class NewVisitFormView extends JPanel {
 		textField_Os_Axis_Arc = new JTextField();
 		textField_Os_Axis_Arc.setColumns(5);
 		GridBagConstraints gbc_textField_Os_Axis_Arc = new GridBagConstraints();
-		gbc_textField_Os_Axis_Arc.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Os_Axis_Arc.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_Os_Axis_Arc.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_Os_Axis_Arc.gridx = 4;
 		gbc_textField_Os_Axis_Arc.gridy = 6;
 		visionPanel.add(textField_Os_Axis_Arc, gbc_textField_Os_Axis_Arc);
@@ -321,10 +381,11 @@ public class NewVisitFormView extends JPanel {
 		
 		JPanel panel_VisionSketch = new JPanel();
 		GridBagConstraints gbc_panel_VisionSketch = new GridBagConstraints();
+		gbc_panel_VisionSketch.anchor = GridBagConstraints.WEST;
 		gbc_panel_VisionSketch.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_VisionSketch.fill = GridBagConstraints.BOTH;
+		gbc_panel_VisionSketch.fill = GridBagConstraints.VERTICAL;
 		gbc_panel_VisionSketch.gridx = 0;
-		gbc_panel_VisionSketch.gridy = 5;
+		gbc_panel_VisionSketch.gridy = 6;
 		add(panel_VisionSketch, gbc_panel_VisionSketch);
 		
 		JPanel panel_Sketch1_Placehold = new JPanel();
@@ -338,19 +399,16 @@ public class NewVisitFormView extends JPanel {
 		gbc_lblFundusExam.anchor = GridBagConstraints.WEST;
 		gbc_lblFundusExam.insets = new Insets(0, 0, 5, 0);
 		gbc_lblFundusExam.gridx = 0;
-		gbc_lblFundusExam.gridy = 6;
+		gbc_lblFundusExam.gridy = 7;
 		add(lblFundusExam, gbc_lblFundusExam);
 		
-		JScrollPane scrollPane_FundusExam = new JScrollPane();
-		GridBagConstraints gbc_scrollPane_FundusExam = new GridBagConstraints();
-		gbc_scrollPane_FundusExam.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_FundusExam.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPane_FundusExam.gridx = 0;
-		gbc_scrollPane_FundusExam.gridy = 7;
-		add(scrollPane_FundusExam, gbc_scrollPane_FundusExam);
-		
 		JPanel panel_FundusExam = new JPanel();
-		scrollPane_FundusExam.setViewportView(panel_FundusExam);
+		GridBagConstraints gbc_panel_FundusExam = new GridBagConstraints();
+		gbc_panel_FundusExam.anchor = GridBagConstraints.WEST;
+		gbc_panel_FundusExam.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_FundusExam.gridx = 0;
+		gbc_panel_FundusExam.gridy = 8;
+		add(panel_FundusExam, gbc_panel_FundusExam);
 		GridBagLayout gbl_panel_FundusExam = new GridBagLayout();
 		gbl_panel_FundusExam.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_panel_FundusExam.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
@@ -428,16 +486,20 @@ public class NewVisitFormView extends JPanel {
 		panel_FundusExam.add(textField_FE1_2_2, gbc_textField_FE1_2_2);
 		textField_FE1_2_2.setColumns(5);
 		
-		JPanel panel_Sketch2 = new JPanel();
-		GridBagConstraints gbc_panel_Sketch2 = new GridBagConstraints();
-		gbc_panel_Sketch2.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_Sketch2.fill = GridBagConstraints.BOTH;
-		gbc_panel_Sketch2.gridx = 0;
-		gbc_panel_Sketch2.gridy = 8;
-		add(panel_Sketch2, gbc_panel_Sketch2);
+		JPanel panelFundusSketch = new JPanel();
+		GridBagConstraints gbc_panelFundusSketch = new GridBagConstraints();
+		gbc_panelFundusSketch.anchor = GridBagConstraints.WEST;
+		gbc_panelFundusSketch.insets = new Insets(0, 0, 5, 0);
+		gbc_panelFundusSketch.fill = GridBagConstraints.VERTICAL;
+		gbc_panelFundusSketch.gridx = 0;
+		gbc_panelFundusSketch.gridy = 10;
+		add(panelFundusSketch, gbc_panelFundusSketch);
 		
-		JLabel lblSketch2 = new JLabel("Sketch #2 here");
-		panel_Sketch2.add(lblSketch2);
+		JPanel panel_Sketch2_Placehold = new JPanel();
+		panelFundusSketch.add(panel_Sketch2_Placehold);
+		
+		JLabel lblSketch2 = new JLabel("Sketch #2 goes here");
+		panel_Sketch2_Placehold.add(lblSketch2);
 		
 		JLabel lblAp = new JLabel("Assement/Plan:");
 		lblAp.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -445,20 +507,23 @@ public class NewVisitFormView extends JPanel {
 		gbc_lblAp.anchor = GridBagConstraints.WEST;
 		gbc_lblAp.insets = new Insets(0, 0, 5, 0);
 		gbc_lblAp.gridx = 0;
-		gbc_lblAp.gridy = 9;
+		gbc_lblAp.gridy = 11;
 		add(lblAp, gbc_lblAp);
 		
 		JScrollPane scrollPane_AP = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_AP = new GridBagConstraints();
+		gbc_scrollPane_AP.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane_AP.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_AP.gridx = 0;
-		gbc_scrollPane_AP.gridy = 10;
+		gbc_scrollPane_AP.gridy = 12;
 		add(scrollPane_AP, gbc_scrollPane_AP);
 		
-		JTextArea textArea_AP = new JTextArea();
-		textArea_AP.setWrapStyleWord(true);
-		textArea_AP.setLineWrap(true);
-		scrollPane_AP.setViewportView(textArea_AP);
-		textArea_AP.setText("textArea, scrollable");
+		JTextArea txtrTextarea = new JTextArea();
+		txtrTextarea.setColumns(80);
+		txtrTextarea.setRows(4);
+		txtrTextarea.setWrapStyleWord(true);
+		txtrTextarea.setLineWrap(true);
+		scrollPane_AP.setViewportView(txtrTextarea);
+		txtrTextarea.setText("textArea");
 	}
 }

@@ -39,6 +39,7 @@ import javax.swing.table.DefaultTableModel;
 
 import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
+import javax.swing.ScrollPaneConstants;
 
 public class PatientProfile extends JFrame {
 
@@ -53,12 +54,15 @@ public class PatientProfile extends JFrame {
 	List<Allergy> allergyList;
 	AllergyTableGatewayMySQL atg;
 	
+	// Vars for Visit Tab
+	private JPanel newVisitPanel;
+	
 	/**
 	 * Create the frame.
 	 */
 	public PatientProfile(Home home, Patient patient) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 904, 606);
+		setBounds(100, 100, 987, 1105);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -511,6 +515,9 @@ public class PatientProfile extends JFrame {
 		allergyTable = createAllergyTab(tabbedPane, patient);
 		populateAllergyTable(allergyTable, patient);
 		
+		// Create tab for Visit
+		createVisitTab(tabbedPane, patient);
+		
 		
 		JPanel panel_5 = new JPanel();
 		tabbedPane.addTab("History", null, panel_5, null);
@@ -531,6 +538,34 @@ public class PatientProfile extends JFrame {
 		panel_3.setLayout(gbl_panel_3);
 	}
 	
+	private void createVisitTab(final JTabbedPane tabbedPane, final Patient patient) {
+		
+		//
+		newVisitPanel = new JPanel();
+		tabbedPane.addTab("Visit History", null, newVisitPanel, null);
+		
+		GridBagLayout gbl_visitTestPanel = new GridBagLayout();
+		gbl_visitTestPanel.columnWidths = new int[]{0, 0};
+		gbl_visitTestPanel.rowHeights = new int[]{0, 0};
+		gbl_visitTestPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_visitTestPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		newVisitPanel.setLayout(gbl_visitTestPanel);
+		
+		JButton btnNewVisit = new JButton("New Visit");
+		btnNewVisit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int index = tabbedPane.indexOfTab("Visit History");
+				System.out.println(index);
+				
+				tabbedPane.setComponentAt(index, new NewVisitFormView(tabbedPane, patient, allergiesPanel));//, atg, allergyTable));
+			}
+		});
+		GridBagConstraints gbc_btnNewVisit = new GridBagConstraints();
+		gbc_btnNewVisit.gridx = 0;
+		gbc_btnNewVisit.gridy = 0;
+		newVisitPanel.add(btnNewVisit, gbc_btnNewVisit);
+		
+	}
 	/**
 	 * Create Allergy tab filled in with GUI elements/ActionListeners
 	 * @param tabbedPane JTabbedPane to add Allergy tab
