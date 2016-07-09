@@ -40,6 +40,7 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import java.awt.BorderLayout;
 
 public class VisitTabViewNewVisit extends JPanel {
 	
@@ -98,17 +99,20 @@ public class VisitTabViewNewVisit extends JPanel {
 	}
 	
 	public void createView(final JTabbedPane tabbedPane, final Patient patient/*, final AllergyTableGatewayMySQL atg, final JTable allergyTable*/){
+		setLayout(new BorderLayout(0, 0));
 		
-		JPanel mainPanel = new JPanel();
+		JScrollPane scrollPane = new JScrollPane();
+		add(scrollPane);
 		
-		mainPanel.add(this);
+		JPanel mainPane = new JPanel();
+		scrollPane.setViewportView(mainPane);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
+		mainPane.setLayout(gridBagLayout);
 		
 		JLabel lblCc = new JLabel("Chief Complaint:");
 		lblCc.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -117,7 +121,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblCc.insets = new Insets(0, 0, 5, 0);
 		gbc_lblCc.gridx = 0;
 		gbc_lblCc.gridy = 0;
-		add(lblCc, gbc_lblCc);
+		mainPane.add(lblCc, gbc_lblCc);
 		
 		JScrollPane scrollPane_Cc = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_Cc = new GridBagConstraints();
@@ -125,7 +129,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_scrollPane_Cc.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane_Cc.gridx = 0;
 		gbc_scrollPane_Cc.gridy = 1;
-		add(scrollPane_Cc, gbc_scrollPane_Cc);
+		mainPane.add(scrollPane_Cc, gbc_scrollPane_Cc);
 		
 		JTextArea txtrCC = new JTextArea();
 		txtrCC.setColumns(80);
@@ -142,7 +146,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblPed.insets = new Insets(0, 0, 5, 0);
 		gbc_lblPed.gridx = 0;
 		gbc_lblPed.gridy = 2;
-		add(lblPed, gbc_lblPed);
+		mainPane.add(lblPed, gbc_lblPed);
 		
 		JLabel lblVision = new JLabel("Vision");
 		GridBagConstraints gbc_lblVision = new GridBagConstraints();
@@ -150,7 +154,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblVision.insets = new Insets(0, 0, 5, 0);
 		gbc_lblVision.gridx = 0;
 		gbc_lblVision.gridy = 3;
-		add(lblVision, gbc_lblVision);
+		mainPane.add(lblVision, gbc_lblVision);
 		
 		JPanel visionPanel = new JPanel();
 		GridBagConstraints gbc_visionPanel = new GridBagConstraints();
@@ -158,7 +162,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_visionPanel.insets = new Insets(0, 0, 5, 0);
 		gbc_visionPanel.gridx = 0;
 		gbc_visionPanel.gridy = 4;
-		add(visionPanel, gbc_visionPanel);
+		mainPane.add(visionPanel, gbc_visionPanel);
 		GridBagLayout gbl_visionPanel = new GridBagLayout();
 		gbl_visionPanel.columnWidths = new int[]{0, 0, 0, 0, 0, 0, 0};
 		gbl_visionPanel.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -387,7 +391,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_panel_VisionSketch.fill = GridBagConstraints.VERTICAL;
 		gbc_panel_VisionSketch.gridx = 0;
 		gbc_panel_VisionSketch.gridy = 6;
-		add(panel_VisionSketch, gbc_panel_VisionSketch);
+		mainPane.add(panel_VisionSketch, gbc_panel_VisionSketch);
 		
 		JPanel panel_Sketch1_Placehold = new JPanel();
 		panel_VisionSketch.add(panel_Sketch1_Placehold);
@@ -401,7 +405,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblFundusExam.insets = new Insets(0, 0, 5, 0);
 		gbc_lblFundusExam.gridx = 0;
 		gbc_lblFundusExam.gridy = 7;
-		add(lblFundusExam, gbc_lblFundusExam);
+		mainPane.add(lblFundusExam, gbc_lblFundusExam);
 		
 		JPanel panel_FundusExam = new JPanel();
 		GridBagConstraints gbc_panel_FundusExam = new GridBagConstraints();
@@ -409,7 +413,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_panel_FundusExam.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_FundusExam.gridx = 0;
 		gbc_panel_FundusExam.gridy = 8;
-		add(panel_FundusExam, gbc_panel_FundusExam);
+		mainPane.add(panel_FundusExam, gbc_panel_FundusExam);
 		GridBagLayout gbl_panel_FundusExam = new GridBagLayout();
 		gbl_panel_FundusExam.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gbl_panel_FundusExam.rowHeights = new int[]{0, 0, 0, 0, 0, 0};
@@ -494,7 +498,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_panelFundusSketch.fill = GridBagConstraints.VERTICAL;
 		gbc_panelFundusSketch.gridx = 0;
 		gbc_panelFundusSketch.gridy = 10;
-		add(panelFundusSketch, gbc_panelFundusSketch);
+		mainPane.add(panelFundusSketch, gbc_panelFundusSketch);
 		
 		JPanel panel_Sketch2_Placehold = new JPanel();
 		panelFundusSketch.add(panel_Sketch2_Placehold);
@@ -509,7 +513,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblAp.insets = new Insets(0, 0, 5, 0);
 		gbc_lblAp.gridx = 0;
 		gbc_lblAp.gridy = 11;
-		add(lblAp, gbc_lblAp);
+		mainPane.add(lblAp, gbc_lblAp);
 		
 		JScrollPane scrollPane_AP = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_AP = new GridBagConstraints();
@@ -517,7 +521,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_scrollPane_AP.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_AP.gridx = 0;
 		gbc_scrollPane_AP.gridy = 12;
-		add(scrollPane_AP, gbc_scrollPane_AP);
+		mainPane.add(scrollPane_AP, gbc_scrollPane_AP);
 		
 		JTextArea txtrTextarea = new JTextArea();
 		txtrTextarea.setColumns(80);
@@ -526,5 +530,15 @@ public class VisitTabViewNewVisit extends JPanel {
 		txtrTextarea.setLineWrap(true);
 		scrollPane_AP.setViewportView(txtrTextarea);
 		txtrTextarea.setText("textArea");
+		
+		JPanel panel = new JPanel();
+		add(panel, BorderLayout.SOUTH);
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JButton btnNewButton = new JButton("Cancel");
+		panel.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Save");
+		panel.add(btnNewButton_1);
 	}
 }
