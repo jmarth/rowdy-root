@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import database.AllergyTableGatewayMySQL;
+import database.AllergyTableGateway;
 import database.GatewayException;
 
 public class Allergy {
@@ -16,6 +16,7 @@ public class Allergy {
 	private String allergy;
 	private String severity;
 	private String adverseReaction;
+	
 	
 	/**
 	 * Constructor to create new Allergy object

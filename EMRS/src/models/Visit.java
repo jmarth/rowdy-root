@@ -1,5 +1,11 @@
 package models;
 
+import java.io.IOException;
+
+import database.GatewayException;
+import database.VisitTableGateway;
+import database.VisitTableGatewayMySQL;
+
 public class Visit {
 	private long id;
 	private long pid;
@@ -21,6 +27,7 @@ public class Visit {
 	private double feRow2Col1;
 	private double feRow2Col2;
 	private String assessment;
+	private VisitTableGatewayMySQL vtg;
 	
 	/**
 	 * Constructor
@@ -69,6 +76,59 @@ public class Visit {
 		this.feRow2Col1 = feRow2Col1;
 		this.feRow2Col2 = feRow2Col2;
 		this.assessment = assessment;
+		vtg = null;
+		setGateway();
+	}
+	
+	/**
+	 * 
+	 * @param pid
+	 * @param chiefComplaint
+	 * @param autorefractionOdSphere
+	 * @param autorefractionOdCylinder
+	 * @param autorefractionOdAxis
+	 * @param autorefractionOsSphere
+	 * @param autorefractionOsCylinder
+	 * @param autorefractionOsdAxis
+	 * @param arcOdSphere
+	 * @param arcOdCylinder
+	 * @param arcOdAxis
+	 * @param arcOsSphere
+	 * @param arcOsCylinder
+	 * @param arcOsAxis
+	 * @param feRow1Col1
+	 * @param feRow1Col2
+	 * @param feRow2Col1
+	 * @param feRow2Col2
+	 * @param assessment
+	 */
+	public Visit(Long pid, String chiefComplaint, double autorefractionOdSphere, double autorefractionOdCylinder,
+			double autorefractionOdAxis, double autorefractionOsSphere, double autorefractionOsCylinder,
+			double autorefractionOsdAxis, double arcOdSphere, double arcOdCylinder, double arcOdAxis,
+			double arcOsSphere, double arcOsCylinder, double arcOsAxis, double feRow1Col1, double feRow1Col2,
+			double feRow2Col1, double feRow2Col2, String assessment) {
+		super();
+		this.pid = pid;
+		this.chiefComplaint = chiefComplaint;
+		this.autorefractionOdSphere = autorefractionOdSphere;
+		this.autorefractionOdCylinder = autorefractionOdCylinder;
+		this.autorefractionOdAxis = autorefractionOdAxis;
+		this.autorefractionOsSphere = autorefractionOsSphere;
+		this.autorefractionOsCylinder = autorefractionOsCylinder;
+		this.autorefractionOsdAxis = autorefractionOsdAxis;
+		this.arcOdSphere = arcOdSphere;
+		this.arcOdCylinder = arcOdCylinder;
+		this.arcOdAxis = arcOdAxis;
+		this.arcOsSphere = arcOsSphere;
+		this.arcOsCylinder = arcOsCylinder;
+		this.arcOsAxis = arcOsAxis;
+		this.feRow1Col1 = feRow1Col1;
+		this.feRow1Col2 = feRow1Col2;
+		this.feRow2Col1 = feRow2Col1;
+		this.feRow2Col2 = feRow2Col2;
+		this.assessment = assessment;
+		vtg = null;
+		setGateway();
 	}
 	
 	/**
@@ -389,5 +449,28 @@ public class Visit {
 	 */
 	public void setAssessment(String assessment) {
 		this.assessment = assessment;
+	}
+	
+	/**
+	 * sets the visit gateway
+	 */
+	public void setGateway() {
+		try {
+			vtg = new VisitTableGatewayMySQL();
+		} catch (GatewayException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * getter for visit gateway
+	 * @return vtg
+	 */
+	public VisitTableGateway getGateway() {
+		return vtg;
 	}
 }

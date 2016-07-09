@@ -31,6 +31,7 @@ import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
 import models.Allergy;
 import models.Patient;
+import models.Visit;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
@@ -41,6 +42,8 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VisitTabViewNewVisit extends JPanel {
 	
@@ -50,6 +53,7 @@ public class VisitTabViewNewVisit extends JPanel {
 	
 	// sphere and cylinder = floats
 	// axis = int
+	private JTextArea txtrCC;
 	private JTextField textField_Od_Sphere_Autoref;
 	private JTextField textField_Od_Cylinder_Autoref;
 	private JTextField textField_Od_Axis_Autoref;
@@ -66,39 +70,19 @@ public class VisitTabViewNewVisit extends JPanel {
 	private JTextField textField_FE1_2_2;
 	private JTextField textField_Od_Axis_Od;
 	private JTextField textField_Os_Axis_Arc;
+	private JTextArea txtrTextarea;
+	private JTabbedPane tabbedPane;
 	
-	
-	public VisitTabViewNewVisit(final JTabbedPane tabbedPane, Patient patient/*, VisitTableGateway gateway, final JTable allergyTable*/) {
+	public VisitTabViewNewVisit(final JTabbedPane tabbedPane, Patient patient) {
 		this.patient = patient;
-		/*
-		this.atg = gateway;
-		this.allergyTable = allergyTable;
-		oldPanel = allergiesPanel;
-		*/
-		/**
-		 * Try to connect to DB through AllergyTableGateway
-		 * Set the gateway of the AllergyList
-		 * Load Allergies into the AllergyList
-		 */
-		
-		/*
-		try {
-			atg = new AllergyTableGatewayMySQL();
-		} catch (GatewayException e) {
-			System.out.println("Could not connect to DB");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("Could not connect to DB");
-			e.printStackTrace();
-		}
-		*/
+		this.tabbedPane = tabbedPane;
 		
 		// Put all GUI lines in a seperate method to keep clean :)
 		createView(tabbedPane, patient);//, atg, allergyTable);
 
 	}
 	
-	public void createView(final JTabbedPane tabbedPane, final Patient patient/*, final AllergyTableGatewayMySQL atg, final JTable allergyTable*/){
+	public void createView(final JTabbedPane tabbedPane, final Patient patient){
 		setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -130,8 +114,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_scrollPane_Cc.gridx = 0;
 		gbc_scrollPane_Cc.gridy = 1;
 		mainPane.add(scrollPane_Cc, gbc_scrollPane_Cc);
-		
-		JTextArea txtrCC = new JTextArea();
+		txtrCC = new JTextArea();
 		txtrCC.setColumns(80);
 		txtrCC.setRows(4);
 		txtrCC.setWrapStyleWord(true);
@@ -523,7 +506,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_scrollPane_AP.gridy = 12;
 		mainPane.add(scrollPane_AP, gbc_scrollPane_AP);
 		
-		JTextArea txtrTextarea = new JTextArea();
+		txtrTextarea = new JTextArea();
 		txtrTextarea.setColumns(80);
 		txtrTextarea.setRows(4);
 		txtrTextarea.setWrapStyleWord(true);
@@ -536,9 +519,56 @@ public class VisitTabViewNewVisit extends JPanel {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JButton btnNewButton = new JButton("Cancel");
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				showVisitTabView();
+			}
+		});
 		panel.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Save");
+		btnNewButton_1.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				//TODO: ERROR CHECKS
+				
+				Visit visit = new Visit(patient.getId(),
+						txtrCC.getText(),
+						Double.parseDouble(textField_Od_Sphere_Autoref.getText()),
+						Double.parseDouble(textField_Od_Cylinder_Autoref.getText()),
+						Double.parseDouble(textField_Od_Axis_Autoref.getText()),
+						Double.parseDouble(textField_Os_Sphere_Autoref.getText()),
+						Double.parseDouble(textField_Os_Cylinder_Autoref.getText()),
+						Double.parseDouble(textField_Os_Axis_Autoref.getText()),
+						Double.parseDouble(textField_Od_Sphere_Arc.getText()),
+						Double.parseDouble(textField_Od_Cylin_Arc.getText()),
+						Double.parseDouble(textField_Od_Axis_Od.getText()),
+						Double.parseDouble(textField_Os_Sphere_Arc.getText()),
+						Double.parseDouble(textField_Os_Cylin_Arc.getText()),
+						Double.parseDouble(textField_Os_Axis_Arc.getText()),
+						Double.parseDouble(textField_FE1_1_1.getText()),
+						Double.parseDouble(textField_FE1_1_2.getText()),
+						Double.parseDouble(textField_FE1_2_1.getText()),
+						Double.parseDouble(textField_FE1_2_2.getText()),
+						txtrTextarea.getText());
+				
+				try {
+					visit.getGateway().insertVisit(visit);
+					showVisitTabView();
+				} catch (GatewayException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		panel.add(btnNewButton_1);
+	}
+	
+	public void showVisitTabView() {
+		int index = tabbedPane.indexOfTab("Visits");
+		tabbedPane.setComponentAt(index, null);
+		tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane));
 	}
 }

@@ -19,7 +19,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import models.Patient;
 import models.Visit;
 
-public class VisitTabelGatewayMySQL implements VisitTableGateway {
+public class VisitTableGatewayMySQL implements VisitTableGateway {
 	private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	private static final boolean DEBUG = true;
 	private static final int QUERY_TIMEOUT = 70;//query timeout threshold in seconds
@@ -35,7 +35,7 @@ public class VisitTabelGatewayMySQL implements VisitTableGateway {
 	 * @throws GatewayException
 	 * @throws IOException 
 	 */
-	public VisitTabelGatewayMySQL() throws GatewayException, IOException {
+	public VisitTableGatewayMySQL() throws GatewayException, IOException {
 		//read the properties file to establish the db connection
 		DataSource ds = null;
 		try {
@@ -193,7 +193,7 @@ public class VisitTabelGatewayMySQL implements VisitTableGateway {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
-			st = conn.prepareStatement("insert INTO visits (pid"
+			st = conn.prepareStatement("insert INTO visits (pid,"
 					+ "chiefComplaint,"
 					+ " autorefractionOdSphere,"
 					+ " autorefractionOdCylinder,"
@@ -212,7 +212,7 @@ public class VisitTabelGatewayMySQL implements VisitTableGateway {
 					+ " feRow2Col1,"
 					+ " feRow2Col2, "
 					+ " assessment) "
-					+ " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
+					+ " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setLong(1, v.getPid());
 			st.setString(2, v.getChiefComplaint());
 			st.setDouble(3, v.getAutorefractionOdSphere());
@@ -223,15 +223,15 @@ public class VisitTabelGatewayMySQL implements VisitTableGateway {
 			st.setDouble(8, v.getAutorefractionOsdAxis());	
 			st.setDouble(9, v.getArcOdSphere());
 			st.setDouble(10, v.getArcOdCylinder());
-			st.setDouble(12, v.getArcOdAxis());
-			st.setDouble(13, v.getArcOsSphere());
-			st.setDouble(14, v.getArcOsCylinder());
-			st.setDouble(15, v.getArcOsAxis());
-			st.setDouble(16, v.getFeRow1Col1());
-			st.setDouble(17, v.getFeRow1Col2());
-			st.setDouble(18, v.getFeRow2Col1());
-			st.setDouble(19, v.getFeRow2Col2());
-			st.setString(20, v.getAssessment());
+			st.setDouble(11, v.getArcOdAxis());
+			st.setDouble(12, v.getArcOsSphere());
+			st.setDouble(13, v.getArcOsCylinder());
+			st.setDouble(14, v.getArcOsAxis());
+			st.setDouble(15, v.getFeRow1Col1());
+			st.setDouble(16, v.getFeRow1Col2());
+			st.setDouble(17, v.getFeRow2Col1());
+			st.setDouble(18, v.getFeRow2Col2());
+			st.setString(19, v.getAssessment());
 	
 			st.executeUpdate();
 			//get the generated key
