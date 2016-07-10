@@ -36,6 +36,7 @@ public class Vitals {
 		this.hUnit = hUnit;
 		this.weight = weight;
 		this.wUnit = wUnit;
+		this.notes = notes;
 	}
 
 

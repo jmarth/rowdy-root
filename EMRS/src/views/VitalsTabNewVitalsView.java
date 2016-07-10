@@ -12,6 +12,8 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -33,28 +35,28 @@ import javax.swing.JTable;
 import java.awt.Font;
 import javax.swing.JTextArea;
 
-public class VitalsTabNewVital extends JPanel {
+public class VitalsTabNewVitalsView extends JPanel {
 	
-	private final ButtonGroup bpButtonGroup = new ButtonGroup();
-	private final ButtonGroup heightButtonGroup = new ButtonGroup();
-	private final ButtonGroup weightButtonGroup = new ButtonGroup();
+	JPanel oldPanel;
+	JTable vitalsTable;
 	
+	private Patient patient;
+	private VitalsTableGateway vtg;
+		
 	private JTextField textField_BPSysUnit;
 	private JTextField textField_BPDiasUnit;
 	private JTextField textField_HeightUnit1;
 	private JTextField textField_WeightUnit;
 	private JTextField textField_HeightUnit2;
+		
+	private final ButtonGroup bpButtonGroup = new ButtonGroup();
+	private final ButtonGroup heightButtonGroup = new ButtonGroup();
+	private final ButtonGroup weightButtonGroup = new ButtonGroup();
 	
-	JPanel oldPanel;
-	
-	private Patient patient;
-	private VitalsTableGateway vtg;
-	JTable vitalsTable;
-
 	/**
 	 * Create the panel.
 	 */
-	public VitalsTabNewVital(final JTabbedPane tabbedPane, Patient patient, JPanel vitalsPanel, VitalsTableGateway gateway, JTable vitalsTable) {
+	public VitalsTabNewVitalsView(final JTabbedPane tabbedPane, Patient patient, JPanel vitalsPanel, VitalsTableGateway gateway, JTable vitalsTable) {
 		this.patient = patient;
 		this.vtg = gateway;
 		this.vitalsTable = vitalsTable;
@@ -166,6 +168,7 @@ public class VitalsTabNewVital extends JPanel {
 		tabbedPane.setComponentAt(index, oldPanel);
 	}
 	*/
+	
 	public void createView (final JTabbedPane tabbedPane, final Patient patient, JPanel vitalsPanel, final VitalsTableGateway vtg, final JTable vitalsTable) {
 setLayout(new BorderLayout(0, 0));
 		
@@ -371,10 +374,20 @@ setLayout(new BorderLayout(0, 0));
 		add(panel_Buttons, BorderLayout.SOUTH);
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cancel(tabbedPane, oldPanel);
+			}
+		});
 		panel_Buttons.add(btnCancel);
 		
-		JButton btnNewButton_1 = new JButton("Save");
-		panel_Buttons.add(btnNewButton_1);
+		JButton btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//save(patient, atg, tabbedPane, oldPanel, allergyTable);
+			}
+		});
+		panel_Buttons.add(btnSave);
 	}
 
 }
