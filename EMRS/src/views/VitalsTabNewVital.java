@@ -2,37 +2,180 @@ package views;
 
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+
 import java.awt.BorderLayout;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.io.IOException;
+import java.util.Iterator;
+
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
+import database.AllergyTableGatewayMySQL;
+import database.GatewayException;
+import database.VitalsTableGateway;
+import database.VitalsTableGatewayMySQL;
+import models.Allergy;
+import models.Patient;
+
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+
 import java.awt.Font;
+import javax.swing.JTextArea;
 
 public class VitalsTabNewVital extends JPanel {
+	
+	private final ButtonGroup bpButtonGroup = new ButtonGroup();
+	private final ButtonGroup heightButtonGroup = new ButtonGroup();
+	private final ButtonGroup weightButtonGroup = new ButtonGroup();
+	
 	private JTextField textField_BPSysUnit;
 	private JTextField textField_BPDiasUnit;
 	private JTextField textField_HeightUnit1;
 	private JTextField textField_WeightUnit;
 	private JTextField textField_HeightUnit2;
+	
+	JPanel oldPanel;
+	
+	private Patient patient;
+	private VitalsTableGateway vtg;
+	JTable vitalsTable;
 
 	/**
 	 * Create the panel.
 	 */
-	public VitalsTabNewVital() {
-		setLayout(new BorderLayout(0, 0));
+	public VitalsTabNewVital(final JTabbedPane tabbedPane, Patient patient, JPanel vitalsPanel, VitalsTableGateway gateway, JTable vitalsTable) {
+		this.patient = patient;
+		this.vtg = gateway;
+		this.vitalsTable = vitalsTable;
+		oldPanel =  vitalsPanel;
+		
+		/**
+		 * Try to connect to DB through AllergyTableGateway
+		 * Set the gateway of the AllergyList
+		 * Load Allergies into the AllergyList
+		 */
+		try {
+			vtg = new VitalsTableGatewayMySQL();
+		} catch (GatewayException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("Could not connect to DB");
+			e.printStackTrace();
+		}
+		
+		// Put all GUI lines in a separate method to keep clean :)
+		createView(tabbedPane, patient, vitalsPanel, vtg, vitalsTable);
+		
+		
+	}
+	
+	/**
+	 * Called from ActionListener for Cancel button
+	 * @param tabbedPane JTabbedPane to alter
+	 * @param oldPanel Panel to switch back to
+	 */
+	public void cancel(JTabbedPane tabbedPane, JPanel oldPanel){
+		int index = tabbedPane.indexOfTab("Vitals");
+		tabbedPane.setComponentAt(index, null);
+		tabbedPane.setComponentAt(index, oldPanel);
+	}
+	
+	/**
+	 * Save Allergy to database for patient
+	 * @param patient Patient that Allergy belongs to
+	 * @param atg AllergyTableGateway
+	 * @param tabbedPane JTabbedPane to change when done saving
+	 * @param oldPanel JPanel to change back to when done saving
+	 
+	public void save(Patient patient, AllergyTableGatewayMySQL atg, JTabbedPane tabbedPane, JPanel oldPanel, JTable allergyTable){
+		StringBuilder strBuild = new StringBuilder();
+		
+		/**
+		 * Iterate over collection of JCheckBoxes and if the check box is selected, append the label of the chckbox to the string (adverse_reaction)
+		 
+		Iterator<JCheckBox> chckbxIterator = checkboxes.iterator();
+		while(chckbxIterator.hasNext()){
+			JCheckBox tmpBox = chckbxIterator.next();
+			if(tmpBox.isSelected()){
+				//System.out.println(tmpBox.getLabel());
+				strBuild.append(tmpBox.getLabel());
+				strBuild.append("/");
+			}
+		}
+		
+		if(!otherTextField.getText().isEmpty()){
+			strBuild.append(otherTextField.getText());
+			strBuild.append("/");
+		}
+		
+		// Need to delete last "/" in adverse_reaction string
+		strBuild.deleteCharAt(strBuild.length()-1);
+		
+		/**
+		 * Determine what severity radio button is selected
+		 * Set severity string accordingly
+		 
+		if(rdbtnSevere.isSelected()){
+			severity = "Severe";
+		} else if (rdbtnModerate.isSelected()){
+			severity = "Moderate";
+		} else {
+			severity = "Mild";
+		}
+		
+		/**
+		 * Create new Allergy object with correct parameters
+		 * Insert the allery to the DB through the Gateway
+		 
+		Allergy allergy = new Allergy(0, patient.getId(), textField.getText(), severity, strBuild.toString());
+		try {
+			atg.insertAllergy(allergy);
+		} catch (GatewayException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		// Change the panel back to allergy table
+		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
+		int index = tabbedPane.indexOfTab("Allergies");
+		
+		// Add the allergy to the JTable
+		// Get model of AllergyTable in order to add rows
+		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
+		// Add row		
+		model.addRow(new Object[]{
+				allergy.getAllergy(), 
+				allergy.getSeverity(), 
+				allergy.getAdverseReaction()
+		});
+		
+		tabbedPane.setComponentAt(index, null);
+		tabbedPane.setComponentAt(index, oldPanel);
+	}
+	*/
+	public void createView (final JTabbedPane tabbedPane, final Patient patient, JPanel vitalsPanel, final VitalsTableGateway vtg, final JTable vitalsTable) {
+setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_VitalsForm = new JPanel();
 		add(panel_VitalsForm, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_VitalsForm = new GridBagLayout();
-		gbl_panel_VitalsForm.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-		gbl_panel_VitalsForm.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_VitalsForm.columnWidths = new int[]{0, 0, 48, 0, 0, 0};
+		gbl_panel_VitalsForm.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_VitalsForm.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_VitalsForm.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_VitalsForm.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		panel_VitalsForm.setLayout(gbl_panel_VitalsForm);
 		
 		JLabel lblVitals = new JLabel("Vitals");
@@ -43,7 +186,7 @@ public class VitalsTabNewVital extends JPanel {
 		gbc_lblVitals.gridy = 1;
 		panel_VitalsForm.add(lblVitals, gbc_lblVitals);
 		
-		JLabel lblBloodPressuresys = new JLabel("Blood Pressure (Sys):");
+		JLabel lblBloodPressuresys = new JLabel("BP(Sys):");
 		GridBagConstraints gbc_lblBloodPressuresys = new GridBagConstraints();
 		gbc_lblBloodPressuresys.anchor = GridBagConstraints.EAST;
 		gbc_lblBloodPressuresys.insets = new Insets(0, 0, 5, 5);
@@ -67,7 +210,24 @@ public class VitalsTabNewVital extends JPanel {
 		gbc_lblBPSysUnit.gridy = 3;
 		panel_VitalsForm.add(lblBPSysUnit, gbc_lblBPSysUnit);
 		
-		JLabel lblBloodPressuredias = new JLabel("Blood Pressure (Dias):");
+		JPanel panel_BPGroup = new JPanel();
+		GridBagConstraints gbc_panel_BPGroup = new GridBagConstraints();
+		gbc_panel_BPGroup.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_BPGroup.fill = GridBagConstraints.BOTH;
+		gbc_panel_BPGroup.gridx = 4;
+		gbc_panel_BPGroup.gridy = 3;
+		panel_VitalsForm.add(panel_BPGroup, gbc_panel_BPGroup);
+		
+		JRadioButton rdbtnMmhg = new JRadioButton("mm/Hg");
+		bpButtonGroup.add(rdbtnMmhg);
+		rdbtnMmhg.setSelected(true);
+		panel_BPGroup.add(rdbtnMmhg);
+		
+		JRadioButton rdbtnPa = new JRadioButton("Pa");
+		bpButtonGroup.add(rdbtnPa);
+		panel_BPGroup.add(rdbtnPa);
+		
+		JLabel lblBloodPressuredias = new JLabel("BP (Dias):");
 		GridBagConstraints gbc_lblBloodPressuredias = new GridBagConstraints();
 		gbc_lblBloodPressuredias.anchor = GridBagConstraints.EAST;
 		gbc_lblBloodPressuredias.insets = new Insets(0, 0, 5, 5);
@@ -78,7 +238,7 @@ public class VitalsTabNewVital extends JPanel {
 		textField_BPDiasUnit = new JTextField();
 		GridBagConstraints gbc_textField_BPDiasUnit = new GridBagConstraints();
 		gbc_textField_BPDiasUnit.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_BPDiasUnit.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_BPDiasUnit.fill = GridBagConstraints.BOTH;
 		gbc_textField_BPDiasUnit.gridx = 2;
 		gbc_textField_BPDiasUnit.gridy = 4;
 		panel_VitalsForm.add(textField_BPDiasUnit, gbc_textField_BPDiasUnit);
@@ -118,8 +278,6 @@ public class VitalsTabNewVital extends JPanel {
 		
 		JPanel panel_HeightGroup = new JPanel();
 		GridBagConstraints gbc_panel_HeightGroup = new GridBagConstraints();
-		gbc_panel_HeightGroup.fill = GridBagConstraints.VERTICAL;
-		gbc_panel_HeightGroup.anchor = GridBagConstraints.WEST;
 		gbc_panel_HeightGroup.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_HeightGroup.gridx = 4;
 		gbc_panel_HeightGroup.gridy = 6;
@@ -157,7 +315,7 @@ public class VitalsTabNewVital extends JPanel {
 		gbc_lblWeight.anchor = GridBagConstraints.EAST;
 		gbc_lblWeight.insets = new Insets(0, 0, 5, 5);
 		gbc_lblWeight.gridx = 1;
-		gbc_lblWeight.gridy = 8;
+		gbc_lblWeight.gridy = 9;
 		panel_VitalsForm.add(lblWeight, gbc_lblWeight);
 		
 		textField_WeightUnit = new JTextField();
@@ -165,7 +323,7 @@ public class VitalsTabNewVital extends JPanel {
 		gbc_textField_WeightUnit.insets = new Insets(0, 0, 5, 5);
 		gbc_textField_WeightUnit.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_WeightUnit.gridx = 2;
-		gbc_textField_WeightUnit.gridy = 8;
+		gbc_textField_WeightUnit.gridy = 9;
 		panel_VitalsForm.add(textField_WeightUnit, gbc_textField_WeightUnit);
 		textField_WeightUnit.setColumns(10);
 		
@@ -173,16 +331,14 @@ public class VitalsTabNewVital extends JPanel {
 		GridBagConstraints gbc_lblWeightUnit = new GridBagConstraints();
 		gbc_lblWeightUnit.insets = new Insets(0, 0, 5, 5);
 		gbc_lblWeightUnit.gridx = 3;
-		gbc_lblWeightUnit.gridy = 8;
+		gbc_lblWeightUnit.gridy = 9;
 		panel_VitalsForm.add(lblWeightUnit, gbc_lblWeightUnit);
 		
 		JPanel panel_WeightGroup = new JPanel();
 		GridBagConstraints gbc_panel_WeightGroup = new GridBagConstraints();
-		gbc_panel_WeightGroup.anchor = GridBagConstraints.WEST;
 		gbc_panel_WeightGroup.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_WeightGroup.fill = GridBagConstraints.VERTICAL;
 		gbc_panel_WeightGroup.gridx = 4;
-		gbc_panel_WeightGroup.gridy = 8;
+		gbc_panel_WeightGroup.gridy = 9;
 		panel_VitalsForm.add(panel_WeightGroup, gbc_panel_WeightGroup);
 		
 		JRadioButton rdbtnLbs = new JRadioButton("lbs");
@@ -192,6 +348,25 @@ public class VitalsTabNewVital extends JPanel {
 		JRadioButton rdbtnKg = new JRadioButton("kg");
 		panel_WeightGroup.add(rdbtnKg);
 		
+		JLabel lblNotes = new JLabel("Notes:");
+		GridBagConstraints gbc_lblNotes = new GridBagConstraints();
+		gbc_lblNotes.insets = new Insets(0, 0, 5, 5);
+		gbc_lblNotes.gridx = 1;
+		gbc_lblNotes.gridy = 11;
+		panel_VitalsForm.add(lblNotes, gbc_lblNotes);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setRows(4);
+		textArea.setColumns(32);
+		GridBagConstraints gbc_textArea = new GridBagConstraints();
+		gbc_textArea.gridheight = 2;
+		gbc_textArea.gridwidth = 3;
+		gbc_textArea.anchor = GridBagConstraints.NORTHWEST;
+		gbc_textArea.insets = new Insets(0, 0, 5, 5);
+		gbc_textArea.gridx = 2;
+		gbc_textArea.gridy = 11;
+		panel_VitalsForm.add(textArea, gbc_textArea);
+		
 		JPanel panel_Buttons = new JPanel();
 		add(panel_Buttons, BorderLayout.SOUTH);
 		
@@ -200,7 +375,6 @@ public class VitalsTabNewVital extends JPanel {
 		
 		JButton btnNewButton_1 = new JButton("Save");
 		panel_Buttons.add(btnNewButton_1);
-		
 	}
 
 }
