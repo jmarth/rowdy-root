@@ -15,6 +15,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import database.AllergyTableGateway;
 import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
 import models.Allergy;
@@ -28,11 +29,12 @@ import models.Patient;
 public class AllergyTabView extends JPanel {
 	private AllergyList al = new AllergyList();
 	private List<Allergy> allergyList;
-	private AllergyTableGatewayMySQL atg;
+	private AllergyTableGateway atg;
 	private JTable allergyTable = new JTable();
 	private Patient patient;
 	
-	public AllergyTabView(final Patient patient, final JTabbedPane tabbedPane) {
+	public AllergyTabView(final Patient patient, final JTabbedPane tabbedPane, final AllergyTableGateway atg) {
+		this.atg = atg;
 		this.patient = patient;
 		
 		GridBagLayout gbl_allergiesPanel = new GridBagLayout();
@@ -98,22 +100,10 @@ public class AllergyTabView extends JPanel {
 		// Declare variables
 		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
 		
-		/**
-		 * Try to connect to DB through AllergyTableGateway
-		 * Set the gateway of the AllergyList
-		 * Load Allergies into the AllergyList
-		 */
-		try {
-			atg = new AllergyTableGatewayMySQL();
-			al.setGateway(atg);
-			al.loadFromGateway();
-		} catch (GatewayException e) {
-			System.out.println("Could not connect to DB");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("Could not connect to DB");
-			e.printStackTrace();
-		}
+		al.setGateway(atg);
+		al.loadFromGateway();
+		
+		System.out.print("printing list"+al);
 		
 		// Find all allergies for the given patient
 		allergyList = al.getAllergyListForPatient(patient);

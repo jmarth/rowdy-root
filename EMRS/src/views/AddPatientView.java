@@ -750,9 +750,9 @@ public class AddPatientView extends JFrame {
 								middleNameTextField.getText()+" "+
 								lastNameTextField.getText();
 						
-						long newId = home.getHomeModel().getPatientTableGateway().insertPatient(patient);
+						long newId = home.getHomeModel().getPtg().insertPatient(patient);
 						patient.setId(newId);
-						PatientRecordView pr = new PatientRecordView(patient);
+						PatientRecordView pr = new PatientRecordView(home.getHomeModel(), patient);
 						home.setCenterPanel(pr);
 						
 					} catch (GatewayException e1) {

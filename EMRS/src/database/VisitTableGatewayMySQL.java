@@ -87,10 +87,13 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 		ResultSet rs = null;
 		try {
 			//fetch parts
+			System.out.print("getting info");
 			st = conn.prepareStatement("select * from visits");
 			rs = st.executeQuery();
+			System.out.print("\ninfo loaded");
 			//add each to list of parts to return
 			while(rs.next()) {
+				System.out.print("\ncreating visit object");
 				Visit v = new Visit(rs.getLong("id"),
 						rs.getLong("pid"),
 						rs.getString("chiefComplaint"),
@@ -112,7 +115,9 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 						rs.getDouble("feRow2Col2"),
 						rs.getString("assessment"),
 						rs.getString("dateCreated"));
+				System.out.print("\nvisit object created");
 				visits.add(v);
+				System.out.print("\nvisit object added");
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());

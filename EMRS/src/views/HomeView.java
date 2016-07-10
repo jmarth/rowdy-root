@@ -100,10 +100,7 @@ public class HomeView extends JFrame {
 	public HomeView() {
 		homeModel = new HomeModel(this);
 		final HomeView home = this;
-		
-		//Set up gateway
-		homeModel.setPatientTableGateway();
-		
+	
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1139, 1124);
 		

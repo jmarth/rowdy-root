@@ -14,6 +14,7 @@ import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import database.AllergyTableGateway;
 import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
 import models.Allergy;
@@ -40,7 +41,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	JPanel oldPanel;
 	
 	// Table Gateway
-	AllergyTableGatewayMySQL atg;
+	AllergyTableGateway atg;
 	
 	// Variables for JCheckBoxes
 	List<JCheckBox> checkboxes = new ArrayList<JCheckBox>();
@@ -81,7 +82,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public AllergyTabViewNewAllergy(final JTabbedPane tabbedPane, Patient patient, JPanel allergiesPanel, AllergyTableGatewayMySQL gateway, JTable allergyTable) {
+	public AllergyTabViewNewAllergy(final JTabbedPane tabbedPane, Patient patient, JPanel allergiesPanel, AllergyTableGateway gateway, JTable allergyTable) {
 		this.patient = patient;
 		this.atg = gateway;
 		this.allergyTable = allergyTable;
@@ -125,7 +126,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	 * @param tabbedPane JTabbedPane to change when done saving
 	 * @param oldPanel JPanel to change back to when done saving
 	 */
-	public void save(Patient patient, AllergyTableGatewayMySQL atg, JTabbedPane tabbedPane, JPanel oldPanel, JTable allergyTable){
+	public void save(Patient patient, AllergyTableGateway atg, JTabbedPane tabbedPane, JPanel oldPanel, JTable allergyTable){
 		StringBuilder strBuild = new StringBuilder();
 		
 		/**
@@ -199,7 +200,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	 * @param allergiesPanel Old JPanel to set back to on cancel or save
 	 * @param atg Gateway for Allergy table
 	 */
-	public void createView(final JTabbedPane tabbedPane, final Patient patient, JPanel allergiesPanel, final AllergyTableGatewayMySQL atg, final JTable allergyTable){
+	public void createView(final JTabbedPane tabbedPane, final Patient patient, JPanel allergiesPanel, final AllergyTableGateway atg, final JTable allergyTable){
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

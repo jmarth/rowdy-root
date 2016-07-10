@@ -9,11 +9,19 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import database.AllergyTableGateway;
+import database.AllergyTableGatewayMySQL;
+
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
+
+import database.VisitTableGateway;
+import database.VisitTableGatewayMySQL;
+import models.AllergyList;
 import models.Patient;
 import models.PatientList;
+import models.VisitList;
 import views.LoginView;
 
 public class Launcher {
@@ -34,16 +42,12 @@ public class Launcher {
 			e1.printStackTrace();
 		}
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				LoginView login = new LoginView();
-				try {
-					login.newWindow();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
+		LoginView login = new LoginView();
+		try {
+			login.newWindow();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

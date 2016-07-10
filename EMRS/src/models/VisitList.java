@@ -29,8 +29,10 @@ public class VisitList {
 	public void loadFromGateway() {
 		//fetch list of objects from the database
 		try {
-			List<Visit> allergies = gateway.fetchVisits();
-			for(Visit tmpVisit: allergies){
+			System.out.println("loading now");
+			List<Visit> visits = gateway.fetchVisits();
+			System.out.println("\n done loading now");
+			for(Visit tmpVisit: visits){
 				myIdMap.put(tmpVisit.getId(), tmpVisit);
 				myList.add(tmpVisit);
 			}

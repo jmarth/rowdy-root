@@ -21,10 +21,15 @@ import java.awt.Insets;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import models.Allergy;
 import models.AllergyList;
+import models.HomeModel;
 import models.Patient;
+import models.VisitList;
+
 import javax.swing.JSeparator;
 import java.awt.GridLayout;
 import javax.swing.JScrollPane;
@@ -54,27 +59,29 @@ public class PatientRecordView extends JTabbedPane {
 	private JTable allergyTable;
 	
 	// Vars for Visit Tab
-	private JPanel newVisitPanel;
+	private VisitList vl = new VisitList();
+	
 	
 	/**
 	 * Create the frame.
 	 */
-	public PatientRecordView(Patient patient) {
+	public PatientRecordView(final HomeModel homeModel, Patient patient) {
 		this.patient = patient;
 		setBounds(100, 100, 987, 1105);
 		
 		// Create tab for Profile 
-		JPanel PatientProfileTabView = new ProfileTabView(patient);
-		this.addTab("Profile", null, PatientProfileTabView, null);
+		JPanel patientProfileTabView = new ProfileTabView(patient);
+		this.addTab("Profile", null, patientProfileTabView, null);
 		
 		// Create tab for Allergies
-		JPanel AllergyTabView = new AllergyTabView(patient, this);
-		this.addTab("Allergies", null, AllergyTabView, null);
+		JPanel allergyTabView = new AllergyTabView(patient, this, homeModel.getAtg());
+		this.addTab("Allergies", null, allergyTabView, null);
+		System.out.print("allgergies done");
 		
 		// Create tab for Visit
-		JPanel VisitsTabView = new VisitsTabView(patient, this);
-		this.addTab("Visits", null, VisitsTabView, null);
-		
+		final VisitsTabView visitsTabView = new VisitsTabView(patient, this, homeModel.getVtg(), vl);
+		this.addTab("Visits", null, visitsTabView, null);
+		System.out.print("visits done");
 		JPanel panel_5 = new JPanel();
 		this.addTab("History", null, panel_5, null);
 		
@@ -86,5 +93,20 @@ public class PatientRecordView extends JTabbedPane {
 		
 		JPanel panel_3 = new JPanel();
 		this.addTab("Orders", null, panel_3, null);
+		
+		ChangeListener changeListener = new ChangeListener() {
+		      public void stateChanged(ChangeEvent changeEvent) {
+		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+		        int index = sourceTabbedPane.getSelectedIndex();
+		        System.out.println(sourceTabbedPane.getTitleAt(index));
+		        if(sourceTabbedPane.getTitleAt(index).equals("Visits")) {
+		        	vl.setGateway(homeModel.getVtg());
+		        	vl.loadFromGateway();
+		        	visitsTabView.populateVisitTable();
+		        	System.out.print("visit tab hit");
+		        }
+		      }
+		};
+		addChangeListener(changeListener);
 	}
 }

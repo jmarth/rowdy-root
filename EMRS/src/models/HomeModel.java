@@ -8,44 +8,47 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import database.AllergyTableGateway;
+import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
+import database.VisitTableGateway;
+import database.VisitTableGatewayMySQL;
 import views.HomeView;
 import views.AddPatientView;
 import views.FIndPatientsView;
 
 public class HomeModel {
-	private PatientTableGateway patientTableGateway;
-	private PatientList patientList;
 	private AddPatientView patientInfo;
 	private FIndPatientsView patientsView;
+	private PatientList patientList ;
+	private PatientTableGateway ptg = null;
+	private AllergyTableGateway atg = null;
+	private VisitTableGateway vtg = null;
 	
 	public HomeModel(HomeView homeView) {
 		super();
 		patientList = new PatientList();
 		patientInfo = new AddPatientView(homeView);
 		patientsView = new FIndPatientsView(homeView);
+		setGateways();
 	}
-
-	public void setPatientTableGateway() {
-		patientTableGateway = null;
-		//Try to connect to database
+	
+	public void setGateways() {
+		//Gateway creations
 		try {
-			patientTableGateway = new PatientTableGatewayMySQL();
+			ptg = new PatientTableGatewayMySQL();
+			atg = new AllergyTableGatewayMySQL();
+			vtg = new VisitTableGatewayMySQL();
 		} catch (GatewayException e) {
-			JOptionPane.showMessageDialog(null, "Database is not responding. Please reboot your computer and maybe the database will magically appear (not really).", "Database Offline!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Database is not responding. Please reboot your computer and maybe the database will magically appear (not really).", "Database Offline!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Error!", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 	}
-	
-	public PatientTableGateway getPatientTableGateway() {
-		return patientTableGateway;
-	}
-	
 	public PatientList getPatientList() {
 		return patientList;
 	}
@@ -68,5 +71,29 @@ public class HomeModel {
 
 	public void setPatientsView(FIndPatientsView patientView) {
 		this.patientsView = patientView;
+	}
+	
+	public PatientTableGateway getPtg() {
+		return ptg;
+	}
+
+	public void setPtg(PatientTableGateway ptg) {
+		this.ptg = ptg;
+	}
+
+	public AllergyTableGateway getAtg() {
+		return atg;
+	}
+
+	public void setAtg(AllergyTableGateway atg) {
+		this.atg = atg;
+	}
+
+	public VisitTableGateway getVtg() {
+		return vtg;
+	}
+
+	public void setVtg(VisitTableGateway vtg) {
+		this.vtg = vtg;
 	}
 }

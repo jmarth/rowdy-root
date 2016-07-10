@@ -46,10 +46,12 @@ public class VisitsTabView extends JPanel{
 	private Patient patient;
 	private VisitTableGateway vtg;
 	private List<Visit> visitList;
-	private VisitList vl = new VisitList();
+	private VisitList vl;
 	
-	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane) {
+	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final VisitTableGateway vtg, final VisitList vl) {
 		this.patient = patient;
+		this.vtg = vtg;
+		this.vl = vl;
 		
 		setLayout(new BorderLayout(0, 0));
 		
@@ -87,10 +89,7 @@ public class VisitsTabView extends JPanel{
 				"Visit History"
 			}
 		));
-		
-		vtg = null;
-		
-		populateVisitTable();
+	
 		
 		visitsTable.addMouseMotionListener(new MouseMotionAdapter() {
 			   public void mouseMoved(MouseEvent e) {
@@ -149,7 +148,9 @@ public class VisitsTabView extends JPanel{
 							v.getFeRow2Col2()+"",
 							v.getAssessment(),
 							patient,
-							tabbedPane);
+							tabbedPane,
+							vtg,
+							vl);
 					tabbedPane.setComponentAt(index, nv);//, atg, allergyTable));
 				}
 			});
@@ -162,31 +163,16 @@ public class VisitsTabView extends JPanel{
 		});
 	}
 	
-	private void populateVisitTable(){
+	public void populateVisitTable(){
 		// Get model of VisitTable in order to add rows
 		// Declare variables
 		DefaultTableModel model = (DefaultTableModel) visitsTable.getModel();
-		
-		/**
-		 * Try to connect to DB through AllergyTableGateway
-		 * Set the gateway of the AllergyList
-		 * Load Allergies into the AllergyList
-		 */
-		try {
-			vtg = new VisitTableGatewayMySQL();
-			vl.setGateway(vtg);
-			vl.loadFromGateway();
-		} catch (GatewayException e) {
-			System.out.println("Could not connect to DB");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("Could not connect to DB");
-			e.printStackTrace();
-		}
-		
+		model.setRowCount(0);
+
+		System.out.println("\ngetting patients visits");
 		// Find all allergies for the given patient
 		visitList = vl.getVisitListForPatient(patient);
-		
+		System.out.println("\ngot patients visits");
 		/**
 		 * For every allergy in the allergyList
 		 * .. Add that model the JTable

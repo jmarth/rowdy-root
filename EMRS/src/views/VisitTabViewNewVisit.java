@@ -29,9 +29,11 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
+import database.VisitTableGateway;
 import models.Allergy;
 import models.Patient;
 import models.Visit;
+import models.VisitList;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
@@ -76,6 +78,8 @@ public class VisitTabViewNewVisit extends JPanel {
 	private JTabbedPane tabbedPane;
 	private JButton btnCancel = new JButton("Cancel");
 	private JButton btnSave = new JButton("Save");
+	private VisitTableGateway vtg;
+	private VisitList vl;
 	
 	public VisitTabViewNewVisit(String cc, 
 			String string_Od_Sphere_Autoref, String string_Od_Cylinder_Autoref, String string_Od_Axis_Autoref,
@@ -83,7 +87,7 @@ public class VisitTabViewNewVisit extends JPanel {
 			String string_Od_Sphere_Arc, String string_Od_Cylin_Arc, String string_Od_Axis_Arc, 
 			String string_Os_Sphere_Arc, String string_Os_Cylin_Arc, String string_Os_Axis_Arc, 
 			String string_FE1_1_1, String string_FE1_1_2, String string_FE1_2_1, String string_FE1_2_2, 
-			String txtr, Patient patient, JTabbedPane tabbedPane) {
+			String txtr, Patient patient, JTabbedPane tabbedPane, VisitTableGateway vtg, VisitList vl) {
 		super();
 		
 		this.txtrCC.setText(cc);
@@ -106,6 +110,8 @@ public class VisitTabViewNewVisit extends JPanel {
 		this.txtrTextarea.setText(txtr);
 		this.tabbedPane = tabbedPane;
 		this.patient = patient;
+		this.vtg = vtg;
+		this.vl = vl;
 		createView();
 		disableFields(this);
 		btnSave.setVisible(false);
@@ -607,6 +613,6 @@ public class VisitTabViewNewVisit extends JPanel {
 	public void showVisitTabView() {
 		int index = tabbedPane.indexOfTab("Visits");
 		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane));
+		tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane, vtg, vl));
 	}
 }

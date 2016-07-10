@@ -108,7 +108,7 @@ public class FIndPatientsView extends JFrame {
 					int row = table.rowAtPoint(evt.getPoint());
 			        Long patientId = (Long) table.getValueAt(row, 0);
 			        Patient patient = pl.findById(patientId);
-			        PatientRecordView prv = new PatientRecordView(patient);
+			        PatientRecordView prv = new PatientRecordView(home.getHomeModel(), patient);
 			        home.setCenterPanel(prv);
 				}
 			});
