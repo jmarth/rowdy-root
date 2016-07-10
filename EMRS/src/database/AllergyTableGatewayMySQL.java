@@ -121,7 +121,7 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
 		} finally {
-			//clean up
+			
 			try {
 				if(rs != null)
 					rs.close();
