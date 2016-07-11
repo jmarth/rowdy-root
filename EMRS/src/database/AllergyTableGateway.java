@@ -9,4 +9,5 @@ public interface AllergyTableGateway {
 	public abstract List<Allergy> fetchAllergies() throws GatewayException;
 	public List<Allergy> fetchAllergiesForPatient(Patient p) throws GatewayException;
 	public long insertAllergy(Allergy a) throws GatewayException;
+	public void updateAllergy(Allergy a) throws GatewayException;
 }
