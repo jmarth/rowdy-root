@@ -1,10 +1,15 @@
 package views;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,6 +26,14 @@ import database.GatewayException;
 import models.Allergy;
 import models.AllergyList;
 import models.Patient;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 /**
  * This is the JPanel that is shown in the 
@@ -42,12 +55,12 @@ public class AllergyTabView extends JPanel {
 		gbl_allergiesPanel.rowWeights = new double[]{0.0, 1.0};
 		this.setLayout(gbl_allergiesPanel);
 				
-		// Create button to add a New Allergy to a Patient
+		// Create butZSton to add a New Allergy to a Patient
 		JButton btnNewAllergy = new JButton("New Allergy");
 		btnNewAllergy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = tabbedPane.indexOfTab("Allergies");
-				tabbedPane.setComponentAt(index, new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable));
+				tabbedPane.setComponentAt(index, new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, null, false));
 			}
 		});
 		GridBagConstraints gbc_btnNewAllergy = new GridBagConstraints();
@@ -56,6 +69,38 @@ public class AllergyTabView extends JPanel {
 		gbc_btnNewAllergy.gridx = 0;
 		gbc_btnNewAllergy.gridy = 0;
 		this.add(btnNewAllergy, gbc_btnNewAllergy);
+		
+		// add mouseListener to allergyTable to highlight row on hover
+		allergyTable.addMouseMotionListener(new MouseMotionAdapter() {
+			   public void mouseMoved(MouseEvent e) {
+			      int row = allergyTable.rowAtPoint(e.getPoint());
+			      if (row > -1) {
+			         allergyTable.clearSelection();
+			         allergyTable.setRowSelectionInterval(row, row);
+			      }
+			      else {
+			         allergyTable.setSelectionBackground(Color.blue);
+			      }
+			      allergyTable.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			   }
+			});
+		// Add mouseListener to allergyTable to open allergyDetailView
+		allergyTable.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				// Get row number of allergy chosen
+				int selectedRow = allergyTable.getSelectedRow();
+				
+				// Reload allergyList from gateway and get Allergy selected
+				//al.loadFromGateway();
+				//allergyList = al.getAllergyList();
+				Allergy tmp = allergyList.get(selectedRow);
+				
+				// Get tab of allergies and change panel
+				int index = tabbedPane.indexOfTab("Allergies");
+				AllergyTabViewNewAllergy anv = new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, tmp, true);
+				tabbedPane.setComponentAt(index, anv);
+			}
+		});
 				
 		// Add scrollPane to fit JTable inside of for list of Allergies
 		JScrollPane scrollPane = new JScrollPane();
@@ -95,7 +140,7 @@ public class AllergyTabView extends JPanel {
 	 * @param allergyTable JTable to populate
 	 * @param patient Patient JTable to populate
 	 */
-	private void populateAllergyTable(){
+	public void populateAllergyTable(){
 		// Get model of AllergyTable in order to add rows
 		// Declare variables
 		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();

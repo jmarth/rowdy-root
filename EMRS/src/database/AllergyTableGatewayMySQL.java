@@ -179,6 +179,41 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
 	}
 	
 	/**
+	 * Update an Allergy in the DB
+	 * @param a Allergy to update
+	 */
+	public void updateAllergy(Allergy a) throws GatewayException{
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.prepareStatement("UPDATE allergies SET"
+					+ " allergy = ?,"
+					+ " severity = ?,"
+					+ " adverse_reaction = ?"
+					+ " WHERE id = ? ", PreparedStatement.RETURN_GENERATED_KEYS);
+			//st.setInt(1, p.getHasPatientName() ? 1 : 0);
+			st.setString(1, a.getAllergy());
+			st.setString(2, a.getSeverity());
+			st.setString(3, a.getAdverseReaction());
+			st.setLong(4, a.getId());
+
+			st.executeUpdate();
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+	}
+	
+	/**
 	 * create a MySQL datasource with credentials and DB URL in db.properties file
 	 * @return
 	 * @throws RuntimeException
