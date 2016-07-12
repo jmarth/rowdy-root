@@ -31,6 +31,7 @@ import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
 import database.VisitTableGateway;
 import models.Allergy;
+import models.HomeModel;
 import models.Patient;
 import models.Visit;
 import models.VisitList;
@@ -78,49 +79,42 @@ public class VisitTabViewNewVisit extends JPanel {
 	private JTabbedPane tabbedPane;
 	private JButton btnCancel = new JButton("Cancel");
 	private JButton btnSave = new JButton("Save");
-	private VisitTableGateway vtg;
-	private VisitList vl;
+	private HomeModel homeModel;
 	
-	public VisitTabViewNewVisit(String cc, 
-			String string_Od_Sphere_Autoref, String string_Od_Cylinder_Autoref, String string_Od_Axis_Autoref,
-			String string_Os_Sphere_Autoref, String string_Os_Cylinder_Autoref, String string_Os_Axis_Autoref,
-			String string_Od_Sphere_Arc, String string_Od_Cylin_Arc, String string_Od_Axis_Arc, 
-			String string_Os_Sphere_Arc, String string_Os_Cylin_Arc, String string_Os_Axis_Arc, 
-			String string_FE1_1_1, String string_FE1_1_2, String string_FE1_2_1, String string_FE1_2_2, 
-			String txtr, Patient patient, JTabbedPane tabbedPane, VisitTableGateway vtg, VisitList vl) {
+	public VisitTabViewNewVisit(Visit visit, Patient patient, JTabbedPane tabbedPane, HomeModel homeModel) {
 		super();
 		
-		this.txtrCC.setText(cc);
-		this.textField_Od_Sphere_Autoref.setText(string_Od_Sphere_Autoref);
-		this.textField_Od_Cylinder_Autoref.setText(string_Od_Cylinder_Autoref);
-		this.textField_Od_Axis_Autoref.setText(string_Od_Axis_Autoref);
-		this.textField_Os_Sphere_Autoref.setText(string_Os_Sphere_Autoref);
-		this.textField_Os_Cylinder_Autoref.setText(string_Os_Cylinder_Autoref);
-		this.textField_Os_Axis_Autoref.setText(string_Os_Axis_Autoref);
-		this.textField_Od_Sphere_Arc.setText(string_Od_Sphere_Arc);
-		this.textField_Od_Cylin_Arc.setText(string_Od_Cylin_Arc);
-		this.textField_FE1_1_1.setText(string_FE1_1_1);
-		this.textField_FE1_1_2.setText(string_FE1_1_2);
-		this.textField_FE1_2_1.setText(string_FE1_2_1);
-		this.textField_FE1_2_2.setText(string_FE1_2_2);
-		this.textField_Od_Axis_Od.setText(string_Od_Axis_Arc);
-		this.textField_Os_Cylin_Arc.setText(string_Os_Cylin_Arc);
-		this.textField_Os_Sphere_Arc.setText(string_Os_Sphere_Arc);
-		this.textField_Os_Axis_Arc.setText(string_Os_Axis_Arc);
-		this.txtrTextarea.setText(txtr);
+		this.txtrCC.setText(visit.getChiefComplaint());
+		this.textField_Od_Sphere_Autoref.setText(visit.getAutorefractionOdSphere()+"");
+		this.textField_Od_Cylinder_Autoref.setText(visit.getAutorefractionOdCylinder()+"");
+		this.textField_Od_Axis_Autoref.setText(visit.getAutorefractionOdAxis()+"");
+		this.textField_Os_Sphere_Autoref.setText(visit.getAutorefractionOsSphere()+"");
+		this.textField_Os_Cylinder_Autoref.setText(visit.getAutorefractionOsCylinder()+"");
+		this.textField_Os_Axis_Autoref.setText(visit.getAutorefractionOsdAxis()+"");
+		this.textField_Od_Sphere_Arc.setText(visit.getArcOdSphere()+"");
+		this.textField_Od_Cylin_Arc.setText(visit.getArcOdCylinder()+"");
+		this.textField_FE1_1_1.setText(visit.getFeRow1Col1()+"");
+		this.textField_FE1_1_2.setText(visit.getFeRow1Col2()+"");
+		this.textField_FE1_2_1.setText(visit.getFeRow2Col1()+"");
+		this.textField_FE1_2_2.setText(visit.getFeRow2Col2()+"");
+		this.textField_Od_Axis_Od.setText(visit.getArcOdAxis()+"");
+		this.textField_Os_Cylin_Arc.setText(visit.getArcOsCylinder()+"");
+		this.textField_Os_Sphere_Arc.setText(visit.getArcOsSphere()+"");
+		this.textField_Os_Axis_Arc.setText(visit.getArcOsAxis()+"");
+		this.txtrTextarea.setText(visit.getAssessment());
 		this.tabbedPane = tabbedPane;
 		this.patient = patient;
-		this.vtg = vtg;
-		this.vl = vl;
+		this.homeModel = homeModel;
 		createView();
 		disableFields(this);
 		btnSave.setVisible(false);
 		btnCancel.setText("Back");
 	}
 	
-	public VisitTabViewNewVisit(final JTabbedPane tabbedPane, Patient patient) {
+	public VisitTabViewNewVisit(final JTabbedPane tabbedPane, Patient patient, HomeModel homeModel) {
 		this.patient = patient;
 		this.tabbedPane = tabbedPane;
+		this.homeModel = homeModel;
 		
 		// Put all GUI lines in a seperate method to keep clean :)
 		createView();
@@ -597,6 +591,7 @@ public class VisitTabViewNewVisit extends JPanel {
 				
 				try {
 					visit.getGateway().insertVisit(visit);
+					homeModel.getVl().loadFromGateway();
 					showVisitTabView();
 				} catch (GatewayException e1) {
 					// TODO Auto-generated catch block
@@ -613,6 +608,6 @@ public class VisitTabViewNewVisit extends JPanel {
 	public void showVisitTabView() {
 		int index = tabbedPane.indexOfTab("Visits");
 		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane, vtg, vl));
+		tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane, homeModel));
 	}
 }

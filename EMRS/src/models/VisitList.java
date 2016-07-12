@@ -3,8 +3,11 @@ package models;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
+
+import org.apache.commons.collections4.map.MultiValueMap;
 
 import database.VisitTableGateway;
 import database.GatewayException;
@@ -14,6 +17,7 @@ public class VisitList {
 	private List<Visit> myList;
 	private VisitTableGateway gateway;
 	private HashMap<Long, Visit> myIdMap;
+	MultiValueMap myPidMap;
 	
 	/**
 	 * Construct a new VisitList
@@ -29,11 +33,13 @@ public class VisitList {
 	public void loadFromGateway() {
 		//fetch list of objects from the database
 		try {
+			myPidMap = new MultiValueMap();
 			System.out.println("loading now");
 			List<Visit> visits = gateway.fetchVisits();
 			System.out.println("\n done loading now");
 			for(Visit tmpVisit: visits){
 				myIdMap.put(tmpVisit.getId(), tmpVisit);
+				myPidMap.put(tmpVisit.getPid(), tmpVisit);
 				myList.add(tmpVisit);
 			}
 		} catch (GatewayException e) {
@@ -42,6 +48,14 @@ public class VisitList {
 		}
 	}
 	
+	public MultiValueMap<Long, Visit> getMyPidMap() {
+		return myPidMap;
+	}
+
+	public void setMyPidMap(MultiValueMap<Long, Visit> myPidMap) {
+		this.myPidMap = myPidMap;
+	}
+
 	/**
 	 * Returns ArrayList of Allergies in the VisitList
 	 * @return All Allergies in list

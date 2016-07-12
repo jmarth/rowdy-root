@@ -8,6 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -17,6 +19,7 @@ import javax.swing.JTabbedPane;
 
 import models.Allergy;
 import models.AllergyList;
+import models.HomeModel;
 import models.Patient;
 import models.PatientList;
 import models.Visit;
@@ -44,14 +47,12 @@ import java.awt.GridLayout;
 public class VisitsTabView extends JPanel{
 	private JTable visitsTable;
 	private Patient patient;
-	private VisitTableGateway vtg;
-	private List<Visit> visitList;
-	private VisitList vl;
+	private List<Visit> patientVisitList = new ArrayList<Visit>();
+	private HomeModel homeModel;
 	
-	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final VisitTableGateway vtg, final VisitList vl) {
+	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
 		this.patient = patient;
-		this.vtg = vtg;
-		this.vl = vl;
+		this.homeModel = homeModel;
 		
 		setLayout(new BorderLayout(0, 0));
 		
@@ -90,6 +91,7 @@ public class VisitsTabView extends JPanel{
 			}
 		));
 	
+		populateVisitTable();
 		
 		visitsTable.addMouseMotionListener(new MouseMotionAdapter() {
 			   public void mouseMoved(MouseEvent e) {
@@ -108,8 +110,8 @@ public class VisitsTabView extends JPanel{
 				public void mouseClicked(MouseEvent evt) {
 					int row = visitsTable.rowAtPoint(evt.getPoint());
 					int index = tabbedPane.indexOfTab("Visits");
-					System.out.println(visitList);
-					Visit v = visitList.get(row-1);
+					System.out.println(patientVisitList);
+					Visit v = patientVisitList.get(row);
 					System.out.println(v.getChiefComplaint());
 					System.out.println(v.getAutorefractionOdSphere());
 					System.out.println(v.getAutorefractionOdCylinder());
@@ -129,28 +131,10 @@ public class VisitsTabView extends JPanel{
 					System.out.println(v.getFeRow2Col2());
 					System.out.println(v.getAssessment());
 		
-					VisitTabViewNewVisit nv = new VisitTabViewNewVisit(v.getChiefComplaint(),
-							v.getAutorefractionOdSphere()+"",
-							v.getAutorefractionOdCylinder()+"",
-							v.getAutorefractionOdAxis()+"",
-							v.getAutorefractionOsSphere()+"",
-							v.getAutorefractionOsCylinder()+"",
-							v.getAutorefractionOsdAxis()+"",
-							v.getArcOdSphere()+"",
-							v.getArcOdCylinder()+"",
-							v.getArcOdAxis()+"",
-							v.getArcOsSphere()+"",
-							v.getArcOsCylinder()+"",
-							v.getArcOsAxis()+"",
-							v.getFeRow1Col1()+"",
-							v.getFeRow1Col2()+"",
-							v.getFeRow2Col1()+"",
-							v.getFeRow2Col2()+"",
-							v.getAssessment(),
+					VisitTabViewNewVisit nv = new VisitTabViewNewVisit(v,
 							patient,
 							tabbedPane,
-							vtg,
-							vl);
+							homeModel);
 					tabbedPane.setComponentAt(index, nv);//, atg, allergyTable));
 				}
 			});
@@ -158,7 +142,7 @@ public class VisitsTabView extends JPanel{
 		btnNewVisit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = tabbedPane.indexOfTab("Visits");
-				tabbedPane.setComponentAt(index, new VisitTabViewNewVisit(tabbedPane, patient));//, atg, allergyTable));
+				tabbedPane.setComponentAt(index, new VisitTabViewNewVisit(tabbedPane, patient, homeModel));//, atg, allergyTable));
 			}
 		});
 	}
@@ -168,17 +152,11 @@ public class VisitsTabView extends JPanel{
 		// Declare variables
 		DefaultTableModel model = (DefaultTableModel) visitsTable.getModel();
 		model.setRowCount(0);
-
-		System.out.println("\ngetting patients visits");
-		// Find all allergies for the given patient
-		visitList = vl.getVisitListForPatient(patient);
-		System.out.println("\ngot patients visits");
-		/**
-		 * For every allergy in the allergyList
-		 * .. Add that model the JTable
-		 */
-
-		for(Visit visit : visitList) {
+		@SuppressWarnings("unchecked")
+		Collection<Visit> coll = (Collection<Visit>) homeModel.getVl().getMyPidMap().get(patient.getId());
+		System.out.println(coll);
+		patientVisitList = (List<Visit>) coll;
+		for(Visit visit : patientVisitList) {
 			model.addRow(new Object[]{
 					visit.getDateCreated()
 				});

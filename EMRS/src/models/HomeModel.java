@@ -26,6 +26,7 @@ public class HomeModel {
 	private PatientTableGateway ptg = null;
 	private AllergyTableGateway atg = null;
 	private VisitTableGateway vtg = null;
+	private VisitList vl = new VisitList();
 	
 	public HomeModel(HomeView homeView) {
 		super();
@@ -41,6 +42,10 @@ public class HomeModel {
 			ptg = new PatientTableGatewayMySQL();
 			atg = new AllergyTableGatewayMySQL();
 			vtg = new VisitTableGatewayMySQL();
+			
+			vl.setGateway(vtg);
+        	vl.loadFromGateway();
+        	
 		} catch (GatewayException e) {
 			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
@@ -96,4 +101,13 @@ public class HomeModel {
 	public void setVtg(VisitTableGateway vtg) {
 		this.vtg = vtg;
 	}
+
+	public VisitList getVl() {
+		return vl;
+	}
+
+	public void setVl(VisitList vl) {
+		this.vl = vl;
+	}
+	
 }

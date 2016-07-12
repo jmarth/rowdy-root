@@ -79,7 +79,7 @@ public class PatientRecordView extends JTabbedPane {
 		System.out.print("allgergies done");
 		
 		// Create tab for Visit
-		final VisitsTabView visitsTabView = new VisitsTabView(patient, this, homeModel.getVtg(), vl);
+		final VisitsTabView visitsTabView = new VisitsTabView(patient, this, homeModel);
 		this.addTab("Visits", null, visitsTabView, null);
 		System.out.print("visits done");
 		JPanel panel_5 = new JPanel();
@@ -100,9 +100,7 @@ public class PatientRecordView extends JTabbedPane {
 		        int index = sourceTabbedPane.getSelectedIndex();
 		        System.out.println(sourceTabbedPane.getTitleAt(index));
 		        if(sourceTabbedPane.getTitleAt(index).equals("Visits")) {
-		        	vl.setGateway(homeModel.getVtg());
-		        	vl.loadFromGateway();
-		        	visitsTabView.populateVisitTable();
+		        	//visitsTabView.populateVisitTable();
 		        	System.out.print("visit tab hit");
 		        }
 		      }
