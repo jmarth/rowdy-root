@@ -116,21 +116,12 @@ public class AllergyTabView extends JPanel {
 			new Object[][] {
 			},
 			new String[] {
-				"Allergy", "Severity", "Adverse Reaction", "Date"
+				"Allergy", "Severity", "Adverse Reaction"
 			}
-		) {
-			private static final long serialVersionUID = 1L;
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
+		));
 		allergyTable.getColumnModel().getColumn(0).setPreferredWidth(100);
 		allergyTable.getColumnModel().getColumn(1).setPreferredWidth(100);
 		allergyTable.getColumnModel().getColumn(2).setPreferredWidth(175);
-		allergyTable.getColumnModel().getColumn(3).setPreferredWidth(135);
 		populateAllergyTable();
 		scrollPane.setViewportView(allergyTable);
 	}
