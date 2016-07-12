@@ -91,8 +91,8 @@ public class AllergyTabView extends JPanel {
 				int selectedRow = allergyTable.getSelectedRow();
 				
 				// Reload allergyList from gateway and get Allergy selected
-				//al.loadFromGateway();
-				//allergyList = al.getAllergyList();
+				al.loadFromGateway();
+				allergyList = al.getAllergyList();
 				Allergy tmp = allergyList.get(selectedRow);
 				
 				// Get tab of allergies and change panel
