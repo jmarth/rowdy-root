@@ -13,6 +13,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
 
 import database.AllergyTableGateway;
 import database.AllergyTableGatewayMySQL;
@@ -262,6 +263,17 @@ public class AllergyTabViewNewAllergy extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		// Update row in JTable
+		int selectedRow = allergyTable.getSelectedRow();
+		allergyTable.setValueAt(allergy.getAllergy(), selectedRow, 0);
+		allergyTable.setValueAt(allergy.getSeverity(), selectedRow, 1);
+		allergyTable.setValueAt(allergy.getAdverseReaction(), selectedRow, 2);
+		
+		// Update the Allergy in the allergyList
+		allergyList.set(selectedRow, allergy);
+		
+		DefaultTableModel dtm = (DefaultTableModel)allergyTable.getModel();
 		
 		// Change the panel back to allergy table
 		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
