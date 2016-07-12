@@ -154,12 +154,13 @@ public class VisitsTabView extends JPanel{
 		model.setRowCount(0);
 		@SuppressWarnings("unchecked")
 		Collection<Visit> coll = (Collection<Visit>) homeModel.getVl().getMyPidMap().get(patient.getId());
-		System.out.println(coll);
-		patientVisitList = (List<Visit>) coll;
-		for(Visit visit : patientVisitList) {
-			model.addRow(new Object[]{
-					visit.getDateCreated()
-				});
+		if(coll != null) {
+			patientVisitList = (List<Visit>) coll;
+			for(Visit visit : patientVisitList) {
+				model.addRow(new Object[]{
+						visit.getDateCreated()
+					});
+			}
 		}
 	}
 }

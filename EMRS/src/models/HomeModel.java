@@ -48,6 +48,7 @@ public class HomeModel {
         	
 		} catch (GatewayException e) {
 			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
+			System.out.println(e);
 			System.exit(1);
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Error!", JOptionPane.ERROR_MESSAGE);
