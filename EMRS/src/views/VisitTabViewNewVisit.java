@@ -111,6 +111,36 @@ public class VisitTabViewNewVisit extends JPanel {
 		btnCancel.setText("Back");
 	}
 	
+	public VisitTabViewNewVisit(Visit visit, Patient patient, JTabbedPane tabbedPane, HomeModel homeModel, Boolean b) {
+		super();
+		
+		this.txtrCC.setText(visit.getChiefComplaint());
+		this.textField_Od_Sphere_Autoref.setText(visit.getAutorefractionOdSphere()+"");
+		this.textField_Od_Cylinder_Autoref.setText(visit.getAutorefractionOdCylinder()+"");
+		this.textField_Od_Axis_Autoref.setText(visit.getAutorefractionOdAxis()+"");
+		this.textField_Os_Sphere_Autoref.setText(visit.getAutorefractionOsSphere()+"");
+		this.textField_Os_Cylinder_Autoref.setText(visit.getAutorefractionOsCylinder()+"");
+		this.textField_Os_Axis_Autoref.setText(visit.getAutorefractionOsdAxis()+"");
+		this.textField_Od_Sphere_Arc.setText(visit.getArcOdSphere()+"");
+		this.textField_Od_Cylin_Arc.setText(visit.getArcOdCylinder()+"");
+		this.textField_FE1_1_1.setText(visit.getFeRow1Col1()+"");
+		this.textField_FE1_1_2.setText(visit.getFeRow1Col2()+"");
+		this.textField_FE1_2_1.setText(visit.getFeRow2Col1()+"");
+		this.textField_FE1_2_2.setText(visit.getFeRow2Col2()+"");
+		this.textField_Od_Axis_Od.setText(visit.getArcOdAxis()+"");
+		this.textField_Os_Cylin_Arc.setText(visit.getArcOsCylinder()+"");
+		this.textField_Os_Sphere_Arc.setText(visit.getArcOsSphere()+"");
+		this.textField_Os_Axis_Arc.setText(visit.getArcOsAxis()+"");
+		this.txtrTextarea.setText(visit.getAssessment());
+		this.tabbedPane = tabbedPane;
+		this.patient = patient;
+		this.homeModel = homeModel;
+		createView();
+		disableFields(this);
+		btnSave.setVisible(false);
+		btnCancel.setVisible(false);
+	}
+	
 	public VisitTabViewNewVisit(final JTabbedPane tabbedPane, Patient patient, HomeModel homeModel) {
 		this.patient = patient;
 		this.tabbedPane = tabbedPane;
