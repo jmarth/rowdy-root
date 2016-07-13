@@ -82,16 +82,10 @@ public class PatientRecordView extends JTabbedPane {
 		final VisitsTabView visitsTabView = new VisitsTabView(patient, this, homeModel);
 		this.addTab("Visits", null, visitsTabView, null);
 		System.out.print("visits done");
-		
-		
-		//JPanel panel_5 = new JPanel();
-		
+				
 		JPanel VitalsTabView = new VitalsTabView(patient, this);
 		this.addTab("Vitals", null, VitalsTabView, null);
 		
-		// Create History tab
-		final HistoryTabView historyTab = new HistoryTabView(patient, homeModel, this);
-		this.addTab("History", null, historyTab, null);
 		
 		JPanel panel_1 = new JPanel();
 		this.addTab("Meds", null, panel_1, null);
@@ -108,11 +102,8 @@ public class PatientRecordView extends JTabbedPane {
 		        int index = sourceTabbedPane.getSelectedIndex();
 		        System.out.println(sourceTabbedPane.getTitleAt(index));
 		        if(sourceTabbedPane.getTitleAt(index).equals("Visits")) {
-		        	//visitsTabView.populateVisitTable();
+		        	visitsTabView.populatePanes();
 		        	System.out.print("visit tab hit");
-		        }
-		        else if(sourceTabbedPane.getTitleAt(index).equals("History")) {
-		        	historyTab.populatePanes();
 		        }
 		      }
 		};
