@@ -526,7 +526,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		JLabel lblSketch2 = new JLabel("Sketch #2 goes here");
 		panel_Sketch2_Placehold.add(lblSketch2);
 		
-		JLabel lblAp = new JLabel("Assement/Plan:");
+		JLabel lblAp = new JLabel("Assessment/Plan:");
 		lblAp.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GridBagConstraints gbc_lblAp = new GridBagConstraints();
 		gbc_lblAp.anchor = GridBagConstraints.WEST;
