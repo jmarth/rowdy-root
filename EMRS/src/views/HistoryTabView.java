@@ -71,17 +71,12 @@ public class HistoryTabView extends JPanel {
 		iconLabel.setText("\t\t" + visitList.size() + " total visits");
 		iconLabel.setFont(new Font("Roboto", Font.BOLD, 30));
 		mainTaskPane.add(iconLabel);
-		
-		Boolean firstExpanded = false;
-		
+				
 		for (Visit v : visitList) {
 			JXTaskPane pane = new JXTaskPane();
-			pane.setTitle(v.getChiefComplaint() + "\t|\t" + v.getDateCreated());
+			pane.setTitle(v.getDateCreated() + "\t|\t" + v.getChiefComplaint());
 			pane.setAnimated(false);
-			if (firstExpanded == false)
-				firstExpanded = true;
-			else
-				pane.setCollapsed(true);
+			pane.setCollapsed(true);
 			pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, false));
 			mainTaskPane.add(pane);
 		}
