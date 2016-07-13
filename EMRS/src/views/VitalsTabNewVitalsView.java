@@ -43,15 +43,21 @@ public class VitalsTabNewVitalsView extends JPanel {
 	private Patient patient;
 	private VitalsTableGateway vtg;
 		
-	private JTextField textField_BPSysUnit;
-	private JTextField textField_BPDiasUnit;
-	private JTextField textField_HeightUnit1;
-	private JTextField textField_WeightUnit;
-	private JTextField textField_HeightUnit2;
+	private JTextField textField_BPSys;
+	private JTextField textField_BPDias;
+
+	
+	private JTextField textField_HeightFt;
+	private JTextField textField_HeightIn;
+	private JTextField textField_HeightCm;
+	
+	private JTextField textField_Weight;
 		
 	private final ButtonGroup bpButtonGroup = new ButtonGroup();
 	private final ButtonGroup heightButtonGroup = new ButtonGroup();
 	private final ButtonGroup weightButtonGroup = new ButtonGroup();
+	
+	
 	
 	/**
 	 * Create the panel.
@@ -177,9 +183,9 @@ setLayout(new BorderLayout(0, 0));
 		add(panel_VitalsForm, BorderLayout.CENTER);
 		GridBagLayout gbl_panel_VitalsForm = new GridBagLayout();
 		gbl_panel_VitalsForm.columnWidths = new int[]{0, 0, 48, 0, 0, 0};
-		gbl_panel_VitalsForm.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_panel_VitalsForm.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gbl_panel_VitalsForm.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_VitalsForm.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_VitalsForm.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_VitalsForm.setLayout(gbl_panel_VitalsForm);
 		
 		JLabel lblVitals = new JLabel("Vitals");
@@ -198,16 +204,16 @@ setLayout(new BorderLayout(0, 0));
 		gbc_lblBloodPressuresys.gridy = 3;
 		panel_VitalsForm.add(lblBloodPressuresys, gbc_lblBloodPressuresys);
 		
-		textField_BPSysUnit = new JTextField();
-		GridBagConstraints gbc_textField_BPSysUnit = new GridBagConstraints();
-		gbc_textField_BPSysUnit.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_BPSysUnit.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_BPSysUnit.gridx = 2;
-		gbc_textField_BPSysUnit.gridy = 3;
-		panel_VitalsForm.add(textField_BPSysUnit, gbc_textField_BPSysUnit);
-		textField_BPSysUnit.setColumns(10);
+		textField_BPSys = new JTextField();
+		GridBagConstraints gbc_textField_BPSys = new GridBagConstraints();
+		gbc_textField_BPSys.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_BPSys.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_BPSys.gridx = 2;
+		gbc_textField_BPSys.gridy = 3;
+		panel_VitalsForm.add(textField_BPSys, gbc_textField_BPSys);
+		textField_BPSys.setColumns(10);
 		
-		JLabel lblBPSysUnit = new JLabel("unit1");
+		JLabel lblBPSysUnit = new JLabel("mm/Hg");
 		GridBagConstraints gbc_lblBPSysUnit = new GridBagConstraints();
 		gbc_lblBPSysUnit.insets = new Insets(0, 0, 5, 5);
 		gbc_lblBPSysUnit.gridx = 3;
@@ -224,14 +230,13 @@ setLayout(new BorderLayout(0, 0));
 		
 		JRadioButton rdbtnMmhg = new JRadioButton("mm/Hg");
 		
-		bpButtonGroup.add(rdbtnMmhg);
+		
 		rdbtnMmhg.setSelected(true);
 		panel_BPGroup.add(rdbtnMmhg);
 		
 		JRadioButton rdbtnPa = new JRadioButton("Pa");
-		rdbtnPa.addActionListener(new EnableListener());
 		
-		bpButtonGroup.add(rdbtnPa);
+		
 		panel_BPGroup.add(rdbtnPa);
 		
 		JLabel lblBloodPressuredias = new JLabel("BP (Dias):");
@@ -242,21 +247,27 @@ setLayout(new BorderLayout(0, 0));
 		gbc_lblBloodPressuredias.gridy = 4;
 		panel_VitalsForm.add(lblBloodPressuredias, gbc_lblBloodPressuredias);
 		
-		textField_BPDiasUnit = new JTextField();
-		GridBagConstraints gbc_textField_BPDiasUnit = new GridBagConstraints();
-		gbc_textField_BPDiasUnit.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_BPDiasUnit.fill = GridBagConstraints.BOTH;
-		gbc_textField_BPDiasUnit.gridx = 2;
-		gbc_textField_BPDiasUnit.gridy = 4;
-		panel_VitalsForm.add(textField_BPDiasUnit, gbc_textField_BPDiasUnit);
-		textField_BPDiasUnit.setColumns(10);
+		textField_BPDias = new JTextField();
+		GridBagConstraints gbc_textField_BPDias = new GridBagConstraints();
+		gbc_textField_BPDias.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_BPDias.fill = GridBagConstraints.BOTH;
+		gbc_textField_BPDias.gridx = 2;
+		gbc_textField_BPDias.gridy = 4;
+		panel_VitalsForm.add(textField_BPDias, gbc_textField_BPDias);
+		textField_BPDias.setColumns(10);
 		
-		JLabel lblBPDiasUnit = new JLabel("unit2");
+		JLabel lblBPDiasUnit = new JLabel("mm/Hg");
 		GridBagConstraints gbc_lblBPDiasUnit = new GridBagConstraints();
 		gbc_lblBPDiasUnit.insets = new Insets(0, 0, 5, 5);
 		gbc_lblBPDiasUnit.gridx = 3;
 		gbc_lblBPDiasUnit.gridy = 4;
 		panel_VitalsForm.add(lblBPDiasUnit, gbc_lblBPDiasUnit);
+		
+		bpButtonGroup.add(rdbtnMmhg);
+		bpButtonGroup.add(rdbtnPa);
+		rdbtnMmhg.addActionListener(new BPListener(lblBPSysUnit, lblBPDiasUnit));
+		rdbtnPa.addActionListener(new BPListener(lblBPSysUnit, lblBPDiasUnit));
+		
 		
 		JLabel lblHeight = new JLabel("Height:");
 		GridBagConstraints gbc_lblHeight = new GridBagConstraints();
@@ -266,22 +277,21 @@ setLayout(new BorderLayout(0, 0));
 		gbc_lblHeight.gridy = 6;
 		panel_VitalsForm.add(lblHeight, gbc_lblHeight);
 		
-		textField_HeightUnit1 = new JTextField();
-		GridBagConstraints gbc_textField_HeightUnit1 = new GridBagConstraints();
-		gbc_textField_HeightUnit1.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightUnit1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightUnit1.gridx = 2;
-		gbc_textField_HeightUnit1.gridy = 6;
-		panel_VitalsForm.add(textField_HeightUnit1, gbc_textField_HeightUnit1);
-		textField_HeightUnit1.setColumns(10);
+		textField_HeightFt = new JTextField();
+		GridBagConstraints gbc_textField_HeightFt = new GridBagConstraints();
+		gbc_textField_HeightFt.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_HeightFt.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_HeightFt.gridx = 2;
+		gbc_textField_HeightFt.gridy = 6;
+		panel_VitalsForm.add(textField_HeightFt, gbc_textField_HeightFt);
+		textField_HeightFt.setColumns(10);
 		
-		JLabel lblHeightUnit1 = new JLabel("unit1");
-		GridBagConstraints gbc_lblHeightUnit1 = new GridBagConstraints();
-		gbc_lblHeightUnit1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblHeightUnit1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightUnit1.gridx = 3;
-		gbc_lblHeightUnit1.gridy = 6;
-		panel_VitalsForm.add(lblHeightUnit1, gbc_lblHeightUnit1);
+		JLabel lblHeightft = new JLabel("ft");
+		GridBagConstraints gbc_lblHeightft = new GridBagConstraints();
+		gbc_lblHeightft.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHeightft.gridx = 3;
+		gbc_lblHeightft.gridy = 6;
+		panel_VitalsForm.add(lblHeightft, gbc_lblHeightft);
 		
 		JPanel panel_HeightGroup = new JPanel();
 		GridBagConstraints gbc_panel_HeightGroup = new GridBagConstraints();
@@ -300,52 +310,79 @@ setLayout(new BorderLayout(0, 0));
 		JRadioButton rdbtnCm = new JRadioButton("cm");
 		panel_HeightGroup.add(rdbtnCm);
 		
-		textField_HeightUnit2 = new JTextField();
-		GridBagConstraints gbc_textField_HeightUnit2 = new GridBagConstraints();
-		gbc_textField_HeightUnit2.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightUnit2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightUnit2.gridx = 2;
-		gbc_textField_HeightUnit2.gridy = 7;
-		panel_VitalsForm.add(textField_HeightUnit2, gbc_textField_HeightUnit2);
-		textField_HeightUnit2.setColumns(10);
+		textField_HeightIn = new JTextField();
+		GridBagConstraints gbc_textField_HeightIn = new GridBagConstraints();
+		gbc_textField_HeightIn.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_HeightIn.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_HeightIn.gridx = 2;
+		gbc_textField_HeightIn.gridy = 7;
+		panel_VitalsForm.add(textField_HeightIn, gbc_textField_HeightIn);
+		textField_HeightIn.setColumns(10);
 		
-		JLabel lblHeightUnit2 = new JLabel("unit2");
-		GridBagConstraints gbc_lblHeightUnit2 = new GridBagConstraints();
-		gbc_lblHeightUnit2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblHeightUnit2.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightUnit2.gridx = 3;
-		gbc_lblHeightUnit2.gridy = 7;
-		panel_VitalsForm.add(lblHeightUnit2, gbc_lblHeightUnit2);
+		JLabel lblHeightIn = new JLabel("in");
+		GridBagConstraints gbc_lblHeightIn = new GridBagConstraints();
+		gbc_lblHeightIn.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHeightIn.gridx = 3;
+		gbc_lblHeightIn.gridy = 7;
+		panel_VitalsForm.add(lblHeightIn, gbc_lblHeightIn);
+		
+		textField_HeightCm = new JTextField();
+		GridBagConstraints gbc_textField_HeightCm = new GridBagConstraints();
+		gbc_textField_HeightCm.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_HeightCm.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_HeightCm.gridx = 2;
+		gbc_textField_HeightCm.gridy = 8;
+		panel_VitalsForm.add(textField_HeightCm, gbc_textField_HeightCm);
+		textField_HeightCm.setColumns(10);
+		
+		JLabel lblHeightCm = new JLabel("cm");
+		GridBagConstraints gbc_lblHeightCm = new GridBagConstraints();
+		gbc_lblHeightCm.insets = new Insets(0, 0, 5, 5);
+		gbc_lblHeightCm.gridx = 3;
+		gbc_lblHeightCm.gridy = 8;
+		panel_VitalsForm.add(lblHeightCm, gbc_lblHeightCm);
+		
+		
+		rdbtnFeetInches.addActionListener(new HeightListener());
+		rdbtnInches.addActionListener(new HeightListener());
+		rdbtnCm.addActionListener(new HeightListener());
+		
+		heightButtonGroup.add(rdbtnFeetInches);
+		heightButtonGroup.add(rdbtnInches);
+		heightButtonGroup.add(rdbtnCm);
+		
+		
+		
 		
 		JLabel lblWeight = new JLabel("Weight:");
 		GridBagConstraints gbc_lblWeight = new GridBagConstraints();
 		gbc_lblWeight.anchor = GridBagConstraints.EAST;
 		gbc_lblWeight.insets = new Insets(0, 0, 5, 5);
 		gbc_lblWeight.gridx = 1;
-		gbc_lblWeight.gridy = 9;
+		gbc_lblWeight.gridy = 10;
 		panel_VitalsForm.add(lblWeight, gbc_lblWeight);
 		
-		textField_WeightUnit = new JTextField();
-		GridBagConstraints gbc_textField_WeightUnit = new GridBagConstraints();
-		gbc_textField_WeightUnit.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_WeightUnit.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_WeightUnit.gridx = 2;
-		gbc_textField_WeightUnit.gridy = 9;
-		panel_VitalsForm.add(textField_WeightUnit, gbc_textField_WeightUnit);
-		textField_WeightUnit.setColumns(10);
+		textField_Weight = new JTextField();
+		GridBagConstraints gbc_textField_Weight = new GridBagConstraints();
+		gbc_textField_Weight.insets = new Insets(0, 0, 5, 5);
+		gbc_textField_Weight.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_Weight.gridx = 2;
+		gbc_textField_Weight.gridy = 10;
+		panel_VitalsForm.add(textField_Weight, gbc_textField_Weight);
+		textField_Weight.setColumns(10);
 		
-		JLabel lblWeightUnit = new JLabel("unit1");
+		JLabel lblWeightUnit = new JLabel("lbs");
 		GridBagConstraints gbc_lblWeightUnit = new GridBagConstraints();
 		gbc_lblWeightUnit.insets = new Insets(0, 0, 5, 5);
 		gbc_lblWeightUnit.gridx = 3;
-		gbc_lblWeightUnit.gridy = 9;
+		gbc_lblWeightUnit.gridy = 10;
 		panel_VitalsForm.add(lblWeightUnit, gbc_lblWeightUnit);
 		
 		JPanel panel_WeightGroup = new JPanel();
 		GridBagConstraints gbc_panel_WeightGroup = new GridBagConstraints();
 		gbc_panel_WeightGroup.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_WeightGroup.gridx = 4;
-		gbc_panel_WeightGroup.gridy = 9;
+		gbc_panel_WeightGroup.gridy = 10;
 		panel_VitalsForm.add(panel_WeightGroup, gbc_panel_WeightGroup);
 		
 		JRadioButton rdbtnLbs = new JRadioButton("lbs");
@@ -355,24 +392,29 @@ setLayout(new BorderLayout(0, 0));
 		JRadioButton rdbtnKg = new JRadioButton("kg");
 		panel_WeightGroup.add(rdbtnKg);
 		
+		weightButtonGroup.add(rdbtnLbs);
+		weightButtonGroup.add(rdbtnKg);
+		rdbtnLbs.addActionListener(new WeightListener(lblWeightUnit));
+		rdbtnKg.addActionListener(new WeightListener(lblWeightUnit));
+		
+		
 		JLabel lblNotes = new JLabel("Notes:");
 		GridBagConstraints gbc_lblNotes = new GridBagConstraints();
 		gbc_lblNotes.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNotes.gridx = 1;
-		gbc_lblNotes.gridy = 11;
+		gbc_lblNotes.gridy = 12;
 		panel_VitalsForm.add(lblNotes, gbc_lblNotes);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setRows(4);
-		GridBagConstraints gbc_textArea = new GridBagConstraints();
-		gbc_textArea.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textArea.gridheight = 2;
-		gbc_textArea.gridwidth = 3;
-		gbc_textArea.anchor = GridBagConstraints.NORTH;
-		gbc_textArea.insets = new Insets(0, 0, 5, 5);
-		gbc_textArea.gridx = 2;
-		gbc_textArea.gridy = 11;
-		panel_VitalsForm.add(textArea, gbc_textArea);
+		JTextArea textArea_Notes = new JTextArea();
+		textArea_Notes.setRows(4);
+		GridBagConstraints gbc_textArea_Notes = new GridBagConstraints();
+		gbc_textArea_Notes.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textArea_Notes.gridheight = 2;
+		gbc_textArea_Notes.gridwidth = 3;
+		gbc_textArea_Notes.anchor = GridBagConstraints.NORTH;
+		gbc_textArea_Notes.gridx = 2;
+		gbc_textArea_Notes.gridy = 12;
+		panel_VitalsForm.add(textArea_Notes, gbc_textArea_Notes);
 		
 		JPanel panel_Buttons = new JPanel();
 		add(panel_Buttons, BorderLayout.SOUTH);
@@ -395,12 +437,60 @@ setLayout(new BorderLayout(0, 0));
 
 	}
 	
-	private class EnableListener implements ActionListener
-	    {
-	        public void actionPerformed(ActionEvent e)
-	        {
-	        	textField_BPSysUnit.setEnabled(false);
+	private class BPListener implements ActionListener {
+		JLabel lbl1, lbl2;
+
+		public BPListener(JLabel lblBPSysUnit, JLabel lblBPDiasUnit) {
+			lbl1 = lblBPSysUnit;
+			lbl2 = lblBPDiasUnit;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equals("mm/Hg")) {
+				lbl1.setText("mm/Hg");
+				lbl2.setText("mm/Hg");
+			} else {
+				lbl1.setText("Pa");
+				lbl2.setText("Pa");
+			}
 	    }
+	}
+	
+	private class HeightListener implements ActionListener {
+
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equals("ft/inches")) {
+				textField_HeightFt.setEnabled(true);
+				textField_HeightIn.setEnabled(true);
+				textField_HeightCm.setEnabled(true);
+			} else if (e.getActionCommand().equals("inches")) {
+				textField_HeightFt.setEnabled(false);
+				textField_HeightIn.setEnabled(true);
+				textField_HeightCm.setEnabled(false);
+			} else {
+				textField_HeightFt.setEnabled(false);
+				textField_HeightIn.setEnabled(false);
+				textField_HeightCm.setEnabled(true);
+			}
+			//textField_BPSys.setEnabled(false);
 	    }
+	}
+	
+	private class WeightListener implements ActionListener {
+		JLabel lbl;
+
+		public WeightListener(JLabel lblWeightUnit) {
+			lbl = lblWeightUnit;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equals("lbs")) {
+				lbl.setText("lbs");
+			} else {
+				lbl.setText("kg");
+			}
+			//textField_BPSys.setEnabled(false);
+	    }
+	}
 	
 }
