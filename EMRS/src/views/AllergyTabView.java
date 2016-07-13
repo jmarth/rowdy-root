@@ -45,10 +45,12 @@ public class AllergyTabView extends JPanel {
 	private AllergyTableGateway atg;
 	private JTable allergyTable = new JTable();
 	private Patient patient;
+	private int selectedRow;
 	
 	public AllergyTabView(final Patient patient, final JTabbedPane tabbedPane, final AllergyTableGateway atg) {
 		this.atg = atg;
 		this.patient = patient;
+		allergyTable.setEnabled(false);
 		
 		GridBagLayout gbl_allergiesPanel = new GridBagLayout();
 		gbl_allergiesPanel.columnWeights = new double[]{1.0};
@@ -64,29 +66,44 @@ public class AllergyTabView extends JPanel {
 			}
 		});
 		GridBagConstraints gbc_btnNewAllergy = new GridBagConstraints();
-		gbc_btnNewAllergy.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnNewAllergy.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewAllergy.anchor = GridBagConstraints.WEST;
+		gbc_btnNewAllergy.insets = new Insets(0, 10, 5, 10);
 		gbc_btnNewAllergy.gridx = 0;
 		gbc_btnNewAllergy.gridy = 0;
 		this.add(btnNewAllergy, gbc_btnNewAllergy);
+		// Create butZSton to add a New Allergy to a Patient
+		JButton btnRemoveAllergy = new JButton("Remove Allergy");
+		btnRemoveAllergy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Allergy atr = allergyList.get(selectedRow);
+				try {
+					atg.removeAllergy(atr.getId());
+				} catch (GatewayException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				al.loadFromGateway();
+				allergyList = al.getAllergyList();
+				
+				DefaultTableModel dtm = (DefaultTableModel)allergyTable.getModel();
+				dtm.removeRow(selectedRow);
+			}
+		});
+		GridBagConstraints gbc_btnRemoveAllergy = new GridBagConstraints();
+		gbc_btnRemoveAllergy.anchor = GridBagConstraints.EAST;
+		gbc_btnRemoveAllergy.insets = new Insets(0, 10, 5, 10);
+		gbc_btnRemoveAllergy.gridx = 0;
+		gbc_btnRemoveAllergy.gridy = 0;
+		this.add(btnRemoveAllergy, gbc_btnRemoveAllergy);
 		
-		// add mouseListener to allergyTable to highlight row on hover
-		allergyTable.addMouseMotionListener(new MouseMotionAdapter() {
-			   public void mouseMoved(MouseEvent e) {
-			      int row = allergyTable.rowAtPoint(e.getPoint());
-			      if (row > -1) {
-			         allergyTable.clearSelection();
-			         allergyTable.setRowSelectionInterval(row, row);
-			      }
-			      else {
-			         allergyTable.setSelectionBackground(Color.blue);
-			      }
-			      allergyTable.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			   }
-			});
 		// Add mouseListener to allergyTable to open allergyDetailView
 		allergyTable.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
+				if(evt.getClickCount() == 1){
+					selectedRow = allergyTable.rowAtPoint(evt.getPoint());
+					allergyTable.setRowSelectionInterval(selectedRow, selectedRow);
+					return;
+				}
 				// Get row number of allergy chosen
 				int selectedRow = allergyTable.getSelectedRow();
 				
