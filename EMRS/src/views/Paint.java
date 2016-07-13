@@ -54,6 +54,7 @@ public class Paint extends JFrame{
 	      if(result == JFileChooser.APPROVE_OPTION){
 	        File selectedFile = file.getSelectedFile();
 	        String imagePath = selectedFile.getAbsolutePath();
+	        System.out.println(imagePath);
 	        BufferedImage bimg = null;
 			try {
 				bimg = ImageIO.read(new File(imagePath));
@@ -166,6 +167,8 @@ public class Paint extends JFrame{
  
     // add to content pane
     contentPane.add(controls, BorderLayout.NORTH);
+    
+    
   }
   
   public Container getContentPane() {

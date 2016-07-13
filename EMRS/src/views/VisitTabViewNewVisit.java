@@ -46,9 +46,13 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class VisitTabViewNewVisit extends JPanel {
 	
@@ -111,6 +115,9 @@ public class VisitTabViewNewVisit extends JPanel {
 		btnCancel.setText("Back");
 	}
 	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public VisitTabViewNewVisit(Visit visit, Patient patient, JTabbedPane tabbedPane, HomeModel homeModel, Boolean b) {
 		super();
 		
@@ -429,7 +436,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblToBeContinued.insets = new Insets(0, 0, 0, 5);
 		gbc_lblToBeContinued.gridx = 0;
 		gbc_lblToBeContinued.gridy = 8;
-		visionPanel.add(lblToBeContinued, gbc_lblToBeContinued);
+		//visionPanel.add(lblToBeContinued, gbc_lblToBeContinued);
 		
 		JLabel label = new JLabel("...");
 		GridBagConstraints gbc_label = new GridBagConstraints();
@@ -450,8 +457,19 @@ public class VisitTabViewNewVisit extends JPanel {
 		JPanel panel_Sketch1_Placehold = new JPanel();
 		panel_VisionSketch.add(panel_Sketch1_Placehold);
 		
-		JLabel lblSketch_1 = new JLabel("Sketch #1 goes here");
-		panel_Sketch1_Placehold.add(lblSketch_1);
+		
+		// Sketch 1 button
+		JButton btnOpenSketch = new JButton("New Sketch");
+		btnOpenSketch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Paint newpaint = new Paint();
+				newpaint.setContentPane(newpaint.getContentPane());
+				newpaint.setExtendedState( JFrame.MAXIMIZED_BOTH );
+				
+				newpaint.setVisible(true);
+			}
+		});
+		panel_VisionSketch.add(btnOpenSketch);
 		
 		JLabel lblFundusExam = new JLabel("Fundus Exam");
 		GridBagConstraints gbc_lblFundusExam = new GridBagConstraints();
