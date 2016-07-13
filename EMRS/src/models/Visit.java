@@ -28,7 +28,6 @@ public class Visit {
 	private double feRow2Col2;
 	private String assessment;
 	private String dateCreated;
-	private VisitTableGatewayMySQL vtg;
 	
 	/**
 	 * Constructor
@@ -78,8 +77,6 @@ public class Visit {
 		this.feRow2Col2 = feRow2Col2;
 		this.assessment = assessment;
 		this.dateCreated = dateCreated;
-		vtg = null;
-		setGateway();
 	}
 	
 	/**
@@ -129,8 +126,6 @@ public class Visit {
 		this.feRow2Col1 = feRow2Col1;
 		this.feRow2Col2 = feRow2Col2;
 		this.assessment = assessment;
-		vtg = null;
-		setGateway();
 	}
 	
 	/**
@@ -452,30 +447,6 @@ public class Visit {
 	public void setAssessment(String assessment) {
 		this.assessment = assessment;
 	}
-	
-	/**
-	 * sets the visit gateway
-	 */
-	public void setGateway() {
-		try {
-			vtg = new VisitTableGatewayMySQL();
-		} catch (GatewayException e) {
-			System.out.println("Could not connect to DB");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("Could not connect to DB");
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * getter for visit gateway
-	 * @return vtg
-	 */
-	public VisitTableGateway getGateway() {
-		return vtg;
-	}
-	
 	/**
 	 * getter for dateCreated
 	 * @return dateCreated

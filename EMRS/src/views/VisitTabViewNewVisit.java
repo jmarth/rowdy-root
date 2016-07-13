@@ -79,6 +79,7 @@ public class VisitTabViewNewVisit extends JPanel {
 	private JTextField textField_FE1_1_2 = new JTextField();
 	private JTextField textField_FE1_2_1 = new JTextField();
 	private JTextField textField_FE1_2_2 = new JTextField();
+	private JPanel panel_1 = new JPanel();
 	private JTextArea txtrTextarea = new JTextArea();
 	private JTabbedPane tabbedPane;
 	private JButton btnCancel = new JButton("Cancel");
@@ -465,7 +466,8 @@ public class VisitTabViewNewVisit extends JPanel {
 				Paint newpaint = new Paint();
 				newpaint.setContentPane(newpaint.getContentPane());
 				newpaint.setExtendedState( JFrame.MAXIMIZED_BOTH );
-				
+				panel_1 = (JPanel) newpaint.getContentPane();
+				panel_1.setVisible(true);
 				newpaint.setVisible(true);
 			}
 		});
@@ -597,6 +599,9 @@ public class VisitTabViewNewVisit extends JPanel {
 		txtrTextarea.setLineWrap(true);
 		scrollPane_AP.setViewportView(txtrTextarea);
 		
+		
+		scrollPane.setRowHeaderView(panel_1);
+		
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
@@ -635,10 +640,9 @@ public class VisitTabViewNewVisit extends JPanel {
 						Double.parseDouble(textField_FE1_1_2.getText()),
 						Double.parseDouble(textField_FE1_2_1.getText()),
 						Double.parseDouble(textField_FE1_2_2.getText()),
-						txtrTextarea.getText());
-				
+						txtrTextarea.getText());	
 				try {
-					visit.getGateway().insertVisit(visit);
+					homeModel.getVtg().insertVisit(visit);
 					homeModel.getVl().loadFromGateway();
 					showVisitTabView();
 				} catch (GatewayException e1) {
