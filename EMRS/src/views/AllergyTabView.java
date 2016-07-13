@@ -66,11 +66,35 @@ public class AllergyTabView extends JPanel {
 			}
 		});
 		GridBagConstraints gbc_btnNewAllergy = new GridBagConstraints();
-		gbc_btnNewAllergy.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnNewAllergy.insets = new Insets(0, 0, 5, 0);
+		gbc_btnNewAllergy.anchor = GridBagConstraints.WEST;
+		gbc_btnNewAllergy.insets = new Insets(0, 10, 5, 10);
 		gbc_btnNewAllergy.gridx = 0;
 		gbc_btnNewAllergy.gridy = 0;
 		this.add(btnNewAllergy, gbc_btnNewAllergy);
+		// Create butZSton to add a New Allergy to a Patient
+		JButton btnRemoveAllergy = new JButton("Remove Allergy");
+		btnRemoveAllergy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Allergy atr = allergyList.get(selectedRow);
+				try {
+					atg.removeAllergy(atr.getId());
+				} catch (GatewayException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				al.loadFromGateway();
+				allergyList = al.getAllergyList();
+				
+				DefaultTableModel dtm = (DefaultTableModel)allergyTable.getModel();
+				dtm.removeRow(selectedRow);
+			}
+		});
+		GridBagConstraints gbc_btnRemoveAllergy = new GridBagConstraints();
+		gbc_btnRemoveAllergy.anchor = GridBagConstraints.EAST;
+		gbc_btnRemoveAllergy.insets = new Insets(0, 10, 5, 10);
+		gbc_btnRemoveAllergy.gridx = 0;
+		gbc_btnRemoveAllergy.gridy = 0;
+		this.add(btnRemoveAllergy, gbc_btnRemoveAllergy);
 		
 		// Add mouseListener to allergyTable to open allergyDetailView
 		allergyTable.addMouseListener(new MouseAdapter() {

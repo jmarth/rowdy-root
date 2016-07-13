@@ -179,7 +179,8 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		 */
 		Allergy allergy = new Allergy(0, patient.getId(), textField.getText(), severity, strBuild.toString());
 		try {
-			atg.insertAllergy(allergy);
+			long aid = atg.insertAllergy(allergy);
+			allergy.setId(aid);
 		} catch (GatewayException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

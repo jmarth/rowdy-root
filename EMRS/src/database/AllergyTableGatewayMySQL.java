@@ -214,6 +214,34 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
 	}
 	
 	/**
+	 * Remove an Allergy from the DB
+	 * @param a Allergy to update
+	 */
+	public void removeAllergy(Long aid) throws GatewayException{
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM allergies"
+					+ " WHERE id = ? ", PreparedStatement.RETURN_GENERATED_KEYS);
+			//st.setInt(1, p.getHasPatientName() ? 1 : 0);
+			st.setLong(1, aid);
+
+			st.executeUpdate();
+		} catch (SQLException e) {
+			//e.printStackTrace();
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+	}
+	
+	/**
 	 * create a MySQL datasource with credentials and DB URL in db.properties file
 	 * @return
 	 * @throws RuntimeException
