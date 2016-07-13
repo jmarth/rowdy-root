@@ -20,11 +20,11 @@ import java.util.Iterator;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import database.AllergyTableGatewayMySQL;
+import database.VitalsTableGatewayMySQL;
 import database.GatewayException;
 import database.VitalsTableGateway;
 import database.VitalsTableGatewayMySQL;
-import models.Allergy;
+import models.Vitals;
 import models.Patient;
 
 import javax.swing.JComboBox;
@@ -58,6 +58,15 @@ public class VitalsTabNewVitalsView extends JPanel {
 	private final ButtonGroup weightButtonGroup = new ButtonGroup();
 	
 	
+	private String bPUnit;
+	private String heightUnit;
+	private String weightUnit;
+	private JLabel lblBloodPressuresys;
+	private JLabel lblBPSysUnit_1;
+	private JLabel lblWeightUnit_1;
+	private JTextArea textArea_Notes;
+	
+	//private String heightUnit;
 	
 	/**
 	 * Create the panel.
@@ -70,9 +79,9 @@ public class VitalsTabNewVitalsView extends JPanel {
 		oldPanel =  vitalsPanel;
 		
 		/**
-		 * Try to connect to DB through AllergyTableGateway
-		 * Set the gateway of the AllergyList
-		 * Load Allergies into the AllergyList
+		 * Try to connect to DB through VitalsTableGateway
+		 * Set the gateway of the VitalsList
+		 * Load Vitals into the VitalsList
 		 */
 		try {
 			vtg = new VitalsTableGatewayMySQL();
@@ -100,81 +109,100 @@ public class VitalsTabNewVitalsView extends JPanel {
 		tabbedPane.setComponentAt(index, null);
 		tabbedPane.setComponentAt(index, oldPanel);
 	}
+
 	
 	/**
-	 * Save Allergy to database for patient
-	 * @param patient Patient that Allergy belongs to
-	 * @param atg AllergyTableGateway
+	 * Save Vitals to database for patient
+	 * @param patient Patient that Vitals belongs to
+	 * @param vtg VitalsTableGateway
 	 * @param tabbedPane JTabbedPane to change when done saving
 	 * @param oldPanel JPanel to change back to when done saving
-	 
-	public void save(Patient patient, AllergyTableGatewayMySQL atg, JTabbedPane tabbedPane, JPanel oldPanel, JTable allergyTable){
-		StringBuilder strBuild = new StringBuilder();
+	 */
+	public void save(Patient patient, VitalsTableGateway vtg, JTabbedPane tabbedPane, JPanel oldPanel, JTable vitalsTable){
+		StringBuilder sb = new StringBuilder();
+		
+		
 		
 		/**
-		 * Iterate over collection of JCheckBoxes and if the check box is selected, append the label of the chckbox to the string (adverse_reaction)
-		 
-		Iterator<JCheckBox> chckbxIterator = checkboxes.iterator();
-		while(chckbxIterator.hasNext()){
-			JCheckBox tmpBox = chckbxIterator.next();
-			if(tmpBox.isSelected()){
-				//System.out.println(tmpBox.getLabel());
-				strBuild.append(tmpBox.getLabel());
-				strBuild.append("/");
-			}
-		}
+		 * Create new Vitals object with correct parameters
+		 * Insert the vitals to the DB through the Gateway
+		 */
 		
-		if(!otherTextField.getText().isEmpty()){
-			strBuild.append(otherTextField.getText());
-			strBuild.append("/");
-		}
-		
-		// Need to delete last "/" in adverse_reaction string
-		strBuild.deleteCharAt(strBuild.length()-1);
-		
-		/**
-		 * Determine what severity radio button is selected
-		 * Set severity string accordingly
-		 
-		if(rdbtnSevere.isSelected()){
-			severity = "Severe";
-		} else if (rdbtnModerate.isSelected()){
-			severity = "Moderate";
+		//String heightSelection = heightButtonGroup.getSelection().getActionCommand();
+		/*
+		if (heightSelection.equals("ft/inches")) {
+			
+		} else if (heightSelection.equals("inches")) {
+			
 		} else {
-			severity = "Mild";
+			
 		}
+		*/
 		
-		/**
-		 * Create new Allergy object with correct parameters
-		 * Insert the allery to the DB through the Gateway
-		 
-		Allergy allergy = new Allergy(0, patient.getId(), textField.getText(), severity, strBuild.toString());
+		//Vitals vitals = null;
+		Vitals vitals = new Vitals(0,
+				patient.getId(),
+				Float.parseFloat(textField_BPSys.getText()),
+				Float.parseFloat(textField_BPDias.getText()),
+				getLblBPSysUnit().getText(),
+				Integer.parseInt( ((textField_HeightFt.getText().equals("")) ? "-1" : textField_HeightFt.getText()) ),
+				Integer.parseInt( ((textField_HeightIn.getText().equals("")) ? "-1" : textField_HeightIn.getText()) ),
+				Integer.parseInt( ((textField_HeightCm.getText().equals("")) ? "-1" : textField_HeightCm.getText()) ),
+				heightButtonGroup.getSelection().getActionCommand(),
+				Float.parseFloat( ((textField_Weight.getText().equals("")) ? "-1" : textField_Weight.getText()) ),
+				getLblWeightUnit().getText(),
+				textArea_Notes.getText()
+				);
 		try {
-			atg.insertAllergy(allergy);
+			vtg.insertVitals(vitals);
 		} catch (GatewayException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		//TODO: method to this nonsense
+		//TODO: also ft/inches, etc should be constants/enum
 		
-		// Change the panel back to allergy table
+		int height;
+		if (vitals.gethUnit() == null) {
+			height = -1;
+		} else if (vitals.gethUnit().equals("null")) {
+			height = -100;
+		} else if (vitals.gethUnit().equals("ft/inches")) {
+			// build a string?
+			height = vitals.gethInches();
+		} else if (vitals.gethUnit().equals("inches")) {
+			height = vitals.gethInches();
+		} else {
+			height = vitals.getHcm();
+		}
+		
+		
+		// Change the panel back to vitals table
 		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
-		int index = tabbedPane.indexOfTab("Allergies");
+		int index = tabbedPane.indexOfTab("Vitals");
 		
-		// Add the allergy to the JTable
-		// Get model of AllergyTable in order to add rows
-		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
+		// Add the vitals to the JTable
+		// Get model of VitalsTable in order to add rows
+		DefaultTableModel model = (DefaultTableModel) vitalsTable.getModel();
 		// Add row		
 		model.addRow(new Object[]{
-				allergy.getAllergy(), 
-				allergy.getSeverity(), 
-				allergy.getAdverseReaction()
+				vitals.getBps(),
+				vitals.getBps(),
+				vitals.getBpUnit(),
+				height,
+				vitals.gethUnit(),
+				vitals.getWeight(),
+				vitals.getwUnit(),
+				vitals.getNotes()
+				//vitals.getVitals(), 
+				//vitals.getSeverity(), 
+				//vitals.getAdverseReaction()
 		});
 		
 		tabbedPane.setComponentAt(index, null);
 		tabbedPane.setComponentAt(index, oldPanel);
 	}
-	*/
 	
 	public void createView (final JTabbedPane tabbedPane, final Patient patient, JPanel vitalsPanel, final VitalsTableGateway vtg, final JTable vitalsTable) {
 setLayout(new BorderLayout(0, 0));
@@ -196,7 +224,7 @@ setLayout(new BorderLayout(0, 0));
 		gbc_lblVitals.gridy = 1;
 		panel_VitalsForm.add(lblVitals, gbc_lblVitals);
 		
-		JLabel lblBloodPressuresys = new JLabel("BP(Sys):");
+		lblBloodPressuresys = new JLabel("BP(Sys):");
 		GridBagConstraints gbc_lblBloodPressuresys = new GridBagConstraints();
 		gbc_lblBloodPressuresys.anchor = GridBagConstraints.EAST;
 		gbc_lblBloodPressuresys.insets = new Insets(0, 0, 5, 5);
@@ -213,12 +241,12 @@ setLayout(new BorderLayout(0, 0));
 		panel_VitalsForm.add(textField_BPSys, gbc_textField_BPSys);
 		textField_BPSys.setColumns(10);
 		
-		JLabel lblBPSysUnit = new JLabel("mm/Hg");
-		GridBagConstraints gbc_lblBPSysUnit = new GridBagConstraints();
-		gbc_lblBPSysUnit.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBPSysUnit.gridx = 3;
-		gbc_lblBPSysUnit.gridy = 3;
-		panel_VitalsForm.add(lblBPSysUnit, gbc_lblBPSysUnit);
+		lblBPSysUnit_1 = new JLabel("mm/Hg");
+		GridBagConstraints gbc_lblBPSysUnit_1 = new GridBagConstraints();
+		gbc_lblBPSysUnit_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblBPSysUnit_1.gridx = 3;
+		gbc_lblBPSysUnit_1.gridy = 3;
+		panel_VitalsForm.add(lblBPSysUnit_1, gbc_lblBPSysUnit_1);
 		
 		JPanel panel_BPGroup = new JPanel();
 		GridBagConstraints gbc_panel_BPGroup = new GridBagConstraints();
@@ -265,8 +293,8 @@ setLayout(new BorderLayout(0, 0));
 		
 		bpButtonGroup.add(rdbtnMmhg);
 		bpButtonGroup.add(rdbtnPa);
-		rdbtnMmhg.addActionListener(new BPListener(lblBPSysUnit, lblBPDiasUnit));
-		rdbtnPa.addActionListener(new BPListener(lblBPSysUnit, lblBPDiasUnit));
+		rdbtnMmhg.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
+		rdbtnPa.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
 		
 		
 		JLabel lblHeight = new JLabel("Height:");
@@ -371,12 +399,12 @@ setLayout(new BorderLayout(0, 0));
 		panel_VitalsForm.add(textField_Weight, gbc_textField_Weight);
 		textField_Weight.setColumns(10);
 		
-		JLabel lblWeightUnit = new JLabel("lbs");
-		GridBagConstraints gbc_lblWeightUnit = new GridBagConstraints();
-		gbc_lblWeightUnit.insets = new Insets(0, 0, 5, 5);
-		gbc_lblWeightUnit.gridx = 3;
-		gbc_lblWeightUnit.gridy = 10;
-		panel_VitalsForm.add(lblWeightUnit, gbc_lblWeightUnit);
+		lblWeightUnit_1 = new JLabel("lbs");
+		GridBagConstraints gbc_lblWeightUnit_1 = new GridBagConstraints();
+		gbc_lblWeightUnit_1.insets = new Insets(0, 0, 5, 5);
+		gbc_lblWeightUnit_1.gridx = 3;
+		gbc_lblWeightUnit_1.gridy = 10;
+		panel_VitalsForm.add(lblWeightUnit_1, gbc_lblWeightUnit_1);
 		
 		JPanel panel_WeightGroup = new JPanel();
 		GridBagConstraints gbc_panel_WeightGroup = new GridBagConstraints();
@@ -394,8 +422,8 @@ setLayout(new BorderLayout(0, 0));
 		
 		weightButtonGroup.add(rdbtnLbs);
 		weightButtonGroup.add(rdbtnKg);
-		rdbtnLbs.addActionListener(new WeightListener(lblWeightUnit));
-		rdbtnKg.addActionListener(new WeightListener(lblWeightUnit));
+		rdbtnLbs.addActionListener(new WeightListener(lblWeightUnit_1));
+		rdbtnKg.addActionListener(new WeightListener(lblWeightUnit_1));
 		
 		
 		JLabel lblNotes = new JLabel("Notes:");
@@ -405,7 +433,7 @@ setLayout(new BorderLayout(0, 0));
 		gbc_lblNotes.gridy = 12;
 		panel_VitalsForm.add(lblNotes, gbc_lblNotes);
 		
-		JTextArea textArea_Notes = new JTextArea();
+		textArea_Notes = new JTextArea();
 		textArea_Notes.setRows(4);
 		GridBagConstraints gbc_textArea_Notes = new GridBagConstraints();
 		gbc_textArea_Notes.fill = GridBagConstraints.HORIZONTAL;
@@ -430,7 +458,7 @@ setLayout(new BorderLayout(0, 0));
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//save(patient, atg, tabbedPane, oldPanel, allergyTable); TODO
+				save(patient, vtg, tabbedPane, oldPanel, vitalsTable);
 			}
 		});
 		panel_Buttons.add(btnSave);
@@ -438,20 +466,20 @@ setLayout(new BorderLayout(0, 0));
 	}
 	
 	private class BPListener implements ActionListener {
-		JLabel lbl1, lbl2;
+		JLabel lblBPSysUnit, lblBPDiasUnit;
 
 		public BPListener(JLabel lblBPSysUnit, JLabel lblBPDiasUnit) {
-			lbl1 = lblBPSysUnit;
-			lbl2 = lblBPDiasUnit;
+			this.lblBPSysUnit = lblBPSysUnit;
+			this.lblBPDiasUnit = lblBPDiasUnit;
 		}
 
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals("mm/Hg")) {
-				lbl1.setText("mm/Hg");
-				lbl2.setText("mm/Hg");
+				lblBPSysUnit.setText("mm/Hg");
+				lblBPDiasUnit.setText("mm/Hg");
 			} else {
-				lbl1.setText("Pa");
-				lbl2.setText("Pa");
+				lblBPSysUnit.setText("Pa");
+				lblBPDiasUnit.setText("Pa");
 			}
 	    }
 	}
@@ -463,14 +491,17 @@ setLayout(new BorderLayout(0, 0));
 				textField_HeightFt.setEnabled(true);
 				textField_HeightIn.setEnabled(true);
 				textField_HeightCm.setEnabled(true);
+				heightUnit = "ft/inches";
 			} else if (e.getActionCommand().equals("inches")) {
 				textField_HeightFt.setEnabled(false);
 				textField_HeightIn.setEnabled(true);
 				textField_HeightCm.setEnabled(false);
+				heightUnit = "inches";
 			} else {
 				textField_HeightFt.setEnabled(false);
 				textField_HeightIn.setEnabled(false);
 				textField_HeightCm.setEnabled(true);
+				heightUnit = "cm";
 			}
 			//textField_BPSys.setEnabled(false);
 	    }
@@ -492,5 +523,45 @@ setLayout(new BorderLayout(0, 0));
 			//textField_BPSys.setEnabled(false);
 	    }
 	}
+
 	
+	public String getBPUnit() {
+		return bPUnit; 
+	}
+	public void setBPUnit(String bpu) {
+		bPUnit = bpu; 
+	}
+	public String getHeightUnit() {
+		return heightUnit; 
+	}
+	public void setHeightUnit(String hu) {
+		heightUnit = hu; 
+	}
+	public String getWeightUnit() {
+		return weightUnit; 
+	}
+	public void setWeightUnit(String wu) {
+		weightUnit = wu;
+	}
+	public JLabel getLblBPSysUnit() {
+		return lblBPSysUnit_1;
+	}
+	public JTextField getTextField_HeightFt() {
+		return textField_HeightFt;
+	}
+	public JTextField getTextField_HeightIn() {
+		return textField_HeightIn;
+	}
+	public JTextField getTextField_HeightCm() {
+		return textField_HeightCm;
+	}
+	public JTextField getTextField_Weight() {
+		return textField_Weight;
+	}
+	public JLabel getLblWeightUnit() {
+		return lblWeightUnit_1;
+	}
+	public JTextArea getTextArea_Notes() {
+		return textArea_Notes;
+	}
 }
