@@ -36,7 +36,7 @@ import java.awt.Font;
 import javax.swing.JTextArea;
 
 public class VitalsTabNewVitalsView extends JPanel {
-	
+	private JPanel me;
 	JPanel oldPanel;
 	JTable vitalsTable;
 	
@@ -57,6 +57,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 	 * Create the panel.
 	 */
 	public VitalsTabNewVitalsView(final JTabbedPane tabbedPane, Patient patient, JPanel vitalsPanel, VitalsTableGateway gateway, JTable vitalsTable) {
+		me = this;
 		this.patient = patient;
 		this.vtg = gateway;
 		this.vitalsTable = vitalsTable;
@@ -177,7 +178,7 @@ setLayout(new BorderLayout(0, 0));
 		GridBagLayout gbl_panel_VitalsForm = new GridBagLayout();
 		gbl_panel_VitalsForm.columnWidths = new int[]{0, 0, 48, 0, 0, 0};
 		gbl_panel_VitalsForm.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gbl_panel_VitalsForm.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_VitalsForm.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_VitalsForm.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		panel_VitalsForm.setLayout(gbl_panel_VitalsForm);
 		
@@ -222,11 +223,14 @@ setLayout(new BorderLayout(0, 0));
 		panel_VitalsForm.add(panel_BPGroup, gbc_panel_BPGroup);
 		
 		JRadioButton rdbtnMmhg = new JRadioButton("mm/Hg");
+		
 		bpButtonGroup.add(rdbtnMmhg);
 		rdbtnMmhg.setSelected(true);
 		panel_BPGroup.add(rdbtnMmhg);
 		
 		JRadioButton rdbtnPa = new JRadioButton("Pa");
+		rdbtnPa.addActionListener(new EnableListener());
+		
 		bpButtonGroup.add(rdbtnPa);
 		panel_BPGroup.add(rdbtnPa);
 		
@@ -360,11 +364,11 @@ setLayout(new BorderLayout(0, 0));
 		
 		JTextArea textArea = new JTextArea();
 		textArea.setRows(4);
-		textArea.setColumns(32);
 		GridBagConstraints gbc_textArea = new GridBagConstraints();
+		gbc_textArea.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textArea.gridheight = 2;
 		gbc_textArea.gridwidth = 3;
-		gbc_textArea.anchor = GridBagConstraints.NORTHWEST;
+		gbc_textArea.anchor = GridBagConstraints.NORTH;
 		gbc_textArea.insets = new Insets(0, 0, 5, 5);
 		gbc_textArea.gridx = 2;
 		gbc_textArea.gridy = 11;
@@ -384,10 +388,19 @@ setLayout(new BorderLayout(0, 0));
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//save(patient, atg, tabbedPane, oldPanel, allergyTable);
+				//save(patient, atg, tabbedPane, oldPanel, allergyTable); TODO
 			}
 		});
 		panel_Buttons.add(btnSave);
-	}
 
+	}
+	
+	private class EnableListener implements ActionListener
+	    {
+	        public void actionPerformed(ActionEvent e)
+	        {
+	        	textField_BPSysUnit.setEnabled(false);
+	    }
+	    }
+	
 }
