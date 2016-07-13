@@ -86,6 +86,9 @@ public class PatientRecordView extends JTabbedPane {
 		
 		//JPanel panel_5 = new JPanel();
 		
+		JPanel VitalsTabView = new VitalsTabView(patient, this);
+		this.addTab("Vitals", null, VitalsTabView, null);
+		
 		// Create History tab
 		final HistoryTabView historyTab = new HistoryTabView(patient, homeModel, this);
 		this.addTab("History", null, historyTab, null);

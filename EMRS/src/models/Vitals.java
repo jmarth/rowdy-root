@@ -7,23 +7,23 @@ public class Vitals {
 	
 	private float bps;
 	private float bpd;
-	private char bpUnit;
+	private String bpUnit;
 	
 	private int hFeet;
 	private int hInches;
 	
 	private int hcm;
 	
-	private char hUnit;
+	private String hUnit;
 	
 	private float weight;
-	private char wUnit;
+	private String wUnit;
 	
 	private String notes;
 
 
-	public Vitals(long id, long pid, float bps, float bpd, char bpUnit, int hFeet, int hInches, int hcm, char hUnit,
-			float weight, char wUnit, String notes) {
+	public Vitals(long id, long pid, float bps, float bpd, String bpUnit, int hFeet, int hInches, int hcm, String hUnit,
+			float weight, String wUnit, String notes) {
 		super();
 		this.id = id;
 		this.pid = pid;
@@ -89,13 +89,13 @@ public class Vitals {
 
 
 
-	public char getBpUnit() {
+	public String getBpUnit() {
 		return bpUnit;
 	}
 
 
 
-	public void setBpUnit(char bpUnit) {
+	public void setBpUnit(String bpUnit) {
 		this.bpUnit = bpUnit;
 	}
 
@@ -137,13 +137,13 @@ public class Vitals {
 
 
 
-	public char gethUnit() {
+	public String gethUnit() {
 		return hUnit;
 	}
 
 
 
-	public void sethUnit(char hUnit) {
+	public void sethUnit(String hUnit) {
 		this.hUnit = hUnit;
 	}
 
@@ -161,15 +161,31 @@ public class Vitals {
 
 
 
-	public char getwUnit() {
+	public String getwUnit() {
 		return wUnit;
 	}
 
 
 
-	public void setwUnit(char wUnit) {
+	public void setwUnit(String wUnit) {
 		this.wUnit = wUnit;
 	}
+	
+	public String getNotes() {
+		return notes;
+	}
+
+
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
+
+
+	//public Object getVitals() {
+	//	retu
+	//}
 	
 	
 }
