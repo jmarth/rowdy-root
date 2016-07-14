@@ -12,6 +12,7 @@ import javax.swing.border.LineBorder;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
+import models.CL;
 import models.HomeModel;
 import models.Patient;
 import models.PatientList;
@@ -109,6 +110,8 @@ public class HomeView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
+		
+		contentPane.setBackground(CL.blue);
 		
 		//set up top bar panel
 		JPanel panel = new JPanel();

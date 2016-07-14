@@ -26,6 +26,7 @@ import javax.swing.event.ChangeListener;
 
 import models.Allergy;
 import models.AllergyList;
+import models.CL;
 import models.HomeModel;
 import models.Patient;
 import models.VisitList;
@@ -68,7 +69,7 @@ public class PatientRecordView extends JTabbedPane {
 	public PatientRecordView(final HomeModel homeModel, Patient patient) {
 		this.patient = patient;
 		setBounds(100, 100, 987, 1105);
-		
+				
 		// Create tab for Profile 
 		JPanel patientProfileTabView = new ProfileTabView(patient);
 		this.addTab("Profile", null, patientProfileTabView, null);
