@@ -109,7 +109,7 @@ public class VisitsTabView extends JPanel{
 		if (coll != null) {
 			patientVisitList = (List<Visit>) coll;
 		}
-		iconLabel.setText("\t\t" + patientVisitList.size() + " total visits");
+		iconLabel.setText("\t\t" + patientVisitList.size() + " visits");
 		iconLabel.setFont(new Font("Roboto", Font.BOLD, 30));
 		mainTaskPane.add(iconLabel);
 				
