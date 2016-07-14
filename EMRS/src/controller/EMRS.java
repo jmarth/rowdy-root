@@ -24,7 +24,12 @@ import models.PatientList;
 import models.VisitList;
 import views.LoginView;
 
+import org.apache.logging.log4j.*;
+
 public class EMRS {
+	
+	private static final Logger logger = LogManager.getLogger(EMRS.class);
+	
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -41,6 +46,8 @@ public class EMRS {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		logger.info("Launching Application");
 		
 		LoginView login = new LoginView();
 		try {

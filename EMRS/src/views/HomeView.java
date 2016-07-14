@@ -57,6 +57,12 @@ import java.util.List;
 import javax.swing.UIManager;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import controller.EMRS;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
@@ -66,6 +72,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 
 public class HomeView extends JFrame {
+	
+	private static final Logger logger = LogManager.getLogger(HomeView.class);
 
 	private JPanel contentPane;
 	final JButton btnAddPatient = new JButton("Add Patient");
@@ -210,6 +218,7 @@ public class HomeView extends JFrame {
 		//find patient button on click
 		btnFindPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				logger.info("user accessed patient list");
 				homeModel.setPatientsView(new FIndPatientsView(home));
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
 			}

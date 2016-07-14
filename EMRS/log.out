@@ -1,0 +1,7 @@
+2016-07-14 09:21:18,964 INFO  [main] controller.EMRS (EMRS.java:50) - message 1 *******
+2016-07-14 09:21:53,182 INFO  [main] controller.EMRS (EMRS.java:50) - message 1 *******
+2016-07-14 09:25:00,922 INFO  [main] controller.EMRS (EMRS.java:50) - message 1 *******
+2016-07-14 09:25:12,982 INFO  [AWT-EventQueue-0] views.HomeView$8 (HomeView.java:221) - user accessed patient list
+2016-07-14 09:25:18,977 INFO  [AWT-EventQueue-0] views.HomeView$8 (HomeView.java:221) - user accessed patient list
+2016-07-14 09:25:21,643 INFO  [AWT-EventQueue-0] views.HomeView$8 (HomeView.java:221) - user accessed patient list
+2016-07-14 09:25:26,300 INFO  [AWT-EventQueue-0] views.HomeView$8 (HomeView.java:221) - user accessed patient list
