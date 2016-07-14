@@ -7,12 +7,17 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.List;
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -20,6 +25,8 @@ import javax.swing.JTable;
 import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.table.DefaultTableModel;
 
@@ -40,9 +47,13 @@ import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 
+import javax.imageio.ImageIO;
 import javax.swing.Box;
 import java.awt.Font;
+import java.awt.Graphics2D;
+
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -51,6 +62,8 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -85,6 +98,8 @@ public class VisitTabViewNewVisit extends JPanel {
 	private JButton btnCancel = new JButton("Cancel");
 	private JButton btnSave = new JButton("Save");
 	private HomeModel homeModel;
+	private JButton btnOpenSketch = new JButton("New Sketch");
+	private final JLabel lblSketch = new JLabel("");
 	
 	public VisitTabViewNewVisit(Visit visit, Patient patient, JTabbedPane tabbedPane, HomeModel homeModel) {
 		super();
@@ -113,7 +128,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		createView();
 		disableFields(this);
 		btnSave.setVisible(false);
-		btnCancel.setText("Back");
 	}
 	
 	/**
@@ -147,6 +161,18 @@ public class VisitTabViewNewVisit extends JPanel {
 		disableFields(this);
 		btnSave.setVisible(false);
 		btnCancel.setVisible(false);
+		btnOpenSketch.setVisible(false);
+		try {
+			ArrayList<Image> sketches = (ArrayList<Image>) homeModel.getStg().fetchSketchesForPatinet(visit.getId());
+			if(sketches.size() != 0) {
+				Image img = sketches.get(0);
+				ImageIcon icon = new ImageIcon(img);
+				lblSketch.setIcon(icon);
+			}
+		} catch (GatewayException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public VisitTabViewNewVisit(final JTabbedPane tabbedPane, Patient patient, HomeModel homeModel) {
@@ -184,9 +210,9 @@ public class VisitTabViewNewVisit extends JPanel {
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 120, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		mainPane.setLayout(gridBagLayout);
 		
 		JLabel lblCc = new JLabel("Chief Complaint:");
@@ -446,7 +472,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_label.gridy = 8;
 		visionPanel.add(label, gbc_label);
 		
-		JPanel panel_VisionSketch = new JPanel();
+		final JPanel panel_VisionSketch = new JPanel();
 		GridBagConstraints gbc_panel_VisionSketch = new GridBagConstraints();
 		gbc_panel_VisionSketch.anchor = GridBagConstraints.WEST;
 		gbc_panel_VisionSketch.insets = new Insets(0, 0, 5, 0);
@@ -454,31 +480,45 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_panel_VisionSketch.gridx = 0;
 		gbc_panel_VisionSketch.gridy = 6;
 		mainPane.add(panel_VisionSketch, gbc_panel_VisionSketch);
+		GridBagLayout gbl_panel_VisionSketch = new GridBagLayout();
+		gbl_panel_VisionSketch.columnWidths = new int[]{89, 1, 0};
+		gbl_panel_VisionSketch.rowHeights = new int[]{0, 23, 0};
+		gbl_panel_VisionSketch.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_VisionSketch.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		panel_VisionSketch.setLayout(gbl_panel_VisionSketch);
 		
-		JPanel panel_Sketch1_Placehold = new JPanel();
-		panel_VisionSketch.add(panel_Sketch1_Placehold);
+		GridBagConstraints gbc_btnOpenSketch = new GridBagConstraints();
+		gbc_btnOpenSketch.anchor = GridBagConstraints.NORTHWEST;
+		gbc_btnOpenSketch.insets = new Insets(0, 0, 5, 5);
+		gbc_btnOpenSketch.gridx = 0;
+		gbc_btnOpenSketch.gridy = 0;
+		panel_VisionSketch.add(btnOpenSketch, gbc_btnOpenSketch);
 		
+		GridBagConstraints gbc_lblSketch = new GridBagConstraints();
+		gbc_lblSketch.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSketch.anchor = GridBagConstraints.WEST;
+		gbc_lblSketch.gridx = 0;
+		gbc_lblSketch.gridy = 1;
+		panel_VisionSketch.add(lblSketch, gbc_lblSketch);
 		
-		// Sketch 1 button
-		JButton btnOpenSketch = new JButton("New Sketch");
 		btnOpenSketch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Paint newpaint = new Paint();
-				newpaint.setContentPane(newpaint.getContentPane());
-				newpaint.setExtendedState( JFrame.MAXIMIZED_BOTH );
-				panel_1 = (JPanel) newpaint.getContentPane();
+				Paint firstSketch = new Paint(homeModel, patient, lblSketch);
+				firstSketch.setContentPane(firstSketch.getContentPane());
+				firstSketch.setSize(new Dimension(600,600));
+				firstSketch.setResizable(false);
+				panel_1 = (JPanel) firstSketch.getContentPane();
 				panel_1.setVisible(true);
-				newpaint.setVisible(true);
+				firstSketch.setVisible(true);
 			}
 		});
-		panel_VisionSketch.add(btnOpenSketch);
 		
 		JLabel lblFundusExam = new JLabel("Fundus Exam");
 		GridBagConstraints gbc_lblFundusExam = new GridBagConstraints();
 		gbc_lblFundusExam.anchor = GridBagConstraints.WEST;
 		gbc_lblFundusExam.insets = new Insets(0, 0, 5, 0);
 		gbc_lblFundusExam.gridx = 0;
-		gbc_lblFundusExam.gridy = 7;
+		gbc_lblFundusExam.gridy = 8;
 		mainPane.add(lblFundusExam, gbc_lblFundusExam);
 		
 		JPanel panel_FundusExam = new JPanel();
@@ -486,7 +526,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_panel_FundusExam.anchor = GridBagConstraints.WEST;
 		gbc_panel_FundusExam.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_FundusExam.gridx = 0;
-		gbc_panel_FundusExam.gridy = 8;
+		gbc_panel_FundusExam.gridy = 9;
 		mainPane.add(panel_FundusExam, gbc_panel_FundusExam);
 		GridBagLayout gbl_panel_FundusExam = new GridBagLayout();
 		gbl_panel_FundusExam.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
@@ -567,7 +607,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_panelFundusSketch.insets = new Insets(0, 0, 5, 0);
 		gbc_panelFundusSketch.fill = GridBagConstraints.VERTICAL;
 		gbc_panelFundusSketch.gridx = 0;
-		gbc_panelFundusSketch.gridy = 10;
+		gbc_panelFundusSketch.gridy = 11;
 		mainPane.add(panelFundusSketch, gbc_panelFundusSketch);
 		
 		JPanel panel_Sketch2_Placehold = new JPanel();
@@ -582,7 +622,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblAp.anchor = GridBagConstraints.WEST;
 		gbc_lblAp.insets = new Insets(0, 0, 5, 0);
 		gbc_lblAp.gridx = 0;
-		gbc_lblAp.gridy = 11;
+		gbc_lblAp.gridy = 12;
 		mainPane.add(lblAp, gbc_lblAp);
 		
 		JScrollPane scrollPane_AP = new JScrollPane();
@@ -590,7 +630,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_scrollPane_AP.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPane_AP.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_AP.gridx = 0;
-		gbc_scrollPane_AP.gridy = 12;
+		gbc_scrollPane_AP.gridy = 13;
 		mainPane.add(scrollPane_AP, gbc_scrollPane_AP);
 		
 		txtrTextarea.setColumns(80);
@@ -642,7 +682,12 @@ public class VisitTabViewNewVisit extends JPanel {
 						Double.parseDouble(textField_FE1_2_2.getText()),
 						txtrTextarea.getText());	
 				try {
-					homeModel.getVtg().insertVisit(visit);
+					long vid = homeModel.getVtg().insertVisit(visit);
+					if (lblSketch.getIcon() != null){
+						homeModel.getStg().insertSketch(new File("firstSketch.png"), vid);
+					}
+					
+					
 					homeModel.getVl().loadFromGateway();
 					showVisitTabView();
 				} catch (GatewayException e1) {

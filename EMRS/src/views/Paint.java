@@ -2,6 +2,7 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -16,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -26,7 +28,11 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import database.GatewayException;
 import models.DrawArea;
+import models.HomeModel;
+import models.Patient;
+
 import javax.swing.JLabel;
 import java.awt.Insets;
  
@@ -35,6 +41,7 @@ public class Paint extends JFrame{
   private JButton clearBtn, colorPickerBtn, setBackgroundBtn;
   private DrawArea drawArea;
   private JPanel contentPane;
+  private File sketch = null;
   ActionListener actionListener = new ActionListener() {
  
   public void actionPerformed(ActionEvent e) {
@@ -81,8 +88,11 @@ public class Paint extends JFrame{
   private JButton btnGreenEye;
   private JButton btnBlueEye;
   private JButton btnNewButton_1;
+  private JButton btnSave;
  
-  public Paint() {
+  public Paint(final HomeModel homeModel, final Patient patient, final JLabel sketchLabel) {
+	 this.setMaximumSize(new Dimension(500,500)); 
+	 
     contentPane = new JPanel();
 	contentPane.setLayout(new BorderLayout());
 	
@@ -95,6 +105,7 @@ public class Paint extends JFrame{
     scrollPane.setViewportView(drawArea);
     // add to content pane
     contentPane.add(scrollPane, BorderLayout.CENTER);
+    // set background to circle
     
     panel = new JPanel();
     scrollPane.setRowHeaderView(panel);
@@ -114,6 +125,24 @@ public class Paint extends JFrame{
     panel.add(lblNewLabel, gbc_lblNewLabel);
     
     btnNewButton = new JButton("Circle");
+    btnNewButton.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+    		BufferedImage bimg = null;
+    		try {
+				bimg = ImageIO.read(new File("circle.png"));
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+	        //Image image = imageIcon.getImage(); // transform it 
+	        try {
+				drawArea.setBackgroundImage(bimg);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+    });
     GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
     gbc_btnNewButton.fill = GridBagConstraints.HORIZONTAL;
     gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
@@ -159,6 +188,9 @@ public class Paint extends JFrame{
     colorPickerBtn.addActionListener(actionListener);
     setBackgroundBtn = new JButton("Set background image");
     setBackgroundBtn.addActionListener(actionListener);
+    
+    //Hiding because not sure if we still need this since we have pre set images
+    setBackgroundBtn.setVisible(false);
  
     // add to panel
     controls.add(colorPickerBtn);
@@ -168,11 +200,36 @@ public class Paint extends JFrame{
     // add to content pane
     contentPane.add(controls, BorderLayout.NORTH);
     
-    
+    btnSave = new JButton("Save");
+    btnSave.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+    		BufferedImage im = new BufferedImage(drawArea.getWidth(), drawArea.getHeight(), BufferedImage.TYPE_INT_ARGB);
+    		drawArea.paint(im.getGraphics());
+    		try {
+				ImageIO.write(im, "PNG", new File("firstSketch.png"));
+				BufferedImage bufImg=ImageIO.read(new File("firstSketch.png"));
+			    sketchLabel.setIcon(new ImageIcon(bufImg));
+
+				dispose();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+    });
+    controls.add(btnSave);
   }
   
   public Container getContentPane() {
 	  return contentPane;
   }
- 
+
+	public File getSketch() {
+		return sketch;
+	}
+	
+	public void setSketch(File sketch) {
+		this.sketch = sketch;
+	}
+	 
 }

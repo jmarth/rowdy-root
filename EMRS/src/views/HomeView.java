@@ -225,8 +225,8 @@ public class HomeView extends JFrame {
 				//this is a temp solution to the scaleing problem
 				setExtendedState( getExtendedState()|JFrame.MAXIMIZED_BOTH );
 				
-				Paint paint = new Paint();
-				setCenterPanel(paint.getContentPane());
+				//Paint paint = new Paint(homeModel, patient);
+				//setCenterPanel(paint.getContentPane());
 			}
 		});
 		
