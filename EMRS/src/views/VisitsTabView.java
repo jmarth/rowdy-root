@@ -113,7 +113,9 @@ public class VisitsTabView extends JPanel{
 		iconLabel.setFont(new Font("Roboto", Font.BOLD, 30));
 		mainTaskPane.add(iconLabel);
 				
-		for (Visit v : patientVisitList) {
+		int i;
+		for (i = patientVisitList.size() - 1; i >= 0; i--) {
+			Visit v = patientVisitList.get(i);
 			JXTaskPane pane = new JXTaskPane();
 			pane.setTitle(v.getDateCreated() + "\t|\t" + v.getChiefComplaint());
 			pane.setAnimated(false);
