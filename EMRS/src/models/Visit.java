@@ -1,5 +1,6 @@
 package models;
 
+import java.io.File;
 import java.io.IOException;
 
 import database.GatewayException;
@@ -28,6 +29,7 @@ public class Visit {
 	private double feRow2Col2;
 	private String assessment;
 	private String dateCreated;
+	private File sketch1;
 	
 	/**
 	 * Constructor
@@ -461,5 +463,13 @@ public class Visit {
 	 */
 	public void setDateCreated(String dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+	
+	public File getSketch1() {
+		return sketch1;
+	}
+
+	public void setSketch1(File sketch1) {
+		this.sketch1 = sketch1;
 	}
 }

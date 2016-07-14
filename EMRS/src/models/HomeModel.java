@@ -13,6 +13,8 @@ import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
+import database.SketchTableGateway;
+import database.SketchTableGatewayMySQL;
 import database.VisitTableGateway;
 import database.VisitTableGatewayMySQL;
 import views.HomeView;
@@ -26,6 +28,7 @@ public class HomeModel {
 	private PatientTableGateway ptg = null;
 	private AllergyTableGateway atg = null;
 	private VisitTableGateway vtg = null;
+	private SketchTableGateway stg = null;
 	private VisitList vl = new VisitList();
 	
 	public HomeModel(HomeView homeView) {
@@ -42,6 +45,7 @@ public class HomeModel {
 			ptg = new PatientTableGatewayMySQL();
 			atg = new AllergyTableGatewayMySQL();
 			vtg = new VisitTableGatewayMySQL();
+			stg = new SketchTableGatewayMySQL();
 			
 			vl.setGateway(vtg);
         	vl.loadFromGateway();
@@ -55,6 +59,14 @@ public class HomeModel {
 			System.exit(1);
 		}
 	}
+	public SketchTableGateway getStg() {
+		return stg;
+	}
+
+	public void setStg(SketchTableGateway stg) {
+		this.stg = stg;
+	}
+
 	public PatientList getPatientList() {
 		return patientList;
 	}
