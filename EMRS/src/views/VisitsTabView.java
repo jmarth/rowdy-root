@@ -21,6 +21,7 @@ import javax.swing.JTabbedPane;
 
 import models.Allergy;
 import models.AllergyList;
+import models.CL;
 import models.HomeModel;
 import models.Patient;
 import models.PatientList;
@@ -39,6 +40,7 @@ import java.awt.Font;
 
 import javax.swing.table.DefaultTableModel;
 
+import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
@@ -58,8 +60,7 @@ public class VisitsTabView extends JPanel{
 	
 	private JScrollPane scroller;
 	private JXTaskPaneContainer mainTaskPane;
-	private JTabbedPane tabbedPane;
-	
+	private JTabbedPane tabbedPane;	
 	
 	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
 		this.patient = patient;
@@ -69,12 +70,13 @@ public class VisitsTabView extends JPanel{
 		setLayout(new BorderLayout(0, 0));
 		
 		mainTaskPane = new JXTaskPaneContainer();
-		
+				
 		populatePanes();
 		
 		scroller = new JScrollPane(mainTaskPane);
-		
+				
 		JPanel panel = new JPanel();
+		panel.setBackground(CL.pearl);
 		add(panel, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{187, 75, 0};
