@@ -43,6 +43,9 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
 import javax.swing.ScrollPaneConstants;
@@ -53,6 +56,9 @@ import javax.swing.ScrollPaneConstants;
  * This view ONLY contains tabs that consist of other views
  */
 public class PatientRecordView extends JTabbedPane {
+	
+	private static final Logger logger = LogManager.getLogger(FIndPatientsView.class);
+
 	private Patient patient;
 	
 	// Variables for Allergy tab
@@ -101,10 +107,22 @@ public class PatientRecordView extends JTabbedPane {
 		      public void stateChanged(ChangeEvent changeEvent) {
 		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
 		        int index = sourceTabbedPane.getSelectedIndex();
-		        System.out.println(sourceTabbedPane.getTitleAt(index));
-		        if(sourceTabbedPane.getTitleAt(index).equals("Visits")) {
+		        String selectedTab = sourceTabbedPane.getTitleAt(index);
+		        if(selectedTab.equals("Visits")) {
 		        	visitsTabView.populatePanes();
-		        	System.out.print("visit tab hit");
+		        	logger.info("User selected 'Visits' tab");
+		        }
+		        else if (selectedTab.equals("Allergies")) {
+		        	logger.info("User selected 'Allergies' tab");
+		        }
+		        else if (selectedTab.equals("Vitals")) {
+		        	logger.info("User selected 'Vitals' tab");
+		        }
+		        else if (selectedTab.equals("Meds")) {
+		        	logger.info("User selected 'Meds' tab");
+		        }
+		        else if (selectedTab.equals("Labs")) {
+		        	logger.info("User selected 'Labs' tab");
 		        }
 		      }
 		};
