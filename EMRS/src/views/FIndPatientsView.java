@@ -28,6 +28,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
@@ -38,6 +41,8 @@ import java.awt.Font;
 import javax.swing.JTextField;
 
 public class FIndPatientsView extends JFrame {
+	
+	private static final Logger logger = LogManager.getLogger(FIndPatientsView.class);
 
 	private JPanel contentPane;
 	private JTable table;
@@ -99,6 +104,8 @@ public class FIndPatientsView extends JFrame {
 			      }
 			      else {
 			         table.setSelectionBackground(Color.blue);
+			         Long patientID = (Long) table.getValueAt(row, 0);
+			         logger.info("User hovered over patient: " + patientID);
 			      }
 			      table.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			   }
@@ -110,6 +117,7 @@ public class FIndPatientsView extends JFrame {
 			        Patient patient = pl.findById(patientId);
 			        PatientRecordView prv = new PatientRecordView(home.getHomeModel(), patient);
 			        home.setCenterPanel(prv);
+			        logger.info("User selected patient: " + patientId);
 				}
 			});
 		

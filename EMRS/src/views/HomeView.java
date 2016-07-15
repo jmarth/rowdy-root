@@ -140,6 +140,7 @@ public class HomeView extends JFrame {
 			public void keyReleased(KeyEvent arg0) {
 				String searchText = textFieldSearch.getText().toLowerCase();
 				homeModel.getPatientsView().filter(searchText);
+				logger.info("User entered into search: " + searchText);
 			}
 		});
 		textFieldSearch.setColumns(10);
@@ -184,6 +185,7 @@ public class HomeView extends JFrame {
 		//add patient button on click
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				 logger.info("User pressed 'Add Patient'");
 				 homeModel.setPatientInfo(new AddPatientView(home));
 				 setCenterPanel(homeModel.getPatientInfo().getContentPane());
 			}
@@ -199,12 +201,17 @@ public class HomeView extends JFrame {
 		//logout button on click
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				logger.info("User pressed 'Log Out'");
 				int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to close all windows and logout?", "Confirm",
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				if (response == JOptionPane.YES_OPTION) {
+					logger.info("User pressed 'YES' in logout dialogue");
 					dispose();
 					LoginView login = new LoginView();
 					login.show();
+				}
+				else {
+					logger.info("User pressed 'NO' in logout dialogue");
 				}
 			}
 		});
@@ -218,7 +225,7 @@ public class HomeView extends JFrame {
 		//find patient button on click
 		btnFindPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				logger.info("user accessed patient list");
+				logger.info("User pressed 'Find Patient'");
 				homeModel.setPatientsView(new FIndPatientsView(home));
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
 			}

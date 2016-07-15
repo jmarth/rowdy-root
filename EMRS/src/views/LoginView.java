@@ -6,6 +6,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.awt.GridLayout;
 import javax.swing.JTextField;
 import com.jgoodies.forms.layout.FormLayout;
@@ -37,6 +41,8 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 
 public class LoginView extends JFrame {
+	
+	private static final Logger logger = LogManager.getLogger(LoginView.class);
 
 	private JPanel contentPane;
 	private JTextField textField;
@@ -75,6 +81,7 @@ public class LoginView extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				logger.info("User pressed 'Login'");
 				setVisible(false);
 				dispose();
 				//Create home view

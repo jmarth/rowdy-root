@@ -2,7 +2,7 @@
 <Configuration>
     <Appenders>
         <File name="FILE" fileName="log.out">
-            <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+            <PatternLayout pattern="%d{MM-dd-YYYY HH:mm:ss} - %m%n"/>
         </File>
     </Appenders>
     <Loggers>
