@@ -78,51 +78,52 @@ public class PatientRecordView extends JTabbedPane {
 				
 		// Create tab for Profile 
 		JPanel patientProfileTabView = new ProfileTabView(patient);
-		this.addTab("Profile", null, patientProfileTabView, null);
+		this.addTab("<html><body><table width='140'><tr><td align='center'> Demographics</td></tr></table></body></html>", null, patientProfileTabView, null);
 		
 		// Create tab for Allergies
 		JPanel allergyTabView = new AllergyTabView(patient, this, homeModel.getAtg());
-		this.addTab("Allergies", null, allergyTabView, null);
+		this.addTab("<html><body><table width='140'><tr><td align='center'>Allergies & Meds</td></tr></table></body></html>", null, allergyTabView, null);
 		System.out.print("allgergies done");
 		
 		// Create tab for Visit
 		final VisitsTabView visitsTabView = new VisitsTabView(patient, this, homeModel);
-		this.addTab("Visits", null, visitsTabView, null);
+		this.addTab("<html><body><table width='140'><tr><td align='center'>Physical Exam Detail</td></tr></table></body></html>", null, visitsTabView, null);
 		System.out.print("visits done");
 				
 		JPanel VitalsTabView = new VitalsTabView(patient, this);
-		this.addTab("Vitals", null, VitalsTabView, null);
-		
-		
-		JPanel panel_1 = new JPanel();
-		this.addTab("Meds", null, panel_1, null);
+		this.addTab("<html><body><table width='140'><tr><td align='center'>Vitals</td></tr></table></body></html>", null, VitalsTabView, null);
 		
 		JPanel panel_2 = new JPanel();
-		this.addTab("Labs", null, panel_2, null);
+		this.addTab("<html><body><table width='140'><tr><td align='center'>Special Testing</td></tr></table></body></html>", null, panel_2, null);
 		
 		JPanel panel_3 = new JPanel();
-		this.addTab("Orders", null, panel_3, null);
+		this.addTab("<html><body><table width='140'><tr><td align='center'>Labs & Procedures</td></tr></table></body></html>", null, panel_3, null);
+		
+		this.setBackground(CL.aliceBlue);
 		
 		ChangeListener changeListener = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changeEvent) {
 		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
 		        int index = sourceTabbedPane.getSelectedIndex();
 		        String selectedTab = sourceTabbedPane.getTitleAt(index);
-		        if(selectedTab.equals("Visits")) {
+		        if(selectedTab.equals("Demographics")) {
 		        	visitsTabView.populatePanes();
-		        	logger.info("User selected 'Visits' tab");
+		        	logger.info("User selected 'Demographics' tab");
 		        }
-		        else if (selectedTab.equals("Allergies")) {
-		        	logger.info("User selected 'Allergies' tab");
+		        else if (selectedTab.equals("Allergies & Meds")) {
+		        	logger.info("User selected 'Allergies & Meds' tab");
+		        }
+		        else if (selectedTab.equals("Physical Exam Detail")) {
+		        	logger.info("User selected 'Physical Exam Detail' tab");
 		        }
 		        else if (selectedTab.equals("Vitals")) {
 		        	logger.info("User selected 'Vitals' tab");
 		        }
-		        else if (selectedTab.equals("Meds")) {
-		        	logger.info("User selected 'Meds' tab");
+		        else if (selectedTab.equals("Special Testing")) {
+		        	logger.info("User selected 'Special Testing' tab");
 		        }
-		        else if (selectedTab.equals("Labs")) {
-		        	logger.info("User selected 'Labs' tab");
+		        else if (selectedTab.equals("Labs & Procedures")) {
+		        	logger.info("User selected 'Labs & Procedures' tab");
 		        }
 		      }
 		};

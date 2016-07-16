@@ -73,6 +73,8 @@ import java.util.regex.Pattern;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
+import org.jdesktop.swingx.JXDatePicker;
+
 public class AddPatientView extends JFrame {
 	private HomeView home;
 	private JPanel contentPane;
@@ -109,6 +111,8 @@ public class AddPatientView extends JFrame {
 	final JCheckBox hasNameCheckBox = new JCheckBox("Unidentified Patient");
 	private JLabel birtDateErrorLabel;
 	private String imagePath;
+	
+	private static JXDatePicker datePicker;
 	
 	/**
 	 * Create the frame.
@@ -338,6 +342,9 @@ public class AddPatientView extends JFrame {
 		tb_2.setTitleFont(new Font("Tahoma", Font.BOLD, 14));
 		tb_2.setTitleColor(new Color(2,108,143));
 		
+		
+		// BIRTH DATE
+		
 		JPanel panel_8 = new JPanel();
 		TitledBorder tb_3 = new TitledBorder(null, "Patient's birth date", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
 		tb_3.setTitleJustification(TitledBorder.CENTER);
@@ -437,6 +444,22 @@ public class AddPatientView extends JFrame {
 		gbc_birthYearTextField.gridy = 2;
 		panel_4.add(birthYearTextField, gbc_birthYearTextField);
 		birthYearTextField.setColumns(15);
+		
+		
+		// ADD DATE PICKER HERE
+		
+		datePicker = new JXDatePicker();
+		
+		datePicker.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(datePicker.getDate());
+			}
+			
+		});
+		
+		panel_4.add(datePicker, null);
 		
 		JLabel lblOr = new JLabel("Or");
 		GridBagConstraints gbc_lblOr = new GridBagConstraints();

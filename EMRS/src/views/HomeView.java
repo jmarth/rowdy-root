@@ -85,23 +85,6 @@ public class HomeView extends JFrame {
 	private final JButton btnHome = new JButton("");
 
 	
-	/**
-	 * Creates new home window
-	 */
-	public static void NewScreen() {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HomeView frame = new HomeView();
-					frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-					frame.setVisible(true);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Home constructor
@@ -119,8 +102,8 @@ public class HomeView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		contentPane.setBackground(CL.blue);
-		
+		contentPane.setBackground(CL.cararra);
+				
 		//set up top bar panel
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(0, 153, 204));
@@ -286,9 +269,11 @@ public class HomeView extends JFrame {
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panel.setLayout(gl_panel);
 		
-		//set up center/main panel
+		/*set up center/main panel
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(CL.clouds);
 		contentPane.add(panel_1, BorderLayout.EAST);
+		*/
 	}
 	
 	/**
