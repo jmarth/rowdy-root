@@ -44,5 +44,7 @@ public final class CL {
 	public static final Color plum = Color.decode("#BA8BAF");
 	
 	public static final Color brown = Color.decode("#A16946");
+
+	public static final Color belize = Color.decode("#280b9");
 	
 }

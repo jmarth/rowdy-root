@@ -86,7 +86,8 @@ public class LoginView extends JFrame {
 				dispose();
 				//Create home view
 				HomeView home  = new HomeView();
-				home.NewScreen();
+				home.setExtendedState(JFrame.MAXIMIZED_BOTH);
+				home.setVisible(true);
 			}
 		});
 		
