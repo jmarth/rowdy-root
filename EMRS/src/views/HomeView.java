@@ -102,7 +102,7 @@ public class HomeView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
-		//contentPane.setBackground(CL.blue);
+		contentPane.setBackground(CL.cararra);
 				
 		//set up top bar panel
 		JPanel panel = new JPanel();
@@ -269,9 +269,11 @@ public class HomeView extends JFrame {
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panel.setLayout(gl_panel);
 		
-		//set up center/main panel
+		/*set up center/main panel
 		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(CL.clouds);
 		contentPane.add(panel_1, BorderLayout.EAST);
+		*/
 	}
 	
 	/**

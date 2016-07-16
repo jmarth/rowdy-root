@@ -15,6 +15,20 @@ public final class CL {
 	
 	public static final Color gold = new Color(204, 154, 20);
 	
+	public static final Color porcelian = new Color(236, 240, 241);
+	
+	public static final Color aquaIsland = new Color(162, 222, 208);
+	
+	public static final Color cararra = new Color(242, 241, 239);
+	
+	public static final Color malibu = new Color(107, 185, 240);
+	
+	public static final Color colorBlue = new Color(0, 153, 204);
+	
+	public static final Color jordyBlue = new Color(137, 196, 244);
+	
+	public static final Color aliceBlue = new Color(228, 241, 254);
+	
 	public static final Color coal = Color.decode("#181818");
 	
 	public static final Color storm = Color.decode("#383838");
@@ -46,5 +60,7 @@ public final class CL {
 	public static final Color brown = Color.decode("#A16946");
 
 	public static final Color belize = Color.decode("#280b9");
+	
+	public static final Color clouds = Color.decode("#ecf0f1");
 	
 }

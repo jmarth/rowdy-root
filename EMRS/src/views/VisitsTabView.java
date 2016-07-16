@@ -76,7 +76,6 @@ public class VisitsTabView extends JPanel{
 		scroller = new JScrollPane(mainTaskPane);
 				
 		JPanel panel = new JPanel();
-		panel.setBackground(CL.pearl);
 		add(panel, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{187, 75, 0};

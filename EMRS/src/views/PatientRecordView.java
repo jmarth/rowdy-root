@@ -99,6 +99,8 @@ public class PatientRecordView extends JTabbedPane {
 		JPanel panel_3 = new JPanel();
 		this.addTab("<html><body><table width='140'><tr><td align='center'>Labs & Procedures</td></tr></table></body></html>", null, panel_3, null);
 		
+		this.setBackground(CL.aliceBlue);
+		
 		ChangeListener changeListener = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changeEvent) {
 		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
