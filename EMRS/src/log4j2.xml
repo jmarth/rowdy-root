@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <File name="FILE" fileName="log.out">
+            <PatternLayout pattern="%d{MM-dd-YYYY HH:mm:ss} - %m%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+    <Logger name="org.apache.log4j.xml" level="info"/>
+        <Root level="debug">
+            <AppenderRef ref="FILE"/>
+        </Root>
+    </Loggers>
+</Configuration>
