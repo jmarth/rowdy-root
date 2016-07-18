@@ -29,6 +29,7 @@ import models.AllergyList;
 import models.CL;
 import models.HomeModel;
 import models.Patient;
+import models.Tabs;
 import models.VisitList;
 
 import javax.swing.JSeparator;
@@ -78,26 +79,26 @@ public class PatientRecordView extends JTabbedPane {
 				
 		// Create tab for Profile 
 		JPanel patientProfileTabView = new ProfileTabView(patient);
-		this.addTab("Demographics", null, patientProfileTabView, null);
+		this.addTab(Tabs.demographics, null, patientProfileTabView, null);
 		
 		// Create tab for Allergies
 		JPanel allergyTabView = new AllergyTabView(patient, this, homeModel.getAtg());
-		this.addTab("Allergies & Meds", null, allergyTabView, null);
+		this.addTab(Tabs.allergiesAndMeds, null, allergyTabView, null);
 		System.out.print("allgergies done");
 		
 		// Create tab for Visit
 		final VisitsTabView visitsTabView = new VisitsTabView(patient, this, homeModel);
-		this.addTab("Physical Exam Detail", null, visitsTabView, null);
+		this.addTab(Tabs.ped, null, visitsTabView, null);
 		System.out.print("visits done");
 				
 		JPanel VitalsTabView = new VitalsTabView(patient, this);
-		this.addTab("Vitals", null, VitalsTabView, null);
+		this.addTab(Tabs.vitals, null, VitalsTabView, null);
 		
 		JPanel panel_2 = new JPanel();
-		this.addTab("Special Testing", null, panel_2, null);
+		this.addTab(Tabs.testing, null, panel_2, null);
 		
 		JPanel panel_3 = new JPanel();
-		this.addTab("Labs and Procedures", null, panel_3, null);
+		this.addTab(Tabs.labs, null, panel_3, null);
 		
 		this.setBackground(CL.aliceBlue);
 		
@@ -106,23 +107,23 @@ public class PatientRecordView extends JTabbedPane {
 		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
 		        int index = sourceTabbedPane.getSelectedIndex();
 		        String selectedTab = sourceTabbedPane.getTitleAt(index);
-		        if(selectedTab.equals("Demographics")) {
+		        if(selectedTab.equals(Tabs.demographics)) {
 		        	visitsTabView.populatePanes();
 		        	logger.info("User selected 'Demographics' tab");
 		        }
-		        else if (selectedTab.equals("Allergies & Meds")) {
+		        else if (selectedTab.equals(Tabs.allergiesAndMeds)) {
 		        	logger.info("User selected 'Allergies & Meds' tab");
 		        }
-		        else if (selectedTab.equals("Physical Exam Detail")) {
+		        else if (selectedTab.equals(Tabs.ped)) {
 		        	logger.info("User selected 'Physical Exam Detail' tab");
 		        }
-		        else if (selectedTab.equals("Vitals")) {
+		        else if (selectedTab.equals(Tabs.vitals)) {
 		        	logger.info("User selected 'Vitals' tab");
 		        }
-		        else if (selectedTab.equals("Special Testing")) {
+		        else if (selectedTab.equals(Tabs.testing)) {
 		        	logger.info("User selected 'Special Testing' tab");
 		        }
-		        else if (selectedTab.equals("Labs & Procedures")) {
+		        else if (selectedTab.equals(Tabs.labs)) {
 		        	logger.info("User selected 'Labs & Procedures' tab");
 		        }
 		      }
