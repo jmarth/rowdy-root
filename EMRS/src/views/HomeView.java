@@ -70,6 +70,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 public class HomeView extends JFrame {
 	
@@ -327,5 +328,15 @@ public class HomeView extends JFrame {
 	
 	public JButton getAddPatientButton() {
 		return btnAddPatient;
+	}
+
+	public void launchUI() {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				setExtendedState(JFrame.MAXIMIZED_BOTH);
+				setVisible(true);
+			}
+		});
+		
 	}
 }

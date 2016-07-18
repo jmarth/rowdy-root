@@ -21,6 +21,7 @@ import database.GatewayException;
 import models.Allergy;
 import models.AllergyList;
 import models.Patient;
+import models.Tabs;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -125,9 +126,8 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	 * @param oldPanel Panel to switch back to
 	 */
 	public void cancel(JTabbedPane tabbedPane, JPanel oldPanel){
-		int index = tabbedPane.indexOfTab("Allergies");
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
+		tabbedPane.setComponentAt(Tabs.allergiesAndMeds, null);
+		tabbedPane.setComponentAt(Tabs.allergiesAndMeds, oldPanel);
 	}
 	
 	/**
@@ -189,7 +189,6 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		
 		// Change the panel back to allergy table
 		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
-		int index = tabbedPane.indexOfTab("Allergies");
 		
 		// Add the allergy to the JTable
 		// Get model of AllergyTable in order to add rows
@@ -204,8 +203,8 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		// Add allergy to allergyList
 		allergyList.add(allergy);
 		
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
+		tabbedPane.setComponentAt(Tabs.allergiesAndMeds, null);
+		tabbedPane.setComponentAt(Tabs.allergiesAndMeds, oldPanel);
 	}
 	
 	/**
@@ -278,9 +277,8 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		
 		// Change the panel back to allergy table
 		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
-		int index = tabbedPane.indexOfTab("Allergies");	
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
+		tabbedPane.setComponentAt(Tabs.allergiesAndMeds, null);
+		tabbedPane.setComponentAt(Tabs.allergiesAndMeds, oldPanel);
 	}
 	
 	/**

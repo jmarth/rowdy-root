@@ -25,6 +25,7 @@ import models.CL;
 import models.HomeModel;
 import models.Patient;
 import models.PatientList;
+import models.Tabs;
 import models.Visit;
 import models.VisitList;
 
@@ -53,7 +54,7 @@ import database.VisitTableGatewayMySQL;
 
 import java.awt.GridLayout;
 
-public class VisitsTabView extends JPanel{
+public class VisitsTabView extends JPanel {
 	private Patient patient;
 	private List<Visit> patientVisitList = new ArrayList<Visit>();
 	private HomeModel homeModel;
@@ -62,6 +63,10 @@ public class VisitsTabView extends JPanel{
 	private JXTaskPaneContainer mainTaskPane;
 	private JTabbedPane tabbedPane;	
 	
+	private JPanel scrollPanel;
+	
+	private JLabel iconLabel;
+	
 	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
 		this.patient = patient;
 		this.homeModel = homeModel;
@@ -69,14 +74,15 @@ public class VisitsTabView extends JPanel{
 		
 		setLayout(new BorderLayout(0, 0));
 		
+		iconLabel = new JLabel();
+		iconLabel.setIcon(new ImageIcon("medical_history_icon.jpg"));
+		iconLabel.setFont(new Font("Roboto", Font.BOLD, 30));
+				
 		mainTaskPane = new JXTaskPaneContainer();
-				
-		populatePanes();
 		
-		scroller = new JScrollPane(mainTaskPane);
-				
+		populatePanes();
+						
 		JPanel panel = new JPanel();
-		add(panel, BorderLayout.NORTH);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{187, 75, 0};
 		gbl_panel.rowHeights = new int[]{23, 0};
@@ -92,27 +98,32 @@ public class VisitsTabView extends JPanel{
 		gbc_btnNewVisit.gridy = 0;
 		panel.add(btnNewVisit, gbc_btnNewVisit);
 		
+		
+		add(panel, BorderLayout.NORTH);
+		
+		
+		scroller = new JScrollPane(mainTaskPane);
+		
+		
 		add(scroller, BorderLayout.CENTER);
 	
 		btnNewVisit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int index = tabbedPane.indexOfTab("Visits");
-				tabbedPane.setComponentAt(index, new VisitTabViewNewVisit(tabbedPane, patient, homeModel));//, atg, allergyTable));
+				tabbedPane.setComponentAt(Tabs.ped, new VisitTabViewNewVisit(tabbedPane, patient, homeModel));//, atg, allergyTable));
 			}
 		});
 	}
 	
 	public void populatePanes() {
 		mainTaskPane.removeAll();
-		JLabel iconLabel = new JLabel();
-		iconLabel.setIcon(new ImageIcon("medical_history_icon.jpg"));
+
 		Collection<Visit> coll = (Collection<Visit>) homeModel.getVl().getMyPidMap().get(patient.getId());
 		if (coll != null) {
 			patientVisitList = (List<Visit>) coll;
 		}
+		
 		iconLabel.setText("\t\t" + patientVisitList.size() + " visits");
-		iconLabel.setFont(new Font("Roboto", Font.BOLD, 30));
-		mainTaskPane.add(iconLabel);
+		mainTaskPane.add(iconLabel, BorderLayout.NORTH);
 				
 		int i;
 		for (i = patientVisitList.size() - 1; i >= 0; i--) {
@@ -121,6 +132,7 @@ public class VisitsTabView extends JPanel{
 			pane.setTitle(v.getDateCreated() + "\t|\t" + v.getChiefComplaint());
 			pane.setAnimated(false);
 			pane.setCollapsed(true);
+			pane.setScrollOnExpand(true);
 			pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, false));
 			mainTaskPane.add(pane);
 		}

@@ -12,6 +12,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.awt.GridLayout;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
@@ -86,8 +88,7 @@ public class LoginView extends JFrame {
 				dispose();
 				//Create home view
 				HomeView home  = new HomeView();
-				home.setExtendedState(JFrame.MAXIMIZED_BOTH);
-				home.setVisible(true);
+				home.launchUI();
 			}
 		});
 		

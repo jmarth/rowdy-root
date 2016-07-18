@@ -61,8 +61,7 @@ public class AllergyTabView extends JPanel {
 		JButton btnNewAllergy = new JButton("New Allergy");
 		btnNewAllergy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int index = tabbedPane.indexOfTab("Allergies");
-				tabbedPane.setComponentAt(index, new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, null, false));
+				tabbedPane.setComponentAt(1, new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, null, false));
 			}
 		});
 		GridBagConstraints gbc_btnNewAllergy = new GridBagConstraints();
@@ -113,9 +112,8 @@ public class AllergyTabView extends JPanel {
 				Allergy tmp = allergyList.get(selectedRow);
 				
 				// Get tab of allergies and change panel
-				int index = tabbedPane.indexOfTab("Allergies");
 				AllergyTabViewNewAllergy anv = new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, tmp, true);
-				tabbedPane.setComponentAt(index, anv);
+				tabbedPane.setComponentAt(1, anv);
 			}
 		});
 				
