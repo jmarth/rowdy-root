@@ -109,7 +109,9 @@ public class VisitsTabView extends JPanel {
 	
 		btnNewVisit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tabbedPane.setComponentAt(Tabs.ped, new VisitTabViewNewVisit(tabbedPane, patient, homeModel));//, atg, allergyTable));
+				int index = tabbedPane.indexOfTab(Tabs.ped);
+				tabbedPane.setComponentAt(index, null);
+				tabbedPane.setComponentAt(index, new VisitTabViewNewVisit(tabbedPane, patient, homeModel));//, atg, allergyTable));
 			}
 		});
 	}

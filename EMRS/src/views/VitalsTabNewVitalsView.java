@@ -106,8 +106,9 @@ public class VitalsTabNewVitalsView extends JPanel {
 	 * @param oldPanel Panel to switch back to
 	 */
 	public void cancel(JTabbedPane tabbedPane, JPanel oldPanel){
-		tabbedPane.setComponentAt(Tabs.vitals, null);
-		tabbedPane.setComponentAt(Tabs.vitals, oldPanel);
+		int index = tabbedPane.indexOfTab(Tabs.vitals);
+		tabbedPane.setComponentAt(index, null);
+		tabbedPane.setComponentAt(index, oldPanel);
 	}
 
 	
@@ -199,8 +200,10 @@ public class VitalsTabNewVitalsView extends JPanel {
 				//vitals.getAdverseReaction()
 		});
 		
-		tabbedPane.setComponentAt(Tabs.vitals, null);
-		tabbedPane.setComponentAt(Tabs.vitals, oldPanel);
+		int index = tabbedPane.indexOfTab(Tabs.vitals);
+		
+		tabbedPane.setComponentAt(index, null);
+		tabbedPane.setComponentAt(index, oldPanel);
 	}
 	
 	public void createView (final JTabbedPane tabbedPane, final Patient patient, JPanel vitalsPanel, final VitalsTableGateway vtg, final JTable vitalsTable) {

@@ -78,26 +78,26 @@ public class PatientRecordView extends JTabbedPane {
 				
 		// Create tab for Profile 
 		JPanel patientProfileTabView = new ProfileTabView(patient);
-		this.addTab("<html><body><table width='140'><tr><td align='center'> Demographics</td></tr></table></body></html>", null, patientProfileTabView, null);
+		this.addTab("Demographics", null, patientProfileTabView, null);
 		
 		// Create tab for Allergies
 		JPanel allergyTabView = new AllergyTabView(patient, this, homeModel.getAtg());
-		this.addTab("<html><body><table width='140'><tr><td align='center'>Allergies & Meds</td></tr></table></body></html>", null, allergyTabView, null);
+		this.addTab("Allergies & Meds", null, allergyTabView, null);
 		System.out.print("allgergies done");
 		
 		// Create tab for Visit
 		final VisitsTabView visitsTabView = new VisitsTabView(patient, this, homeModel);
-		this.addTab("<html><body><table width='140'><tr><td align='center'>Physical Exam Detail</td></tr></table></body></html>", null, visitsTabView, null);
+		this.addTab("Physical Exam Detail", null, visitsTabView, null);
 		System.out.print("visits done");
 				
 		JPanel VitalsTabView = new VitalsTabView(patient, this);
-		this.addTab("<html><body><table width='140'><tr><td align='center'>Vitals</td></tr></table></body></html>", null, VitalsTabView, null);
+		this.addTab("Vitals", null, VitalsTabView, null);
 		
 		JPanel panel_2 = new JPanel();
-		this.addTab("<html><body><table width='140'><tr><td align='center'>Special Testing</td></tr></table></body></html>", null, panel_2, null);
+		this.addTab("Special Testing", null, panel_2, null);
 		
 		JPanel panel_3 = new JPanel();
-		this.addTab("<html><body><table width='140'><tr><td align='center'>Labs & Procedures</td></tr></table></body></html>", null, panel_3, null);
+		this.addTab("Labs and Procedures", null, panel_3, null);
 		
 		this.setBackground(CL.aliceBlue);
 		
