@@ -704,7 +704,8 @@ public class VisitTabViewNewVisit extends JPanel {
 	 * sets Visit tab to VisitsTabView
 	 */
 	public void showVisitTabView() {
-		tabbedPane.setComponentAt(Tabs.ped, null);
-		tabbedPane.setComponentAt(Tabs.ped, new VisitsTabView(patient, tabbedPane, homeModel));
+		int index = tabbedPane.indexOfTab(Tabs.ped);
+		tabbedPane.setComponentAt(index, null);
+		tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane, homeModel));
 	}
 }

@@ -53,7 +53,9 @@ public class VitalsTabView extends JPanel {
 		JButton btnNewVital = new JButton("New Vital");
 		btnNewVital.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tabbedPane.setComponentAt(Tabs.vitals, new VitalsTabNewVitalsView(tabbedPane, patient, VitalsTabView.this, vitalstg, vitalsTable));
+				int index = tabbedPane.indexOfTab(Tabs.vitals);
+				tabbedPane.setComponentAt(index, null);
+				tabbedPane.setComponentAt(index, new VitalsTabNewVitalsView(tabbedPane, patient, VitalsTabView.this, vitalstg, vitalsTable));
 			}
 		});
 		GridBagConstraints gbc_btnNewVital = new GridBagConstraints();

@@ -26,6 +26,8 @@ import database.GatewayException;
 import models.Allergy;
 import models.AllergyList;
 import models.Patient;
+import models.Tabs;
+
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ComponentAdapter;
@@ -61,7 +63,9 @@ public class AllergyTabView extends JPanel {
 		JButton btnNewAllergy = new JButton("New Allergy");
 		btnNewAllergy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tabbedPane.setComponentAt(1, new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, null, false));
+				int index = tabbedPane.indexOfTab(Tabs.allergiesAndMeds);
+				tabbedPane.setComponentAt(index, null);
+				tabbedPane.setComponentAt(index, new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, null, false));
 			}
 		});
 		GridBagConstraints gbc_btnNewAllergy = new GridBagConstraints();
@@ -113,7 +117,9 @@ public class AllergyTabView extends JPanel {
 				
 				// Get tab of allergies and change panel
 				AllergyTabViewNewAllergy anv = new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, tmp, true);
-				tabbedPane.setComponentAt(1, anv);
+				int index = tabbedPane.indexOfTab(Tabs.allergiesAndMeds);
+				tabbedPane.setComponentAt(index, null);
+				tabbedPane.setComponentAt(index, anv);
 			}
 		});
 				
