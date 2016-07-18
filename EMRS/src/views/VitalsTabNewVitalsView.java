@@ -26,6 +26,7 @@ import database.VitalsTableGateway;
 import database.VitalsTableGatewayMySQL;
 import models.Vitals;
 import models.Patient;
+import models.Tabs;
 
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
@@ -105,9 +106,8 @@ public class VitalsTabNewVitalsView extends JPanel {
 	 * @param oldPanel Panel to switch back to
 	 */
 	public void cancel(JTabbedPane tabbedPane, JPanel oldPanel){
-		int index = tabbedPane.indexOfTab("Vitals");
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
+		tabbedPane.setComponentAt(Tabs.vitals, null);
+		tabbedPane.setComponentAt(Tabs.vitals, oldPanel);
 	}
 
 	
@@ -180,7 +180,6 @@ public class VitalsTabNewVitalsView extends JPanel {
 		
 		// Change the panel back to vitals table
 		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
-		int index = tabbedPane.indexOfTab("Vitals");
 		
 		// Add the vitals to the JTable
 		// Get model of VitalsTable in order to add rows
@@ -200,8 +199,8 @@ public class VitalsTabNewVitalsView extends JPanel {
 				//vitals.getAdverseReaction()
 		});
 		
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
+		tabbedPane.setComponentAt(Tabs.vitals, null);
+		tabbedPane.setComponentAt(Tabs.vitals, oldPanel);
 	}
 	
 	public void createView (final JTabbedPane tabbedPane, final Patient patient, JPanel vitalsPanel, final VitalsTableGateway vtg, final JTable vitalsTable) {

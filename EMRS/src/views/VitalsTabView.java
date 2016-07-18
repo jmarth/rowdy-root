@@ -19,6 +19,7 @@ import database.GatewayException;
 import database.VitalsTableGateway;
 import database.VitalsTableGatewayMySQL;
 import models.Patient;
+import models.Tabs;
 import models.Vitals;
 import models.VitalsList;
 
@@ -52,8 +53,7 @@ public class VitalsTabView extends JPanel {
 		JButton btnNewVital = new JButton("New Vital");
 		btnNewVital.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int index = tabbedPane.indexOfTab("Vitals");
-				tabbedPane.setComponentAt(index, new VitalsTabNewVitalsView(tabbedPane, patient, VitalsTabView.this, vitalstg, vitalsTable));
+				tabbedPane.setComponentAt(Tabs.vitals, new VitalsTabNewVitalsView(tabbedPane, patient, VitalsTabView.this, vitalstg, vitalsTable));
 			}
 		});
 		GridBagConstraints gbc_btnNewVital = new GridBagConstraints();

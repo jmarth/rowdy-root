@@ -40,6 +40,7 @@ import database.VisitTableGateway;
 import models.Allergy;
 import models.HomeModel;
 import models.Patient;
+import models.Tabs;
 import models.Visit;
 import models.VisitList;
 
@@ -703,8 +704,7 @@ public class VisitTabViewNewVisit extends JPanel {
 	 * sets Visit tab to VisitsTabView
 	 */
 	public void showVisitTabView() {
-		int index = tabbedPane.indexOfTab("Visits");
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane, homeModel));
+		tabbedPane.setComponentAt(Tabs.ped, null);
+		tabbedPane.setComponentAt(Tabs.ped, new VisitsTabView(patient, tabbedPane, homeModel));
 	}
 }
