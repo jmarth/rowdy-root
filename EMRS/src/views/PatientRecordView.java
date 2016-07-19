@@ -91,7 +91,7 @@ public class PatientRecordView extends JTabbedPane {
 		this.addTab(Tabs.ped, null, visitsTabView, null);
 		System.out.print("visits done");
 				
-		JPanel VitalsTabView = new VitalsTabView(patient, this);
+		JPanel VitalsTabView = new VitalsTabView(patient, this, homeModel.getVitalstg());
 		this.addTab(Tabs.vitals, null, VitalsTabView, null);
 		
 		JPanel panel_2 = new JPanel();

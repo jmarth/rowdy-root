@@ -17,6 +17,8 @@ import database.SketchTableGateway;
 import database.SketchTableGatewayMySQL;
 import database.VisitTableGateway;
 import database.VisitTableGatewayMySQL;
+import database.VitalsTableGateway;
+import database.VitalsTableGatewayMySQL;
 import views.HomeView;
 import views.AddPatientView;
 import views.FIndPatientsView;
@@ -30,6 +32,8 @@ public class HomeModel {
 	private VisitTableGateway vtg = null;
 	private SketchTableGateway stg = null;
 	private VisitList vl = new VisitList();
+	
+	private VitalsTableGateway vitalstg =null;
 	
 	public HomeModel(HomeView homeView) {
 		super();
@@ -46,6 +50,8 @@ public class HomeModel {
 			atg = new AllergyTableGatewayMySQL();
 			vtg = new VisitTableGatewayMySQL();
 			stg = new SketchTableGatewayMySQL();
+			
+			vitalstg = new VitalsTableGatewayMySQL();
 			
 			vl.setGateway(vtg);
         	vl.loadFromGateway();
@@ -105,6 +111,14 @@ public class HomeModel {
 
 	public void setAtg(AllergyTableGateway atg) {
 		this.atg = atg;
+	}
+	
+	public VitalsTableGateway getVitalstg() {
+		return vitalstg;
+	}
+
+	public void setVitalstg(VitalsTableGateway vitalstg) {
+		this.vitalstg = vitalstg;
 	}
 
 	public VisitTableGateway getVtg() {
