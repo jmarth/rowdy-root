@@ -215,24 +215,6 @@ public class HomeView extends JFrame {
 			}
 		});
 		
-		JButton btnSketch = new JButton("Sketch");
-		btnSketch.addMouseListener(ml);
-		btnSketch.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnSketch.setForeground(new Color(255, 255, 255));
-		btnSketch.setOpaque(true);
-		btnSketch.setContentAreaFilled(false);
-		btnSketch.setBorderPainted(false);
-		btnSketch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//need to maximize at first for sketch scaling to work correctly
-				//this is a temp solution to the scaleing problem
-				setExtendedState( getExtendedState()|JFrame.MAXIMIZED_BOTH );
-				
-				//Paint paint = new Paint(homeModel, patient);
-				//setCenterPanel(paint.getContentPane());
-			}
-		});
-		
 		//set up top bar panel layout
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -245,7 +227,6 @@ public class HomeView extends JFrame {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnFindPatient)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnSketch, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED, 314, Short.MAX_VALUE)
 					.addComponent(lblPatientSearch, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -264,17 +245,11 @@ public class HomeView extends JFrame {
 					.addComponent(lblPatientSearch, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
 					.addComponent(btnLogout, 0, 0, Short.MAX_VALUE))
 				.addComponent(btnHome, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-				.addComponent(btnSketch, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
 		);
 		lblPatientSearch.setForeground(new Color(255, 255, 255));
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panel.setLayout(gl_panel);
 		
-		/*set up center/main panel
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(CL.clouds);
-		contentPane.add(panel_1, BorderLayout.EAST);
-		*/
 	}
 	
 	/**
