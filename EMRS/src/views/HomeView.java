@@ -166,6 +166,7 @@ public class HomeView extends JFrame {
 		btnAddPatient.setOpaque(true);
 		btnAddPatient.setContentAreaFilled(false);
 		btnAddPatient.setBorderPainted(false);
+		btnAddPatient.setIcon(new ImageIcon("add-icon.png"));
 
 		//add patient button on click
 		btnAddPatient.addActionListener(new ActionListener() {
@@ -202,11 +203,11 @@ public class HomeView extends JFrame {
 		});
 		btnFindPatient.addMouseListener(ml);
 		btnFindPatient.setForeground(new Color(255, 255, 255));
-		/**************** font from 16 to 18 ****************/
 		btnFindPatient.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnFindPatient.setOpaque(true);
 		btnFindPatient.setContentAreaFilled(false);
 		btnFindPatient.setBorderPainted(false);
+		btnFindPatient.setIcon(new ImageIcon("search.png"));
 		
 		//find patient button on click
 		btnFindPatient.addActionListener(new ActionListener() {
