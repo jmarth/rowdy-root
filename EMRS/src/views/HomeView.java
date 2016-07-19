@@ -160,7 +160,8 @@ public class HomeView extends JFrame {
 		
 		btnAddPatient.addMouseListener(ml);
 		btnAddPatient.setToolTipText("Add Patient");
-		btnAddPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
+		/********** font from 16 to 18 ********************/
+		btnAddPatient.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnAddPatient.setForeground(new Color(255, 255, 255));
 		btnAddPatient.setOpaque(true);
 		btnAddPatient.setContentAreaFilled(false);
@@ -176,7 +177,7 @@ public class HomeView extends JFrame {
 		});
 		btnLogout.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnLogout.setForeground(new Color(255, 255, 255));
-		btnLogout.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnLogout.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnLogout.setOpaque(true);
 		btnLogout.setContentAreaFilled(false);
 		btnLogout.setBorderPainted(false);
@@ -201,7 +202,8 @@ public class HomeView extends JFrame {
 		});
 		btnFindPatient.addMouseListener(ml);
 		btnFindPatient.setForeground(new Color(255, 255, 255));
-		btnFindPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
+		/**************** font from 16 to 18 ****************/
+		btnFindPatient.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btnFindPatient.setOpaque(true);
 		btnFindPatient.setContentAreaFilled(false);
 		btnFindPatient.setBorderPainted(false);
@@ -238,8 +240,8 @@ public class HomeView extends JFrame {
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-					.addComponent(btnAddPatient, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-					.addComponent(btnFindPatient, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE))
+					.addComponent(btnAddPatient, 0, 0, Short.MAX_VALUE)
+					.addComponent(btnFindPatient, 0, 0, Short.MAX_VALUE))
 				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(lblPatientSearch, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
