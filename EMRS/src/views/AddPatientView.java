@@ -720,7 +720,7 @@ public class AddPatientView extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e)
 			  {
-				//home.showHomeView();
+				home.showHomeView();
 				hideBalloonTips();
 			  }
 		});
