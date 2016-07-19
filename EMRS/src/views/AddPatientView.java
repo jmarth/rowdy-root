@@ -448,19 +448,6 @@ public class AddPatientView extends JFrame {
 		
 		// ADD DATE PICKER HERE
 		
-		datePicker = new JXDatePicker();
-		
-		datePicker.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println(datePicker.getDate());
-			}
-			
-		});
-		
-		panel_4.add(datePicker, null);
-		
 		JLabel lblOr = new JLabel("Or");
 		GridBagConstraints gbc_lblOr = new GridBagConstraints();
 		gbc_lblOr.insets = new Insets(0, 0, 5, 5);
