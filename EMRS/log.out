@@ -7,3 +7,11 @@
 2016-07-14 09:25:26,300 INFO  [AWT-EventQueue-0] views.HomeView$8 (HomeView.java:221) - user accessed patient list
 2016-07-20 13:43:19,997 - Launching Application
 2016-07-20 13:43:25,803 - User pressed 'Login'
+2016-07-20 13:45:28,509 - Launching Application
+2016-07-20 13:45:31,039 - User pressed 'Login'
+2016-07-20 13:45:32,675 - User pressed 'Find Patient'
+2016-07-20 13:45:34,063 - User selected patient: 67
+2016-07-20 13:45:35,697 - User selected 'Physical Exam Detail' tab
+2016-07-20 13:45:38,430 - User selected 'Allergies & Meds' tab
+2016-07-20 13:45:38,883 - User selected 'Vitals' tab
+2016-07-20 13:45:39,658 - User selected 'Physical Exam Detail' tab
