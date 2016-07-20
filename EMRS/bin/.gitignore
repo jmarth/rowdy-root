@@ -1,5 +1,8 @@
-/views/
-/models/
 /database/
+/views/
 /controller/
+<<<<<<< HEAD
 /log4j2.xml
+=======
+/models/
+>>>>>>> refs/remotes/origin/sqliteStuff

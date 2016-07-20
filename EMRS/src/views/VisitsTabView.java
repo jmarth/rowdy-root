@@ -45,13 +45,6 @@ import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
-import database.AllergyTableGatewayMySQL;
-import database.GatewayException;
-import database.PatientTableGateway;
-import database.PatientTableGatewayMySQL;
-import database.VisitTableGateway;
-import database.VisitTableGatewayMySQL;
-
 import java.awt.GridLayout;
 
 @SuppressWarnings("serial")

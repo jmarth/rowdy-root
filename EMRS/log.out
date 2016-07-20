@@ -5,3 +5,53 @@
 2016-07-14 09:25:18,977 INFO  [AWT-EventQueue-0] views.HomeView$8 (HomeView.java:221) - user accessed patient list
 2016-07-14 09:25:21,643 INFO  [AWT-EventQueue-0] views.HomeView$8 (HomeView.java:221) - user accessed patient list
 2016-07-14 09:25:26,300 INFO  [AWT-EventQueue-0] views.HomeView$8 (HomeView.java:221) - user accessed patient list
+2016-07-18 17:46:39,381 - Launching Application
+2016-07-18 17:46:41,281 - User pressed 'Login'
+2016-07-18 17:46:46,927 - User pressed 'Find Patient'
+2016-07-18 17:46:49,391 - User selected patient: 66
+2016-07-18 17:46:52,276 - User selected 'Allergies & Meds' tab
+2016-07-18 17:46:52,670 - User selected 'Physical Exam Detail' tab
+2016-07-18 17:46:53,372 - User selected 'Special Testing' tab
+2016-07-18 17:46:53,942 - User selected 'Vitals' tab
+2016-07-18 17:46:54,448 - User selected 'Labs & Procedures' tab
+2016-07-19 11:20:35,751 - Launching Application
+2016-07-19 11:20:37,925 - User pressed 'Login'
+2016-07-19 11:20:45,617 - User pressed 'Add Patient'
+2016-07-19 11:20:48,754 - User pressed 'Find Patient'
+2016-07-19 11:20:51,531 - User selected patient: 66
+2016-07-19 11:20:54,954 - User selected 'Allergies & Meds' tab
+2016-07-19 11:20:57,198 - User selected 'Physical Exam Detail' tab
+2016-07-19 11:21:02,107 - User pressed 'Log Out'
+2016-07-19 11:21:03,458 - User pressed 'NO' in logout dialogue
+2016-07-20 12:09:23,729 - Launching Application
+2016-07-20 12:09:31,188 - User pressed 'Login'
+2016-07-20 12:12:42,691 - Launching Application
+2016-07-20 12:27:25,170 - Launching Application
+2016-07-20 12:27:49,429 - Launching Application
+2016-07-20 12:28:05,656 - Launching Application
+2016-07-20 12:30:31,275 - Launching Application
+2016-07-20 12:31:33,911 - Launching Application
+2016-07-20 12:31:44,662 - Launching Application
+2016-07-20 12:46:50,939 - Launching Application
+2016-07-20 12:54:47,249 - Launching Application
+2016-07-20 12:54:49,549 - User pressed 'Login'
+2016-07-20 12:54:55,049 - User pressed 'Find Patient'
+2016-07-20 12:54:58,131 - User pressed 'Add Patient'
+2016-07-20 12:55:34,794 - User pressed 'Find Patient'
+2016-07-20 12:55:52,624 - Launching Application
+2016-07-20 12:55:54,656 - User pressed 'Login'
+2016-07-20 12:55:58,469 - User pressed 'Find Patient'
+2016-07-20 12:59:37,233 - Launching Application
+2016-07-20 12:59:42,316 - User pressed 'Login'
+2016-07-20 12:59:44,272 - User pressed 'Find Patient'
+2016-07-20 12:59:45,689 - User selected patient: 54
+2016-07-20 12:59:46,943 - User selected 'Vitals' tab
+2016-07-20 12:59:53,214 - User selected 'Physical Exam Detail' tab
+2016-07-20 13:00:44,433 - Launching Application
+2016-07-20 13:00:46,209 - User pressed 'Login'
+2016-07-20 13:00:47,596 - User pressed 'Find Patient'
+2016-07-20 13:00:49,231 - User selected patient: 54
+2016-07-20 13:00:50,553 - User selected 'Physical Exam Detail' tab
+2016-07-20 13:02:40,681 - Launching Application
+2016-07-20 13:02:42,524 - User pressed 'Login'
+2016-07-20 13:02:43,828 - User pressed 'Find Patient'

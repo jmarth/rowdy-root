@@ -3,12 +3,15 @@ package database;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import javax.sql.DataSource;
 
@@ -18,6 +21,10 @@ import models.Patient;
 import models.Visit;
 
 public class VisitTableGatewayMySQL implements VisitTableGateway {
+	private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	private static final boolean DEBUG = true;
+	private static final int QUERY_TIMEOUT = 70;//query timeout threshold in seconds
+	private static final Random roller = new Random();
 	
 	/**
 	 * external DB connection
@@ -30,10 +37,10 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 	 * @throws IOException 
 	 */
 	public VisitTableGatewayMySQL() throws GatewayException, IOException {
-		
-		//read the properties file to establish the DB connection
+		/*
+		//FOR MYSQL
+		//read the properties file to establish the db connection
 		DataSource ds = null;
-		
 		try {
 			ds = getDataSource();
 		} catch (RuntimeException e) {
@@ -47,24 +54,31 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 		} catch (SQLException e) {
 			throw new GatewayException("SQL Error: " + e.getMessage());
 		}
+		*/
+		//FOR MYSQLite
+		try {
+			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	/**
-	 * create a MySQL data source with credentials and DB URL in db.properties file
+	 * create a MySQL datasource with credentials and DB URL in db.properties file
 	 * @return
 	 * @throws RuntimeException
 	 * @throws IOException
 	 */
 	private DataSource getDataSource() throws RuntimeException, IOException {
-		
-		//read DB credentials from properties file
+		//read db credentials from properties file
 		Properties props = new Properties();
 		FileInputStream fis = null;
         fis = new FileInputStream("db.properties");
         props.load(fis);
         fis.close();
         
-        //create the data source
+        //create the datasource
         MysqlDataSource mysqlDS = new MysqlDataSource();
         mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
         mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
@@ -73,7 +87,7 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 	}
 	
 	/**
-	 * Fetch all visits from DB
+	 * Fetch all visits from db
 	 * @return list of visits
 	 * @throws GatewayException
 	 */
@@ -82,21 +96,15 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 		ArrayList<Visit> visits = new ArrayList<Visit>();
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		
 		try {
 			//fetch parts
 			System.out.print("getting info");
-			
 			st = conn.prepareStatement("select * from visits");
 			rs = st.executeQuery();
-			
 			System.out.print("\ninfo loaded");
-			
 			//add each to list of parts to return
 			while(rs.next()) {
-				
 				System.out.print("\ncreating visit object");
-				
 				Visit v = new Visit(rs.getLong("id"),
 						rs.getLong("pid"),
 						rs.getString("chiefComplaint"),
@@ -118,11 +126,8 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 						rs.getDouble("feRow2Col2"),
 						rs.getString("assessment"),
 						rs.getString("dateCreated"));
-				
 				System.out.print("\nvisit object created");
-				
 				visits.add(v);
-				
 				System.out.print("\nvisit object added");
 			}
 		} catch (SQLException e) {
@@ -134,12 +139,10 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 					rs.close();
 				if(st != null)
 					st.close();
-				
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
-		
 		return visits;
 	}
 	
@@ -153,14 +156,11 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 		ArrayList<Visit> visits = new ArrayList<Visit>();
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from visits where pid=?");
 			st.setLong(1, p.getId());
-			
 			rs = st.executeQuery();
-			
 			//add each to list of parts to return
 			while(rs.next()) {
 				Visit v = new Visit(rs.getLong("id"),
@@ -184,7 +184,6 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 						rs.getDouble("feRow2Col2"),
 						rs.getString("assessment"),
 						rs.getString("dateCreated"));
-				
 				visits.add(v);
 			}
 		} catch (SQLException e) {
@@ -196,12 +195,10 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 					rs.close();
 				if(st != null)
 					st.close();
-				
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
-		
 		return visits;
 	}
 	
@@ -209,12 +206,10 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 	 * Inserts visit into visits table
 	 */
 	public long insertVisit(Visit v) throws GatewayException {
-		
 		//init new id to invalid
 		long newId = 0;
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		
 		try {
 			st = conn.prepareStatement("insert INTO visits (pid,"
 					+ "chiefComplaint,"
@@ -235,9 +230,7 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 					+ " feRow2Col1,"
 					+ " feRow2Col2, "
 					+ " assessment) "
-					+ " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ",
-					PreparedStatement.RETURN_GENERATED_KEYS);
-			
+					+ " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
 			st.setLong(1, v.getPid());
 			st.setString(2, v.getChiefComplaint());
 			st.setDouble(3, v.getAutorefractionOdSphere());
@@ -259,10 +252,8 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 			st.setString(19, v.getAssessment());
 	
 			st.executeUpdate();
-			
 			//get the generated key
 			rs = st.getGeneratedKeys();
-			
 			if(rs != null && rs.next()) {
 			    newId = rs.getLong(1);
 			} else {
@@ -276,12 +267,10 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 			try {
 				if(st != null)
 					st.close();
-				
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
-		
 		return newId;
 	}
 

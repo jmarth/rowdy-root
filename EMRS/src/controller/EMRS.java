@@ -6,6 +6,18 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
+<<<<<<< HEAD
+=======
+import database.AllergyTableGateway;
+import database.AllergyTableGatewayMySQL;
+
+import database.VisitTableGateway;
+import database.VisitTableGatewayMySQL;
+import models.AllergyList;
+import models.Patient;
+import models.PatientList;
+import models.VisitList;
+>>>>>>> refs/remotes/origin/sqliteStuff
 import views.LoginView;
 
 import org.apache.logging.log4j.*;

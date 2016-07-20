@@ -3,6 +3,7 @@ package database;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,32 +16,42 @@ import javax.sql.DataSource;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import models.Vitals;
+import models.Vitals;
 import models.Patient;
 
 public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 	
+	//private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	//private static final boolean DEBUG = true;
+	//private static final int QUERY_TIMEOUT = 60;//query timeout threshold in seconds
 	
 	private Connection conn = null;
 	
 	public VitalsTableGatewayMySQL() throws GatewayException, IOException {
-		
-		// read the properties file to establish the DB connection
+		/*
+		//FOR MYSQL
+		//read the properties file to establish the db connection
 		DataSource ds = null;
-		
 		try {
 			ds = getDataSource();
 		} catch (RuntimeException e) {
 			throw new GatewayException(e.getMessage());
 		}
-		
 		if(ds == null) {
         	throw new GatewayException("Datasource is null!");
         }
-		
 		try {
         	conn = ds.getConnection();
 		} catch (SQLException e) {
-			throw new GatewayException("SQL Error: \n" + e.getMessage());
+			throw new GatewayException("SQL Error: " + e.getMessage());
+		}
+		*/
+		//FOR MYSQLite
+		try {
+			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -232,7 +243,7 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 	public void updateVitals(Vitals v) throws GatewayException{
 		
 		PreparedStatement st = null;
-		//ResultSet rs = null;
+		ResultSet rs = null;
 		
 		try {
 			
