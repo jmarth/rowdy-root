@@ -33,8 +33,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Insets;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -51,14 +53,12 @@ public class VisitsTabView extends JPanel {
 	private Patient patient;
 	private List<Visit> patientVisitList = new ArrayList<Visit>();
 	private HomeModel homeModel;
-	
 	private JScrollPane scroller;
 	private JXTaskPaneContainer mainTaskPane;
 	private JTabbedPane tabbedPane;	
-	
 	private JPanel scrollPanel;
-	
 	private JLabel iconLabel;
+	private JSplitPane splitPane = new JSplitPane();
 	
 	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
 		this.patient = patient;
@@ -83,7 +83,7 @@ public class VisitsTabView extends JPanel {
 		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel);
 		
-		JButton btnNewVisit = new JButton("New Visit");
+		JButton btnNewVisit = new JButton("Add A New Visit");
 		GridBagConstraints gbc_btnNewVisit = new GridBagConstraints();
 		gbc_btnNewVisit.insets = new Insets(0, 0, 0, 5);
 		gbc_btnNewVisit.anchor = GridBagConstraints.NORTHWEST;
@@ -91,20 +91,22 @@ public class VisitsTabView extends JPanel {
 		gbc_btnNewVisit.gridy = 0;
 		panel.add(btnNewVisit, gbc_btnNewVisit);
 		
-		
 		add(panel, BorderLayout.NORTH);
 		
+		scroller = new JScrollPane(splitPane);
 		
-		scroller = new JScrollPane(mainTaskPane);
+		JScrollPane leftPane = new JScrollPane(mainTaskPane);
 		
+		splitPane.setLeftComponent(leftPane);
+		splitPane.setRightComponent(btnNewVisit);
 		
 		add(scroller, BorderLayout.CENTER);
 	
 		btnNewVisit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int index = tabbedPane.indexOfTab(Tabs.ped);
-				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, new VisitTabViewNewVisit(tabbedPane, patient, homeModel));//, atg, allergyTable));
+				VisitTabViewNewVisit vtvnv = new VisitTabViewNewVisit(tabbedPane, patient, homeModel);
+				JScrollPane rightPane = new JScrollPane(vtvnv);
+				splitPane.setRightComponent(rightPane);
 			}
 		});
 	}
