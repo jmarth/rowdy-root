@@ -39,6 +39,7 @@ public class HistoryTabView extends JPanel {
 	private JXTaskPaneContainer mainTaskPane;
 		
 	public HistoryTabView(final Patient pt, final HomeModel hm, final JTabbedPane tp) {
+		
 		this.patient = pt;
 		this.homeModel = hm;
 		this.tabbedPane = tp;
@@ -61,13 +62,18 @@ public class HistoryTabView extends JPanel {
 
 
 	public void populatePanes() {
+		
 		mainTaskPane.removeAll();
+		
 		JLabel iconLabel = new JLabel();
 		iconLabel.setIcon(new ImageIcon("medical_history_icon.jpg"));
+		
 		Collection<Visit> coll = (Collection<Visit>) homeModel.getVl().getMyPidMap().get(patient.getId());
+		
 		if (coll != null) {
 			visitList = (List<Visit>) coll;
 		}
+		
 		iconLabel.setText("\t\t" + visitList.size() + " total visits");
 		iconLabel.setFont(new Font("Roboto", Font.BOLD, 30));
 		mainTaskPane.add(iconLabel);
@@ -80,7 +86,5 @@ public class HistoryTabView extends JPanel {
 			pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, false));
 			mainTaskPane.add(pane);
 		}
-		
 	}
-	
 }

@@ -14,6 +14,7 @@ import database.GatewayException;
 import database.VisitTableGateway;
 
 public class VisitList {
+	
 	private List<Visit> myList;
 	private VisitTableGateway gateway;
 	private HashMap<Long, Visit> myIdMap;
@@ -31,17 +32,23 @@ public class VisitList {
 	 * Load records from DB into VisitList
 	 */
 	public void loadFromGateway() {
+		
 		//fetch list of objects from the database
 		try {
 			myPidMap = new MultiValueMap();
+			
 			System.out.println("loading now");
+			
 			List<Visit> visits = gateway.fetchVisits();
+			
 			System.out.println("\n done loading now");
+			
 			for(Visit tmpVisit: visits){
 				myIdMap.put(tmpVisit.getId(), tmpVisit);
 				myPidMap.put(tmpVisit.getPid(), tmpVisit);
 				myList.add(tmpVisit);
 			}
+			
 		} catch (GatewayException e) {
 			//TODO: handle exception here
 			return;
@@ -57,18 +64,20 @@ public class VisitList {
 	}
 
 	/**
-	 * Returns ArrayList of Allergies in the VisitList
-	 * @return All Allergies in list
+	 * Returns ArrayList of Visits in the VisitList
+	 * @return All Visits in list
 	 */
 	public List<Visit> getVisitList() {
 		return myList;
 	}
 	
 	public List<Visit> getVisitListForPatient(Patient p){
+		
 		List<Visit> tmpList = new ArrayList<Visit>();
 		
 		try {
 			tmpList = gateway.fetchVisitsForPatinet(p);
+			
 		} catch (GatewayException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

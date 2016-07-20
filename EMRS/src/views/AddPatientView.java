@@ -1,5 +1,4 @@
 package views;
-
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -75,9 +74,13 @@ import java.awt.event.FocusEvent;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+@SuppressWarnings("serial")
 public class AddPatientView extends JFrame {
+	
 	private HomeView home;
+	
 	private JPanel contentPane;
+	
 	//Text fields
 	private JTextField firstNameTextField;
 	private JTextField middleNameTextField;
@@ -94,9 +97,11 @@ public class AddPatientView extends JFrame {
 	private JTextField stateTextField;
 	private JTextField phoneNumberTextField;
 	private PatientList pl;
+	
 	//Regex
 	private final String NAME_PATTERN = "^[a-z ,.'-]+$";
 	private final String NAME_PATTERN_2 = "^$|(^[a-z ,.'-]+$)";
+	
 	//Balloon tips for each textfield
 	private static BalloonTip firstNameBalloon;
 	private static BalloonTip middleNameBalloon;
@@ -118,9 +123,13 @@ public class AddPatientView extends JFrame {
 	 * Create the frame.
 	 */
 	public AddPatientView(final HomeView home) {
+		
 		this.home = home;
 		
 		imagePath = "";
+		
+		
+		
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 710, 1118);
@@ -146,16 +155,23 @@ public class AddPatientView extends JFrame {
 		gbc_label.gridy = 1;
 		contentPane.add(label, gbc_label);
 		
+		
+		// Upload picture
+		
 		JButton btnUploadPatientPic = new JButton("Upload Picture");
 		btnUploadPatientPic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				JFileChooser file = new JFileChooser();
 		        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+		        
 		        //filter the files
 		        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg","gif","png");
 		        file.addChoosableFileFilter(filter);
+		        
 		        int result = file.showSaveDialog(null);
-		        //if the user click on save in Jfilechooser
+		        
+		        //if the user click on save in JFileChooser
 		        if(result == JFileChooser.APPROVE_OPTION){
 		        	File selectedFile = file.getSelectedFile();
 		        	imagePath = selectedFile.getAbsolutePath();
@@ -167,6 +183,10 @@ public class AddPatientView extends JFrame {
 		         }
 			}
 		});
+		
+		
+		
+		
 		GridBagConstraints gbc_btnUploadPatientPic = new GridBagConstraints();
 		gbc_btnUploadPatientPic.insets = new Insets(0, 0, 5, 0);
 		gbc_btnUploadPatientPic.gridx = 0;
@@ -223,23 +243,35 @@ public class AddPatientView extends JFrame {
 		gbl_panel_1.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_1.setLayout(gbl_panel_1);
 		
+		
+		
+		// Has name
+		
 		hasNameCheckBox.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
+				
 				firstNameTextField.setEnabled(!hasNameCheckBox.isSelected());
 				firstNameTextField.setEditable(!hasNameCheckBox.isSelected());
+				
 				middleNameTextField.setEnabled(!hasNameCheckBox.isSelected());
 				middleNameTextField.setEditable(!hasNameCheckBox.isSelected());
+				
 				lastNameTextField.setEnabled(!hasNameCheckBox.isSelected());
 				lastNameTextField.setEditable(!hasNameCheckBox.isSelected());
+				
 				firstNameTextField.setText("");
 				middleNameTextField.setText("");
 				lastNameTextField.setText("");
+				
 				firstNameBalloon.setVisible(false);
 				middleNameBalloon.setVisible(false);
 				lastNameBalloon.setVisible(false);
 			}
 		});
+		
+		
+		
 		GridBagConstraints gbc_hasNameCheckBox = new GridBagConstraints();
 		gbc_hasNameCheckBox.anchor = GridBagConstraints.SOUTHWEST;
 		gbc_hasNameCheckBox.insets = new Insets(0, 0, 5, 5);
@@ -300,8 +332,13 @@ public class AddPatientView extends JFrame {
 		gbc_lblNewLabel_2.gridy = 2;
 		panel_1.add(lblNewLabel_2, gbc_lblNewLabel_2);
 		
+		
+		//Error message color
+		
 		firstNameTextField = new JTextField();
 		Color ERROR_MESSAGE_FILL_COLOUR = new Color(255, 204, 204);
+		
+		
 		
 		firstNameBalloon = createBalloonTip(firstNameTextField, "Invalid name");
 		firstNameBalloon.setVisible(false);
@@ -679,10 +716,13 @@ public class AddPatientView extends JFrame {
 		panel_6.add(panel_12, gbc_panel_12);
 		panel_12.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
+		
 		phoneNumberTextField = new JTextField();
 		phoneNumberTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_12.add(phoneNumberTextField);
 		phoneNumberTextField.setColumns(20);
+		
+		
 		
 		SwingUtilities.invokeLater(new Runnable() {
 		      public void run() {
@@ -690,12 +730,17 @@ public class AddPatientView extends JFrame {
 		      }
 		});
 		
+		
+		
 		JPanel panel_14 = new JPanel();
 		GridBagConstraints gbc_panel_14 = new GridBagConstraints();
 		gbc_panel_14.fill = GridBagConstraints.BOTH;
 		gbc_panel_14.gridx = 0;
 		gbc_panel_14.gridy = 5;
 		panel.add(panel_14, gbc_panel_14);;
+		
+		
+		// Cancel button
 		
 		JButton btnCancelButton = new JButton("Cancel");
 		GridBagConstraints gbc_btnCancelButton = new GridBagConstraints();
@@ -712,6 +757,9 @@ public class AddPatientView extends JFrame {
 			  }
 		});
 		
+		
+		// Save button
+		
 		JButton btnNewButton = new JButton("Save");
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.gridx = 1;
@@ -721,13 +769,16 @@ public class AddPatientView extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e)
 			  {
+				
 				//check for fields errors
 				if(!checkForErrors()) {
+					
 					//set default values
 					int birthDay = -1;
 					int birthYear = -1;
 					int estYear = -1;
 					int estMonth = -1;
+					
 					//Parse text fields if they are not empty
 					if(!birthDayTextField.getText().equals("")) 
 						birthDay = Integer.parseInt(birthDayTextField.getText());
@@ -737,6 +788,7 @@ public class AddPatientView extends JFrame {
 						estYear = Integer.parseInt(estYearsTextField.getText());
 					if(!estMonthsTextField.getText().equals("")) 
 						estMonth = Integer.parseInt(estMonthsTextField.getText());
+					
 					Patient patient = new Patient(hasNameCheckBox.isSelected(),
 							firstNameTextField.getText(),
 							middleNameTextField.getText(),
@@ -755,13 +807,16 @@ public class AddPatientView extends JFrame {
 							postalCodeTextField.getText(),
 							phoneNumberTextField.getText(),
 							imagePath);
+					
 					try {
+						
 						String fullName =  firstNameTextField.getText()+" "+
 								middleNameTextField.getText()+" "+
 								lastNameTextField.getText();
 						
 						long newId = home.getHomeModel().getPtg().insertPatient(patient);
 						patient.setId(newId);
+						
 						PatientRecordView pr = new PatientRecordView(home.getHomeModel(), patient);
 						home.setCenterPanel(pr);
 						
@@ -812,7 +867,9 @@ public class AddPatientView extends JFrame {
 	 * @param container 
 	 */
 	private void focusAllTextFields(Container container) {
+		
 		System.out.print("thisfunccalled\n");
+		
 	    for (Component c : container.getComponents()) {
 	        if (c instanceof JTextField) {
 	        	((JTextField)c).requestFocus();
@@ -828,6 +885,7 @@ public class AddPatientView extends JFrame {
 	 * @return (boolean if error was found or not)
 	 */
 	private boolean checkForErrors() {
+		
 		boolean needsDOB = false;
 		
 		/*

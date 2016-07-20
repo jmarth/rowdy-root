@@ -10,6 +10,7 @@ import database.GatewayException;
 import database.PatientTableGateway;
 
 public class PatientList {
+	
 	private List<Patient> myList;
 	private PatientTableGateway gateway;
 	private HashMap<Long, Patient> myIdMap;
@@ -20,21 +21,24 @@ public class PatientList {
 	}
 	
 	public void loadFromGateway() {
+		
 		//fetch list of objects from the database
 		try {
 			List<Patient> patients = gateway.fetchPatients();
+			
 			for(Patient patient: patients){
-				this.addPartToList(patient);
+				this.addPatientToList(patient);
 				patient.setBirthDayDate();
 				myIdMap.put(patient.getId(), patient);
 			}
+			
 		} catch (GatewayException e) {
 			//TODO: handle exception here
 			return;
 		}
 	}
 	
-	public void addPartToList(Patient p) {
+	public void addPatientToList(Patient p) {
 		myList.add(p);
 	}
 	
@@ -47,9 +51,11 @@ public class PatientList {
 	}
 	
 	public Patient findById(long id) {
+		
 		//check the identity map
 		if(myIdMap.containsKey(new Long(id)))
 			return myIdMap.get(new Long(id));
+		
 		return null;
 	}
 }

@@ -15,14 +15,10 @@ import javax.sql.DataSource;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import models.Vitals;
-import models.Vitals;
 import models.Patient;
 
 public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 	
-	//private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	//private static final boolean DEBUG = true;
-	//private static final int QUERY_TIMEOUT = 60;//query timeout threshold in seconds
 	
 	private Connection conn = null;
 	
@@ -30,14 +26,17 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 		
 		// read the properties file to establish the DB connection
 		DataSource ds = null;
+		
 		try {
 			ds = getDataSource();
 		} catch (RuntimeException e) {
 			throw new GatewayException(e.getMessage());
 		}
+		
 		if(ds == null) {
         	throw new GatewayException("Datasource is null!");
         }
+		
 		try {
         	conn = ds.getConnection();
 		} catch (SQLException e) {
@@ -233,7 +232,7 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 	public void updateVitals(Vitals v) throws GatewayException{
 		
 		PreparedStatement st = null;
-		ResultSet rs = null;
+		//ResultSet rs = null;
 		
 		try {
 			

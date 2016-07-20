@@ -216,7 +216,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 		DefaultTableModel model = (DefaultTableModel) vitalsTable.getModel();
 
 		// Add row
-		model.addRow(new Object[] { vitals.getBps(), vitals.getBps(), vitals.getBpUnit(),
+		model.addRow(new Object[] { vitals.getBps(), vitals.getBpd(), vitals.getBpUnit(),
 				(isString ? height_ftin_String : heightInt), vitals.getHUnit(), vitals.getWeight(), vitals.getWUnit(),
 				vitals.getNotes() });
 
@@ -687,6 +687,8 @@ public class VitalsTabNewVitalsView extends JPanel {
 		rdbtnMmhg.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
 		rdbtnPa.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
 		
+		
+		
 		// set what BP unit button is selected
 		
 		if (v.getBpUnit().equals(Vitals.MMHG)) {
@@ -697,7 +699,8 @@ public class VitalsTabNewVitalsView extends JPanel {
 				
 				rdbtnPa.setSelected(true);
 		}
-			
+		
+		
 		// HEIGHT
 
 		JLabel lblHeight = new JLabel("Height:");

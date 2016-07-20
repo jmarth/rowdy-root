@@ -19,10 +19,11 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 import models.Account;
 
 public class AccountTableGatewayMySQL implements AccountTableGateway {
-	private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	private static final boolean DEBUG = true;
-	private static final int QUERY_TIMEOUT = 70;//query timeout threshold in seconds
-	private static final Random roller = new Random();
+	
+	//private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+	//private static final boolean DEBUG = true;
+	//private static final int QUERY_TIMEOUT = 70;//query timeout threshold in seconds
+	//private static final Random roller = new Random();
 	
 	/**
 	 * external DB connection
@@ -35,16 +36,21 @@ public class AccountTableGatewayMySQL implements AccountTableGateway {
 	 * @throws IOException 
 	 */
 	public AccountTableGatewayMySQL() throws GatewayException, IOException {
-		//read the properties file to establish the db connection
+		
+		// read the properties file to establish the DB connection
+		
 		DataSource ds = null;
+		
 		try {
 			ds = getDataSource();
 		} catch (RuntimeException e) {
 			throw new GatewayException(e.getMessage());
 		}
+		
 		if(ds == null) {
         	throw new GatewayException("Datasource is null!");
         }
+		
 		try {
         	conn = ds.getConnection();
 		} catch (SQLException e) {
@@ -58,14 +64,19 @@ public class AccountTableGatewayMySQL implements AccountTableGateway {
 	 * @throws GatewayException
 	 */
 	public List<Account> fetchAccounts() throws GatewayException {
+		
+		
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		PreparedStatement st = null;
 		ResultSet rs = null;
+		
 		try {
+			
 			//fetch Accounts
 			st = conn.prepareStatement("select * from accounts");
 			rs = st.executeQuery();
-			//add each to list of parts to return
+			
+			//add each to list of parts to return			
 			while(rs.next()) {
 				Account tmpAccount = new Account(rs.getLong("id"),
 						rs.getString("username"),
@@ -75,6 +86,7 @@ public class AccountTableGatewayMySQL implements AccountTableGateway {
 						rs.getString("lastName"),
 						rs.getString("gender"),
 						rs.getString("role"));
+				
 				accounts.add(tmpAccount);
 			}
 		} catch (SQLException e) {
@@ -94,12 +106,13 @@ public class AccountTableGatewayMySQL implements AccountTableGateway {
 	}
 	
 	/**
-	 * create a MySQL datasource with credentials and DB URL in db.properties file
+	 * create a MySQL data source with credentials and DB URL in db.properties file
 	 * @return
 	 * @throws RuntimeException
 	 * @throws IOException
 	 */
 	private DataSource getDataSource() throws RuntimeException, IOException {
+		
 		//read db credentials from properties file
 		Properties props = new Properties();
 		FileInputStream fis = null;
@@ -107,11 +120,12 @@ public class AccountTableGatewayMySQL implements AccountTableGateway {
         props.load(fis);
         fis.close();
         
-        //create the datasource
+        //create the data source
         MysqlDataSource mysqlDS = new MysqlDataSource();
         mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
         mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
         mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
+        
         return mysqlDS;
 	}
 

@@ -1,5 +1,7 @@
 package views;
 
+
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -42,6 +44,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
+@SuppressWarnings("serial")
 public class LoginView extends JFrame {
 	
 	private static final Logger logger = LogManager.getLogger(LoginView.class);
@@ -62,6 +65,7 @@ public class LoginView extends JFrame {
 	 * Create the frame.
 	 */
 	public LoginView() {
+		
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);

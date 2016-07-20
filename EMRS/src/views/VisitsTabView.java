@@ -54,7 +54,9 @@ import database.VisitTableGatewayMySQL;
 
 import java.awt.GridLayout;
 
+@SuppressWarnings("serial")
 public class VisitsTabView extends JPanel {
+	
 	private Patient patient;
 	private List<Visit> patientVisitList = new ArrayList<Visit>();
 	private HomeModel homeModel;
@@ -63,11 +65,12 @@ public class VisitsTabView extends JPanel {
 	private JXTaskPaneContainer mainTaskPane;
 	private JTabbedPane tabbedPane;	
 	
-	private JPanel scrollPanel;
+	//private JPanel scrollPanel;
 	
 	private JLabel iconLabel;
 	
 	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
+		
 		this.patient = patient;
 		this.homeModel = homeModel;
 		this.tabbedPane = tabbedPane;
@@ -117,6 +120,7 @@ public class VisitsTabView extends JPanel {
 	}
 	
 	public void populatePanes() {
+		
 		mainTaskPane.removeAll();
 
 		Collection<Visit> coll = (Collection<Visit>) homeModel.getVl().getMyPidMap().get(patient.getId());
@@ -128,6 +132,7 @@ public class VisitsTabView extends JPanel {
 		mainTaskPane.add(iconLabel, BorderLayout.NORTH);
 				
 		int i;
+		
 		for (i = patientVisitList.size() - 1; i >= 0; i--) {
 			Visit v = patientVisitList.get(i);
 			JXTaskPane pane = new JXTaskPane();
@@ -138,6 +143,5 @@ public class VisitsTabView extends JPanel {
 			pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, false));
 			mainTaskPane.add(pane);
 		}
-		
 	}
 }

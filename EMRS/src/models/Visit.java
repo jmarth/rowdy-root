@@ -8,27 +8,36 @@ import database.VisitTableGateway;
 import database.VisitTableGatewayMySQL;
 
 public class Visit {
+	
 	private long id;
+	
 	private long pid;
+	
 	private String chiefComplaint;
+	
 	private double autorefractionOdSphere;
 	private double autorefractionOdCylinder;
 	private double autorefractionOdAxis;
 	private double autorefractionOsSphere;
 	private double autorefractionOsCylinder;
 	private double autorefractionOsdAxis;
+	
 	private double arcOdSphere;
 	private double arcOdCylinder;
 	private double arcOdAxis;
 	private double arcOsSphere;
 	private double arcOsCylinder;
 	private double arcOsAxis;
+	
 	private double feRow1Col1;
 	private double feRow1Col2;
 	private double feRow2Col1;
 	private double feRow2Col2;
+	
 	private String assessment;
+	
 	private String dateCreated;
+	
 	private File sketch1;
 	
 	/**
@@ -52,6 +61,7 @@ public class Visit {
 	 * @param feRow2Col2
 	 * @param assessment
 	 */
+	
 	public Visit(Long id, Long pid, String chiefComplaint, double autorefractionOdSphere, double autorefractionOdCylinder,
 			double autorefractionOdAxis, double autorefractionOsSphere, double autorefractionOsCylinder,
 			double autorefractionOsdAxis, double arcOdSphere, double arcOdCylinder, double arcOdAxis,

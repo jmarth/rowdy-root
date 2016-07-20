@@ -1,5 +1,6 @@
 package views;
 
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -19,9 +20,12 @@ import javax.swing.border.TitledBorder;
 import database.AllergyTableGatewayMySQL;
 import models.Patient;
 
+@SuppressWarnings("serial")
 public class ProfileTabView extends JPanel {
+	
 	//tabbedPane.addTab("Profile", null, panel, null);
 	public ProfileTabView(Patient patient) {
+		
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{63, 293, 0};
 		gbl_panel.rowHeights = new int[]{77, 0};
@@ -50,7 +54,11 @@ public class ProfileTabView extends JPanel {
 		gbl_panel_4.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_4.setLayout(gbl_panel_4);
 		
+		
+		
+		
 		System.out.println("pic path "+patient.getPicPath());
+		
 		JLabel lblNewLabel_5 = new JLabel("");
 		if(patient.getPicPath() == null || patient.getPicPath().equals(""))
 			patient.setPicPath("user.png");
@@ -62,7 +70,11 @@ public class ProfileTabView extends JPanel {
 	        imageIcon = new ImageIcon(newimg);  // transform it back
 	        lblNewLabel_5.setIcon(imageIcon);
 		}
+		
 		System.out.println("pic path test");
+		
+		
+		
 	    GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
 	    gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel_5.gridx = 0;
@@ -70,6 +82,8 @@ public class ProfileTabView extends JPanel {
 		panel_4.add(lblNewLabel_5, gbc_lblNewLabel_5);
 		
 		System.out.println("pic path here");
+		
+		
 		
 		JPanel panel_6 = new JPanel();
 		GridBagConstraints gbc_panel_6 = new GridBagConstraints();
@@ -188,6 +202,9 @@ public class ProfileTabView extends JPanel {
 		panel_6.add(lblAge, gbc_lblAge);
 		lblAge.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
+		
+		
+		
 		JLabel lblBirthdate = new JLabel("("+patient.getBirthDay()+"."+patient.getBirthMonth()+"."+patient.getBirthYear()+")");
 		GridBagConstraints gbc_lblBirthdate = new GridBagConstraints();
 		gbc_lblBirthdate.insets = new Insets(0, 0, 5, 0);
@@ -196,6 +213,9 @@ public class ProfileTabView extends JPanel {
 		gbc_lblBirthdate.gridy = 3;
 		panel_6.add(lblBirthdate, gbc_lblBirthdate);
 		lblBirthdate.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		
+		
+		
 		
 		JSeparator separator_5 = new JSeparator();
 		separator_5.setBorder(border);

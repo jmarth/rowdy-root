@@ -68,6 +68,7 @@ import java.awt.image.RenderedImage;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class VisitTabViewNewVisit extends JPanel {
 	
 	Patient patient;
@@ -76,6 +77,7 @@ public class VisitTabViewNewVisit extends JPanel {
 	
 	// sphere and cylinder = floats
 	// axis = int
+	
 	private JTextArea txtrCC = new JTextArea();
 	private JTextField textField_Od_Sphere_Autoref = new JTextField();
 	private JTextField textField_Od_Cylinder_Autoref = new JTextField();
@@ -103,8 +105,8 @@ public class VisitTabViewNewVisit extends JPanel {
 	private final JLabel lblSketch = new JLabel("");
 	
 	public VisitTabViewNewVisit(Visit visit, Patient patient, JTabbedPane tabbedPane, HomeModel homeModel) {
-		super();
 		
+		super();
 		this.txtrCC.setText(visit.getChiefComplaint());
 		this.textField_Od_Sphere_Autoref.setText(visit.getAutorefractionOdSphere()+"");
 		this.textField_Od_Cylinder_Autoref.setText(visit.getAutorefractionOdCylinder()+"");
@@ -201,6 +203,7 @@ public class VisitTabViewNewVisit extends JPanel {
 	}
 	
 	public void createView(){
+		
 		setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -459,12 +462,18 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_textField_Os_Axis_Arc.gridy = 6;
 		visionPanel.add(textField_Os_Axis_Arc, gbc_textField_Os_Axis_Arc);
 		
+		
+		
+		
 		JLabel lblToBeContinued = new JLabel("To Be Continued");
 		GridBagConstraints gbc_lblToBeContinued = new GridBagConstraints();
 		gbc_lblToBeContinued.insets = new Insets(0, 0, 0, 5);
 		gbc_lblToBeContinued.gridx = 0;
 		gbc_lblToBeContinued.gridy = 8;
 		//visionPanel.add(lblToBeContinued, gbc_lblToBeContinued);
+		
+		
+		
 		
 		JLabel label = new JLabel("...");
 		GridBagConstraints gbc_label = new GridBagConstraints();
@@ -501,6 +510,10 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblSketch.gridx = 0;
 		gbc_lblSketch.gridy = 1;
 		panel_VisionSketch.add(lblSketch, gbc_lblSketch);
+		
+		
+		
+		// Open sketch
 		
 		btnOpenSketch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -648,6 +661,9 @@ public class VisitTabViewNewVisit extends JPanel {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		
+		
+		// Cancel button
+		
 		btnCancel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -656,6 +672,9 @@ public class VisitTabViewNewVisit extends JPanel {
 		});
 		panel.add(btnCancel);
 		
+		
+		
+		// Save button
 		
 		btnSave.addMouseListener(new MouseAdapter() {
 
@@ -683,16 +702,18 @@ public class VisitTabViewNewVisit extends JPanel {
 						Double.parseDouble(textField_FE1_2_2.getText()),
 						txtrTextarea.getText());	
 				try {
+					
 					long vid = homeModel.getVtg().insertVisit(visit);
+					
 					if (lblSketch.getIcon() != null){
 						homeModel.getStg().insertSketch(new File("firstSketch.png"), vid);
 					}
 					
-					
 					homeModel.getVl().loadFromGateway();
+					
 					showVisitTabView();
+					
 				} catch (GatewayException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

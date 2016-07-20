@@ -2,11 +2,7 @@ package models;
 
 import java.io.IOException;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import database.AllergyTableGateway;
 import database.AllergyTableGatewayMySQL;
@@ -21,56 +17,59 @@ import database.VitalsTableGateway;
 import database.VitalsTableGatewayMySQL;
 import views.HomeView;
 import views.AddPatientView;
-import views.FIndPatientsView;
+import views.FindPatientsView;
 
 public class HomeModel {
+
 	private AddPatientView patientInfo;
-	private FIndPatientsView patientsView;
-	private PatientList patientList ;
+	private FindPatientsView patientsView;
+
+	private PatientList patientList;
+
 	private PatientTableGateway ptg = null;
 	private AllergyTableGateway atg = null;
 	private VisitTableGateway vtg = null;
 	private SketchTableGateway stg = null;
+	private VitalsTableGateway vitalstg = null;
+
 	private VisitList vl = new VisitList();
-	
-	private VitalsTableGateway vitalstg =null;
-	
+
 	public HomeModel(HomeView homeView) {
 		super();
 		patientList = new PatientList();
 		patientInfo = new AddPatientView(homeView);
-		patientsView = new FIndPatientsView(homeView);
+		patientsView = new FindPatientsView(homeView);
 		setGateways();
 	}
-	
+
 	public void setGateways() {
-		//Gateway creations
+
+		// Gateway creations
 		try {
+
 			ptg = new PatientTableGatewayMySQL();
 			atg = new AllergyTableGatewayMySQL();
 			vtg = new VisitTableGatewayMySQL();
 			stg = new SketchTableGatewayMySQL();
-			
 			vitalstg = new VitalsTableGatewayMySQL();
-			
+
 			vl.setGateway(vtg);
-        	vl.loadFromGateway();
-        	
+			vl.loadFromGateway();
+
 		} catch (GatewayException e) {
-			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Offline!",
+					JOptionPane.ERROR_MESSAGE);
+			
 			System.out.println(e);
+			
 			System.exit(1);
+			
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Error!", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Error!",
+					JOptionPane.ERROR_MESSAGE);
+			
 			System.exit(1);
 		}
-	}
-	public SketchTableGateway getStg() {
-		return stg;
-	}
-
-	public void setStg(SketchTableGateway stg) {
-		this.stg = stg;
 	}
 
 	public PatientList getPatientList() {
@@ -89,14 +88,14 @@ public class HomeModel {
 		this.patientInfo = patientInfo;
 	}
 
-	public FIndPatientsView getPatientsView() {
+	public FindPatientsView getPatientsView() {
 		return patientsView;
 	}
 
-	public void setPatientsView(FIndPatientsView patientView) {
+	public void setPatientsView(FindPatientsView patientView) {
 		this.patientsView = patientView;
 	}
-	
+
 	public PatientTableGateway getPtg() {
 		return ptg;
 	}
@@ -112,14 +111,6 @@ public class HomeModel {
 	public void setAtg(AllergyTableGateway atg) {
 		this.atg = atg;
 	}
-	
-	public VitalsTableGateway getVitalstg() {
-		return vitalstg;
-	}
-
-	public void setVitalstg(VitalsTableGateway vitalstg) {
-		this.vitalstg = vitalstg;
-	}
 
 	public VisitTableGateway getVtg() {
 		return vtg;
@@ -129,6 +120,22 @@ public class HomeModel {
 		this.vtg = vtg;
 	}
 
+	public SketchTableGateway getStg() {
+		return stg;
+	}
+
+	public void setStg(SketchTableGateway stg) {
+		this.stg = stg;
+	}
+
+	public VitalsTableGateway getVitalstg() {
+		return vitalstg;
+	}
+
+	public void setVitalstg(VitalsTableGateway vitalstg) {
+		this.vitalstg = vitalstg;
+	}
+
 	public VisitList getVl() {
 		return vl;
 	}
@@ -136,5 +143,4 @@ public class HomeModel {
 	public void setVl(VisitList vl) {
 		this.vl = vl;
 	}
-	
 }

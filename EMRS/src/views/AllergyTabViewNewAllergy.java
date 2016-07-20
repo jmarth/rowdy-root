@@ -32,22 +32,29 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
+@SuppressWarnings("serial")
 public class AllergyTabViewNewAllergy extends JPanel {
-	private final ButtonGroup severityButtonGroup = new ButtonGroup();
 	
-	// Variable for Allergy Name textfield
-	private JTextField textField;
+	private final ButtonGroup severityButtonGroup = new ButtonGroup();
 	
 	// Patient this Allergy corresponds to
 	Patient patient;
 	Allergy a;
-	private List<Allergy> allergyList;
-	AllergyList al;
+	
 	
 	JPanel oldPanel;
 	
 	// Table Gateway
 	AllergyTableGateway atg;
+	
+	// JTable from caller
+	JTable allergyTable;
+	
+	private List<Allergy> allergyList;
+	AllergyList al;
+	
+	// Variable for Allergy Name textfield
+	private JTextField textFieldAllergy;
 	
 	// Variables for JCheckBoxes
 	List<JCheckBox> checkboxes = new ArrayList<JCheckBox>();
@@ -81,20 +88,21 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	private JRadioButton rdbtnModerate;
 	private JRadioButton rdbtnMild;
 	
-	// JTable from caller
-	JTable allergyTable;
-	
-
 	/**
 	 * Create the panel.
 	 */
 	public AllergyTabViewNewAllergy(final JTabbedPane tabbedPane, Patient patient, JPanel allergiesPanel, AllergyTableGateway gateway, JTable allergyTable, List<Allergy> allergyList, AllergyList al, Allergy a, Boolean exists) {
+		
 		this.patient = patient;
 		this.a = a;
+		
 		this.atg = gateway;
+		
 		this.allergyTable = allergyTable;
+		
 		this.allergyList = allergyList;
 		this.al = al;
+		
 		oldPanel = allergiesPanel;
 		
 		/**
@@ -117,7 +125,6 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		} else {
 			createNewView(tabbedPane, patient, allergiesPanel, atg, allergyTable);
 		}
-
 	}
 	
 	/**
@@ -139,12 +146,14 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	 * @param oldPanel JPanel to change back to when done saving
 	 */
 	public void save(Patient patient, AllergyTableGateway atg, JTabbedPane tabbedPane, JPanel oldPanel, JTable allergyTable){
+		
 		StringBuilder strBuild = new StringBuilder();
 		
 		/**
 		 * Iterate over collection of JCheckBoxes and if the check box is selected, append the label of the chckbox to the string (adverse_reaction)
 		 */
 		Iterator<JCheckBox> chckbxIterator = checkboxes.iterator();
+		
 		while(chckbxIterator.hasNext()){
 			JCheckBox tmpBox = chckbxIterator.next();
 			if(tmpBox.isSelected()){
@@ -176,9 +185,10 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		
 		/**
 		 * Create new Allergy object with correct parameters
-		 * Insert the allery to the DB through the Gateway
+		 * Insert the allergy to the DB through the Gateway
 		 */
-		Allergy allergy = new Allergy(0, patient.getId(), textField.getText(), severity, strBuild.toString());
+		Allergy allergy = new Allergy(0, patient.getId(), textFieldAllergy.getText(), severity, strBuild.toString());
+		
 		try {
 			long aid = atg.insertAllergy(allergy);
 			allergy.setId(aid);
@@ -187,13 +197,13 @@ public class AllergyTabViewNewAllergy extends JPanel {
 			e.printStackTrace();
 		}
 		
-		
 		// Change the panel back to allergy table
 		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
 		
 		// Add the allergy to the JTable
 		// Get model of AllergyTable in order to add rows
 		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
+		
 		// Add row		
 		model.addRow(new Object[]{
 				allergy.getAllergy(), 
@@ -218,12 +228,14 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	 * @param oldPanel JPanel to change back to when done saving
 	 */
 	public void updateAllergy(Patient patient, AllergyTableGateway atg, JTabbedPane tabbedPane, JPanel oldPanel, JTable allergyTable){
+		
 		StringBuilder strBuild = new StringBuilder();
 		
 		/**
 		 * Iterate over collection of JCheckBoxes and if the check box is selected, append the label of the chckbox to the string (adverse_reaction)
 		 */
 		Iterator<JCheckBox> chckbxIterator = checkboxes.iterator();
+		
 		while(chckbxIterator.hasNext()){
 			JCheckBox tmpBox = chckbxIterator.next();
 			if(tmpBox.isSelected()){
@@ -255,9 +267,10 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		
 		/**
 		 * Create new Allergy object with correct parameters
-		 * Insert the allery to the DB through the Gateway
+		 * Insert the allergy to the DB through the Gateway
 		 */
-		Allergy allergy = new Allergy(a.getId(), patient.getId(), textField.getText(), severity, strBuild.toString());
+		Allergy allergy = new Allergy(a.getId(), patient.getId(), textFieldAllergy.getText(), severity, strBuild.toString());
+		
 		try {
 			atg.updateAllergy(allergy);
 			al.loadFromGateway();
@@ -276,7 +289,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		// Update the Allergy in the allergyList
 		allergyList.set(selectedRow, allergy);
 		
-		DefaultTableModel dtm = (DefaultTableModel)allergyTable.getModel();
+		// DefaultTableModel dtm = (DefaultTableModel)allergyTable.getModel();
 		
 		// Change the panel back to allergy table
 		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
@@ -294,6 +307,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	 * @param atg Gateway for Allergy table
 	 */
 	public void createNewView(final JTabbedPane tabbedPane, final Patient patient, JPanel allergiesPanel, final AllergyTableGateway atg, final JTable allergyTable){
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -309,15 +323,15 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		gbc_lblAllergy.gridy = 1;
 		add(lblAllergy, gbc_lblAllergy);
 		
-		textField = new JTextField();
+		textFieldAllergy = new JTextField();
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.gridwidth = 2;
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.insets = new Insets(25, 0, 5, 5);
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 1;
-		add(textField, gbc_textField);
-		textField.setColumns(20);
+		add(textFieldAllergy, gbc_textField);
+		textFieldAllergy.setColumns(20);
 		
 		JLabel lblSeverity = new JLabel("Severity");
 		lblSeverity.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -577,6 +591,10 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		add(otherTextField, gbc_otherTextField);
 		otherTextField.setColumns(10);
 		
+		
+		
+		// Save button
+		
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -584,12 +602,18 @@ public class AllergyTabViewNewAllergy extends JPanel {
 			}
 		});
 		
+		
+		
 		btnSave.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.insets = new Insets(50, 0, 0, 5);
 		gbc_btnSave.gridx = 3;
 		gbc_btnSave.gridy = 16;
 		add(btnSave, gbc_btnSave);
+		
+		
+		
+		// Cancel button
 		
 		/**
 		 * Sets the tabbed pane at the Allergy index back to default allergy panel
@@ -600,6 +624,9 @@ public class AllergyTabViewNewAllergy extends JPanel {
 				cancel(tabbedPane, oldPanel);
 			}
 		});
+		
+		
+		
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.insets = new Insets(50, 0, 0, 0);
 		gbc_btnCancel.gridx = 4;
@@ -615,6 +642,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	 * @param atg Gateway for Allergy table
 	 */
 	public void createExistingView(final JTabbedPane tabbedPane, final Patient patient, JPanel allergiesPanel, final AllergyTableGateway atg, Allergy a, final JTable allergyTable){
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -630,16 +658,16 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		gbc_lblAllergy.gridy = 1;
 		add(lblAllergy, gbc_lblAllergy);
 		
-		textField = new JTextField();
-		textField.setText(a.getAllergy());
+		textFieldAllergy = new JTextField();
+		textFieldAllergy.setText(a.getAllergy());
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.gridwidth = 2;
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.insets = new Insets(25, 0, 5, 5);
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 1;
-		add(textField, gbc_textField);
-		textField.setColumns(20);
+		add(textFieldAllergy, gbc_textField);
+		textFieldAllergy.setColumns(20);
 		
 		JLabel lblSeverity = new JLabel("Severity");
 		lblSeverity.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -677,6 +705,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		add(rdbtnMild, gbc_rdbtnMild);
 		
 		
+		
 		// Populate severity button based off allergy
 		String sev_str = a.getSeverity();
 		if(sev_str.equals("Severe")){
@@ -687,6 +716,8 @@ public class AllergyTabViewNewAllergy extends JPanel {
 			rdbtnMild.setSelected(true);
 		}
 		
+		
+		
 		JLabel lblReactions = new JLabel("Reactions");
 		lblReactions.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GridBagConstraints gbc_lblReactions = new GridBagConstraints();
@@ -694,6 +725,8 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		gbc_lblReactions.gridx = 0;
 		gbc_lblReactions.gridy = 7;
 		add(lblReactions, gbc_lblReactions);
+		
+		
 		
 		// Get String of reactions from Allergy
 		String advr_str = a.getAdverseReaction();
@@ -955,6 +988,10 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		add(otherTextField, gbc_otherTextField);
 		otherTextField.setColumns(10);
 		
+		
+		
+		// Update button
+		
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -962,12 +999,19 @@ public class AllergyTabViewNewAllergy extends JPanel {
 			}
 		});
 		
+		
+		
+		
 		btnUpdate.setFont(new Font("Tahoma", Font.BOLD, 11));
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.insets = new Insets(50, 0, 0, 5);
 		gbc_btnSave.gridx = 3;
 		gbc_btnSave.gridy = 16;
 		add(btnUpdate, gbc_btnSave);
+		
+		
+		
+		// Cancel button
 		
 		/**
 		 * Sets the tabbed pane at the Allergy index back to default allergy panel
@@ -978,12 +1022,13 @@ public class AllergyTabViewNewAllergy extends JPanel {
 				cancel(tabbedPane, oldPanel);
 			}
 		});
+		
+		
+		
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
 		gbc_btnCancel.insets = new Insets(50, 0, 0, 0);
 		gbc_btnCancel.gridx = 4;
 		gbc_btnCancel.gridy = 16;
 		add(btnCancel, gbc_btnCancel);
 	}
-
-
 }

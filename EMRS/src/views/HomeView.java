@@ -72,25 +72,30 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+@SuppressWarnings("serial")
 public class HomeView extends JFrame {
 	
 	private static final Logger logger = LogManager.getLogger(HomeView.class);
 
 	private JPanel contentPane;
+	
 	final JButton btnAddPatient = new JButton("Add Patient");
 	final JLabel lblPatientSearch= new JLabel("Patient Search");
 	final JButton btnFindPatient = new JButton("Find Patient");
-	JButton btnLogout = new JButton("Logout");
-	final JTextField textFieldSearch = new JTextField();
-	private HomeModel homeModel;
-	private final JButton btnHome = new JButton("");
-
 	
+	JButton btnLogout = new JButton("Logout");
+	
+	final JTextField textFieldSearch = new JTextField();
+	
+	private HomeModel homeModel;
+	
+	private final JButton btnHome = new JButton("");
 
 	/**
 	 * Home constructor
 	 */
 	public HomeView() {
+		
 		homeModel = new HomeModel(this);
 		final HomeView home = this;
 	
@@ -113,7 +118,7 @@ public class HomeView extends JFrame {
 		textFieldSearch.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				homeModel.setPatientsView(new FIndPatientsView(home));
+				homeModel.setPatientsView(new FindPatientsView(home));
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
 			}
 		});
@@ -213,7 +218,7 @@ public class HomeView extends JFrame {
 		btnFindPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				logger.info("User pressed 'Find Patient'");
-				homeModel.setPatientsView(new FIndPatientsView(home));
+				homeModel.setPatientsView(new FindPatientsView(home));
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
 			}
 		});
