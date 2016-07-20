@@ -3,6 +3,7 @@ package database;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,8 +28,9 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 	private Connection conn = null;
 	
 	public VitalsTableGatewayMySQL() throws GatewayException, IOException {
-		
-		// read the properties file to establish the DB connection
+		/*
+		//FOR MYSQL
+		//read the properties file to establish the db connection
 		DataSource ds = null;
 		try {
 			ds = getDataSource();
@@ -41,7 +43,15 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 		try {
         	conn = ds.getConnection();
 		} catch (SQLException e) {
-			throw new GatewayException("SQL Error: \n" + e.getMessage());
+			throw new GatewayException("SQL Error: " + e.getMessage());
+		}
+		*/
+		//FOR MYSQLite
+		try {
+			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 

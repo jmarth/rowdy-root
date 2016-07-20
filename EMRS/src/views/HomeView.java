@@ -10,8 +10,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import database.GatewayException;
-import database.PatientTableGateway;
-import database.PatientTableGatewayMySQL;
 import models.CL;
 import models.HomeModel;
 import models.Patient;

@@ -18,9 +18,6 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
-import database.GatewayException;
-import database.PatientTableGateway;
-import database.PatientTableGatewayMySQL;
 import models.Patient;
 import models.PatientList;
 

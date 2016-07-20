@@ -3,6 +3,7 @@ package database;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,6 +39,8 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
 	 * @throws IOException 
 	 */
 	public AllergyTableGatewayMySQL() throws GatewayException, IOException {
+		/*
+		//FOR MYSQL
 		//read the properties file to establish the db connection
 		DataSource ds = null;
 		try {
@@ -52,6 +55,14 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
         	conn = ds.getConnection();
 		} catch (SQLException e) {
 			throw new GatewayException("SQL Error: " + e.getMessage());
+		}
+		*/
+		//FOR MYSQLite
+		try {
+			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

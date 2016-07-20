@@ -12,10 +12,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 import database.AllergyTableGateway;
 import database.AllergyTableGatewayMySQL;
 
-import database.GatewayException;
-import database.PatientTableGateway;
-import database.PatientTableGatewayMySQL;
-
 import database.VisitTableGateway;
 import database.VisitTableGatewayMySQL;
 import models.AllergyList;

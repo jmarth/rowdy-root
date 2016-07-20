@@ -3,6 +3,7 @@ package database;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,6 +37,8 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 	 * @throws IOException 
 	 */
 	public PatientTableGatewayMySQL() throws GatewayException, IOException {
+		/*
+		//FOR MYSQL
 		//read the properties file to establish the db connection
 		DataSource ds = null;
 		try {
@@ -50,6 +53,14 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
         	conn = ds.getConnection();
 		} catch (SQLException e) {
 			throw new GatewayException("SQL Error: " + e.getMessage());
+		}
+		*/
+		//FOR MYSQLite
+		try {
+			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
