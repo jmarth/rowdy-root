@@ -144,4 +144,7 @@ public class Vitals {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
+	public String toString() {
+		return "id : " + id +" pid: "+pid+" ft: "+hFeet+" in: "+hInches+" cm: "+hcm;
+	}
 }

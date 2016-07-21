@@ -13,7 +13,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -23,7 +22,6 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import database.VitalsTableGatewayMySQL;
 import database.GatewayException;
 import database.VitalsTableGateway;
 import models.Vitals;
@@ -96,7 +94,8 @@ public class VitalsTabNewVitalsView extends JPanel {
 		 * Try to connect to DB through VitalsTableGateway Set the gateway of
 		 * the VitalsList Load Vitals into the VitalsList
 		 */
-
+		
+		/*
 		try {
 
 			vtg = new VitalsTableGatewayMySQL();
@@ -111,15 +110,19 @@ public class VitalsTabNewVitalsView extends JPanel {
 			System.out.println("Could not connect to DB");
 			e.printStackTrace();
 		}
-
+		*/
+		
 		if (exists) {
-
+			
+			//System.out.println("exists: patientid = "+patient.getId()+"");
+			
 			createExistingView(tabbedPane, patient, vitalsPanel, vtg, vitals, vitalsTable);
 
 		} else {
 
 			createView(tabbedPane, patient, vitalsPanel, vtg, vitalsTable);
 		}
+		
 	}
 
 	/**
@@ -241,7 +244,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 	 *            JPanel to change back to when done saving
 	 */
 	public void update(Patient patient, VitalsTableGateway vtg, JTabbedPane tabbedPane, JPanel oldPanel,
-			JTable vitalsTable) {
+			JTable vitalsTable, long vid) {
 		StringBuilder sb = new StringBuilder(128);
 
 		/**
@@ -249,7 +252,9 @@ public class VitalsTabNewVitalsView extends JPanel {
 		 * the DB through the Gateway
 		 */
 
-		Vitals vitals = new Vitals(0, patient.getId(), Float.parseFloat(textField_BPSys.getText()),
+		// !!!!!!!!!!! probably don't need to make another vital, could get it from the model
+		
+		Vitals vitals = new Vitals(vid, patient.getId(), Float.parseFloat(textField_BPSys.getText()),
 				Float.parseFloat(textField_BPDias.getText()), getLblBPSysUnit().getText(),
 				Integer.parseInt(((textField_HeightFt.getText().equals("")) ? "-2"
 						: textField_HeightFt.getText())),
@@ -261,15 +266,15 @@ public class VitalsTabNewVitalsView extends JPanel {
 				Float.parseFloat(((textField_Weight.getText().equals("")) ? "-2"
 						: textField_Weight.getText())),
 				getLblWeightUnit().getText(), textArea_Notes.getText());
+		
+		
 		try {
 
-			long vid = vtg.insertVitals(vitals);
-			vitals.setId(vid);
+			long vitalid = vtg.updateVitals(vitals);
+			//vitals.setId(vitalid);
 			vitalsList = vl.getVitalsList();
 
 		} catch (GatewayException e) {
-
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -301,8 +306,9 @@ public class VitalsTabNewVitalsView extends JPanel {
 			heightInt = vitals.getHCm();
 		}
 
-		// "BPS", "BPD", "BP Unit", "Height", "Height Unit", "Weight", "Weight
-		// Unit", "Notes"
+		// JTable columns:
+		
+		// "BPS", "BPD", "BP Unit", "Height", "Height Unit", "Weight", "Weight Unit", "Notes"
 
 		// Update row in JTable
 		int selectedRow = vitalsTable.getSelectedRow();
@@ -329,6 +335,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 
 		int index = tabbedPane.indexOfTab(Tabs.vitals);
 
+		// swap the center component out for the old view
 		tabbedPane.setComponentAt(index, null);
 		tabbedPane.setComponentAt(index, oldPanel);
 	}
@@ -901,7 +908,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				save(patient, vtg, tabbedPane, oldPanel, vitalsTable);
+				update(patient, vtg, tabbedPane, oldPanel, vitalsTable, vitals.getId());
 			}
 		});
 		panel_Buttons.add(btnUpdate);
@@ -1039,6 +1046,13 @@ public class VitalsTabNewVitalsView extends JPanel {
 		return textArea_Notes;
 	}
 
+	/**
+	 * Gets the selected button's name from a button group.
+	 * 
+	 * @param buttonGroup
+	 * @return
+	 * 			The string of the name of the selected radio button of the buttonGroup
+	 */
 	public String getSelectedButtonText(ButtonGroup buttonGroup) {
 		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
 			AbstractButton button = buttons.nextElement();

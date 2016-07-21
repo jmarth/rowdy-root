@@ -42,13 +42,17 @@ import javax.swing.ImageIcon;
 public class LoginView extends JFrame {
 	
 	private static final Logger logger = LogManager.getLogger(LoginView.class);
-
-	private JPanel contentPane;
-	private JTextField textField;
+	
+	// holds everything in LoginView
+	private JPanel contentPane; 
+	
+	private JTextField textField_Username;
 	private JPasswordField passwordField;
 
 	/**
-	 * Launch the application.
+	 * Sets the Login View to be visible.
+	 * Essentially "launches" the application from the main method.
+	 * 
 	 * @throws IOException 
 	 */
 	public  void newWindow() throws IOException {
@@ -56,38 +60,64 @@ public class LoginView extends JFrame {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the LoginView JFrame. Initialize the GUI and the HomeView.
 	 */
 	public LoginView() {
+		
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// physical size of login view
 		setBounds(100, 100, 450, 300);
+		
+		/*
+		 * Sets the JFrame's content pane to a JPanel,
+		 * even though JFrame has a root pane that is the content pane.
+		 * 
+		 * Probably from WindowBuilder; though this makes it verbose and legible
+		 * 
+		 */
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 153, 204));
 		contentPane.setForeground(new Color(51, 102, 153));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
+		
 		
 		JLabel lblUsername = new JLabel("username");
-		
 		JLabel lblPassword = new JLabel("password");
+		
+		textField_Username = new JTextField();
+		textField_Username.setColumns(10);
 		
 		passwordField = new JPasswordField();
 		
+		
+		
+		/*
+		 * Launches the HomeView 
+		 */
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				logger.info("User pressed 'Login'");
+				
 				setVisible(false);
+				
+				// releases resources of the login window
 				dispose();
+				
 				//Create home view
 				HomeView home  = new HomeView();
 				home.launchUI();
 			}
 		});
+		
+		
+		
+		// From WindowBuilder
 		
 		JLabel lblEmrc = new JLabel("");
 		lblEmrc.setIcon(new ImageIcon("logo.png"));
@@ -108,7 +138,7 @@ public class LoginView extends JFrame {
 							.addGap(18)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addComponent(passwordField, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-								.addComponent(textField, GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+								.addComponent(textField_Username, GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
 								.addComponent(lblEmrc, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
 					.addGap(97))
 		);
@@ -119,7 +149,7 @@ public class LoginView extends JFrame {
 					.addComponent(lblEmrc)
 					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField_Username, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblUsername))
 					.addGap(21)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
@@ -129,6 +159,7 @@ public class LoginView extends JFrame {
 					.addComponent(btnLogin)
 					.addContainerGap(37, Short.MAX_VALUE))
 		);
+		
 		contentPane.setLayout(gl_contentPane);
 	}
 }

@@ -35,6 +35,8 @@ public class HomeModel {
 	
 	private VitalsTableGateway vitalstg =null;
 	
+	
+	
 	public HomeModel(HomeView homeView) {
 		super();
 		patientList = new PatientList();

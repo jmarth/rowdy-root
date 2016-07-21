@@ -113,7 +113,9 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
-		
+			System.out.println("from vitalstg, what was resultset:");
+			for (Vitals v: vitals )
+				System.out.println(v.getId());
 			return vitals;
 	}
 
@@ -240,7 +242,7 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 		return newId;
 	}
 	
-	public void updateVitals(Vitals v) throws GatewayException{
+	public long updateVitals(Vitals v) throws GatewayException{
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -250,15 +252,16 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 			st = conn.prepareStatement("UPDATE vitals SET"
 					+ " bps = ?,"
 					+ " bpd = ?,"
-					+ " bpunit = ?"
-					+ " hfeet = ?"
-					+ " hinches = ?"
-					+ " hcm = ?"
-					+ " hunit = ?"
-					+ " weight = ?"
-					+ " wunit = ?"
+					+ " bpunit = ?,"
+					+ " hfeet = ?,"
+					+ " hinches = ?,"
+					+ " hcm = ?,"
+					+ " hunit = ?,"
+					+ " weight = ?,"
+					+ " wunit = ?,"
 					+ " notes = ?"
 					+ " WHERE id = ? ", PreparedStatement.RETURN_GENERATED_KEYS);
+			
 			//st.setInt(1, p.getHasPatientName() ? 1 : 0);
 			st.setFloat(1, v.getBps());
 			st.setFloat(2, v.getBpd());
@@ -270,10 +273,13 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 			st.setFloat(8, v.getWeight());
 			st.setString(9, v.getWUnit());
 			st.setString(10, v.getNotes());
+			st.setLong(11, v.getId());
 			st.executeUpdate();
 			
 		} catch (SQLException e) {
-			
+			System.out.println("vital being prepared: ");
+			System.out.println(v.toString());
+
 			//e.printStackTrace();
 			throw new GatewayException(e.getMessage());
 			
@@ -291,6 +297,8 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
+		
+		return v.getId();
 	}
 	
 	/**

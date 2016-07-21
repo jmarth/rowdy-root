@@ -75,27 +75,40 @@ public class HomeView extends JFrame {
 	private static final Logger logger = LogManager.getLogger(HomeView.class);
 
 	private JPanel contentPane;
-	final JButton btnAddPatient = new JButton("Add Patient");
-	final JLabel lblPatientSearch= new JLabel("Patient Search");
-	final JButton btnFindPatient = new JButton("Find Patient");
-	JButton btnLogout = new JButton("Logout");
-	final JTextField textFieldSearch = new JTextField();
-	private HomeModel homeModel;
-	private final JButton btnHome = new JButton("");
-
 	
+	private HomeModel homeModel;
+	
+	
+	private final JButton btnHome = new JButton("");
+	
+	//@why final ^ v
+	
+	final JButton btnAddPatient = new JButton("Add Patient");
+	final JButton btnFindPatient = new JButton("Find Patient");
+
+	final JLabel lblPatientSearch= new JLabel("Patient Search");
+	final JTextField textFieldSearch = new JTextField();
+	
+	JButton btnLogout = new JButton("Logout");
 
 	/**
-	 * Home constructor
+	 * Home constructor.
+	 * 
+	 * Inits the "HomeModel" which has all the gateways, lists, and some actual views.
+	 * 
 	 */
 	public HomeView() {
+		
+		// Models should be independent; a view should grab from a model.
 		homeModel = new HomeModel(this);
+		
+		// @why final
 		final HomeView home = this;
 	
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1139, 1124);
+		setBounds(200, 100, 1139, 1124); // set size of Home View
 		
-		//set up main panel
+		//set up main panel, holds everything
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -261,37 +274,49 @@ public class HomeView extends JFrame {
 	}
 	
 	/**
-	 * replaces center/main panel with given jpanel
+	 * Replaces center/main panel with given JPanel.
 	 * @param container
 	 */
 	public void setCenterPanel(Container container) {
+		
 		LayoutManager layout = contentPane.getLayout();
+		
 		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
+		
 		if(centerComponent != null ) {
 			contentPane.remove(centerComponent);
 		}
+		
 		if(homeModel.getPatientInfo() != null)
 			homeModel.getPatientInfo().hideBalloonTips();
+		
 		contentPane.add(container, BorderLayout.CENTER);
 		contentPane.repaint();
 		contentPane.revalidate();
 	}
 	
-	//Sets up the center panel for the home view
+	/**
+	 * Set up the center panel for the HomeView.
+	 */
 	public void showHomeView() {
+		
 		LayoutManager layout = contentPane.getLayout();
+		
 		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
+		
 		if(centerComponent != null ) {
 			contentPane.remove(centerComponent);
 		}
+		
 		if(homeModel.getPatientInfo() != null)
 			homeModel.getPatientInfo().hideBalloonTips();
+		
 		contentPane.repaint();
 		contentPane.revalidate();
 	}
 	
 	/**
-	 * gets the homeModel
+	 * Gets the homeModel, which HomeView inits and holds a reference for.
 	 * @return HomeModel
 	 */
 	public HomeModel getHomeModel() {
@@ -306,6 +331,9 @@ public class HomeView extends JFrame {
 		return btnAddPatient;
 	}
 
+	/**
+	 *  Called by LoginView to show HomeView
+	 */
 	public void launchUI() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {

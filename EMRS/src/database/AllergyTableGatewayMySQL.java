@@ -17,7 +17,6 @@ import javax.sql.DataSource;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
-import models.Account;
 import models.Allergy;
 import models.Patient;
 
@@ -71,9 +70,11 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
 	 * @throws GatewayException 
 	 */
 	public List<Allergy> fetchAllergies() throws GatewayException{
+		
 		ArrayList<Allergy> allergies = new ArrayList<Allergy>();
 		PreparedStatement st = null;
 		ResultSet rs = null;
+		
 		try {
 			//fetch Allergies
 			st = conn.prepareStatement("select * from allergies");
@@ -194,14 +195,17 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
 	 * @param a Allergy to update
 	 */
 	public void updateAllergy(Allergy a) throws GatewayException{
+		
 		PreparedStatement st = null;
 		ResultSet rs = null;
+		
 		try {
 			st = conn.prepareStatement("UPDATE allergies SET"
 					+ " allergy = ?,"
 					+ " severity = ?,"
 					+ " adverse_reaction = ?"
 					+ " WHERE id = ? ", PreparedStatement.RETURN_GENERATED_KEYS);
+			
 			//st.setInt(1, p.getHasPatientName() ? 1 : 0);
 			st.setString(1, a.getAllergy());
 			st.setString(2, a.getSeverity());
@@ -209,14 +213,15 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
 			st.setLong(4, a.getId());
 
 			st.executeUpdate();
+			
 		} catch (SQLException e) {
-			//e.printStackTrace();
 			throw new GatewayException(e.getMessage());
 		} finally {
 			//clean up
 			try {
 				if(st != null)
 					st.close();
+				
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
@@ -229,22 +234,26 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
 	 * @param a Allergy to update
 	 */
 	public void removeAllergy(Long aid) throws GatewayException{
+		
 		PreparedStatement st = null;
+		
 		try {
+			
 			st = conn.prepareStatement("DELETE FROM allergies"
 					+ " WHERE id = ? ", PreparedStatement.RETURN_GENERATED_KEYS);
 			//st.setInt(1, p.getHasPatientName() ? 1 : 0);
 			st.setLong(1, aid);
 
 			st.executeUpdate();
+			
 		} catch (SQLException e) {
-			//e.printStackTrace();
 			throw new GatewayException(e.getMessage());
 		} finally {
 			//clean up
 			try {
 				if(st != null)
 					st.close();
+				
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
@@ -253,20 +262,20 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
 	}
 	
 	/**
-	 * create a MySQL datasource with credentials and DB URL in db.properties file
+	 * create a MySQL data source with credentials and DB URL in db.properties file
 	 * @return
 	 * @throws RuntimeException
 	 * @throws IOException
 	 */
 	private DataSource getDataSource() throws RuntimeException, IOException {
-		//read db credentials from properties file
+		//read DB credentials from properties file
 		Properties props = new Properties();
 		FileInputStream fis = null;
         fis = new FileInputStream("db.properties");
         props.load(fis);
         fis.close();
         
-        //create the datasource
+        //create the data source
         MysqlDataSource mysqlDS = new MysqlDataSource();
         mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
         mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));

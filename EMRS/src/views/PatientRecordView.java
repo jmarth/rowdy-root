@@ -158,6 +158,9 @@ public class PatientRecordView extends JTabbedPane {
 		        }
 		        else if (selectedTab.equals(Tabs.vitals)) {
 		        	logger.info("User selected 'Vitals' tab");
+		        	
+		        	// load the table
+		        	
 		        }
 		        else if (selectedTab.equals(Tabs.testing)) {
 		        	logger.info("User selected 'Special Testing' tab");

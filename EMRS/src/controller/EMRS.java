@@ -27,29 +27,35 @@ public class EMRS {
 	private static final Logger logger = LogManager.getLogger(EMRS.class);
 	
 	public static void main(String[] args) {
+		
+		/**
+		 * Sets look and feel of the swing UI to that of the native operating system.
+		 * I.e. The tabs will either be Mac style or Windows style
+		 */
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (InstantiationException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IllegalAccessException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (UnsupportedLookAndFeelException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
 		logger.info("Launching Application");
 		
+		
+		// init the login view
 		LoginView login = new LoginView();
+		
+		// set it visible
 		try {
 			login.newWindow();
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

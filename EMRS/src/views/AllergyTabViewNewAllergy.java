@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 
 public class AllergyTabViewNewAllergy extends JPanel {
+	
 	private final ButtonGroup severityButtonGroup = new ButtonGroup();
 	
 	// Variable for Allergy Name textfield

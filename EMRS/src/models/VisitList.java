@@ -35,9 +35,9 @@ public class VisitList {
 		try {
 			myPidMap = new MultiValueMap();
 			System.out.println("loading now");
-			List<Visit> visits = gateway.fetchVisits();
+			List<Visit> visitsTmp = gateway.fetchVisits();
 			System.out.println("\n done loading now");
-			for(Visit tmpVisit: visits){
+			for(Visit tmpVisit: visitsTmp){
 				myIdMap.put(tmpVisit.getId(), tmpVisit);
 				myPidMap.put(tmpVisit.getPid(), tmpVisit);
 				myList.add(tmpVisit);

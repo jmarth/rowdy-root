@@ -12,6 +12,8 @@ public class VitalsList {
 	private List<Vitals> myList;
 	private VitalsTableGateway gateway;
 	private HashMap<Long, Vitals> myIdMap;
+	
+	private List<Vitals> myPatientVitals;
 
 	/**
 	 * Construct a new VitalsList
@@ -19,6 +21,8 @@ public class VitalsList {
 	public VitalsList() {
 		myList = new ArrayList<Vitals>();
 		myIdMap = new HashMap<Long, Vitals>();
+		
+		myPatientVitals = new ArrayList<Vitals>();
 	}
 
 	/**
@@ -72,5 +76,13 @@ public class VitalsList {
 	public void setGateway(VitalsTableGateway gateway) {
 		this.gateway = gateway;
 	}
+
+	public void loadFromGatewayForPatient(Patient patient) {
+		
+		loadFromGateway();
+		
+	}
+	
+	
 
 }
