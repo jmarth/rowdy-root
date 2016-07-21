@@ -94,6 +94,7 @@ public class VisitsTabView extends JPanel {
 		add(panel, BorderLayout.NORTH);
 		
 		scroller = new JScrollPane(splitPane);
+		splitPane.setResizeWeight(0.75d);
 		
 		JScrollPane leftPane = new JScrollPane(mainTaskPane);
 		
