@@ -29,6 +29,12 @@ public final class CL {
 	
 	public static final Color aliceBlue = new Color(228, 241, 254);
 	
+	public static final Color cascade = new Color(149, 165, 166);
+	
+	public static final Color gossip = new Color(135, 211, 124);
+	
+	public static final Color eucalyptus = new Color(38, 166, 91);
+	
 	public static final Color coal = Color.decode("#181818");
 	
 	public static final Color storm = Color.decode("#383838");
@@ -53,7 +59,7 @@ public final class CL {
 	
 	public static final Color sea = Color.decode("#86C1B9");
 	
-	public static final Color blue = Color.decode("#7CAFC2");
+	public static final Color bluish = Color.decode("#7CAFC2");
 	
 	public static final Color plum = Color.decode("#BA8BAF");
 	
@@ -63,4 +69,14 @@ public final class CL {
 	
 	public static final Color clouds = Color.decode("#ecf0f1");
 	
+	public static final Color blueGrey = Color.decode("#CFD8DC");
+	
+	
+	/**		Color Palette generated from palleton.com  **/
+	
+	public static final Color red = Color.decode("#ff0018");
+	
+	public static final Color green = Color.decode("#b6ff00");
+	
+	public static final Color blue = Color.decode("#00ffdc");
 }
