@@ -172,7 +172,7 @@ public class HomeView extends JFrame {
 		btnAddPatient.addMouseListener(ml);
 		btnAddPatient.setToolTipText("Add Patient");
 		/********** font from 16 to 18 ********************/
-		btnAddPatient.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnAddPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnAddPatient.setForeground(new Color(255, 255, 255));
 		btnAddPatient.setOpaque(true);
 		btnAddPatient.setContentAreaFilled(false);
@@ -189,7 +189,7 @@ public class HomeView extends JFrame {
 		});
 		btnLogout.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnLogout.setForeground(new Color(255, 255, 255));
-		btnLogout.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnLogout.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnLogout.setOpaque(true);
 		btnLogout.setContentAreaFilled(false);
 		btnLogout.setBorderPainted(false);
@@ -214,7 +214,7 @@ public class HomeView extends JFrame {
 		});
 		btnFindPatient.addMouseListener(ml);
 		btnFindPatient.setForeground(new Color(255, 255, 255));
-		btnFindPatient.setFont(new Font("Tahoma", Font.BOLD, 20));
+		btnFindPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnFindPatient.setOpaque(true);
 		btnFindPatient.setContentAreaFilled(false);
 		btnFindPatient.setBorderPainted(false);
@@ -237,9 +237,9 @@ public class HomeView extends JFrame {
 					.addGap(6)
 					.addComponent(btnHome)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnAddPatient)
+					.addComponent(btnAddPatient, 0, 150, 300)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnFindPatient)
+					.addComponent(btnFindPatient, 0, 150, 300)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addPreferredGap(ComponentPlacement.RELATED, 314, Short.MAX_VALUE)
 					.addComponent(lblPatientSearch, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)

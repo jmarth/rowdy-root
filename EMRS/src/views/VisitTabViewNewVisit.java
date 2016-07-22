@@ -38,6 +38,7 @@ import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
 import database.VisitTableGateway;
 import models.Allergy;
+import models.CL;
 import models.HomeModel;
 import models.Patient;
 import models.Tabs;
@@ -175,6 +176,7 @@ public class VisitTabViewNewVisit extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 	
 	public VisitTabViewNewVisit(final JTabbedPane tabbedPane, Patient patient, HomeModel homeModel) {
@@ -229,12 +231,13 @@ public class VisitTabViewNewVisit extends JPanel {
 		JScrollPane scrollPane_Cc = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_Cc = new GridBagConstraints();
 		gbc_scrollPane_Cc.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_Cc.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane_Cc.anchor = GridBagConstraints.WEST;
+		gbc_scrollPane_Cc.insets = new Insets(0, 0, 5, 5);
 		gbc_scrollPane_Cc.gridx = 0;
 		gbc_scrollPane_Cc.gridy = 1;
 		mainPane.add(scrollPane_Cc, gbc_scrollPane_Cc);
 
-		txtrCC.setColumns(80);
+		txtrCC.setColumns(40);
 		txtrCC.setRows(4);
 		txtrCC.setWrapStyleWord(true);
 		txtrCC.setLineWrap(true);
@@ -629,13 +632,14 @@ public class VisitTabViewNewVisit extends JPanel {
 		
 		JScrollPane scrollPane_AP = new JScrollPane();
 		GridBagConstraints gbc_scrollPane_AP = new GridBagConstraints();
-		gbc_scrollPane_AP.insets = new Insets(0, 0, 5, 0);
+		gbc_scrollPane_AP.insets = new Insets(0, 0, 5, 5);
+		gbc_scrollPane_AP.anchor = GridBagConstraints.WEST;
 		gbc_scrollPane_AP.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane_AP.gridx = 0;
 		gbc_scrollPane_AP.gridy = 13;
 		mainPane.add(scrollPane_AP, gbc_scrollPane_AP);
 		
-		txtrTextarea.setColumns(80);
+		txtrTextarea.setColumns(40);
 		txtrTextarea.setRows(4);
 		txtrTextarea.setWrapStyleWord(true);
 		txtrTextarea.setLineWrap(true);

@@ -58,8 +58,7 @@ public class VisitsTabView extends JPanel {
 	private JTabbedPane tabbedPane;	
 	private JPanel scrollPanel;
 	private JLabel iconLabel;
-	private JSplitPane splitPane = new JSplitPane();
-	
+	private JSplitPane splitPane;
 	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
 		this.patient = patient;
 		this.homeModel = homeModel;
@@ -74,34 +73,27 @@ public class VisitsTabView extends JPanel {
 		mainTaskPane = new JXTaskPaneContainer();
 		
 		populatePanes();
-						
-		JPanel panel = new JPanel();
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{187, 75, 0};
-		gbl_panel.rowHeights = new int[]{23, 0};
-		gbl_panel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel.setLayout(gbl_panel);
+		
+		splitPane = new JSplitPane();
+		splitPane.setEnabled(false);
+		splitPane.setResizeWeight(0.5);
+		splitPane.setDividerSize(3);
+		
 		
 		JButton btnNewVisit = new JButton("Add A New Visit");
-		GridBagConstraints gbc_btnNewVisit = new GridBagConstraints();
-		gbc_btnNewVisit.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewVisit.anchor = GridBagConstraints.NORTHWEST;
-		gbc_btnNewVisit.gridx = 0;
-		gbc_btnNewVisit.gridy = 0;
-		panel.add(btnNewVisit, gbc_btnNewVisit);
-		
-		add(panel, BorderLayout.NORTH);
-		
-		scroller = new JScrollPane(splitPane);
-		splitPane.setResizeWeight(0.75d);
+		btnNewVisit.setBackground(CL.cararra);
+		btnNewVisit.setOpaque(true);
+		btnNewVisit.setBorderPainted(false);
+		btnNewVisit.setForeground(CL.colorBlue);
+		btnNewVisit.setFont(new Font("Tahoma", Font.BOLD, 16));
+
 		
 		JScrollPane leftPane = new JScrollPane(mainTaskPane);
 		
 		splitPane.setLeftComponent(leftPane);
 		splitPane.setRightComponent(btnNewVisit);
 		
-		add(scroller, BorderLayout.CENTER);
+		add(splitPane, BorderLayout.CENTER);
 	
 		btnNewVisit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -122,6 +114,8 @@ public class VisitsTabView extends JPanel {
 		
 		iconLabel.setText("\t\t" + patientVisitList.size() + " visits");
 		mainTaskPane.add(iconLabel, BorderLayout.NORTH);
+		mainTaskPane.setBackground(CL.blueGrey);
+
 				
 		int i;
 		for (i = patientVisitList.size() - 1; i >= 0; i--) {
