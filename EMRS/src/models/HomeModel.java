@@ -10,15 +10,20 @@ import javax.swing.JTextField;
 
 import database.AllergyTableGateway;
 import database.AllergyTableGatewayMySQL;
+import database.AllergyTableGatewaySQLite;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
+import database.PatientTableGatewaySQLite;
 import database.SketchTableGateway;
 import database.SketchTableGatewayMySQL;
+import database.SketchTableGatewaySQLite;
 import database.VisitTableGateway;
 import database.VisitTableGatewayMySQL;
+import database.VisitTableGatewaySQLite;
 import database.VitalsTableGateway;
 import database.VitalsTableGatewayMySQL;
+import database.VitalsTableGatewaySQLite;
 import views.HomeView;
 import views.AddPatientView;
 import views.FIndPatientsView;
@@ -48,12 +53,12 @@ public class HomeModel {
 	public void setGateways() {
 		//Gateway creations
 		try {
-			ptg = new PatientTableGatewayMySQL();
-			atg = new AllergyTableGatewayMySQL();
-			vtg = new VisitTableGatewayMySQL();
-			stg = new SketchTableGatewayMySQL();
+			ptg = new PatientTableGatewaySQLite();
+			atg = new AllergyTableGatewaySQLite();
+			vtg = new VisitTableGatewaySQLite();
+			stg = new SketchTableGatewaySQLite();
 			
-			vitalstg = new VitalsTableGatewayMySQL();
+			vitalstg = new VitalsTableGatewaySQLite();
 			
 			vl.setGateway(vtg);
         	vl.loadFromGateway();

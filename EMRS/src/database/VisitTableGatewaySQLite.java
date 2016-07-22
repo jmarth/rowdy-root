@@ -1,30 +1,18 @@
 package database;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.Random;
-
-import javax.sql.DataSource;
-
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import models.Patient;
 import models.Visit;
 
-public class VisitTableGatewayMySQL implements VisitTableGateway {
-	private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	private static final boolean DEBUG = true;
-	private static final int QUERY_TIMEOUT = 70;//query timeout threshold in seconds
-	private static final Random roller = new Random();
+public class VisitTableGatewaySQLite implements VisitTableGateway {
 	
 	/**
 	 * external DB connection
@@ -36,26 +24,15 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 	 * @throws GatewayException
 	 * @throws IOException 
 	 */
-	public VisitTableGatewayMySQL() throws GatewayException, IOException {
+	public VisitTableGatewaySQLite() throws GatewayException, IOException {
 
-		//read the properties file to establish the db connection
-		DataSource ds = null;
 		try {
-			ds = getDataSource();
-		} catch (RuntimeException e) {
-			throw new GatewayException(e.getMessage());
-		}
-		if(ds == null) {
-        	throw new GatewayException("Datasource is null!");
-        }
-		try {
-        	conn = ds.getConnection();
+			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
+			
 		} catch (SQLException e) {
-			throw new GatewayException("SQL Error: " + e.getMessage());
+			e.printStackTrace();
 		}
-
 	}
-
 	
 	/**
 	 * Fetch all visits from db
@@ -71,7 +48,6 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 		
 		try {
 			//fetch parts
-			
 			System.out.print("getting info");
 			
 			st = conn.prepareStatement("select * from visits");
@@ -111,6 +87,7 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 				visits.add(v);
 				
 				System.out.print("\nvisit object added");
+				
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -255,9 +232,7 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 			rs = st.getGeneratedKeys();
 			
 			if(rs != null && rs.next()) {
-				
 			    newId = rs.getLong(1);
-			    
 			} else {
 				throw new GatewayException("Could not insert new record.");
 			}
@@ -269,7 +244,6 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 			try {
 				if(st != null)
 					st.close();
-				
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
@@ -277,29 +251,7 @@ public class VisitTableGatewayMySQL implements VisitTableGateway {
 		
 		return newId;
 	}
-	
-	/**
-	 * create a MySQL data source with credentials and DB URL in db.properties file
-	 * @return
-	 * @throws RuntimeException
-	 * @throws IOException
-	 */
-	private DataSource getDataSource() throws RuntimeException, IOException {
-		//read db credentials from properties file
-		Properties props = new Properties();
-		FileInputStream fis = null;
-        fis = new FileInputStream("db.properties");
-        props.load(fis);
-        fis.close();
-        
-        //create the datasource
-        MysqlDataSource mysqlDS = new MysqlDataSource();
-        mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
-        mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
-        mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
-        return mysqlDS;
-	}
-	
+
 	public void close() {
 		// TODO Auto-generated method stub
 		

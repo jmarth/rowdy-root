@@ -36,30 +36,26 @@ public class AccountTableGatewayMySQL implements AccountTableGateway {
 	 * @throws IOException 
 	 */
 	public AccountTableGatewayMySQL() throws GatewayException, IOException {
-		/*
-		//FOR MYSQL
+
 		//read the properties file to establish the db connection
 		DataSource ds = null;
+		
 		try {
 			ds = getDataSource();
+			
 		} catch (RuntimeException e) {
 			throw new GatewayException(e.getMessage());
 		}
+		
 		if(ds == null) {
         	throw new GatewayException("Datasource is null!");
         }
+		
 		try {
         	conn = ds.getConnection();
+        	
 		} catch (SQLException e) {
 			throw new GatewayException("SQL Error: " + e.getMessage());
-		}
-		*/
-		//FOR MYSQLite
-		try {
-			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 	
@@ -69,13 +65,18 @@ public class AccountTableGatewayMySQL implements AccountTableGateway {
 	 * @throws GatewayException
 	 */
 	public List<Account> fetchAccounts() throws GatewayException {
+		
 		ArrayList<Account> accounts = new ArrayList<Account>();
+		
 		PreparedStatement st = null;
 		ResultSet rs = null;
+		
 		try {
 			//fetch Accounts
 			st = conn.prepareStatement("select * from accounts");
+			
 			rs = st.executeQuery();
+			
 			//add each to list of parts to return
 			while(rs.next()) {
 				Account tmpAccount = new Account(rs.getLong("id"),
@@ -95,22 +96,26 @@ public class AccountTableGatewayMySQL implements AccountTableGateway {
 			try {
 				if(rs != null)
 					rs.close();
+				
 				if(st != null)
 					st.close();
+				
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
-				}
 			}
-			return accounts;
+		}
+		
+		return accounts;
 	}
 	
 	/**
-	 * create a MySQL datasource with credentials and DB URL in db.properties file
+	 * create a MySQL data source with credentials and DB URL in db.properties file
 	 * @return
 	 * @throws RuntimeException
 	 * @throws IOException
 	 */
 	private DataSource getDataSource() throws RuntimeException, IOException {
+		
 		//read db credentials from properties file
 		Properties props = new Properties();
 		FileInputStream fis = null;
@@ -123,6 +128,7 @@ public class AccountTableGatewayMySQL implements AccountTableGateway {
         mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
         mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
         mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
+        
         return mysqlDS;
 	}
 

@@ -98,7 +98,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 		/*
 		try {
 
-			vtg = new VitalsTableGatewayMySQL();
+			vtg = new VitalsTableGatewaySQLite();
 
 		} catch (GatewayException e) {
 

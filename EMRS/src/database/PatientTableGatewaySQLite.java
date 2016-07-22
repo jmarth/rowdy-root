@@ -1,30 +1,19 @@
 package database;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.Random;
 
-import javax.sql.DataSource;
-
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import models.Patient;
 
 
-public class PatientTableGatewayMySQL implements PatientTableGateway{
-	private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	private static final boolean DEBUG = true;
-	private static final int QUERY_TIMEOUT = 70;//query timeout threshold in seconds
-	private static final Random roller = new Random();
+public class PatientTableGatewaySQLite implements PatientTableGateway{
 	
 	/**
 	 * external DB connection
@@ -36,31 +25,15 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 	 * @throws GatewayException
 	 * @throws IOException 
 	 */
-	public PatientTableGatewayMySQL() throws GatewayException, IOException {
+	public PatientTableGatewaySQLite() throws GatewayException, IOException {
 
-		//read the properties file to establish the db connection
-		DataSource ds = null;
-		
 		try {
-			ds = getDataSource();
+			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
 			
-		} catch (RuntimeException e) {
-			throw new GatewayException(e.getMessage());
-		}
-		
-		if(ds == null) {
-        	throw new GatewayException("Datasource is null!");
-        }
-		
-		try {
-        	conn = ds.getConnection();
-        	
 		} catch (SQLException e) {
-			throw new GatewayException("SQL Error: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
-	
-
 	
 	/**
 	 * Fetch a resultset of all warehosue rows in db and populate a collection with them.
@@ -78,6 +51,7 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from patients");
+			
 			rs = st.executeQuery();
 			
 			//add each to list of parts to return
@@ -195,32 +169,10 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
+		
 		return newId;
 	}
-	
-	/**
-	 * create a MySQL data source with credentials and DB URL in db.properties file
-	 * @return
-	 * @throws RuntimeException
-	 * @throws IOException
-	 */
-	private DataSource getDataSource() throws RuntimeException, IOException {
-		
-		//read db credentials from properties file
-		Properties props = new Properties();
-		FileInputStream fis = null;
-        fis = new FileInputStream("db.properties");
-        props.load(fis);
-        fis.close();
-        
-        //create the datasource
-        MysqlDataSource mysqlDS = new MysqlDataSource();
-        mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
-        mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
-        mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
-        return mysqlDS;
-	}
-	
+
 	@Override
 	public void close() {
 		// TODO Auto-generated method stub

@@ -13,24 +13,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
-import java.util.Random;
 
-import javax.sql.DataSource;
-
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
-import models.Patient;
-import models.Visit;
-
-public class SketchTableGatewayMySQL implements SketchTableGateway {
-	private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	private static final boolean DEBUG = true;
-	private static final int QUERY_TIMEOUT = 70;//query timeout threshold in seconds
-	private static final Random roller = new Random();
+public class SketchTableGatewaySQLite implements SketchTableGateway {
 	
 	/**
 	 * external DB connection
@@ -42,30 +28,15 @@ public class SketchTableGatewayMySQL implements SketchTableGateway {
 	 * @throws GatewayException
 	 * @throws IOException 
 	 */
-	public SketchTableGatewayMySQL() throws GatewayException, IOException {
+	public SketchTableGatewaySQLite() throws GatewayException, IOException {
 
-		//read the properties file to establish the db connection
-		DataSource ds = null;
-		
 		try {
-			ds = getDataSource();
+			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
 			
-		} catch (RuntimeException e) {
-			throw new GatewayException(e.getMessage());
-		}
-		
-		if(ds == null) {
-        	throw new GatewayException("Datasource is null!");
-        }
-		
-		try {
-        	conn = ds.getConnection();
-        	
 		} catch (SQLException e) {
-			throw new GatewayException("SQL Error: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
-
 	
 	/**
 	 * Fetch all visits from db
@@ -153,7 +124,6 @@ public class SketchTableGatewayMySQL implements SketchTableGateway {
 			while(rs.next()) {
 				
 				//sketches.add(rs.getbin)
-				
 				InputStream stream = rs.getBinaryStream("image");
 			    ByteArrayOutputStream output = new ByteArrayOutputStream();
 			    
@@ -191,7 +161,7 @@ public class SketchTableGatewayMySQL implements SketchTableGateway {
 	}
 	
 	/**
-	 * Inserts sketch into sketches table
+	 * Inserts sketch into sketchs table
 	 */
 	public long insertSketch(File f, long vid) throws GatewayException {
 		
@@ -231,6 +201,7 @@ public class SketchTableGatewayMySQL implements SketchTableGateway {
 			} else {
 				throw new GatewayException("Could not insert new record.");
 			}
+			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
 		} finally {
@@ -246,30 +217,7 @@ public class SketchTableGatewayMySQL implements SketchTableGateway {
 		
 		return newId;
 	}
-	
-	/**
-	 * create a MySQL datasource with credentials and DB URL in db.properties file
-	 * @return
-	 * @throws RuntimeException
-	 * @throws IOException
-	 */
-	private DataSource getDataSource() throws RuntimeException, IOException {
-		
-		//read db credentials from properties file
-		Properties props = new Properties();
-		FileInputStream fis = null;
-        fis = new FileInputStream("db.properties");
-        props.load(fis);
-        fis.close();
-        
-        //create the datasource
-        MysqlDataSource mysqlDS = new MysqlDataSource();
-        mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
-        mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
-        mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
-        return mysqlDS;
-	}
-	
+
 	public void close() {
 		// TODO Auto-generated method stub
 		
