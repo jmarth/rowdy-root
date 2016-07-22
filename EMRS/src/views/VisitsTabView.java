@@ -121,7 +121,10 @@ public class VisitsTabView extends JPanel {
 		for (i = patientVisitList.size() - 1; i >= 0; i--) {
 			Visit v = patientVisitList.get(i);
 			JXTaskPane pane = new JXTaskPane();
-			pane.setTitle(v.getDateCreated() + "\t|\t" + v.getChiefComplaint());
+			String date = v.getDateCreated();
+			date = date.substring(0, date.length() - 3);
+			String[] data = date.split(" ");
+			pane.setTitle("Date: " + data[0] + ", Time: " + data[1] + "\t|\t" + v.getChiefComplaint());
 			pane.setAnimated(false);
 			pane.setCollapsed(true);
 			pane.setScrollOnExpand(true);
