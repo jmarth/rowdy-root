@@ -41,9 +41,9 @@ import models.PatientList;
 import java.awt.Font;
 import javax.swing.JTextField;
 
-public class FIndPatientsView extends JFrame {
+public class FindPatientsView extends JFrame {
 	
-	private static final Logger logger = LogManager.getLogger(FIndPatientsView.class);
+	private static final Logger logger = LogManager.getLogger(FindPatientsView.class);
 
 	private JPanel contentPane;
 	private JTable table;
@@ -53,7 +53,7 @@ public class FIndPatientsView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FIndPatientsView(final HomeView home) {
+	public FindPatientsView(final HomeView home) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();

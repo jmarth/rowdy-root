@@ -78,10 +78,9 @@ public class HomeView extends JFrame {
 	
 	private HomeModel homeModel;
 	
+	//@why final vvv
 	
-	private final JButton btnHome = new JButton("");
-	
-	//@why final ^ v
+	private final JButton btnHome = new JButton("");	
 	
 	final JButton btnAddPatient = new JButton("Add Patient");
 	final JButton btnFindPatient = new JButton("Find Patient");
@@ -116,7 +115,10 @@ public class HomeView extends JFrame {
 		
 		contentPane.setBackground(CL.cararra);
 				
+		
+		
 		//set up top bar panel
+		
 		JPanel panel = new JPanel();
 		panel.setBackground(new Color(0, 153, 204));
 		contentPane.add(panel, BorderLayout.NORTH);
@@ -124,21 +126,35 @@ public class HomeView extends JFrame {
 		textFieldSearch.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				homeModel.setPatientsView(new FIndPatientsView(home));
+				
+				homeModel.setFindPatientsView(new FindPatientsView(home));
+				
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
+				
 			}
 		});
 		
+		
+		
 		//search filter
+		
 		textFieldSearch.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
+				
 				String searchText = textFieldSearch.getText().toLowerCase();
+				
 				homeModel.getPatientsView().filter(searchText);
+				
 				logger.info("User entered into search: " + searchText);
 			}
 		});
 		textFieldSearch.setColumns(10);
+		
+		
+		
+		// Top buttons change color from mouse hover
+		
 		MouseListener ml = (new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
@@ -146,14 +162,14 @@ public class HomeView extends JFrame {
 				((JComponent) arg0.getSource()).setOpaque(true);
 				//btnAddPatient.setContentAreaFilled(true);
 				((AbstractButton) arg0.getSource()).setBorderPainted(false);
-				System.out.println("mouse over");
+				//System.out.println("mouse over");
 			}
 			public void mouseExited(MouseEvent arg0) {
 				((Component) arg0.getSource()).setBackground(new Color(0, 153, 204));
 				((JComponent) arg0.getSource()).setOpaque(true);
 				//btnAddPatient.setContentAreaFilled(true);
 				((AbstractButton) arg0.getSource()).setBorderPainted(false);
-				System.out.println("mouse over");
+				//System.out.println("mouse over");
 			}
 		});
 		
@@ -162,9 +178,14 @@ public class HomeView extends JFrame {
 		btnHome.setContentAreaFilled(false);
 		btnHome.setBorderPainted(false);
 		btnHome.addMouseListener(ml);
+		
+		
+		
 		//home button on click
+		
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				showHomeView();
 			}
 		});
@@ -179,12 +200,17 @@ public class HomeView extends JFrame {
 		btnAddPatient.setBorderPainted(false);
 		btnAddPatient.setIcon(new ImageIcon("add-icon.png"));
 
+		
+		
 		//add patient button on click
+		
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				 logger.info("User pressed 'Add Patient'");
-				 homeModel.setPatientInfo(new AddPatientView(home));
-				 setCenterPanel(homeModel.getPatientInfo().getContentPane());
+				 
+				 homeModel.setAddPatientView(new AddPatientView(home));
+				 setCenterPanel(homeModel.getAddPatientView().getContentPane());
 			}
 		});
 		btnLogout.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -195,19 +221,28 @@ public class HomeView extends JFrame {
 		btnLogout.setBorderPainted(false);
 		btnLogout.addMouseListener(ml);
 		
+		
+		
 		//logout button on click
+		
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				logger.info("User pressed 'Log Out'");
-				int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to close all windows and logout?", "Confirm",
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				
+				int response = JOptionPane.showConfirmDialog(null,
+						"Are you sure you want to close all windows and logout?", "Confirm",
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				
 				if (response == JOptionPane.YES_OPTION) {
 					logger.info("User pressed 'YES' in logout dialogue");
+					
 					dispose();
 					LoginView login = new LoginView();
 					login.show();
-				}
-				else {
+					
+				} else {
+					
 					logger.info("User pressed 'NO' in logout dialogue");
 				}
 			}
@@ -220,11 +255,16 @@ public class HomeView extends JFrame {
 		btnFindPatient.setBorderPainted(false);
 		btnFindPatient.setIcon(new ImageIcon("search.png"));
 		
+		
+		
 		//find patient button on click
+		
 		btnFindPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
 				logger.info("User pressed 'Find Patient'");
-				homeModel.setPatientsView(new FIndPatientsView(home));
+				
+				homeModel.setFindPatientsView(new FindPatientsView(home));
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
 			}
 		});
@@ -287,8 +327,8 @@ public class HomeView extends JFrame {
 			contentPane.remove(centerComponent);
 		}
 		
-		if(homeModel.getPatientInfo() != null)
-			homeModel.getPatientInfo().hideBalloonTips();
+		if(homeModel.getAddPatientView() != null)
+			homeModel.getAddPatientView().hideBalloonTips();
 		
 		contentPane.add(container, BorderLayout.CENTER);
 		contentPane.repaint();
@@ -308,8 +348,8 @@ public class HomeView extends JFrame {
 			contentPane.remove(centerComponent);
 		}
 		
-		if(homeModel.getPatientInfo() != null)
-			homeModel.getPatientInfo().hideBalloonTips();
+		if(homeModel.getAddPatientView() != null)
+			homeModel.getAddPatientView().hideBalloonTips();
 		
 		contentPane.repaint();
 		contentPane.revalidate();

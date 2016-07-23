@@ -59,7 +59,7 @@ import javax.swing.ScrollPaneConstants;
  */
 public class PatientRecordView extends JTabbedPane {
 	
-	private static final Logger logger = LogManager.getLogger(FIndPatientsView.class);
+	private static final Logger logger = LogManager.getLogger(FindPatientsView.class);
 
 	private Patient patient;
 	

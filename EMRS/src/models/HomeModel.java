@@ -26,38 +26,42 @@ import database.VitalsTableGatewayMySQL;
 import database.VitalsTableGatewaySQLite;
 import views.HomeView;
 import views.AddPatientView;
-import views.FIndPatientsView;
+import views.FindPatientsView;
 
 public class HomeModel {
-	private AddPatientView patientInfo;
-	private FIndPatientsView patientsView;
+	
+	private AddPatientView addPatientView;
+	private FindPatientsView findPatientsView;
+	
 	private PatientList patientList ;
+	private VisitList vl = new VisitList();
+	
 	private PatientTableGateway ptg = null;
 	private AllergyTableGateway atg = null;
 	private VisitTableGateway vtg = null;
 	private SketchTableGateway stg = null;
-	private VisitList vl = new VisitList();
-	
 	private VitalsTableGateway vitalstg =null;
 	
-	
+
 	
 	public HomeModel(HomeView homeView) {
 		super();
 		patientList = new PatientList();
-		patientInfo = new AddPatientView(homeView);
-		patientsView = new FIndPatientsView(homeView);
+		addPatientView = new AddPatientView(homeView);
+		findPatientsView = new FindPatientsView(homeView);
 		setGateways();
 	}
 	
 	public void setGateways() {
+		
 		//Gateway creations
+		
 		try {
+			
 			ptg = new PatientTableGatewaySQLite();
 			atg = new AllergyTableGatewaySQLite();
 			vtg = new VisitTableGatewaySQLite();
 			stg = new SketchTableGatewaySQLite();
-			
 			vitalstg = new VitalsTableGatewaySQLite();
 			
 			vl.setGateway(vtg);
@@ -72,13 +76,6 @@ public class HomeModel {
 			System.exit(1);
 		}
 	}
-	public SketchTableGateway getStg() {
-		return stg;
-	}
-
-	public void setStg(SketchTableGateway stg) {
-		this.stg = stg;
-	}
 
 	public PatientList getPatientList() {
 		return patientList;
@@ -88,20 +85,20 @@ public class HomeModel {
 		this.patientList = patientList;
 	}
 
-	public AddPatientView getPatientInfo() {
-		return patientInfo;
+	public AddPatientView getAddPatientView() {
+		return addPatientView;
 	}
 
-	public void setPatientInfo(AddPatientView patientInfo) {
-		this.patientInfo = patientInfo;
+	public void setAddPatientView(AddPatientView addPatientView) {
+		this.addPatientView = addPatientView;
 	}
 
-	public FIndPatientsView getPatientsView() {
-		return patientsView;
+	public FindPatientsView getPatientsView() {
+		return findPatientsView;
 	}
 
-	public void setPatientsView(FIndPatientsView patientView) {
-		this.patientsView = patientView;
+	public void setFindPatientsView(FindPatientsView patientView) {
+		this.findPatientsView = patientView;
 	}
 	
 	public PatientTableGateway getPtg() {
@@ -139,9 +136,16 @@ public class HomeModel {
 	public VisitList getVl() {
 		return vl;
 	}
-
+	
 	public void setVl(VisitList vl) {
 		this.vl = vl;
 	}
 	
+	public SketchTableGateway getStg() {
+		return stg;
+	}
+
+	public void setStg(SketchTableGateway stg) {
+		this.stg = stg;
+	}
 }
