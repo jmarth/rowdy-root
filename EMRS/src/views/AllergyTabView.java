@@ -132,6 +132,10 @@ public class AllergyTabView extends JPanel {
 				// Get row number of allergy chosen
 				int selectedRow = allergyTable.getSelectedRow();
 				
+				if(selectedRow == -1) {
+					return;
+				}
+				
 				// Reload allergyList from gateway and get Allergy selected
 				al.loadFromGateway();
 				//allergyList = al.getAllergyList();

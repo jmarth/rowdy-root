@@ -1,47 +1,29 @@
 package database;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 
-import javax.sql.DataSource;
-
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import models.Vitals;
 import models.Patient;
 
-public class VitalsTableGatewayMySQL implements VitalsTableGateway {
+public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 	
 	private Connection conn = null;
 	
-	public VitalsTableGatewayMySQL() throws GatewayException, IOException {
+	public VitalsTableGatewaySQLite() throws GatewayException, IOException {
 
-		//read the properties file to establish the db connection
-		DataSource ds = null;
-		
 		try {
-			ds = getDataSource();
+			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
 			
-		} catch (RuntimeException e) {
-			throw new GatewayException(e.getMessage());
-		}
-		
-		if(ds == null) {
-        	throw new GatewayException("Datasource is null!");
-        }
-		
-		try {
-        	conn = ds.getConnection();
-        	
 		} catch (SQLException e) {
-			throw new GatewayException("SQL Error: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
@@ -182,7 +164,7 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 		try {
 			
 			st = conn.prepareStatement("insert INTO vitals (pid, bps, bpd, bpunit, hfeet, hinches, hcm, hunit, weight, wunit, notes) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ", PreparedStatement.RETURN_GENERATED_KEYS);
-			//st.setInt(1, p.getHasPatientName() ? 1 : 0);
+			
 			st.setLong(1, v.getPid());
 			st.setFloat(2, v.getBps());
 			st.setFloat(3, v.getBpd());
@@ -212,7 +194,6 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 			
 		} catch (SQLException e) {
 			
-			//e.printStackTrace();
 			throw new GatewayException(e.getMessage());
 			
 		} finally {
@@ -264,14 +245,12 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 			st.setString(9, v.getWUnit());
 			st.setString(10, v.getNotes());
 			st.setLong(11, v.getId());
-			
 			st.executeUpdate();
 			
 		} catch (SQLException e) {
 			System.out.println("vital being prepared: ");
 			System.out.println(v.toString());
 
-			//e.printStackTrace();
 			throw new GatewayException(e.getMessage());
 			
 		} finally {
@@ -302,15 +281,13 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 		
 		try {
 			
-			st = conn.prepareStatement("DELETE FROM vitals"	+ " WHERE id = ? ",
-					PreparedStatement.RETURN_GENERATED_KEYS);
-			//st.setInt(1, p.getHasPatientName() ? 1 : 0);
+			st = conn.prepareStatement("DELETE FROM vitals"	+ " WHERE id = ? ", PreparedStatement.RETURN_GENERATED_KEYS);
+			
 			st.setLong(1, vid);
 			st.executeUpdate();
 			
 		} catch (SQLException e) {
 			
-			//e.printStackTrace();
 			throw new GatewayException(e.getMessage());
 			
 		} finally {
@@ -326,29 +303,5 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
-		
-	}
-	
-	/**
-	 * create a MySQL data source with credentials and DB URL in db.properties file
-	 * @return
-	 * @throws RuntimeException
-	 * @throws IOException
-	 */
-	private DataSource getDataSource() throws RuntimeException, IOException {
-		
-		//read DB credentials from properties file
-		Properties props = new Properties();
-		FileInputStream fis = null;
-        fis = new FileInputStream("db.properties");
-        props.load(fis);
-        fis.close();
-        
-        //create the data source
-        MysqlDataSource mysqlDS = new MysqlDataSource();
-        mysqlDS.setURL(props.getProperty("MYSQL_DB_URL"));
-        mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
-        mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
-        return mysqlDS;
 	}
 }

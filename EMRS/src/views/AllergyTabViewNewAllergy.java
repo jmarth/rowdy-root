@@ -17,6 +17,7 @@ import javax.swing.table.TableCellEditor;
 
 import database.AllergyTableGateway;
 import database.AllergyTableGatewayMySQL;
+import database.AllergyTableGatewaySQLite;
 import database.GatewayException;
 import models.Allergy;
 import models.AllergyList;
@@ -104,7 +105,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		 * Load Allergies into the AllergyList
 		 */
 		try {
-			atg = new AllergyTableGatewayMySQL();
+			atg = new AllergyTableGatewaySQLite();
 		} catch (GatewayException e) {
 			System.out.println("Could not connect to DB");
 			e.printStackTrace();

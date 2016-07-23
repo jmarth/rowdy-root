@@ -132,6 +132,10 @@ public class VitalsTabView extends JPanel {
 				// Get row number of vital chosen
 				int selectedRow = vitalsTable.getSelectedRow();
 				
+				if(selectedRow == -1) {
+					return;
+				}
+				
 				// Reload vitalsList from gateway and get Vital selected
 				vl.loadFromGateway();
 				
@@ -275,7 +279,7 @@ public class VitalsTabView extends JPanel {
 		 * Load Vitals into the VitalsList
 		 
 		try {
-			vtg = new VitalsTableGatewayMySQL();
+			vtg = new VitalsTableGatewaySQLite();
 			vl.setGateway(vtg);
 			vl.loadFromGateway();
 		} catch (GatewayException e) {

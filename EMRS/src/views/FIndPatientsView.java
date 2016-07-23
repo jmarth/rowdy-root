@@ -34,6 +34,7 @@ import org.apache.logging.log4j.Logger;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
+import database.PatientTableGatewaySQLite;
 import models.Patient;
 import models.PatientList;
 
@@ -79,7 +80,7 @@ public class FIndPatientsView extends JFrame {
 		
 		//Try to connect to database
 		try {
-			ptg = new PatientTableGatewayMySQL();
+			ptg = new PatientTableGatewaySQLite();
 		} catch (GatewayException e) {
 			JOptionPane.showMessageDialog(null, "Database is not responding. Please reboot your computer and maybe the database will magically appear (not really).", "Database Offline!", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
