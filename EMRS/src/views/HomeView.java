@@ -5,11 +5,14 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
+import database.AllergyTableGateway;
 import database.GatewayException;
+import models.Allergy;
 import models.CL;
 import models.HomeModel;
 import models.Patient;
@@ -89,6 +92,9 @@ public class HomeView extends JFrame {
 	final JTextField textFieldSearch = new JTextField();
 	
 	JButton btnLogout = new JButton("Logout");
+	
+	Patient p;
+	JButton btnAllergyAlert;
 
 	/**
 	 * Home constructor.
@@ -269,6 +275,27 @@ public class HomeView extends JFrame {
 			}
 		});
 		
+		btnAllergyAlert = new JButton("ALLERGY ALERT ! !");
+		btnAllergyAlert.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 PatientRecordView prv = new PatientRecordView(homeModel, p);
+			     home.setPatient(p);
+			     
+			     AllergyTabView atv = new AllergyTabView(p, prv, homeModel.getAtg());
+			     
+			     home.setCenterPanel(prv);
+			     Component c = prv.getComponentAt(1);
+			     prv.setSelectedComponent(c);
+			     
+			}
+		});
+		btnAllergyAlert.setForeground(new Color(255, 255, 0));
+		btnAllergyAlert.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
+		btnAllergyAlert.setOpaque(true);
+		btnAllergyAlert.setContentAreaFilled(false);
+		btnAllergyAlert.setBorderPainted(false);
+		btnAllergyAlert.setVisible(false);
+		
 		//set up top bar panel layout
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
@@ -277,11 +304,12 @@ public class HomeView extends JFrame {
 					.addGap(6)
 					.addComponent(btnHome)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnAddPatient, 0, 150, 300)
+					.addComponent(btnAddPatient, 0, 167, 300)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnFindPatient, 0, 150, 300)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addPreferredGap(ComponentPlacement.RELATED, 314, Short.MAX_VALUE)
+					.addComponent(btnFindPatient, 0, 167, 300)
+					.addPreferredGap(ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
+					.addComponent(btnAllergyAlert)
+					.addGap(36)
 					.addComponent(lblPatientSearch, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, 154, GroupLayout.PREFERRED_SIZE)
@@ -297,7 +325,8 @@ public class HomeView extends JFrame {
 				.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(lblPatientSearch, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-					.addComponent(btnLogout, 0, 0, Short.MAX_VALUE))
+					.addComponent(btnLogout, 0, 0, Short.MAX_VALUE)
+					.addComponent(btnAllergyAlert))
 				.addComponent(btnHome, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
 		);
 		lblPatientSearch.setForeground(new Color(255, 255, 255));
@@ -382,5 +411,42 @@ public class HomeView extends JFrame {
 			}
 		});
 		
+	}	
+	
+	/**
+	 * Sets the Active Patient on the Home menu
+	 * @param pp patient to set the Home menu to
+	 */
+	public void setPatient(Patient pp){
+		p = pp;
+		checkPatientForAllergies();
+	}
+	
+	/**
+	 * Helper function for checking if active Patient has Allergies
+	 */
+	public void checkPatientForAllergies(){
+		List<Allergy> tmpAl = null;
+		try {
+			tmpAl = homeModel.getAtg().fetchAllergiesForPatient(p);
+		} catch (GatewayException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// if patient has allergies
+		if(tmpAl.size() > 0){
+			// set an alert
+			btnAllergyAlert.setVisible(true);
+		} else {
+			btnAllergyAlert.setVisible(false);
+		}
+	}
+	
+	/**
+	 * When closing an Active Patient, call this function to remove the allery alert
+	 */
+	public void closePatient(){
+		p = null;
+		btnAllergyAlert.setVisible(false);
 	}
 }
