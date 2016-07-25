@@ -25,10 +25,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
+import controller.DocumentListController;
 import database.DocumentTableGateway;
 import database.GatewayException;
 import models.CL;
 import models.Document;
+import models.DocumentList;
 import models.Patient;
 import net.coobird.thumbnailator.Thumbnails;
 import javax.swing.JList;
@@ -39,6 +41,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.BevelBorder;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class DocumentsTabView extends JPanel {
 	
@@ -63,8 +67,10 @@ public class DocumentsTabView extends JPanel {
 	private File filePath;
 	private JPanel filesPanel;
 	private JList fileList;
-	private List<Document> docList;
+	private Document selectedDocument;
+	private DocumentList dl;
 	private Patient p;
+	private DocumentListController docListController;
 	
 	public DocumentsTabView(DocumentTableGateway dtg, Patient p) {
 		
@@ -72,12 +78,11 @@ public class DocumentsTabView extends JPanel {
 		this.dtg = dtg;
 		this.p = p;
 		
-		try {
-			docList = dtg.fetchPatientDocuments(p);
-		} catch (GatewayException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		dl = new DocumentList(p);
+		dl.setGateway(dtg);
+		dl.loadFromGateway();
+		
+		docListController = new DocumentListController(dl);
 		
 		
 		pane = new JPanel();
@@ -116,20 +121,25 @@ public class DocumentsTabView extends JPanel {
 		flowLayout.setHgap(10);
 		scroller.setRowHeaderView(filesPanel);
 		
-		fileList = new JList();
+		
+		fileList = new JList(docListController);
+		fileList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent evt) {
+				if(evt.getClickCount() > 1){
+					int index = fileList.locationToIndex(evt.getPoint());
+					selectedDocument = docListController.getElementAt(index);
+					
+					// Open the selected Document onto the screen
+				}
+			}
+		});
 		fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		fileList.setForeground(Color.DARK_GRAY);
 		fileList.setFont(new Font("Sitka Heading", Font.BOLD, 15));
 		fileList.setBackground(Color.CYAN);
-		fileList.setModel(new AbstractListModel() {
-			String[] values = new String[] {"johsingya.jpg"};
-			public int getSize() {
-				return values.length;
-			}
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
+		fileList.setCellRenderer(new DocumentListCellRenderer());
+		
 		filesPanel.add(fileList);
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
