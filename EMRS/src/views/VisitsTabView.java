@@ -36,8 +36,11 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Insets;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.SwingConstants;
+
 import java.awt.FlowLayout;
 import java.awt.Font;
 
