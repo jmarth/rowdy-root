@@ -43,7 +43,7 @@ public class DocumentsTabView extends JPanel {
 	
 	private final JFileChooser fc = new JFileChooser();
 	
-	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF FILES", "pdf");
+	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Files", "pdf");
 	
 	private File filePath;
 	
