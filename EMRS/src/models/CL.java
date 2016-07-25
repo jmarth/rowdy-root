@@ -35,6 +35,8 @@ public final class CL {
 	
 	public static final Color eucalyptus = new Color(38, 166, 91);
 	
+	public static final Color antiqueWhite = new Color(255, 239, 213);
+	
 	public static final Color coal = Color.decode("#181818");
 	
 	public static final Color storm = Color.decode("#383838");
