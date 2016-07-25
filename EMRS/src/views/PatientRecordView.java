@@ -49,6 +49,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import database.AllergyTableGatewayMySQL;
+import database.DocumentTableGateway;
+import database.DocumentTableGatewaySQLite;
 import database.GatewayException;
 import javax.swing.ScrollPaneConstants;
 
@@ -139,7 +141,7 @@ public class PatientRecordView extends JTabbedPane {
 		lab7.setPreferredSize(new Dimension(145, 30));
 		lab7.setHorizontalAlignment(JLabel.CENTER);
 		
-		DocumentsTabView docsView = new DocumentsTabView();
+		DocumentsTabView docsView = new DocumentsTabView(homeModel.getDtg(), patient);
 		this.addTab(Tabs.docs, null, docsView, null);
 		this.setTabComponentAt(6, lab7);
 		

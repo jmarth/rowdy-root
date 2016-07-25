@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -24,10 +25,24 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
+import database.DocumentTableGateway;
+import database.GatewayException;
 import models.CL;
+import models.Document;
+import models.Patient;
 import net.coobird.thumbnailator.Thumbnails;
+import javax.swing.JList;
+import javax.swing.AbstractListModel;
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.BevelBorder;
 
 public class DocumentsTabView extends JPanel {
+	
+	private DocumentTableGateway dtg;
 	
 	private JScrollPane scroller;
 	
@@ -46,12 +61,27 @@ public class DocumentsTabView extends JPanel {
 	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF FILES", "pdf");
 	
 	private File filePath;
+	private JPanel filesPanel;
+	private JList fileList;
+	private List<Document> docList;
+	private Patient p;
 	
-	public DocumentsTabView() {
+	public DocumentsTabView(DocumentTableGateway dtg, Patient p) {
 		
 		this.setLayout(new BorderLayout());
+		this.dtg = dtg;
+		this.p = p;
+		
+		try {
+			docList = dtg.fetchPatientDocuments(p);
+		} catch (GatewayException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		
 		pane = new JPanel();
+		pane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 		pane.setBackground(CL.antiqueWhite);
 		
@@ -79,9 +109,38 @@ public class DocumentsTabView extends JPanel {
 		buttonPanel.add(uploadButton);
 		
 		add(scroller, BorderLayout.CENTER);
+		
+		filesPanel = new JPanel();
+		filesPanel.setBackground(Color.CYAN);
+		FlowLayout flowLayout = (FlowLayout) filesPanel.getLayout();
+		flowLayout.setHgap(10);
+		scroller.setRowHeaderView(filesPanel);
+		
+		fileList = new JList();
+		fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		fileList.setForeground(Color.DARK_GRAY);
+		fileList.setFont(new Font("Sitka Heading", Font.BOLD, 15));
+		fileList.setBackground(Color.CYAN);
+		fileList.setModel(new AbstractListModel() {
+			String[] values = new String[] {"johsingya.jpg"};
+			public int getSize() {
+				return values.length;
+			}
+			public Object getElementAt(int index) {
+				return values[index];
+			}
+		});
+		filesPanel.add(fileList);
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
 	
+	
+	
+	
+	/**
+	 * 
+	 * @param filePath
+	 */
 	private void loadPDF(File filePath) {
 		int numPages, i;
 		JLabel label = null;
