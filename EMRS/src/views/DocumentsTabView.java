@@ -23,6 +23,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.jdesktop.swingx.JXBusyLabel;
 
 import models.CL;
 import net.coobird.thumbnailator.Thumbnails;
