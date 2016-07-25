@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -42,6 +43,8 @@ public class DocumentsTabView extends JPanel {
 	
 	private final JFileChooser fc = new JFileChooser();
 	
+	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF FILES", "pdf");
+	
 	private File filePath;
 	
 	public DocumentsTabView() {
@@ -53,6 +56,9 @@ public class DocumentsTabView extends JPanel {
 		pane.setBackground(CL.antiqueWhite);
 		
 		scroller = new JScrollPane(pane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		
+		fc.setFileFilter(filter);
 		
 		uploadButton = new JButton("Upload");
 		uploadButton.addActionListener(new ActionListener() {
