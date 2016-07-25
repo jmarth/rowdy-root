@@ -28,6 +28,7 @@ import javax.swing.SwingWorker;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.jdesktop.swingx.JXBusyLabel;
 
 import models.CL;
 import net.coobird.thumbnailator.Thumbnails;
@@ -48,7 +49,7 @@ public class DocumentsTabView extends JPanel implements PropertyChangeListener {
 	
 	private final JFileChooser fc = new JFileChooser();
 	
-	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF FILES", "pdf");
+	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Files", "pdf");
 	
 	private File filePath;
 	
