@@ -91,4 +91,85 @@ public class DocumentTableGatewaySQLite implements DocumentTableGateway {
 		
 		return documents;
 	}
+	
+	/**
+	 * Insert Document into Database
+	 */
+	public long insertDocument(Document d) throws GatewayException {
+		
+		//init new id to invalid
+		long newId = 0;
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.prepareStatement("insert INTO documents (pid,"
+					+ " name,"
+					+ " path,"
+					+ " type) "
+					+ " values ( ?, ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			st.setLong(1, d.getPid());
+			st.setString(2, d.getName());
+			st.setString(3, d.getPath());
+			st.setString(4, d.getType());
+	
+			st.executeUpdate();
+			
+			//get the generated key
+			rs = st.getGeneratedKeys();
+			
+			if(rs != null && rs.next()) {
+			    newId = rs.getLong(1);			    
+			} else {
+				throw new GatewayException("Could not insert new record.");
+			}
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+				
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+		return newId;
+	}
+	
+	/**
+	 * Remove Document from the DB
+	 * 
+	 * @param Document to remove
+	 */
+	public void removeDocument(Long did) throws GatewayException{
+		
+		PreparedStatement st = null;
+		
+		try {
+			
+			st = conn.prepareStatement("DELETE FROM documents"
+					+ " WHERE id = ? ", PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			st.setLong(1, did);
+
+			st.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+				
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+	}
 }

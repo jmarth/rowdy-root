@@ -42,4 +42,8 @@ public class DocumentListController extends AbstractListModel {
 		return myList.getList().size();
 	}
 	
+	public void setList(DocumentList dl){
+		myList = dl;
+	}
+	
 }

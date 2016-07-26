@@ -1,5 +1,6 @@
 package views;
 
+import org.apache.commons.io.FilenameUtils;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -34,7 +35,10 @@ import models.DocumentList;
 import models.Patient;
 import net.coobird.thumbnailator.Thumbnails;
 import javax.swing.JList;
+import javax.imageio.ImageIO;
 import javax.swing.AbstractListModel;
+import javax.swing.BorderFactory;
+
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.ListSelectionModel;
@@ -43,6 +47,10 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.BevelBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.ScrollPaneConstants;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 public class DocumentsTabView extends JPanel {
 	
@@ -62,7 +70,7 @@ public class DocumentsTabView extends JPanel {
 	
 	private final JFileChooser fc = new JFileChooser();
 	
-	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF FILES", "pdf");
+	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF FILES", "pdf", "jpg");
 	
 	private File filePath;
 	private JPanel filesPanel;
@@ -71,8 +79,10 @@ public class DocumentsTabView extends JPanel {
 	private DocumentList dl;
 	private Patient p;
 	private DocumentListController docListController;
+	private JScrollPane docScrollPane;
+	private JButton btnRemoveDocument;
 	
-	public DocumentsTabView(DocumentTableGateway dtg, Patient p) {
+	public DocumentsTabView(final DocumentTableGateway dtg, final Patient p) {
 		
 		this.setLayout(new BorderLayout());
 		this.dtg = dtg;
@@ -97,16 +107,32 @@ public class DocumentsTabView extends JPanel {
 		
 		uploadButton = new JButton("Upload");
 		uploadButton.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// Add and insert into DB.. update JList
 				int retval = fc.showOpenDialog(null);
 				
 				if (retval == JFileChooser.APPROVE_OPTION) {
 					pane.removeAll();
 					filePath = fc.getSelectedFile();
-					loadPDF(filePath);
+				} else {
+					return;
 				}
+				
+				String ext = FilenameUtils.getExtension(filePath.getAbsolutePath());
+				Document tmpDoc = new Document(p.getId(), filePath.getName(), filePath.getAbsolutePath(), ext);
+				try {
+					Long newId = dtg.insertDocument(tmpDoc);
+					tmpDoc.setId(newId);
+				} catch (GatewayException e1) {
+					System.out.println(e1.getMessage());
+				}
+				
+				dl.addDocumentToList(tmpDoc);
+				docListController.setList(dl);
+				
+				fileList.repaint();
+				fileList.updateUI();
 			}
 		});
 		
@@ -117,12 +143,34 @@ public class DocumentsTabView extends JPanel {
 		
 		filesPanel = new JPanel();
 		filesPanel.setBackground(Color.CYAN);
-		FlowLayout flowLayout = (FlowLayout) filesPanel.getLayout();
-		flowLayout.setHgap(10);
 		scroller.setRowHeaderView(filesPanel);
+		GridBagLayout gbl_filesPanel = new GridBagLayout();
+		gbl_filesPanel.columnWidths = new int[]{120, 0};
+		gbl_filesPanel.rowHeights = new int[]{600, 0, 0};
+		gbl_filesPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_filesPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		filesPanel.setLayout(gbl_filesPanel);
+		
+		docScrollPane = new JScrollPane();
+		docScrollPane.setBorder(BorderFactory.createEmptyBorder());
+		docScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		docScrollPane.setPreferredSize(new Dimension(120, 600));
+		GridBagConstraints gbc_docScrollPane = new GridBagConstraints();
+		gbc_docScrollPane.fill = GridBagConstraints.VERTICAL;
+		gbc_docScrollPane.insets = new Insets(0, 0, 5, 0);
+		gbc_docScrollPane.anchor = GridBagConstraints.NORTHWEST;
+		gbc_docScrollPane.gridx = 0;
+		gbc_docScrollPane.gridy = 0;
+		filesPanel.add(docScrollPane, gbc_docScrollPane);
 		
 		
 		fileList = new JList(docListController);
+		fileList.setVisibleRowCount(10);
+		fileList.setBorder(null);
+		docScrollPane.setViewportView(fileList);
+		
+		// Mouse listener for selected document
+		// Show selected document
 		fileList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent evt) {
@@ -130,7 +178,22 @@ public class DocumentsTabView extends JPanel {
 					int index = fileList.locationToIndex(evt.getPoint());
 					selectedDocument = docListController.getElementAt(index);
 					
+					pane.removeAll();
+					
 					// Open the selected Document onto the screen
+					File file = new File(selectedDocument.getPath());
+					
+					if(selectedDocument.getType().equalsIgnoreCase("pdf")){
+						loadPDF(file);
+					} else if(selectedDocument.getType().equalsIgnoreCase("jpg")){
+						loadJPG(file);
+					}
+					
+					// Calls to recreate the pane after selected file
+					pane.updateUI();
+					pane.validate();
+					pane.repaint();
+					
 				}
 			}
 		});
@@ -140,7 +203,35 @@ public class DocumentsTabView extends JPanel {
 		fileList.setBackground(Color.CYAN);
 		fileList.setCellRenderer(new DocumentListCellRenderer());
 		
-		filesPanel.add(fileList);
+		btnRemoveDocument = new JButton("Remove");
+		btnRemoveDocument.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				// Do the removing part
+				int selectedIndex = fileList.getSelectedIndex();
+				Document selectedDocument = docListController.getElementAt(selectedIndex);
+				
+				try {
+					dtg.removeDocument(selectedDocument.getId());
+				} catch (GatewayException e) {
+					System.out.println(e.getMessage());
+				}
+				dl.removeDocumentFromList(selectedDocument);
+				docListController.setList(dl);
+				
+				// Calls to clear pane after deletion of file
+				pane.removeAll();
+				pane.updateUI();
+				pane.validate();
+				pane.repaint();
+				
+				fileList.repaint();
+				fileList.updateUI();
+			}
+		});
+		GridBagConstraints gbc_btnRemoveDocument = new GridBagConstraints();
+		gbc_btnRemoveDocument.gridx = 0;
+		gbc_btnRemoveDocument.gridy = 1;
+		filesPanel.add(btnRemoveDocument, gbc_btnRemoveDocument);
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
 	
@@ -151,14 +242,14 @@ public class DocumentsTabView extends JPanel {
 	 * 
 	 * @param filePath
 	 */
-	private void loadPDF(File filePath) {
+	private void loadPDF(File file) {
 		int numPages, i;
 		JLabel label = null;
 		BufferedImage temp = null;
 		BufferedImage scaled = null;
 		
 		try {
-			doc = PDDocument.load(filePath);
+			doc = PDDocument.load(file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -187,7 +278,30 @@ public class DocumentsTabView extends JPanel {
 			e1.printStackTrace();
 		}
 		doc = null;
-		
+	}
+	
+	/**
+	 * Load .jpg file into the pane
+	 * @param filePath File path of the .jpg to load into pane
+	 */
+	private void loadJPG(File file){
+		BufferedImage image = null;
+        try
+        {
+          image = ImageIO.read(file);
+        }
+        catch (Exception e)
+        {
+          e.printStackTrace();
+          System.exit(1);
+        }
+        
+        ImageIcon imageIcon = new ImageIcon(image);
+        JLabel jLabel = new JLabel();
+        jLabel.setIcon(imageIcon);
+        jLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        jLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
+        pane.add(jLabel, BorderLayout.CENTER);
 	}
 
 }

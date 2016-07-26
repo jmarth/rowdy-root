@@ -46,10 +46,17 @@ public class Document {
 		
 		return name;
 	}
+	
+	
 
 	
 	// ----------------------------- GETTERS AND SETTERS ---------------------------------------------
 		
+	@Override
+	public String toString() {
+		return "Document [id=" + id + ", pid=" + pid + ", name=" + name + ", path=" + path + ", type=" + type + "]";
+	}
+
 	public long getId() {
 		return id;
 	}
