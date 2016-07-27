@@ -148,9 +148,9 @@ public class HomeView extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				
-				String searchText = textFieldSearch.getText().toLowerCase();
+				String searchText = textFieldSearch.getText();
 				
-				homeModel.getPatientsView().filter(searchText);
+				homeModel.getPatientsView().filter(searchText.toLowerCase());
 				
 				logger.info("User entered into search: " + searchText);
 			}
