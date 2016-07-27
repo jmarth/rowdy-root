@@ -132,8 +132,8 @@ public class PatientRecordView extends JTabbedPane {
 		lab6.setPreferredSize(new Dimension(145, 30));
 		lab6.setHorizontalAlignment(JLabel.CENTER);
 		
-		JPanel panel_3 = new JPanel();
-		this.addTab(Tabs.labs, null, panel_3, null);
+		LabsAndProceduresTabView labs  = new LabsAndProceduresTabView(patient, this, homeModel.getSrg(), homeModel.getSttg());
+		this.addTab(Tabs.labs, null, labs, null);
 		this.setTabComponentAt(5, lab6);
 		
 		// create documents tab
