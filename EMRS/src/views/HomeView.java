@@ -275,7 +275,7 @@ public class HomeView extends JFrame {
 			}
 		});
 		
-		btnAllergyAlert = new JButton("ALLERGY ALERT ! !");
+		btnAllergyAlert = new JButton("ALLERGY ALERT");
 		btnAllergyAlert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				 PatientRecordView prv = new PatientRecordView(homeModel, p);
@@ -289,8 +289,8 @@ public class HomeView extends JFrame {
 			     
 			}
 		});
-		btnAllergyAlert.setForeground(new Color(255, 255, 0));
-		btnAllergyAlert.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 16));
+		btnAllergyAlert.setForeground(CL.lightOrange);
+		btnAllergyAlert.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnAllergyAlert.setOpaque(true);
 		btnAllergyAlert.setContentAreaFilled(false);
 		btnAllergyAlert.setBorderPainted(false);
@@ -304,9 +304,9 @@ public class HomeView extends JFrame {
 					.addGap(6)
 					.addComponent(btnHome)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnAddPatient, 0, 167, 300)
+					.addComponent(btnAddPatient, 0, 130, 160)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnFindPatient, 0, 167, 300)
+					.addComponent(btnFindPatient, 0, 130, 160)
 					.addPreferredGap(ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
 					.addComponent(btnAllergyAlert)
 					.addGap(36)
@@ -326,7 +326,7 @@ public class HomeView extends JFrame {
 					.addComponent(textFieldSearch, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(lblPatientSearch, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
 					.addComponent(btnLogout, 0, 0, Short.MAX_VALUE)
-					.addComponent(btnAllergyAlert))
+					.addComponent(btnAllergyAlert, 0, 0, Short.MAX_VALUE))
 				.addComponent(btnHome, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
 		);
 		lblPatientSearch.setForeground(new Color(255, 255, 255));

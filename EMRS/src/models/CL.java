@@ -73,6 +73,8 @@ public final class CL {
 	
 	public static final Color blueGrey = Color.decode("#CFD8DC");
 	
+	public static final Color lightOrange = Color.decode("#ffb861");
+	
 	
 	/**		Color Palette generated from palleton.com  **/
 	
