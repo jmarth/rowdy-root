@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableModel;
 
 import database.GatewayException;
 import database.VitalsTableGateway;
+import models.HomeModel;
 import models.Patient;
 import models.Tabs;
 import models.Vitals;
@@ -42,14 +43,16 @@ public class VitalsTabView extends JPanel {
 	private Patient patient;
 	private int selectedRow;
 	
+	private final HomeModel homeModel;
+	
 	/**
 	 * Create the panel.
 	 */
-	public VitalsTabView(final Patient patient, final JTabbedPane tabbedPane, final VitalsTableGateway vtg) {
+	public VitalsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
 		
-		this.vtg = vtg;
+		this.vtg = homeModel.getVitalstg();
 		this.patient = patient;
-		
+		this.homeModel = homeModel;
 		vitalsTable.setEnabled(false);
 	
 		
@@ -80,7 +83,7 @@ public class VitalsTabView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int index = tabbedPane.indexOfTab(Tabs.vitals);
 				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, new VitalsTabNewVitalsView(tabbedPane, patient, VitalsTabView.this, vtg, vitalsTable, myVitalsList, vl, null, false));
+				tabbedPane.setComponentAt(index, new VitalsTabNewVitalsView(tabbedPane, patient, VitalsTabView.this, homeModel, vitalsTable, myVitalsList, vl, null, false));
 			}
 		});
 		
@@ -158,7 +161,7 @@ public class VitalsTabView extends JPanel {
 				//System.out.println("selected row: "+selectedRow+"\tvid: "+tmp.getId());
 
 				// Get tab of vitals and change panel
-				VitalsTabNewVitalsView vnv = new VitalsTabNewVitalsView(tabbedPane, patient, VitalsTabView.this, vtg, vitalsTable, myVitalsList, vl, tmp, true);
+				VitalsTabNewVitalsView vnv = new VitalsTabNewVitalsView(tabbedPane, patient, VitalsTabView.this, homeModel, vitalsTable, myVitalsList, vl, tmp, true);
 				
 				// swap the center component
 				int index = tabbedPane.indexOfTab(Tabs.vitals);

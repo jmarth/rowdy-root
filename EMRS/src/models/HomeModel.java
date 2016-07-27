@@ -11,6 +11,8 @@ import javax.swing.JTextField;
 import database.AllergyTableGateway;
 import database.AllergyTableGatewayMySQL;
 import database.AllergyTableGatewaySQLite;
+import database.CommentTableGateway;
+import database.CommentTableGatewaySQLite;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
@@ -41,7 +43,8 @@ public class HomeModel {
 	private VisitTableGateway vtg = null;
 	private SketchTableGateway stg = null;
 	private VitalsTableGateway vitalstg =null;
-	
+	private CommentTableGateway ctg =null;
+
 
 	
 	public HomeModel(HomeView homeView) {
@@ -63,6 +66,7 @@ public class HomeModel {
 			vtg = new VisitTableGatewaySQLite();
 			stg = new SketchTableGatewaySQLite();
 			vitalstg = new VitalsTableGatewaySQLite();
+			ctg = new CommentTableGatewaySQLite();
 			
 			vl.setGateway(vtg);
         	vl.loadFromGateway();
@@ -147,5 +151,13 @@ public class HomeModel {
 
 	public void setStg(SketchTableGateway stg) {
 		this.stg = stg;
+	}
+	
+	public CommentTableGateway getCtg() {
+		return ctg;
+	}
+
+	public void setCtg(CommentTableGateway ctg) {
+		this.ctg = ctg;
 	}
 }
