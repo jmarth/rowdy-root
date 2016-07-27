@@ -25,7 +25,6 @@ import models.CL;
 import models.HomeModel;
 import models.Patient;
 import models.PatientList;
-import models.Tabs;
 import models.Visit;
 import models.VisitList;
 

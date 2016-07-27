@@ -38,7 +38,6 @@ import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
 import database.VisitTableGateway;
 import models.Allergy;
-import models.CL;
 import models.HomeModel;
 import models.Patient;
 import models.Tabs;
@@ -512,6 +511,7 @@ public class VisitTabViewNewVisit extends JPanel {
 				firstSketch.setContentPane(firstSketch.getContentPane());
 				firstSketch.setSize(new Dimension(600,600));
 				firstSketch.setResizable(false);
+				
 				panel_1 = (JPanel) firstSketch.getContentPane();
 				panel_1.setVisible(true);
 				firstSketch.setVisible(true);

@@ -1,28 +1,40 @@
 package views;
 
-import org.apache.commons.io.FilenameUtils;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.ListSelectionModel;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
 
@@ -33,24 +45,6 @@ import models.CL;
 import models.Document;
 import models.DocumentList;
 import models.Patient;
-import net.coobird.thumbnailator.Thumbnails;
-import javax.swing.JList;
-import javax.imageio.ImageIO;
-import javax.swing.AbstractListModel;
-import javax.swing.BorderFactory;
-
-import java.awt.Color;
-import java.awt.Font;
-import javax.swing.ListSelectionModel;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.BevelBorder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.ScrollPaneConstants;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 
 public class DocumentsTabView extends JPanel {
 	
