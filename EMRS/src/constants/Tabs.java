@@ -1,4 +1,4 @@
-package models;
+package constants;
 
 public final class Tabs {
 	
