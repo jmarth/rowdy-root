@@ -27,8 +27,10 @@ import javax.swing.event.ChangeListener;
 
 import models.Allergy;
 import models.AllergyList;
+import models.CL;
 import models.HomeModel;
 import models.Patient;
+import models.Tabs;
 import models.VisitList;
 
 import javax.swing.JSeparator;
@@ -46,8 +48,6 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import constants.CL;
-import constants.Tabs;
 import database.AllergyTableGatewayMySQL;
 import database.DocumentTableGateway;
 import database.DocumentTableGatewaySQLite;

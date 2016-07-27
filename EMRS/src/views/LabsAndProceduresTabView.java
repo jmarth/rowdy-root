@@ -18,10 +18,10 @@ import javax.swing.SwingConstants;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
-import constants.CL;
 import database.GatewayException;
 import database.SurgeryTableGateway;
 import database.SurgeryTemplatesTableGateway;
+import models.CL;
 import models.Patient;
 import models.Surgery;
 
