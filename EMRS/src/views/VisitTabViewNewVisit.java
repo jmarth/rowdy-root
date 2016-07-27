@@ -183,7 +183,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		this.tabbedPane = tabbedPane;
 		this.homeModel = homeModel;
 		
-		// Put all GUI lines in a seperate method to keep clean :)
+		// Put all GUI lines in a separate method to keep clean :)
 		createView();
 
 	}
@@ -205,11 +205,11 @@ public class VisitTabViewNewVisit extends JPanel {
 	public void createView(){
 		setLayout(new BorderLayout(0, 0));
 		
-		JScrollPane scrollPane = new JScrollPane();
-		add(scrollPane);
+		
 		
 		JPanel mainPane = new JPanel();
-		scrollPane.setViewportView(mainPane);
+		//JScrollPane scrollPane = new JScrollPane(mainPane);
+		add(mainPane);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
@@ -227,20 +227,21 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblCc.gridy = 0;
 		mainPane.add(lblCc, gbc_lblCc);
 		
-		JScrollPane scrollPane_Cc = new JScrollPane();
-		GridBagConstraints gbc_scrollPane_Cc = new GridBagConstraints();
-		gbc_scrollPane_Cc.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_Cc.anchor = GridBagConstraints.WEST;
-		gbc_scrollPane_Cc.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPane_Cc.gridx = 0;
-		gbc_scrollPane_Cc.gridy = 1;
-		mainPane.add(scrollPane_Cc, gbc_scrollPane_Cc);
+		
+		GridBagConstraints gbc_txtrCC_Cc = new GridBagConstraints();
+		gbc_txtrCC_Cc.fill = GridBagConstraints.BOTH;
+		gbc_txtrCC_Cc.anchor = GridBagConstraints.WEST;
+		gbc_txtrCC_Cc.insets = new Insets(0, 0, 5, 5);
+		gbc_txtrCC_Cc.gridx = 0;
+		gbc_txtrCC_Cc.gridy = 1;
+		
 
 		txtrCC.setColumns(40);
 		txtrCC.setRows(4);
 		txtrCC.setWrapStyleWord(true);
 		txtrCC.setLineWrap(true);
-		scrollPane_Cc.setViewportView(txtrCC);
+		mainPane.add(txtrCC, gbc_txtrCC_Cc);
+
 
 		
 		JLabel lblPed = new JLabel("Physical Exam Detail:");
@@ -630,24 +631,21 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblAp.gridy = 12;
 		mainPane.add(lblAp, gbc_lblAp);
 		
-		JScrollPane scrollPane_AP = new JScrollPane();
-		GridBagConstraints gbc_scrollPane_AP = new GridBagConstraints();
-		gbc_scrollPane_AP.insets = new Insets(0, 0, 5, 5);
-		gbc_scrollPane_AP.anchor = GridBagConstraints.WEST;
-		gbc_scrollPane_AP.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane_AP.gridx = 0;
-		gbc_scrollPane_AP.gridy = 13;
-		mainPane.add(scrollPane_AP, gbc_scrollPane_AP);
+		GridBagConstraints gbc_tstrTextarea_AP = new GridBagConstraints();
+		gbc_tstrTextarea_AP.insets = new Insets(0, 0, 5, 5);
+		gbc_tstrTextarea_AP.anchor = GridBagConstraints.WEST;
+		gbc_tstrTextarea_AP.fill = GridBagConstraints.BOTH;
+		gbc_tstrTextarea_AP.gridx = 0;
+		gbc_tstrTextarea_AP.gridy = 13;
+		
 		
 		txtrTextarea.setColumns(40);
 		txtrTextarea.setRows(4);
 		txtrTextarea.setWrapStyleWord(true);
 		txtrTextarea.setLineWrap(true);
-		scrollPane_AP.setViewportView(txtrTextarea);
-		
-		
-		scrollPane.setRowHeaderView(panel_1);
-		
+		mainPane.add(txtrTextarea, gbc_tstrTextarea_AP);
+
+				
 		JPanel panel = new JPanel();
 		add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));

@@ -42,6 +42,7 @@ import javax.swing.SwingConstants;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -61,6 +62,19 @@ public class VisitsTabView extends JPanel {
 	private JPanel scrollPanel;
 	private JLabel iconLabel;
 	private JSplitPane splitPane;
+	private JPanel headerPanel;
+	
+	private boolean painted = false;
+
+	@Override
+	public void paint(Graphics g) {
+	    super.paint(g);
+
+	    if (!painted) {
+	        painted = true;
+	        splitPane.setDividerLocation(0.5d);
+	    }
+	}
 	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
 		this.patient = patient;
 		this.homeModel = homeModel;
@@ -70,7 +84,10 @@ public class VisitsTabView extends JPanel {
 		
 		iconLabel = new JLabel();
 		iconLabel.setIcon(new ImageIcon("medical_history_icon.jpg"));
-		iconLabel.setFont(new Font("Roboto", Font.BOLD, 30));
+		iconLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
+		
+		headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		headerPanel.setBackground(CL.belize);
 				
 		mainTaskPane = new JXTaskPaneContainer();
 		
@@ -78,7 +95,7 @@ public class VisitsTabView extends JPanel {
 		
 		splitPane = new JSplitPane();
 		splitPane.setEnabled(false);
-		splitPane.setResizeWeight(0.5);
+		splitPane.setResizeWeight(0.5d);
 		splitPane.setDividerSize(3);
 		
 		
@@ -94,6 +111,8 @@ public class VisitsTabView extends JPanel {
 		
 		splitPane.setLeftComponent(leftPane);
 		splitPane.setRightComponent(btnNewVisit);
+		
+		splitPane.setDividerLocation(0.5d);
 		
 		add(splitPane, BorderLayout.CENTER);
 	
@@ -126,7 +145,12 @@ public class VisitsTabView extends JPanel {
 			String date = v.getDateCreated();
 			date = date.substring(0, date.length() - 3);
 			String[] data = date.split(" ");
-			pane.setTitle("Date: " + data[0] + ", Time: " + data[1] + "\t|\t" + v.getChiefComplaint());
+			String cc = v.getChiefComplaint();
+			cc.trim();
+			if (cc.length() > 40) {
+				cc = cc.substring(0, 40) + "...";
+			}
+			pane.setTitle("Date: " + data[0] + ", Time: " + data[1] + "\t|\t" + cc);
 			pane.setAnimated(false);
 			pane.setCollapsed(true);
 			pane.setScrollOnExpand(true);
