@@ -18,7 +18,9 @@ import javax.swing.JTextArea;
 
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
+import database.GatewayException;
 import database.SurgeryTemplatesTableGateway;
+import models.Surgery;
 import models.SurgeryTemplate;
 import models.SurgeryTemplatesList;
 
@@ -68,6 +70,7 @@ public class NewProcedureView extends JPanel {
 		comboboxPanel.add(comboBox);
 		
 		textArea = new JTextArea();
+		textArea.setText("");
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setColumns(60);
@@ -81,6 +84,27 @@ public class NewProcedureView extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				Object tmp = comboBox.getSelectedItem();
+				if (tmp == null) {
+					return;
+				}
+				String title = (String) tmp.toString();
+				String body = textArea.getText();
+				long pid = parent.getPatient().getId();
+				
+				long newID = 0;
+				
+				Surgery s = new Surgery(0, pid, title, body);
+				
+				try {
+					newID = parent.gate1.insertSurgery(s);
+				} catch (GatewayException e1) {
+					e1.printStackTrace();
+				}
+				
+				s.setID(newID);
+				
+				parent.resetAndUpdate();
 				
 			}
 			
