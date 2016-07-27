@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -9,17 +10,21 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
 import database.GatewayException;
 import database.SurgeryTemplatesTableGateway;
+import models.CL;
 import models.Surgery;
 import models.SurgeryTemplate;
 import models.SurgeryTemplatesList;
@@ -64,10 +69,18 @@ public class NewProcedureView extends JPanel {
 		setLayout(new BorderLayout());
 		
 		mainPanel = new JPanel(new BorderLayout());
+		
+		titleLabel = new JLabel("Surgical Templates:");
+		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		titleLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+
 			
 		setupComboBox();
 		comboboxPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		comboboxPanel.add(titleLabel);
 		comboboxPanel.add(comboBox);
+		
+		
 		
 		textArea = new JTextArea();
 		textArea.setText("");
@@ -75,6 +88,7 @@ public class NewProcedureView extends JPanel {
 		textArea.setWrapStyleWord(true);
 		textArea.setColumns(60);
 		textArea.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		textArea.setBorder(BorderFactory.createLineBorder(CL.blueGrey, 3));
 		
 		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		

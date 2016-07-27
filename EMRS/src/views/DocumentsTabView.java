@@ -28,9 +28,11 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JSplitPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -45,6 +47,7 @@ import models.CL;
 import models.Document;
 import models.DocumentList;
 import models.Patient;
+import net.coobird.thumbnailator.Thumbnails;
 
 public class DocumentsTabView extends JPanel {
 	
@@ -52,9 +55,17 @@ public class DocumentsTabView extends JPanel {
 	
 	private JScrollPane scroller;
 	
-	private JPanel pane;
+	private JScrollPane fileScroller;
+	
+	private JSplitPane splitPane;
+	
+	private JPanel docPane;
 	
 	private JPanel buttonPanel;
+	
+	private JPanel parentPane;
+	
+	private JPanel removeButtonPane;
 	
 	private static PDDocument doc;
 	
@@ -64,7 +75,7 @@ public class DocumentsTabView extends JPanel {
 	
 	private final JFileChooser fc = new JFileChooser();
 	
-	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF FILES", "pdf", "jpg");
+	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Files", "pdf", "jpg");
 	
 	private File filePath;
 	private JPanel filesPanel;
@@ -89,14 +100,12 @@ public class DocumentsTabView extends JPanel {
 		docListController = new DocumentListController(dl);
 		
 		
-		pane = new JPanel();
-		pane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
-		pane.setBackground(CL.antiqueWhite);
+		docPane = new JPanel();
+		docPane.setLayout(new BoxLayout(docPane, BoxLayout.Y_AXIS));
+		docPane.setBackground(CL.antiqueWhite);
 		
-		scroller = new JScrollPane(pane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
-		
+		scroller = new JScrollPane(docPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+				
 		fc.setFileFilter(filter);
 		
 		uploadButton = new JButton("Upload");
@@ -107,7 +116,7 @@ public class DocumentsTabView extends JPanel {
 				int retval = fc.showOpenDialog(null);
 				
 				if (retval == JFileChooser.APPROVE_OPTION) {
-					pane.removeAll();
+					docPane.removeAll();
 					filePath = fc.getSelectedFile();
 				} else {
 					return;
@@ -133,35 +142,23 @@ public class DocumentsTabView extends JPanel {
 		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		buttonPanel.add(uploadButton);
 		
-		add(scroller, BorderLayout.CENTER);
+		parentPane = new JPanel(new BorderLayout());
+		parentPane.add(scroller, BorderLayout.CENTER);
+		parentPane.add(buttonPanel, BorderLayout.SOUTH);
+		parentPane.setBorder(null);
 		
-		filesPanel = new JPanel();
-		filesPanel.setBackground(Color.CYAN);
-		scroller.setRowHeaderView(filesPanel);
-		GridBagLayout gbl_filesPanel = new GridBagLayout();
-		gbl_filesPanel.columnWidths = new int[]{120, 0};
-		gbl_filesPanel.rowHeights = new int[]{600, 0, 0};
-		gbl_filesPanel.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gbl_filesPanel.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		filesPanel.setLayout(gbl_filesPanel);
-		
-		docScrollPane = new JScrollPane();
-		docScrollPane.setBorder(BorderFactory.createEmptyBorder());
-		docScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		docScrollPane.setPreferredSize(new Dimension(120, 600));
-		GridBagConstraints gbc_docScrollPane = new GridBagConstraints();
-		gbc_docScrollPane.fill = GridBagConstraints.VERTICAL;
-		gbc_docScrollPane.insets = new Insets(0, 0, 5, 0);
-		gbc_docScrollPane.anchor = GridBagConstraints.NORTHWEST;
-		gbc_docScrollPane.gridx = 0;
-		gbc_docScrollPane.gridy = 0;
-		filesPanel.add(docScrollPane, gbc_docScrollPane);
+		filesPanel = new JPanel(new BorderLayout());
+		filesPanel.setBackground(Color.WHITE);
 		
 		
 		fileList = new JList(docListController);
 		fileList.setVisibleRowCount(10);
-		fileList.setBorder(null);
-		docScrollPane.setViewportView(fileList);
+		fileList.setBorder(new EmptyBorder(5, 5, 5, 5));
+		fileList.setBackground(Color.WHITE);
+		
+		fileScroller = new JScrollPane(fileList);
+		
+		filesPanel.add(fileScroller, BorderLayout.CENTER);
 		
 		// Mouse listener for selected document
 		// Show selected document
@@ -172,7 +169,7 @@ public class DocumentsTabView extends JPanel {
 					int index = fileList.locationToIndex(evt.getPoint());
 					selectedDocument = docListController.getElementAt(index);
 					
-					pane.removeAll();
+					docPane.removeAll();
 					
 					// Open the selected Document onto the screen
 					File file = new File(selectedDocument.getPath());
@@ -184,9 +181,9 @@ public class DocumentsTabView extends JPanel {
 					}
 					
 					// Calls to recreate the pane after selected file
-					pane.updateUI();
-					pane.validate();
-					pane.repaint();
+					docPane.updateUI();
+					docPane.validate();
+					docPane.repaint();
 					
 				}
 			}
@@ -194,7 +191,6 @@ public class DocumentsTabView extends JPanel {
 		fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		fileList.setForeground(Color.DARK_GRAY);
 		fileList.setFont(new Font("Sitka Heading", Font.BOLD, 15));
-		fileList.setBackground(Color.CYAN);
 		fileList.setCellRenderer(new DocumentListCellRenderer());
 		
 		btnRemoveDocument = new JButton("Remove");
@@ -213,20 +209,37 @@ public class DocumentsTabView extends JPanel {
 				docListController.setList(dl);
 				
 				// Calls to clear pane after deletion of file
-				pane.removeAll();
-				pane.updateUI();
-				pane.validate();
-				pane.repaint();
+				docPane.removeAll();
+				docPane.updateUI();
+				docPane.validate();
+				docPane.repaint();
 				
 				fileList.repaint();
 				fileList.updateUI();
 			}
 		});
-		GridBagConstraints gbc_btnRemoveDocument = new GridBagConstraints();
-		gbc_btnRemoveDocument.gridx = 0;
-		gbc_btnRemoveDocument.gridy = 1;
-		filesPanel.add(btnRemoveDocument, gbc_btnRemoveDocument);
-		add(buttonPanel, BorderLayout.SOUTH);
+		
+		removeButtonPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		removeButtonPane.add(btnRemoveDocument);
+		
+		filesPanel.add(removeButtonPane, BorderLayout.SOUTH);
+		filesPanel.setBorder(null);
+		filesPanel.setPreferredSize(new Dimension(75, 900));
+		
+		splitPane = new JSplitPane();
+		splitPane.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+		splitPane.setDividerSize(0);
+		splitPane.setResizeWeight(0.25);
+		splitPane.setLeftComponent(filesPanel);
+		splitPane.setRightComponent(parentPane);
+		splitPane.setEnabled(false);
+		splitPane.setBorder(null);
+
+		
+
+		add(splitPane);
+
+		
 	}
 	
 	
@@ -258,9 +271,9 @@ public class DocumentsTabView extends JPanel {
 
 				label = new JLabel(new ImageIcon(temp));
 				label.setAlignmentX(Component.CENTER_ALIGNMENT);
-				pane.add(label);
+				docPane.add(label);
 				label = null;
-				pane.add(new JSeparator(SwingConstants.HORIZONTAL));
+				docPane.add(new JSeparator(SwingConstants.HORIZONTAL));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -290,12 +303,22 @@ public class DocumentsTabView extends JPanel {
           System.exit(1);
         }
         
-        ImageIcon imageIcon = new ImageIcon(image);
+        BufferedImage scaled = null;
+        
+        try {
+			scaled = Thumbnails.of(image).size(850, 1100).asBufferedImage();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+        
+        
+        ImageIcon imageIcon = new ImageIcon(scaled);
         JLabel jLabel = new JLabel();
         jLabel.setIcon(imageIcon);
         jLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         jLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
-        pane.add(jLabel, BorderLayout.CENTER);
+        docPane.add(jLabel, BorderLayout.CENTER);
 	}
 
 }

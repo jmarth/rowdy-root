@@ -78,7 +78,7 @@ public final class CL {
 	
 	/**		Color Palette generated from palleton.com  **/
 	
-	public static final Color red = Color.decode("#ff0018");
+	public static final Color red = Color.decode("#ff0000");
 	
 	public static final Color green = Color.decode("#b6ff00");
 	
