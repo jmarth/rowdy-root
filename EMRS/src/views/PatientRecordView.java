@@ -114,7 +114,7 @@ public class PatientRecordView extends JTabbedPane {
 		lab4.setPreferredSize(new Dimension(145, 30));
 		lab4.setHorizontalAlignment(JLabel.CENTER);
 				
-		JPanel VitalsTabView = new VitalsTabView(patient, this, homeModel.getVitalstg());
+		JPanel VitalsTabView = new VitalsTabView(patient, this, homeModel);
 		this.addTab(Tabs.vitals, null, VitalsTabView, null);
 		this.setTabComponentAt(3, lab4);
 		

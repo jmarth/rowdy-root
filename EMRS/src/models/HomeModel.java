@@ -13,6 +13,8 @@ import database.AllergyTableGatewayMySQL;
 import database.AllergyTableGatewaySQLite;
 import database.DocumentTableGateway;
 import database.DocumentTableGatewaySQLite;
+import database.CommentTableGateway;
+import database.CommentTableGatewaySQLite;
 import database.GatewayException;
 import database.PatientTableGateway;
 import database.PatientTableGatewayMySQL;
@@ -50,7 +52,8 @@ public class HomeModel {
 	private DocumentTableGateway dtg = null;
 	private SurgeryTemplatesTableGateway sttg = null;
 	private SurgeryTableGateway srg = null;
-	
+	private CommentTableGateway ctg =null;
+
 
 	
 	public HomeModel(HomeView homeView) {
@@ -73,6 +76,7 @@ public class HomeModel {
 			stg = new SketchTableGatewaySQLite();
 			vitalstg = new VitalsTableGatewaySQLite();
 			dtg = new DocumentTableGatewaySQLite();
+			ctg = new CommentTableGatewaySQLite();
 			
 			vl.setGateway(vtg);
         	vl.loadFromGateway();
@@ -184,5 +188,13 @@ public class HomeModel {
 
 	public void setSrg(SurgeryTableGateway srg) {
 		this.srg = srg;
+	}
+		
+	public CommentTableGateway getCtg() {
+		return ctg;
+	}
+
+	public void setCtg(CommentTableGateway ctg) {
+		this.ctg = ctg;
 	}
 }
