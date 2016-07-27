@@ -20,6 +20,8 @@ import database.PatientTableGatewaySQLite;
 import database.SketchTableGateway;
 import database.SketchTableGatewayMySQL;
 import database.SketchTableGatewaySQLite;
+import database.SurgeryTableGateway;
+import database.SurgeryTableGatewaySQLite;
 import database.SurgeryTemplatesTableGateway;
 import database.SurgeryTemplatesTableGatewaySQLite;
 import database.VisitTableGateway;
@@ -47,6 +49,7 @@ public class HomeModel {
 	private VitalsTableGateway vitalstg =null;
 	private DocumentTableGateway dtg = null;
 	private SurgeryTemplatesTableGateway sttg = null;
+	private SurgeryTableGateway srg = null;
 	
 
 	
@@ -74,8 +77,9 @@ public class HomeModel {
 			vl.setGateway(vtg);
         	vl.loadFromGateway();
         	
-        	setSttg(new SurgeryTemplatesTableGatewaySQLite());
-        	
+        	sttg = new SurgeryTemplatesTableGatewaySQLite();
+        	setSrg(new SurgeryTableGatewaySQLite());
+        	        	
 		} catch (GatewayException e) {
 			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
 			System.out.println(e);
@@ -172,5 +176,13 @@ public class HomeModel {
 
 	public void setSttg(SurgeryTemplatesTableGateway sttg) {
 		this.sttg = sttg;
+	}
+
+	public SurgeryTableGateway getSrg() {
+		return srg;
+	}
+
+	public void setSrg(SurgeryTableGateway srg) {
+		this.srg = srg;
 	}
 }
