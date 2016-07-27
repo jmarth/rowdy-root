@@ -47,11 +47,12 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
+import java.awt.FlowLayout;
 
 @SuppressWarnings("serial")
 public class VitalsTabNewVitalsView extends JPanel {
 
-	private static final Logger log = LogManager.getLogger(VitalsTabNewVitalsView2.class);
+	private static final Logger log = LogManager.getLogger(VitalsTabNewVitalsView.class);
 
 	JPanel oldPanel;
 	JTable vitalsTable;
@@ -80,18 +81,18 @@ public class VitalsTabNewVitalsView extends JPanel {
 	private JLabel lblBPSysUnit_1;
 	private JLabel lblWeightUnit;
 	private JTextArea textArea_Notes;
-	
+
 	private JTextArea textAreaAppend;
 	private JPanel panelComments;
 	private JPanel panel_CommentButtons;
-	
+
 	private VitalsList vl;
 
 	private List<Vitals> vitalsList;
 	private List<Comment> commentsList;
-	
+
 	private final HomeModel homeModel;
-	
+
 	private CommentTableGateway ctg;
 
 	// private String heightUnit;
@@ -109,24 +110,16 @@ public class VitalsTabNewVitalsView extends JPanel {
 		this.vitalsTable = vitalsTable;
 		this.vl = vl;
 		this.vitalsList = vitalsList;
-		
+
 		ctg = homeModel.getCtg();
 		
 		
-		// this can change, to decide: load all comments on vitalstabview or when open, grab them by typeid
-		
+		// this can change, to decide: load all comments on vitalstabview or
+		// when open, grab them by typeid
+
 		// need if null or vitals.getId() == 0 check...
 		// also this only goes into exists
-		
-		try {
-			commentsList = ctg.fetchCommentsForPatientByType(patient, Comment.vitals, vitals.getId());
-			System.out.println("\t"+vitals.getId());
-			System.out.println("comments list: "+commentsList.toString());
-		} catch (GatewayException e) {
-			e.printStackTrace();
-		}
-		
-		
+
 		oldPanel = vitalsPanel;
 
 		/*
@@ -147,7 +140,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 		 * 
 		 * System.out.println("Could not connect to DB"); e.printStackTrace(); }
 		 */
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////
@@ -163,12 +156,19 @@ public class VitalsTabNewVitalsView extends JPanel {
 		///////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////
-		
-		createExistingView(tabbedPane, patient, vitalsPanel, vtg, vitals, vitalsTable);
+		//createExistingView(tabbedPane, patient, vitalsPanel, vtg, vitals, vitalsTable);
+
 		if (exists) {
 
 			// System.out.println("exists: patientid = "+patient.getId()+"");
-
+			commentsList = null;
+			try {
+				commentsList = ctg.fetchCommentsForPatientByType(patient, Comment.vitals, vitals.getId());
+				//System.out.println("\t" + vitals.getId());
+				//System.out.println("comments list: " + commentsList.toString());
+			} catch (GatewayException e) {
+				e.printStackTrace();
+			}
 			createExistingView(tabbedPane, patient, vitalsPanel, vtg, vitals, vitalsTable);
 
 		} else {
@@ -651,16 +651,24 @@ public class VitalsTabNewVitalsView extends JPanel {
 
 	public void createExistingView(final JTabbedPane tabbedPane, final Patient patient, JPanel vitalsPanel,
 			final VitalsTableGateway vtg, Vitals v, final JTable vitalsTable) {
-
-		setLayout(new BorderLayout(0, 0));
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[] { 479, 0 };
+		gridBagLayout.rowHeights = new int[] { 596, 0 };
+		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
+		setLayout(gridBagLayout);
 
 		JPanel panel = new JPanel();
-		add(panel, BorderLayout.NORTH);
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.gridx = 0;
+		gbc_panel.gridy = 0;
+		add(panel, gbc_panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[] { 392, 0 };
-		gbl_panel.rowHeights = new int[] { 0, 434, 0, 33, 0 };
+		gbl_panel.rowHeights = new int[] { 0, 434, 0, 0, 0 };
 		gbl_panel.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panel.rowWeights = new double[] { 0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE };
+		gbl_panel.rowWeights = new double[] { 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
 		panel.setLayout(gbl_panel);
 
 		JButton btnAppend = new JButton("Append");
@@ -670,8 +678,6 @@ public class VitalsTabNewVitalsView extends JPanel {
 		gbc_btnAppend.gridx = 0;
 		gbc_btnAppend.gridy = 0;
 		panel.add(btnAppend, gbc_btnAppend);
-		
-		
 
 		JPanel panel_VitalsForm = new JPanel();
 		GridBagConstraints gbc_panel_VitalsForm = new GridBagConstraints();
@@ -925,26 +931,27 @@ public class VitalsTabNewVitalsView extends JPanel {
 		gbc_textArea_Notes.gridx = 2;
 		gbc_textArea_Notes.gridy = 12;
 		panel_VitalsForm.add(textArea_Notes, gbc_textArea_Notes);
-		
+
 		JPanel panel_CommentsMain = new JPanel();
-		panel_CommentsMain.setBorder(new TitledBorder(null, "Comments", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_CommentsMain
+				.setBorder(new TitledBorder(null, "Comments", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_CommentsMain = new GridBagConstraints();
-		gbc_panel_CommentsMain.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panel_CommentsMain.fill = GridBagConstraints.BOTH;
 		gbc_panel_CommentsMain.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_CommentsMain.gridx = 0;
 		gbc_panel_CommentsMain.gridy = 2;
 		panel.add(panel_CommentsMain, gbc_panel_CommentsMain);
 		GridBagLayout gbl_panel_CommentsMain = new GridBagLayout();
-		gbl_panel_CommentsMain.columnWidths = new int[]{392, 0};
-		gbl_panel_CommentsMain.rowHeights = new int[]{32, 0, 0};
-		gbl_panel_CommentsMain.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_CommentsMain.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_panel_CommentsMain.columnWidths = new int[] { 392, 0 };
+		gbl_panel_CommentsMain.rowHeights = new int[] { 128, 0, 0 };
+		gbl_panel_CommentsMain.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+		gbl_panel_CommentsMain.rowWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
 		panel_CommentsMain.setLayout(gbl_panel_CommentsMain);
-		
+
 		JScrollPane scrollPanelAppend = new JScrollPane();
 		scrollPanelAppend.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		GridBagConstraints gbc_scrollPanelAppend = new GridBagConstraints();
-		gbc_scrollPanelAppend.fill = GridBagConstraints.HORIZONTAL;
+		gbc_scrollPanelAppend.fill = GridBagConstraints.BOTH;
 		gbc_scrollPanelAppend.insets = new Insets(0, 0, 5, 0);
 		gbc_scrollPanelAppend.gridx = 0;
 		gbc_scrollPanelAppend.gridy = 0;
@@ -957,66 +964,70 @@ public class VitalsTabNewVitalsView extends JPanel {
 		gbl_panelAppend.columnWidths = new int[] { 392, 0 };
 		gbl_panelAppend.rowHeights = new int[] { 0, 0, 0 };
 		gbl_panelAppend.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panelAppend.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_panelAppend.rowWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
 		panelAppend.setLayout(gbl_panelAppend);
-		
+
 		textAreaAppend = new JTextArea();
 		textAreaAppend.setWrapStyleWord(true);
 		textAreaAppend.setLineWrap(true);
 		GridBagConstraints gbc_textAreaAppend = new GridBagConstraints();
 		gbc_textAreaAppend.insets = new Insets(0, 0, 5, 0);
-		gbc_textAreaAppend.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textAreaAppend.fill = GridBagConstraints.BOTH;
 		gbc_textAreaAppend.gridx = 0;
 		gbc_textAreaAppend.gridy = 0;
 		panelAppend.add(textAreaAppend, gbc_textAreaAppend);
-		
+
 		textAreaAppend.setVisible(false);
+
 		
-		JScrollPane scrollPane = new JScrollPane();
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 1;
-		panelAppend.add(scrollPane, gbc_scrollPane);
+		
 
 		// comments
-		
-		
+
 		panelComments = new JPanel();
-		scrollPane.setViewportView(panelComments);
-		
+
 		panelComments.setLayout(new BoxLayout(panelComments, BoxLayout.Y_AXIS));
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		panelComments.add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		panelComments.add(lblNewLabel_1);
-		
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		panelComments.add(lblNewLabel_2);
-		
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		panelComments.add(lblNewLabel_3);
-		
-		JLabel lblNewLabel_4 = new JLabel("New label");
-		panelComments.add(lblNewLabel_4);
+		GridBagConstraints gbc_panelComments = new GridBagConstraints();
+		gbc_panelComments.fill = GridBagConstraints.VERTICAL;
+		panelAppend.add(panelComments, gbc_panelComments);
 		
 		panel_CommentButtons = new JPanel();
 		GridBagConstraints gbc_panel_CommentButtons = new GridBagConstraints();
-		gbc_panel_CommentButtons.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panel_CommentButtons.fill = GridBagConstraints.BOTH;
 		gbc_panel_CommentButtons.gridx = 0;
 		gbc_panel_CommentButtons.gridy = 1;
 		panel_CommentsMain.add(panel_CommentButtons, gbc_panel_CommentButtons);
-		
+
 		JButton btnCancelComment = new JButton("Cancel");
 		panel_CommentButtons.add(btnCancelComment);
-		
+
 		JButton btnAddComment = new JButton("Add Comment");
 		panel_CommentButtons.add(btnAddComment);
 
 		panel_CommentButtons.setVisible(false);
 		
+		
+		panelComments.removeAll();
+		// hide panelComment
+		if (commentsList == null) {
+			//System.out.print("\n comments list is null! \n\n\n\n");
+		}
+		System.out.println(commentsList.toString());
+		panelComments.setVisible(true);
+		// and Append Button
+		for (Comment c : commentsList) {
+			JLabel tmpLabel = new JLabel(c.getCommentString(), JLabel.CENTER);
+			tmpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			panelComments.add(tmpLabel);
+			panelComments.add(new JSeparator(SwingConstants.HORIZONTAL));
+		}
+
+		// show textAreaAppend and confirm/cancel buttons
+		textAreaAppend.setVisible(false);
+		panel_CommentButtons.setVisible(false);
+		
+		
+
 		JPanel panel_Buttons = new JPanel();
 		GridBagConstraints gbc_panel_Buttons = new GridBagConstraints();
 		gbc_panel_Buttons.fill = GridBagConstraints.BOTH;
@@ -1039,43 +1050,39 @@ public class VitalsTabNewVitalsView extends JPanel {
 			}
 		});
 		panel_Buttons.add(btnUpdateVital);
-		
+
 		btnAppend.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				// hide panelComment
 				panelComments.setVisible(false);
 				// and Append Button
-				
-				
+
 				// show textAreaAppend and confirm/cancel buttons
 				textAreaAppend.setVisible(true);
 				panel_CommentButtons.setVisible(true);
-				
-				
-				
+
 				/*
-				editPanel.add(commentField, BorderLayout.CENTER);
-				editPanel.add(saveButton, BorderLayout.SOUTH);
-				
-				BorderLayout layout = (BorderLayout) masterPanel.getLayout();
-				masterPanel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
-				masterPanel.add(editPanel, BorderLayout.SOUTH);
-				
-				masterPanel.validate();
-				masterPanel.repaint();
-				*/
+				 * editPanel.add(commentField, BorderLayout.CENTER);
+				 * editPanel.add(saveButton, BorderLayout.SOUTH);
+				 * 
+				 * BorderLayout layout = (BorderLayout) masterPanel.getLayout();
+				 * masterPanel.remove(layout.getLayoutComponent(BorderLayout.
+				 * SOUTH)); masterPanel.add(editPanel, BorderLayout.SOUTH);
+				 * 
+				 * masterPanel.validate(); masterPanel.repaint();
+				 */
 			}
 		});
-		
+
 		btnCancelComment.addActionListener(new ActionListener() {
-			//TODO
+			// TODO
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				panelComments.removeAll();
 				// hide panelComment
-				System.out.println(commentsList.toString());
+				//System.out.println(commentsList.toString());
 				panelComments.setVisible(true);
 				// and Append Button
 				for (Comment c : commentsList) {
@@ -1084,48 +1091,43 @@ public class VitalsTabNewVitalsView extends JPanel {
 					panelComments.add(tmpLabel);
 					panelComments.add(new JSeparator(SwingConstants.HORIZONTAL));
 				}
-				
+
 				// show textAreaAppend and confirm/cancel buttons
 				textAreaAppend.setVisible(false);
 				panel_CommentButtons.setVisible(false);
-				
-				
-				
+
 				/*
-				editPanel.add(commentField, BorderLayout.CENTER);
-				editPanel.add(saveButton, BorderLayout.SOUTH);
-				
-				BorderLayout layout = (BorderLayout) masterPanel.getLayout();
-				masterPanel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
-				masterPanel.add(editPanel, BorderLayout.SOUTH);
-				
-				masterPanel.validate();
-				masterPanel.repaint();
-				*/
+				 * editPanel.add(commentField, BorderLayout.CENTER);
+				 * editPanel.add(saveButton, BorderLayout.SOUTH);
+				 * 
+				 * BorderLayout layout = (BorderLayout) masterPanel.getLayout();
+				 * masterPanel.remove(layout.getLayoutComponent(BorderLayout.
+				 * SOUTH)); masterPanel.add(editPanel, BorderLayout.SOUTH);
+				 * 
+				 * masterPanel.validate(); masterPanel.repaint();
+				 */
 			}
 		});
-		
+
 		btnAddComment.addActionListener(new ActionListener() {
-			//TODO
+			// TODO
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				Comment tmp = null;
-				
-				
+
 				// string builder...?
-				
+
 				String commentString = textAreaAppend.getText();
-				
+
 				tmp = new Comment(0, patient.getId(), Comment.vitals, vitals.getId(), commentString);
-				
+
 				try {
 					ctg.insertComment(tmp);
 				} catch (GatewayException e) {
 					e.printStackTrace();
 				}
-				
-				
+
 				JLabel tmpLabel = new JLabel(tmp.getCommentString(), JLabel.CENTER);
 				tmpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 				panelComments.add(tmpLabel);
@@ -1134,20 +1136,17 @@ public class VitalsTabNewVitalsView extends JPanel {
 				panelComments.setVisible(true);
 				textAreaAppend.setVisible(false);
 				panel_CommentButtons.setVisible(false);
-				
-				
-				
+
 				/*
-				editPanel.add(commentField, BorderLayout.CENTER);
-				editPanel.add(saveButton, BorderLayout.SOUTH);
-				
-				BorderLayout layout = (BorderLayout) masterPanel.getLayout();
-				masterPanel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
-				masterPanel.add(editPanel, BorderLayout.SOUTH);
-				
-				masterPanel.validate();
-				masterPanel.repaint();
-				*/
+				 * editPanel.add(commentField, BorderLayout.CENTER);
+				 * editPanel.add(saveButton, BorderLayout.SOUTH);
+				 * 
+				 * BorderLayout layout = (BorderLayout) masterPanel.getLayout();
+				 * masterPanel.remove(layout.getLayoutComponent(BorderLayout.
+				 * SOUTH)); masterPanel.add(editPanel, BorderLayout.SOUTH);
+				 * 
+				 * masterPanel.validate(); masterPanel.repaint();
+				 */
 			}
 		});
 

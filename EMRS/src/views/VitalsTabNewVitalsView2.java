@@ -6,6 +6,8 @@ import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+
 import javax.swing.JButton;
 
 import java.awt.GridBagLayout;
@@ -23,10 +25,13 @@ import javax.swing.table.DefaultTableModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import database.CommentTableGateway;
 import database.GatewayException;
 import database.VitalsTableGateway;
 import models.Vitals;
 import models.VitalsList;
+import models.Comment;
+import models.HomeModel;
 import models.Patient;
 import models.Tabs;
 
@@ -39,8 +44,10 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.border.TitledBorder;
+import java.awt.FlowLayout;
 
 @SuppressWarnings("serial")
 public class VitalsTabNewVitalsView2 extends JPanel {
@@ -82,6 +89,11 @@ public class VitalsTabNewVitalsView2 extends JPanel {
 	private VitalsList vl;
 
 	private List<Vitals> vitalsList;
+	private List<Comment> commentsList;
+	
+	private final HomeModel homeModel;
+	
+	private CommentTableGateway ctg;
 
 	// private String heightUnit;
 
@@ -89,15 +101,33 @@ public class VitalsTabNewVitalsView2 extends JPanel {
 	 * Create the panel.
 	 */
 	public VitalsTabNewVitalsView2(final JTabbedPane tabbedPane, Patient patient, JPanel vitalsPanel,
-			VitalsTableGateway gateway, JTable vitalsTable, List<Vitals> vitalsList, VitalsList vl, Vitals vitals,
+			final HomeModel homeModel, JTable vitalsTable, List<Vitals> vitalsList, VitalsList vl, Vitals vitals,
 			Boolean exists) {
-
+		this.homeModel = homeModel;
 		this.patient = patient;
 		this.vitals = vitals;
-		this.vtg = gateway;
+		this.vtg = homeModel.getVitalstg();
 		this.vitalsTable = vitalsTable;
 		this.vl = vl;
 		this.vitalsList = vitalsList;
+		
+		ctg = homeModel.getCtg();
+		
+		
+		// this can change, to decide: load all comments on vitalstabview or when open, grab them by typeid
+		
+		// need if null or vitals.getId() == 0 check...
+		// also this only goes into exists
+		
+		try {
+			commentsList = ctg.fetchCommentsForPatientByType(patient, Comment.vitals, vitals.getId());
+			System.out.println("\t"+vitals.getId());
+			System.out.println("comments list: "+commentsList.toString());
+		} catch (GatewayException e) {
+			e.printStackTrace();
+		}
+		
+		
 		oldPanel = vitalsPanel;
 
 		/*
@@ -201,8 +231,6 @@ public class VitalsTabNewVitalsView2 extends JPanel {
 			vitals.setId(vid);
 
 		} catch (GatewayException e) {
-
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -624,410 +652,387 @@ public class VitalsTabNewVitalsView2 extends JPanel {
 
 	public void createExistingView(final JTabbedPane tabbedPane, final Patient patient, JPanel vitalsPanel,
 			final VitalsTableGateway vtg, Vitals v, final JTable vitalsTable) {
-
-		setLayout(new BorderLayout(0, 0));
-
-		JPanel panel = new JPanel();
-		add(panel, BorderLayout.NORTH);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] { 392, 0 };
-		gbl_panel.rowHeights = new int[] { 0, 434, 0, 33, 0 };
-		gbl_panel.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panel.rowWeights = new double[] { 0.0, 1.0, 1.0, 1.0, Double.MIN_VALUE };
-		panel.setLayout(gbl_panel);
-
-		JButton btnAppend = new JButton("Append");
-		GridBagConstraints gbc_btnAppend = new GridBagConstraints();
-		gbc_btnAppend.fill = GridBagConstraints.VERTICAL;
-		gbc_btnAppend.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAppend.gridx = 0;
-		gbc_btnAppend.gridy = 0;
-		panel.add(btnAppend, gbc_btnAppend);
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{479, 0};
+		gridBagLayout.rowHeights = new int[]{596, 0};
+		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{1.0, Double.MIN_VALUE};
+		setLayout(gridBagLayout);
 		
-		
+				JPanel panel = new JPanel();
+				GridBagConstraints gbc_panel = new GridBagConstraints();
+				gbc_panel.fill = GridBagConstraints.BOTH;
+				gbc_panel.gridx = 0;
+				gbc_panel.gridy = 0;
+				add(panel, gbc_panel);
+				GridBagLayout gbl_panel = new GridBagLayout();
+				gbl_panel.columnWidths = new int[] { 392, 0 };
+				gbl_panel.rowHeights = new int[] { 0, 434, 0, 0, 0 };
+				gbl_panel.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+				gbl_panel.rowWeights = new double[] { 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
+				panel.setLayout(gbl_panel);
+				
+						JButton btnAppend = new JButton("Append");
+						GridBagConstraints gbc_btnAppend = new GridBagConstraints();
+						gbc_btnAppend.fill = GridBagConstraints.VERTICAL;
+						gbc_btnAppend.insets = new Insets(0, 0, 5, 0);
+						gbc_btnAppend.gridx = 0;
+						gbc_btnAppend.gridy = 0;
+						panel.add(btnAppend, gbc_btnAppend);
+						
+						
 
-		JPanel panel_VitalsForm = new JPanel();
-		GridBagConstraints gbc_panel_VitalsForm = new GridBagConstraints();
-		gbc_panel_VitalsForm.fill = GridBagConstraints.BOTH;
-		gbc_panel_VitalsForm.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_VitalsForm.gridx = 0;
-		gbc_panel_VitalsForm.gridy = 1;
-		panel.add(panel_VitalsForm, gbc_panel_VitalsForm);
-		GridBagLayout gbl_panel_VitalsForm = new GridBagLayout();
-		gbl_panel_VitalsForm.columnWidths = new int[] { 0, 0, 48, 0, 0, 0 };
-		gbl_panel_VitalsForm.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_panel_VitalsForm.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_panel_VitalsForm.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-				1.0, 0.0, Double.MIN_VALUE };
-		panel_VitalsForm.setLayout(gbl_panel_VitalsForm);
-
-		JLabel lblVitals = new JLabel("Vitals");
-		lblVitals.setFont(new Font("Tahoma", Font.BOLD, 11));
-		GridBagConstraints gbc_lblVitals = new GridBagConstraints();
-		gbc_lblVitals.insets = new Insets(0, 0, 5, 5);
-		gbc_lblVitals.gridx = 1;
-		gbc_lblVitals.gridy = 1;
-		panel_VitalsForm.add(lblVitals, gbc_lblVitals);
-
-		// BP
-
-		lblBloodPressuresys = new JLabel("BP(Sys):");
-		GridBagConstraints gbc_lblBloodPressuresys = new GridBagConstraints();
-		gbc_lblBloodPressuresys.anchor = GridBagConstraints.EAST;
-		gbc_lblBloodPressuresys.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBloodPressuresys.gridx = 1;
-		gbc_lblBloodPressuresys.gridy = 3;
-		panel_VitalsForm.add(lblBloodPressuresys, gbc_lblBloodPressuresys);
-
-		// set bps text
-		textField_BPSys = new JTextField();
-		textField_BPSys.setText(String.valueOf(v.getBps()));
-		GridBagConstraints gbc_textField_BPSys = new GridBagConstraints();
-		gbc_textField_BPSys.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_BPSys.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_BPSys.gridx = 2;
-		gbc_textField_BPSys.gridy = 3;
-		panel_VitalsForm.add(textField_BPSys, gbc_textField_BPSys);
-		textField_BPSys.setColumns(10);
-
-		// set bps Unit
-		lblBPSysUnit_1 = new JLabel(v.getBpUnit());
-		GridBagConstraints gbc_lblBPSysUnit_1 = new GridBagConstraints();
-		gbc_lblBPSysUnit_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBPSysUnit_1.gridx = 3;
-		gbc_lblBPSysUnit_1.gridy = 3;
-		panel_VitalsForm.add(lblBPSysUnit_1, gbc_lblBPSysUnit_1);
-
-		JPanel panel_BPGroup = new JPanel();
-		GridBagConstraints gbc_panel_BPGroup = new GridBagConstraints();
-		gbc_panel_BPGroup.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_BPGroup.fill = GridBagConstraints.VERTICAL;
-		gbc_panel_BPGroup.gridx = 4;
-		gbc_panel_BPGroup.gridy = 3;
-		panel_VitalsForm.add(panel_BPGroup, gbc_panel_BPGroup);
-
-		JRadioButton rdbtnMmhg = new JRadioButton(Vitals.MMHG);
-		panel_BPGroup.add(rdbtnMmhg);
-		JRadioButton rdbtnPa = new JRadioButton(Vitals.PA);
-		panel_BPGroup.add(rdbtnPa);
-
-		JLabel lblBloodPressuredias = new JLabel("BP (Dias):");
-		GridBagConstraints gbc_lblBloodPressuredias = new GridBagConstraints();
-		gbc_lblBloodPressuredias.anchor = GridBagConstraints.EAST;
-		gbc_lblBloodPressuredias.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBloodPressuredias.gridx = 1;
-		gbc_lblBloodPressuredias.gridy = 4;
-		panel_VitalsForm.add(lblBloodPressuredias, gbc_lblBloodPressuredias);
-
-		// set bpd text
-		textField_BPDias = new JTextField();
-		textField_BPDias.setText(String.valueOf(v.getBpd()));
-		GridBagConstraints gbc_textField_BPDias = new GridBagConstraints();
-		gbc_textField_BPDias.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_BPDias.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_BPDias.gridx = 2;
-		gbc_textField_BPDias.gridy = 4;
-		panel_VitalsForm.add(textField_BPDias, gbc_textField_BPDias);
-		textField_BPDias.setColumns(10);
-
-		// set bpd unit
-		JLabel lblBPDiasUnit = new JLabel(v.getBpUnit());
-		GridBagConstraints gbc_lblBPDiasUnit = new GridBagConstraints();
-		gbc_lblBPDiasUnit.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBPDiasUnit.gridx = 3;
-		gbc_lblBPDiasUnit.gridy = 4;
-		panel_VitalsForm.add(lblBPDiasUnit, gbc_lblBPDiasUnit);
-
-		bpButtonGroup.add(rdbtnMmhg);
-		bpButtonGroup.add(rdbtnPa);
-		rdbtnMmhg.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
-		rdbtnPa.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
-
-		// HEIGHT
-
-		JLabel lblHeight = new JLabel("Height:");
-		GridBagConstraints gbc_lblHeight = new GridBagConstraints();
-		gbc_lblHeight.anchor = GridBagConstraints.EAST;
-		gbc_lblHeight.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeight.gridx = 1;
-		gbc_lblHeight.gridy = 6;
-		panel_VitalsForm.add(lblHeight, gbc_lblHeight);
-
-		textField_HeightFt = new JTextField();
-		GridBagConstraints gbc_textField_HeightFt = new GridBagConstraints();
-		gbc_textField_HeightFt.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightFt.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightFt.gridx = 2;
-		gbc_textField_HeightFt.gridy = 6;
-		panel_VitalsForm.add(textField_HeightFt, gbc_textField_HeightFt);
-		textField_HeightFt.setColumns(10);
-
-		JLabel lblHeightft = new JLabel("ft");
-		GridBagConstraints gbc_lblHeightft = new GridBagConstraints();
-		gbc_lblHeightft.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightft.gridx = 3;
-		gbc_lblHeightft.gridy = 6;
-		panel_VitalsForm.add(lblHeightft, gbc_lblHeightft);
-
-		JPanel panel_HeightGroup = new JPanel();
-		GridBagConstraints gbc_panel_HeightGroup = new GridBagConstraints();
-		gbc_panel_HeightGroup.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_HeightGroup.gridx = 4;
-		gbc_panel_HeightGroup.gridy = 6;
-		panel_VitalsForm.add(panel_HeightGroup, gbc_panel_HeightGroup);
-
-		JRadioButton rdbtnFeetInches = new JRadioButton(Vitals.FTIN);
-		rdbtnFeetInches.setSelected(true);
-		panel_HeightGroup.add(rdbtnFeetInches);
-
-		JRadioButton rdbtnInches = new JRadioButton(Vitals.IN);
-		panel_HeightGroup.add(rdbtnInches);
-
-		JRadioButton rdbtnCm = new JRadioButton(Vitals.CM);
-		panel_HeightGroup.add(rdbtnCm);
-
-		rdbtnFeetInches.addActionListener(new HeightListener());
-		rdbtnInches.addActionListener(new HeightListener());
-		rdbtnCm.addActionListener(new HeightListener());
-
-		heightButtonGroup.add(rdbtnFeetInches);
-		heightButtonGroup.add(rdbtnInches);
-		heightButtonGroup.add(rdbtnCm);
-
-		textField_HeightIn = new JTextField();
-		GridBagConstraints gbc_textField_HeightIn = new GridBagConstraints();
-		gbc_textField_HeightIn.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightIn.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightIn.gridx = 2;
-		gbc_textField_HeightIn.gridy = 7;
-		panel_VitalsForm.add(textField_HeightIn, gbc_textField_HeightIn);
-		textField_HeightIn.setColumns(10);
-
-		JLabel lblHeightIn = new JLabel(Vitals.IN);
-		GridBagConstraints gbc_lblHeightIn = new GridBagConstraints();
-		gbc_lblHeightIn.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightIn.gridx = 3;
-		gbc_lblHeightIn.gridy = 7;
-		panel_VitalsForm.add(lblHeightIn, gbc_lblHeightIn);
-
-		textField_HeightCm = new JTextField();
-		GridBagConstraints gbc_textField_HeightCm = new GridBagConstraints();
-		gbc_textField_HeightCm.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightCm.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightCm.gridx = 2;
-		gbc_textField_HeightCm.gridy = 8;
-		panel_VitalsForm.add(textField_HeightCm, gbc_textField_HeightCm);
-		textField_HeightCm.setColumns(10);
-
-		// textField_HeightCm.setEnabled(false);
-
-		JLabel lblHeightCm = new JLabel(Vitals.CM);
-		GridBagConstraints gbc_lblHeightCm = new GridBagConstraints();
-		gbc_lblHeightCm.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightCm.gridx = 3;
-		gbc_lblHeightCm.gridy = 8;
-		panel_VitalsForm.add(lblHeightCm, gbc_lblHeightCm);
-
-		// WEIGHT
-
-		JLabel lblWeight = new JLabel("Weight:");
-		GridBagConstraints gbc_lblWeight = new GridBagConstraints();
-		gbc_lblWeight.anchor = GridBagConstraints.EAST;
-		gbc_lblWeight.insets = new Insets(0, 0, 5, 5);
-		gbc_lblWeight.gridx = 1;
-		gbc_lblWeight.gridy = 10;
-		panel_VitalsForm.add(lblWeight, gbc_lblWeight);
-
-		// set weight
-		textField_Weight = new JTextField();
-		textField_Weight.setText(String.valueOf(v.getWeight()));
-		GridBagConstraints gbc_textField_Weight = new GridBagConstraints();
-		gbc_textField_Weight.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_Weight.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_Weight.gridx = 2;
-		gbc_textField_Weight.gridy = 10;
-		panel_VitalsForm.add(textField_Weight, gbc_textField_Weight);
-		textField_Weight.setColumns(10);
-
-		// set what weight is selected
-		// set the weight radio button
-		lblWeightUnit = new JLabel(Vitals.LBS);
-		GridBagConstraints gbc_lblWeightUnit_1 = new GridBagConstraints();
-		gbc_lblWeightUnit_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblWeightUnit_1.gridx = 3;
-		gbc_lblWeightUnit_1.gridy = 10;
-		panel_VitalsForm.add(lblWeightUnit, gbc_lblWeightUnit_1);
-
-		JPanel panel_WeightGroup = new JPanel();
-		GridBagConstraints gbc_panel_WeightGroup = new GridBagConstraints();
-		gbc_panel_WeightGroup.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_WeightGroup.gridx = 4;
-		gbc_panel_WeightGroup.gridy = 10;
-		panel_VitalsForm.add(panel_WeightGroup, gbc_panel_WeightGroup);
-
-		// weight radio button group
-
-		JRadioButton rdbtnLbs = new JRadioButton(Vitals.LBS);
-		panel_WeightGroup.add(rdbtnLbs);
-
-		JRadioButton rdbtnKg = new JRadioButton(Vitals.KG);
-		panel_WeightGroup.add(rdbtnKg);
-
-		weightButtonGroup.add(rdbtnLbs);
-		rdbtnLbs.addActionListener(new WeightListener(lblWeightUnit));
-		weightButtonGroup.add(rdbtnKg);
-		rdbtnKg.addActionListener(new WeightListener(lblWeightUnit));
-
-		JLabel lblNotes = new JLabel("Notes:");
-		GridBagConstraints gbc_lblNotes = new GridBagConstraints();
-		gbc_lblNotes.anchor = GridBagConstraints.EAST;
-		gbc_lblNotes.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNotes.gridx = 1;
-		gbc_lblNotes.gridy = 12;
-		panel_VitalsForm.add(lblNotes, gbc_lblNotes);
-
-		// set notes
-
-		textArea_Notes = new JTextArea();
-		textArea_Notes.setRows(4);
-		textArea_Notes.setText(v.getNotes());
-		GridBagConstraints gbc_textArea_Notes = new GridBagConstraints();
-		gbc_textArea_Notes.fill = GridBagConstraints.BOTH;
-		gbc_textArea_Notes.gridheight = 2;
-		gbc_textArea_Notes.gridwidth = 3;
-		gbc_textArea_Notes.gridx = 2;
-		gbc_textArea_Notes.gridy = 12;
-		panel_VitalsForm.add(textArea_Notes, gbc_textArea_Notes);
-		
-		JPanel panel_CommentsMain = new JPanel();
-		panel_CommentsMain.setBorder(new TitledBorder(null, "Comments", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_panel_CommentsMain = new GridBagConstraints();
-		gbc_panel_CommentsMain.fill = GridBagConstraints.BOTH;
-		gbc_panel_CommentsMain.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_CommentsMain.gridx = 0;
-		gbc_panel_CommentsMain.gridy = 2;
-		panel.add(panel_CommentsMain, gbc_panel_CommentsMain);
-		GridBagLayout gbl_panel_CommentsMain = new GridBagLayout();
-		gbl_panel_CommentsMain.columnWidths = new int[]{392, 0};
-		gbl_panel_CommentsMain.rowHeights = new int[]{32, 0, 0};
-		gbl_panel_CommentsMain.columnWeights = new double[]{1.0, Double.MIN_VALUE};
-		gbl_panel_CommentsMain.rowWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		panel_CommentsMain.setLayout(gbl_panel_CommentsMain);
-		
-		JScrollPane scrollPanelAppend = new JScrollPane();
-		GridBagConstraints gbc_scrollPanelAppend = new GridBagConstraints();
-		gbc_scrollPanelAppend.fill = GridBagConstraints.BOTH;
-		gbc_scrollPanelAppend.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPanelAppend.gridx = 0;
-		gbc_scrollPanelAppend.gridy = 0;
-		panel_CommentsMain.add(scrollPanelAppend, gbc_scrollPanelAppend);
-		scrollPanelAppend.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-		JPanel panelAppend = new JPanel();
-		scrollPanelAppend.setViewportView(panelAppend);
-		GridBagLayout gbl_panelAppend = new GridBagLayout();
-		gbl_panelAppend.columnWidths = new int[] { 392, 0 };
-		gbl_panelAppend.rowHeights = new int[] { 0, 0, 0 };
-		gbl_panelAppend.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panelAppend.rowWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
-		panelAppend.setLayout(gbl_panelAppend);
-		
-		textAreaAppend = new JTextArea();
-		textAreaAppend.setWrapStyleWord(true);
-		textAreaAppend.setLineWrap(true);
-		GridBagConstraints gbc_textAreaAppend = new GridBagConstraints();
-		gbc_textAreaAppend.insets = new Insets(0, 0, 5, 0);
-		gbc_textAreaAppend.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textAreaAppend.gridx = 0;
-		gbc_textAreaAppend.gridy = 0;
-		panelAppend.add(textAreaAppend, gbc_textAreaAppend);
-		
-		textAreaAppend.setVisible(false);
-
-		// comments
-		
-		
-		panelComments = new JPanel();
-		GridBagConstraints gbc_panelComments = new GridBagConstraints();
-		gbc_panelComments.fill = GridBagConstraints.BOTH;
-		gbc_panelComments.gridx = 0;
-		gbc_panelComments.gridy = 1;
-		panelAppend.add(panelComments, gbc_panelComments);
-		
-		panelComments.setLayout(new BoxLayout(panelComments, BoxLayout.Y_AXIS));
-		
-		// ADD NEW LABELS FROM LIST HERE
-		
-		JLabel lblNewLabel = new JLabel("New label");
-		panelComments.add(lblNewLabel);
-		
-		JSeparator separator = new JSeparator();
-		panelComments.add(separator);
-		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		panelComments.add(lblNewLabel_1);
-		
-		JSeparator separator_1 = new JSeparator();
-		panelComments.add(separator_1);
-		
-		JLabel lblNewLabel_2 = new JLabel("New label");
-		panelComments.add(lblNewLabel_2);
-		
-		JSeparator separator_2 = new JSeparator();
-		panelComments.add(separator_2);
-		
-		JLabel label = new JLabel("New label");
-		panelComments.add(label);
-		
-		JSeparator separator_3 = new JSeparator();
-		panelComments.add(separator_3);
-		
-		JLabel label_1 = new JLabel("New label");
-		panelComments.add(label_1);
-		
-		JSeparator separator_4 = new JSeparator();
-		panelComments.add(separator_4);
-		
-		JLabel label_2 = new JLabel("New label");
-		panelComments.add(label_2);
-		
-		panel_CommentButtons = new JPanel();
-		GridBagConstraints gbc_panel_CommentButtons = new GridBagConstraints();
-		gbc_panel_CommentButtons.fill = GridBagConstraints.BOTH;
-		gbc_panel_CommentButtons.gridx = 0;
-		gbc_panel_CommentButtons.gridy = 1;
-		panel_CommentsMain.add(panel_CommentButtons, gbc_panel_CommentButtons);
-		
-		JButton btnCancelComment = new JButton("Cancel");
-		panel_CommentButtons.add(btnCancelComment);
-		
-		JButton btnAddComment = new JButton("Add Comment");
-		panel_CommentButtons.add(btnAddComment);
-
-		panel_CommentButtons.setVisible(false);
-		
-		JPanel panel_Buttons = new JPanel();
-		GridBagConstraints gbc_panel_Buttons = new GridBagConstraints();
-		gbc_panel_Buttons.fill = GridBagConstraints.BOTH;
-		gbc_panel_Buttons.gridx = 0;
-		gbc_panel_Buttons.gridy = 3;
-		panel.add(panel_Buttons, gbc_panel_Buttons);
-
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				cancel(tabbedPane, oldPanel);
-			}
-		});
-		panel_Buttons.add(btnCancel);
-
-		JButton btnUpdateVital = new JButton("Update Vital");
-		btnUpdateVital.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				update(patient, vtg, tabbedPane, oldPanel, vitalsTable, vitals.getId());
-			}
-		});
-		panel_Buttons.add(btnUpdateVital);
+						JPanel panel_VitalsForm = new JPanel();
+						GridBagConstraints gbc_panel_VitalsForm = new GridBagConstraints();
+						gbc_panel_VitalsForm.fill = GridBagConstraints.BOTH;
+						gbc_panel_VitalsForm.insets = new Insets(0, 0, 5, 0);
+						gbc_panel_VitalsForm.gridx = 0;
+						gbc_panel_VitalsForm.gridy = 1;
+						panel.add(panel_VitalsForm, gbc_panel_VitalsForm);
+						GridBagLayout gbl_panel_VitalsForm = new GridBagLayout();
+						gbl_panel_VitalsForm.columnWidths = new int[] { 0, 0, 48, 0, 0, 0 };
+						gbl_panel_VitalsForm.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+						gbl_panel_VitalsForm.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+						gbl_panel_VitalsForm.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+								1.0, 0.0, Double.MIN_VALUE };
+						panel_VitalsForm.setLayout(gbl_panel_VitalsForm);
+						
+								JLabel lblVitals = new JLabel("Vitals");
+								lblVitals.setFont(new Font("Tahoma", Font.BOLD, 11));
+								GridBagConstraints gbc_lblVitals = new GridBagConstraints();
+								gbc_lblVitals.insets = new Insets(0, 0, 5, 5);
+								gbc_lblVitals.gridx = 1;
+								gbc_lblVitals.gridy = 1;
+								panel_VitalsForm.add(lblVitals, gbc_lblVitals);
+								
+										// BP
+								
+										lblBloodPressuresys = new JLabel("BP(Sys):");
+										GridBagConstraints gbc_lblBloodPressuresys = new GridBagConstraints();
+										gbc_lblBloodPressuresys.anchor = GridBagConstraints.EAST;
+										gbc_lblBloodPressuresys.insets = new Insets(0, 0, 5, 5);
+										gbc_lblBloodPressuresys.gridx = 1;
+										gbc_lblBloodPressuresys.gridy = 3;
+										panel_VitalsForm.add(lblBloodPressuresys, gbc_lblBloodPressuresys);
+										
+												// set bps text
+												textField_BPSys = new JTextField();
+												textField_BPSys.setText(String.valueOf(v.getBps()));
+												GridBagConstraints gbc_textField_BPSys = new GridBagConstraints();
+												gbc_textField_BPSys.insets = new Insets(0, 0, 5, 5);
+												gbc_textField_BPSys.fill = GridBagConstraints.HORIZONTAL;
+												gbc_textField_BPSys.gridx = 2;
+												gbc_textField_BPSys.gridy = 3;
+												panel_VitalsForm.add(textField_BPSys, gbc_textField_BPSys);
+												textField_BPSys.setColumns(10);
+												
+														// set bps Unit
+														lblBPSysUnit_1 = new JLabel(v.getBpUnit());
+														GridBagConstraints gbc_lblBPSysUnit_1 = new GridBagConstraints();
+														gbc_lblBPSysUnit_1.insets = new Insets(0, 0, 5, 5);
+														gbc_lblBPSysUnit_1.gridx = 3;
+														gbc_lblBPSysUnit_1.gridy = 3;
+														panel_VitalsForm.add(lblBPSysUnit_1, gbc_lblBPSysUnit_1);
+														
+																JPanel panel_BPGroup = new JPanel();
+																GridBagConstraints gbc_panel_BPGroup = new GridBagConstraints();
+																gbc_panel_BPGroup.insets = new Insets(0, 0, 5, 0);
+																gbc_panel_BPGroup.fill = GridBagConstraints.VERTICAL;
+																gbc_panel_BPGroup.gridx = 4;
+																gbc_panel_BPGroup.gridy = 3;
+																panel_VitalsForm.add(panel_BPGroup, gbc_panel_BPGroup);
+																
+																		JRadioButton rdbtnMmhg = new JRadioButton(Vitals.MMHG);
+																		panel_BPGroup.add(rdbtnMmhg);
+																		JRadioButton rdbtnPa = new JRadioButton(Vitals.PA);
+																		panel_BPGroup.add(rdbtnPa);
+																		
+																				JLabel lblBloodPressuredias = new JLabel("BP (Dias):");
+																				GridBagConstraints gbc_lblBloodPressuredias = new GridBagConstraints();
+																				gbc_lblBloodPressuredias.anchor = GridBagConstraints.EAST;
+																				gbc_lblBloodPressuredias.insets = new Insets(0, 0, 5, 5);
+																				gbc_lblBloodPressuredias.gridx = 1;
+																				gbc_lblBloodPressuredias.gridy = 4;
+																				panel_VitalsForm.add(lblBloodPressuredias, gbc_lblBloodPressuredias);
+																				
+																						// set bpd text
+																						textField_BPDias = new JTextField();
+																						textField_BPDias.setText(String.valueOf(v.getBpd()));
+																						GridBagConstraints gbc_textField_BPDias = new GridBagConstraints();
+																						gbc_textField_BPDias.insets = new Insets(0, 0, 5, 5);
+																						gbc_textField_BPDias.fill = GridBagConstraints.HORIZONTAL;
+																						gbc_textField_BPDias.gridx = 2;
+																						gbc_textField_BPDias.gridy = 4;
+																						panel_VitalsForm.add(textField_BPDias, gbc_textField_BPDias);
+																						textField_BPDias.setColumns(10);
+																						
+																								// set bpd unit
+																								JLabel lblBPDiasUnit = new JLabel(v.getBpUnit());
+																								GridBagConstraints gbc_lblBPDiasUnit = new GridBagConstraints();
+																								gbc_lblBPDiasUnit.insets = new Insets(0, 0, 5, 5);
+																								gbc_lblBPDiasUnit.gridx = 3;
+																								gbc_lblBPDiasUnit.gridy = 4;
+																								panel_VitalsForm.add(lblBPDiasUnit, gbc_lblBPDiasUnit);
+																								
+																										bpButtonGroup.add(rdbtnMmhg);
+																										bpButtonGroup.add(rdbtnPa);
+																										rdbtnMmhg.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
+																										rdbtnPa.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
+																										
+																												// HEIGHT
+																										
+																												JLabel lblHeight = new JLabel("Height:");
+																												GridBagConstraints gbc_lblHeight = new GridBagConstraints();
+																												gbc_lblHeight.anchor = GridBagConstraints.EAST;
+																												gbc_lblHeight.insets = new Insets(0, 0, 5, 5);
+																												gbc_lblHeight.gridx = 1;
+																												gbc_lblHeight.gridy = 6;
+																												panel_VitalsForm.add(lblHeight, gbc_lblHeight);
+																												
+																														textField_HeightFt = new JTextField();
+																														GridBagConstraints gbc_textField_HeightFt = new GridBagConstraints();
+																														gbc_textField_HeightFt.fill = GridBagConstraints.HORIZONTAL;
+																														gbc_textField_HeightFt.insets = new Insets(0, 0, 5, 5);
+																														gbc_textField_HeightFt.gridx = 2;
+																														gbc_textField_HeightFt.gridy = 6;
+																														panel_VitalsForm.add(textField_HeightFt, gbc_textField_HeightFt);
+																														textField_HeightFt.setColumns(10);
+																														
+																																JLabel lblHeightft = new JLabel("ft");
+																																GridBagConstraints gbc_lblHeightft = new GridBagConstraints();
+																																gbc_lblHeightft.insets = new Insets(0, 0, 5, 5);
+																																gbc_lblHeightft.gridx = 3;
+																																gbc_lblHeightft.gridy = 6;
+																																panel_VitalsForm.add(lblHeightft, gbc_lblHeightft);
+																																
+																																		JPanel panel_HeightGroup = new JPanel();
+																																		GridBagConstraints gbc_panel_HeightGroup = new GridBagConstraints();
+																																		gbc_panel_HeightGroup.insets = new Insets(0, 0, 5, 0);
+																																		gbc_panel_HeightGroup.gridx = 4;
+																																		gbc_panel_HeightGroup.gridy = 6;
+																																		panel_VitalsForm.add(panel_HeightGroup, gbc_panel_HeightGroup);
+																																		
+																																				JRadioButton rdbtnFeetInches = new JRadioButton(Vitals.FTIN);
+																																				rdbtnFeetInches.setSelected(true);
+																																				panel_HeightGroup.add(rdbtnFeetInches);
+																																				
+																																						JRadioButton rdbtnInches = new JRadioButton(Vitals.IN);
+																																						panel_HeightGroup.add(rdbtnInches);
+																																						
+																																								JRadioButton rdbtnCm = new JRadioButton(Vitals.CM);
+																																								panel_HeightGroup.add(rdbtnCm);
+																																								
+																																										rdbtnFeetInches.addActionListener(new HeightListener());
+																																										rdbtnInches.addActionListener(new HeightListener());
+																																										rdbtnCm.addActionListener(new HeightListener());
+																																										
+																																												heightButtonGroup.add(rdbtnFeetInches);
+																																												heightButtonGroup.add(rdbtnInches);
+																																												heightButtonGroup.add(rdbtnCm);
+																																												
+																																														textField_HeightIn = new JTextField();
+																																														GridBagConstraints gbc_textField_HeightIn = new GridBagConstraints();
+																																														gbc_textField_HeightIn.fill = GridBagConstraints.HORIZONTAL;
+																																														gbc_textField_HeightIn.insets = new Insets(0, 0, 5, 5);
+																																														gbc_textField_HeightIn.gridx = 2;
+																																														gbc_textField_HeightIn.gridy = 7;
+																																														panel_VitalsForm.add(textField_HeightIn, gbc_textField_HeightIn);
+																																														textField_HeightIn.setColumns(10);
+																																														
+																																																JLabel lblHeightIn = new JLabel(Vitals.IN);
+																																																GridBagConstraints gbc_lblHeightIn = new GridBagConstraints();
+																																																gbc_lblHeightIn.insets = new Insets(0, 0, 5, 5);
+																																																gbc_lblHeightIn.gridx = 3;
+																																																gbc_lblHeightIn.gridy = 7;
+																																																panel_VitalsForm.add(lblHeightIn, gbc_lblHeightIn);
+																																																
+																																																		textField_HeightCm = new JTextField();
+																																																		GridBagConstraints gbc_textField_HeightCm = new GridBagConstraints();
+																																																		gbc_textField_HeightCm.fill = GridBagConstraints.HORIZONTAL;
+																																																		gbc_textField_HeightCm.insets = new Insets(0, 0, 5, 5);
+																																																		gbc_textField_HeightCm.gridx = 2;
+																																																		gbc_textField_HeightCm.gridy = 8;
+																																																		panel_VitalsForm.add(textField_HeightCm, gbc_textField_HeightCm);
+																																																		textField_HeightCm.setColumns(10);
+																																																		
+																																																				// textField_HeightCm.setEnabled(false);
+																																																		
+																																																				JLabel lblHeightCm = new JLabel(Vitals.CM);
+																																																				GridBagConstraints gbc_lblHeightCm = new GridBagConstraints();
+																																																				gbc_lblHeightCm.insets = new Insets(0, 0, 5, 5);
+																																																				gbc_lblHeightCm.gridx = 3;
+																																																				gbc_lblHeightCm.gridy = 8;
+																																																				panel_VitalsForm.add(lblHeightCm, gbc_lblHeightCm);
+																																																				
+																																																						// WEIGHT
+																																																				
+																																																						JLabel lblWeight = new JLabel("Weight:");
+																																																						GridBagConstraints gbc_lblWeight = new GridBagConstraints();
+																																																						gbc_lblWeight.anchor = GridBagConstraints.EAST;
+																																																						gbc_lblWeight.insets = new Insets(0, 0, 5, 5);
+																																																						gbc_lblWeight.gridx = 1;
+																																																						gbc_lblWeight.gridy = 10;
+																																																						panel_VitalsForm.add(lblWeight, gbc_lblWeight);
+																																																						
+																																																								// set weight
+																																																								textField_Weight = new JTextField();
+																																																								textField_Weight.setText(String.valueOf(v.getWeight()));
+																																																								GridBagConstraints gbc_textField_Weight = new GridBagConstraints();
+																																																								gbc_textField_Weight.fill = GridBagConstraints.HORIZONTAL;
+																																																								gbc_textField_Weight.insets = new Insets(0, 0, 5, 5);
+																																																								gbc_textField_Weight.gridx = 2;
+																																																								gbc_textField_Weight.gridy = 10;
+																																																								panel_VitalsForm.add(textField_Weight, gbc_textField_Weight);
+																																																								textField_Weight.setColumns(10);
+																																																								
+																																																										// set what weight is selected
+																																																										// set the weight radio button
+																																																										lblWeightUnit = new JLabel(Vitals.LBS);
+																																																										GridBagConstraints gbc_lblWeightUnit_1 = new GridBagConstraints();
+																																																										gbc_lblWeightUnit_1.insets = new Insets(0, 0, 5, 5);
+																																																										gbc_lblWeightUnit_1.gridx = 3;
+																																																										gbc_lblWeightUnit_1.gridy = 10;
+																																																										panel_VitalsForm.add(lblWeightUnit, gbc_lblWeightUnit_1);
+																																																										
+																																																												JPanel panel_WeightGroup = new JPanel();
+																																																												GridBagConstraints gbc_panel_WeightGroup = new GridBagConstraints();
+																																																												gbc_panel_WeightGroup.insets = new Insets(0, 0, 5, 0);
+																																																												gbc_panel_WeightGroup.gridx = 4;
+																																																												gbc_panel_WeightGroup.gridy = 10;
+																																																												panel_VitalsForm.add(panel_WeightGroup, gbc_panel_WeightGroup);
+																																																												
+																																																														// weight radio button group
+																																																												
+																																																														JRadioButton rdbtnLbs = new JRadioButton(Vitals.LBS);
+																																																														panel_WeightGroup.add(rdbtnLbs);
+																																																														
+																																																																JRadioButton rdbtnKg = new JRadioButton(Vitals.KG);
+																																																																panel_WeightGroup.add(rdbtnKg);
+																																																																
+																																																																		weightButtonGroup.add(rdbtnLbs);
+																																																																		rdbtnLbs.addActionListener(new WeightListener(lblWeightUnit));
+																																																																		weightButtonGroup.add(rdbtnKg);
+																																																																		rdbtnKg.addActionListener(new WeightListener(lblWeightUnit));
+																																																																		
+																																																																				JLabel lblNotes = new JLabel("Notes:");
+																																																																				GridBagConstraints gbc_lblNotes = new GridBagConstraints();
+																																																																				gbc_lblNotes.anchor = GridBagConstraints.EAST;
+																																																																				gbc_lblNotes.insets = new Insets(0, 0, 5, 5);
+																																																																				gbc_lblNotes.gridx = 1;
+																																																																				gbc_lblNotes.gridy = 12;
+																																																																				panel_VitalsForm.add(lblNotes, gbc_lblNotes);
+																																																																				
+																																																																						// set notes
+																																																																				
+																																																																						textArea_Notes = new JTextArea();
+																																																																						textArea_Notes.setRows(4);
+																																																																						textArea_Notes.setText(v.getNotes());
+																																																																						GridBagConstraints gbc_textArea_Notes = new GridBagConstraints();
+																																																																						gbc_textArea_Notes.fill = GridBagConstraints.BOTH;
+																																																																						gbc_textArea_Notes.gridheight = 2;
+																																																																						gbc_textArea_Notes.gridwidth = 3;
+																																																																						gbc_textArea_Notes.gridx = 2;
+																																																																						gbc_textArea_Notes.gridy = 12;
+																																																																						panel_VitalsForm.add(textArea_Notes, gbc_textArea_Notes);
+																																																																						
+																																																																						JPanel panel_CommentsMain = new JPanel();
+																																																																						panel_CommentsMain.setBorder(new TitledBorder(null, "Comments", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+																																																																						GridBagConstraints gbc_panel_CommentsMain = new GridBagConstraints();
+																																																																						gbc_panel_CommentsMain.fill = GridBagConstraints.HORIZONTAL;
+																																																																						gbc_panel_CommentsMain.insets = new Insets(0, 0, 5, 0);
+																																																																						gbc_panel_CommentsMain.gridx = 0;
+																																																																						gbc_panel_CommentsMain.gridy = 2;
+																																																																						panel.add(panel_CommentsMain, gbc_panel_CommentsMain);
+																																																																						GridBagLayout gbl_panel_CommentsMain = new GridBagLayout();
+																																																																						gbl_panel_CommentsMain.columnWidths = new int[]{392, 0};
+																																																																						gbl_panel_CommentsMain.rowHeights = new int[]{32, 0, 0};
+																																																																						gbl_panel_CommentsMain.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+																																																																						gbl_panel_CommentsMain.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+																																																																						panel_CommentsMain.setLayout(gbl_panel_CommentsMain);
+																																																																						
+																																																																						JScrollPane scrollPanelAppend = new JScrollPane();
+																																																																						scrollPanelAppend.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+																																																																						GridBagConstraints gbc_scrollPanelAppend = new GridBagConstraints();
+																																																																						gbc_scrollPanelAppend.fill = GridBagConstraints.HORIZONTAL;
+																																																																						gbc_scrollPanelAppend.insets = new Insets(0, 0, 5, 0);
+																																																																						gbc_scrollPanelAppend.gridx = 0;
+																																																																						gbc_scrollPanelAppend.gridy = 0;
+																																																																						panel_CommentsMain.add(scrollPanelAppend, gbc_scrollPanelAppend);
+																																																																						scrollPanelAppend.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+																																																																						
+																																																																								JPanel panelAppend = new JPanel();
+																																																																								scrollPanelAppend.setViewportView(panelAppend);
+																																																																								GridBagLayout gbl_panelAppend = new GridBagLayout();
+																																																																								gbl_panelAppend.columnWidths = new int[] { 392, 0 };
+																																																																								gbl_panelAppend.rowHeights = new int[] { 0, 0, 0 };
+																																																																								gbl_panelAppend.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
+																																																																								gbl_panelAppend.rowWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+																																																																								panelAppend.setLayout(gbl_panelAppend);
+																																																																								
+																																																																								textAreaAppend = new JTextArea();
+																																																																								textAreaAppend.setWrapStyleWord(true);
+																																																																								textAreaAppend.setLineWrap(true);
+																																																																								GridBagConstraints gbc_textAreaAppend = new GridBagConstraints();
+																																																																								gbc_textAreaAppend.insets = new Insets(0, 0, 5, 0);
+																																																																								gbc_textAreaAppend.fill = GridBagConstraints.HORIZONTAL;
+																																																																								gbc_textAreaAppend.gridx = 0;
+																																																																								gbc_textAreaAppend.gridy = 0;
+																																																																								panelAppend.add(textAreaAppend, gbc_textAreaAppend);
+																																																																								
+																																																																								textAreaAppend.setVisible(false);
+																																																																								
+																																																																								JScrollPane scrollPane = new JScrollPane();
+																																																																								GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+																																																																								gbc_scrollPane.fill = GridBagConstraints.BOTH;
+																																																																								gbc_scrollPane.gridx = 0;
+																																																																								gbc_scrollPane.gridy = 1;
+																																																																								panelAppend.add(scrollPane, gbc_scrollPane);
+																																																																								
+																																																																										// comments
+																																																																										
+																																																																										
+																																																																										panelComments = new JPanel();
+																																																																										scrollPane.setViewportView(panelComments);
+																																																																										
+																																																																										panelComments.setLayout(new BoxLayout(panelComments, BoxLayout.Y_AXIS));
+																																																																										
+																																																																										panel_CommentButtons = new JPanel();
+																																																																										GridBagConstraints gbc_panel_CommentButtons = new GridBagConstraints();
+																																																																										gbc_panel_CommentButtons.fill = GridBagConstraints.HORIZONTAL;
+																																																																										gbc_panel_CommentButtons.gridx = 0;
+																																																																										gbc_panel_CommentButtons.gridy = 1;
+																																																																										panel_CommentsMain.add(panel_CommentButtons, gbc_panel_CommentButtons);
+																																																																										
+																																																																										JButton btnCancelComment = new JButton("Cancel");
+																																																																										panel_CommentButtons.add(btnCancelComment);
+																																																																										
+																																																																										JButton btnAddComment = new JButton("Add Comment");
+																																																																										panel_CommentButtons.add(btnAddComment);
+																																																																										
+																																																																												panel_CommentButtons.setVisible(false);
+																																																																												
+																																																																												JPanel panel_Buttons = new JPanel();
+																																																																												GridBagConstraints gbc_panel_Buttons = new GridBagConstraints();
+																																																																												gbc_panel_Buttons.fill = GridBagConstraints.BOTH;
+																																																																												gbc_panel_Buttons.gridx = 0;
+																																																																												gbc_panel_Buttons.gridy = 3;
+																																																																												panel.add(panel_Buttons, gbc_panel_Buttons);
+																																																																												
+																																																																														JButton btnCancel = new JButton("Cancel");
+																																																																														btnCancel.addActionListener(new ActionListener() {
+																																																																															public void actionPerformed(ActionEvent arg0) {
+																																																																																cancel(tabbedPane, oldPanel);
+																																																																															}
+																																																																														});
+																																																																														panel_Buttons.add(btnCancel);
+																																																																														
+																																																																																JButton btnUpdateVital = new JButton("Update Vital");
+																																																																																btnUpdateVital.addActionListener(new ActionListener() {
+																																																																																	public void actionPerformed(ActionEvent e) {
+																																																																																		update(patient, vtg, tabbedPane, oldPanel, vitalsTable, vitals.getId());
+																																																																																	}
+																																																																																});
+																																																																																panel_Buttons.add(btnUpdateVital);
 		
 		btnAppend.addActionListener(new ActionListener() {
 			@Override
@@ -1059,15 +1064,68 @@ public class VitalsTabNewVitalsView2 extends JPanel {
 		});
 		
 		btnCancelComment.addActionListener(new ActionListener() {
+			//TODO
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				panelComments.removeAll();
+				// hide panelComment
+				System.out.println(commentsList.toString());
+				panelComments.setVisible(true);
+				// and Append Button
+				for (Comment c : commentsList) {
+					JLabel tmpLabel = new JLabel(c.getCommentString(), JLabel.CENTER);
+					tmpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+					panelComments.add(tmpLabel);
+					panelComments.add(new JSeparator(SwingConstants.HORIZONTAL));
+				}
+				
+				// show textAreaAppend and confirm/cancel buttons
+				textAreaAppend.setVisible(false);
+				panel_CommentButtons.setVisible(false);
+				
+				
+				
+				/*
+				editPanel.add(commentField, BorderLayout.CENTER);
+				editPanel.add(saveButton, BorderLayout.SOUTH);
+				
+				BorderLayout layout = (BorderLayout) masterPanel.getLayout();
+				masterPanel.remove(layout.getLayoutComponent(BorderLayout.SOUTH));
+				masterPanel.add(editPanel, BorderLayout.SOUTH);
+				
+				masterPanel.validate();
+				masterPanel.repaint();
+				*/
+			}
+		});
+		
+		btnAddComment.addActionListener(new ActionListener() {
+			//TODO
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				// hide panelComment
-				panelComments.setVisible(true);
-				// and Append Button
+				Comment tmp = null;
 				
 				
+				// string builder...?
+				
+				String commentString = textAreaAppend.getText();
+				
+				tmp = new Comment(0, patient.getId(), Comment.vitals, vitals.getId(), commentString);
+				
+				try {
+					ctg.insertComment(tmp);
+				} catch (GatewayException e) {
+					e.printStackTrace();
+				}
+				
+				
+				JLabel tmpLabel = new JLabel(tmp.getCommentString(), JLabel.CENTER);
+				tmpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				panelComments.add(tmpLabel);
+				panelComments.add(new JSeparator(SwingConstants.HORIZONTAL));
 				// show textAreaAppend and confirm/cancel buttons
+				panelComments.setVisible(true);
 				textAreaAppend.setVisible(false);
 				panel_CommentButtons.setVisible(false);
 				
