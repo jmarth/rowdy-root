@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import database.AllergyTableGateway;
 import database.CommentTableGateway;
 import database.GatewayException;
 

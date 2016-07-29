@@ -1,14 +1,5 @@
 package models;
 
-import java.awt.List;
-import java.io.IOException;
-
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
-import database.AllergyTableGateway;
-import database.GatewayException;
-
 public class Comment {
 	
 	public final static int allergies = 1;

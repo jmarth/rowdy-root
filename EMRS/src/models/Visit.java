@@ -1,11 +1,6 @@
 package models;
 
 import java.io.File;
-import java.io.IOException;
-
-import database.GatewayException;
-import database.VisitTableGateway;
-import database.VisitTableGatewayMySQL;
 
 public class Visit {
 	private long id;

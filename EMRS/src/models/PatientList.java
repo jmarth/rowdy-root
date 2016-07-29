@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
-
 import database.GatewayException;
 import database.PatientTableGateway;
 

@@ -11,12 +11,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
-import database.AllergyTableGatewayMySQL;
 import models.Patient;
 
 public class ProfileTabView extends JPanel {

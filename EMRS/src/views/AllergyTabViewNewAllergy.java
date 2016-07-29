@@ -1,37 +1,35 @@
 package views;
 
-import javax.swing.JPanel;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
-import javax.swing.JTextField;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.ButtonGroup;
-import javax.swing.JCheckBox;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 
 import database.AllergyTableGateway;
-import database.AllergyTableGatewayMySQL;
 import database.AllergyTableGatewaySQLite;
 import database.GatewayException;
 import models.Allergy;
 import models.AllergyList;
 import models.Patient;
 import models.Tabs;
-
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
 
 public class AllergyTabViewNewAllergy extends JPanel {
 	
