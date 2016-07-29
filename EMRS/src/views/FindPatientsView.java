@@ -1,19 +1,9 @@
 package views;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -21,11 +11,14 @@ import java.awt.event.MouseMotionAdapter;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
-import javax.swing.RowSorter;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,13 +26,9 @@ import org.apache.logging.log4j.Logger;
 
 import database.GatewayException;
 import database.PatientTableGateway;
-import database.PatientTableGatewayMySQL;
 import database.PatientTableGatewaySQLite;
 import models.Patient;
 import models.PatientList;
-
-import java.awt.Font;
-import javax.swing.JTextField;
 
 public class FindPatientsView extends JFrame {
 	

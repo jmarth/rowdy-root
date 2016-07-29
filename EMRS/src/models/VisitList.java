@@ -3,13 +3,9 @@ package models;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.swing.DefaultListModel;
 
 import org.apache.commons.collections4.map.MultiValueMap;
 
-import database.VisitTableGateway;
 import database.GatewayException;
 import database.VisitTableGateway;
 

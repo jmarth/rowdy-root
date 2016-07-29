@@ -2,7 +2,6 @@ package database;
 
 import java.util.List;
 
-import models.Patient;
 import models.SurgeryTemplate;
 
 public interface SurgeryTemplatesTableGateway {

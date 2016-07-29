@@ -1,14 +1,11 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import database.DocumentTableGateway;
 import database.GatewayException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import models.Document;
 
 public class DocumentList {
 	

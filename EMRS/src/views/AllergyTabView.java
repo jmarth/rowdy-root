@@ -1,7 +1,5 @@
 package views;
 
-import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -9,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -21,21 +17,11 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 import database.AllergyTableGateway;
-import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
 import models.Allergy;
 import models.AllergyList;
 import models.Patient;
 import models.Tabs;
-
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ContainerEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 
 /**
  * This is the JPanel that is shown in the 

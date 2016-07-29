@@ -2,39 +2,30 @@ package models;
 
 import java.io.IOException;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import database.AllergyTableGateway;
-import database.AllergyTableGatewayMySQL;
 import database.AllergyTableGatewaySQLite;
-import database.DocumentTableGateway;
-import database.DocumentTableGatewaySQLite;
 import database.CommentTableGateway;
 import database.CommentTableGatewaySQLite;
+import database.DocumentTableGateway;
+import database.DocumentTableGatewaySQLite;
 import database.GatewayException;
 import database.PatientTableGateway;
-import database.PatientTableGatewayMySQL;
 import database.PatientTableGatewaySQLite;
 import database.SketchTableGateway;
-import database.SketchTableGatewayMySQL;
 import database.SketchTableGatewaySQLite;
 import database.SurgeryTableGateway;
 import database.SurgeryTableGatewaySQLite;
 import database.SurgeryTemplatesTableGateway;
 import database.SurgeryTemplatesTableGatewaySQLite;
 import database.VisitTableGateway;
-import database.VisitTableGatewayMySQL;
 import database.VisitTableGatewaySQLite;
 import database.VitalsTableGateway;
-import database.VitalsTableGatewayMySQL;
 import database.VitalsTableGatewaySQLite;
-import views.HomeView;
 import views.AddPatientView;
 import views.FindPatientsView;
+import views.HomeView;
 
 public class HomeModel {
 	

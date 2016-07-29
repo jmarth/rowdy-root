@@ -1,26 +1,14 @@
 package controller;
 
 import java.io.IOException;
-import java.util.List;
 
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import database.AllergyTableGateway;
-import database.AllergyTableGatewayMySQL;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import database.VisitTableGateway;
-import database.VisitTableGatewayMySQL;
-import models.AllergyList;
-import models.Patient;
-import models.PatientList;
-import models.VisitList;
 import views.LoginView;
-
-import org.apache.logging.log4j.*;
 
 public class EMRS {
 	

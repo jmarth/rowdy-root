@@ -2,10 +2,8 @@ package database;
 
 import java.util.List;
 
-import models.Allergy;
 import models.Comment;
 import models.Patient;
-import models.Vitals;
 
 public interface CommentTableGateway {
 	public abstract List<Comment> fetchComments() throws GatewayException;

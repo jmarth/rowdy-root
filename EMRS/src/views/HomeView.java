@@ -1,77 +1,46 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
 
+import javax.swing.AbstractButton;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.border.Border;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 
-import database.AllergyTableGateway;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import database.GatewayException;
 import models.Allergy;
 import models.CL;
 import models.HomeModel;
 import models.Patient;
-import models.PatientList;
-
-import java.awt.Panel;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
-import java.awt.Button;
-import java.awt.TextField;
-import java.awt.Toolkit;
-import java.awt.FlowLayout;
-
-import javax.swing.AbstractButton;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-
-import javax.swing.JList;
-import javax.swing.JToolBar;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.IOException;
-import java.util.List;
-
-import javax.swing.UIManager;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import controller.EMRS;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import javax.swing.ImageIcon;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 public class HomeView extends JFrame {
 	
@@ -106,6 +75,8 @@ public class HomeView extends JFrame {
 		
 		// Models should be independent; a view should grab from a model.
 		homeModel = new HomeModel(this);
+		
+		setTitle("EMRS");
 		
 		// @why final
 		final HomeView home = this;

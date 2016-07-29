@@ -3,23 +3,15 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import database.SurgeryTemplatesTableGateway;
 import models.CL;
 import models.Surgery;
-import models.SurgeryTemplatesList;
 
 public class ClosedProcedureView extends JPanel {
 	

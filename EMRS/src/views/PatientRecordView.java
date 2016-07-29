@@ -1,58 +1,22 @@
 package views;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
-import java.awt.Font;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import javax.swing.border.TitledBorder;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import models.Allergy;
-import models.AllergyList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import models.CL;
 import models.HomeModel;
 import models.Patient;
 import models.Tabs;
 import models.VisitList;
-
-import javax.swing.JSeparator;
-import java.awt.GridLayout;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JButton;
-import javax.swing.SwingConstants;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.List;
-import java.awt.event.ActionEvent;
-import javax.swing.table.DefaultTableModel;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import database.AllergyTableGatewayMySQL;
-import database.DocumentTableGateway;
-import database.DocumentTableGatewaySQLite;
-import database.GatewayException;
-import javax.swing.ScrollPaneConstants;
 
 /**
  * Patient record view is a JTabbedPane
