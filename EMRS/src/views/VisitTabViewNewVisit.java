@@ -1,73 +1,37 @@
 
 package views;
 
-import javax.swing.JPanel;
-import javax.swing.JLayeredPane;
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.List;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.JTextPane;
-import javax.swing.JTextArea;
-import java.awt.GridLayout;
-import java.awt.Image;
-
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.Icon;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-
-import database.AllergyTableGatewayMySQL;
 import database.GatewayException;
-import database.VisitTableGateway;
-import models.Allergy;
 import models.HomeModel;
 import models.Patient;
 import models.Tabs;
 import models.Visit;
-import models.VisitList;
-
-import com.jgoodies.forms.layout.FormSpecs;
-import javax.swing.JTextField;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Dimension;
-
-import javax.imageio.ImageIO;
-import javax.swing.Box;
-import java.awt.Font;
-import java.awt.Graphics2D;
-
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-
-import java.awt.BorderLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JSplitPane;
 
 public class VisitTabViewNewVisit extends JPanel {
 	
@@ -231,7 +195,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		GridBagConstraints gbc_txtrCC_Cc = new GridBagConstraints();
 		gbc_txtrCC_Cc.fill = GridBagConstraints.BOTH;
 		gbc_txtrCC_Cc.anchor = GridBagConstraints.WEST;
-		gbc_txtrCC_Cc.insets = new Insets(0, 0, 5, 5);
+		gbc_txtrCC_Cc.insets = new Insets(5, 5, 5, 5);
 		gbc_txtrCC_Cc.gridx = 0;
 		gbc_txtrCC_Cc.gridy = 1;
 		
@@ -632,7 +596,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		mainPane.add(lblAp, gbc_lblAp);
 		
 		GridBagConstraints gbc_tstrTextarea_AP = new GridBagConstraints();
-		gbc_tstrTextarea_AP.insets = new Insets(0, 0, 5, 5);
+		gbc_tstrTextarea_AP.insets = new Insets(5, 5, 5, 5);
 		gbc_tstrTextarea_AP.anchor = GridBagConstraints.WEST;
 		gbc_tstrTextarea_AP.fill = GridBagConstraints.BOTH;
 		gbc_tstrTextarea_AP.gridx = 0;

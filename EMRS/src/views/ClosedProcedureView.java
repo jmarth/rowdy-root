@@ -3,6 +3,7 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,8 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 import database.SurgeryTemplatesTableGateway;
+import models.CL;
 import models.Surgery;
 import models.SurgeryTemplatesList;
 
@@ -35,6 +39,7 @@ public class ClosedProcedureView extends JPanel {
 		setLayout(new BorderLayout());
 		
 		mainPanel = new JPanel(new BorderLayout());
+		mainPanel.setBorder(new LineBorder(CL.blueGrey, 3));
 		
 		titleLabel = new JLabel(tmp.getTitle());
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
