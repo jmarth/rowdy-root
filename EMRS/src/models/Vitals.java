@@ -43,7 +43,34 @@ public class Vitals {
 	private String wUnit;
 
 	private String notes;
+	private String dateCreated;
 
+	public Vitals(long id, long pid, float bps, float bpd, String bpUnit, boolean fasting, float bg, String bgUnit,
+			float o2sat, float hb, int hFeet, int hInches, int hcm, String hUnit, float weight, String wUnit,
+			String notes, String dateCreated) {
+
+		super();
+		this.id = id;
+		this.pid = pid;
+		this.bps = bps;
+		this.bpd = bpd;
+		this.bpUnit = bpUnit;
+		this.setFasting(fasting);
+		this.setBg(bg);
+		this.setBgUnit(bgUnit);
+		this.setO2sat(o2sat);
+		this.setHb(hb);
+		this.hFeet = hFeet;
+		this.hInches = hInches;
+		this.hcm = hcm;
+		this.hUnit = hUnit;
+		this.weight = weight;
+		this.wUnit = wUnit;
+		this.notes = notes;
+		this.dateCreated =dateCreated;
+
+	}
+	
 	public Vitals(long id, long pid, float bps, float bpd, String bpUnit, boolean fasting, float bg, String bgUnit,
 			float o2sat, float hb, int hFeet, int hInches, int hcm, String hUnit, float weight, String wUnit,
 			String notes) {
@@ -66,6 +93,7 @@ public class Vitals {
 		this.weight = weight;
 		this.wUnit = wUnit;
 		this.notes = notes;
+
 	}
 
 	public long getId() {
@@ -206,5 +234,13 @@ public class Vitals {
 
 	public void setHb(float hb) {
 		this.hb = hb;
+	}
+
+	public String getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(String dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 }

@@ -62,7 +62,8 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 						rs.getString("hUnit"),
 						rs.getFloat("weight"),
 						rs.getString("wUnit"),
-						rs.getString("notes")
+						rs.getString("notes"),
+						rs.getString("dateCreated")
 						);
 				
 				vitals.add(tmpVitals);
@@ -90,9 +91,9 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
-			System.out.println("from vitalstg, what was resultset:");
-			for (Vitals v: vitals )
-				System.out.println(v.getId());
+			//System.out.println("from vitalstg, what was resultset:");
+			//for (Vitals v: vitals )
+			//	System.out.println(v.getId());
 			return vitals;
 	}
 
@@ -134,7 +135,8 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 						rs.getString("hUnit"),
 						rs.getFloat("weight"),
 						rs.getString("wUnit"),
-						rs.getString("notes")
+						rs.getString("notes"),
+						rs.getString("dateCreated")
 						);
 				
 				vitals.add(tmpVitals);
@@ -228,6 +230,7 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 		return newId;
 	}
 	
+	@Deprecated
 	public long updateVitals(Vitals v) throws GatewayException{
 		
 		PreparedStatement st = null;
