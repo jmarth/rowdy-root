@@ -3,21 +3,34 @@ package models;
 public class Vitals {
 
 	public static final String MMHG = "mm/Hg";
-    public static final String PA = "Pa";
- 
-    public static final String FTIN = "ft/inches";
-    public static final String IN = "in";
-    public static final String CM = "cm";
-   
-    public static final String LBS = "lbs";
-    public static final String KG = "kg";
-	
+	public static final String PA = "Pa";
+
+	public static final String FTIN = "ft/in";
+	public static final String IN = "in";
+	public static final String CM = "cm";
+
+	public static final String LBS = "lbs";
+	public static final String KG = "kg";
+
+	public static final String mmolL = "mmol/L";
+	public static final String mgdL = "mg/dL";
+
+	public static final String gdL = "g/dL";
+
 	private long id;
 	private long pid;
 
 	private float bps;
 	private float bpd;
 	private String bpUnit;
+
+	private boolean fasting;
+	private float bg;
+	private String bgUnit;
+
+	private float o2sat;
+
+	private float hb;
 
 	private int hFeet;
 	private int hInches;
@@ -31,8 +44,9 @@ public class Vitals {
 
 	private String notes;
 
-	public Vitals(long id, long pid, float bps, float bpd, String bpUnit, int hFeet, int hInches, int hcm, String hUnit,
-			float weight, String wUnit, String notes) {
+	public Vitals(long id, long pid, float bps, float bpd, String bpUnit, boolean fasting, float bg, String bgUnit,
+			float o2sat, float hb, int hFeet, int hInches, int hcm, String hUnit, float weight, String wUnit,
+			String notes) {
 
 		super();
 		this.id = id;
@@ -40,6 +54,11 @@ public class Vitals {
 		this.bps = bps;
 		this.bpd = bpd;
 		this.bpUnit = bpUnit;
+		this.setFasting(fasting);
+		this.setBg(bg);
+		this.setBgUnit(bgUnit);
+		this.setO2sat(o2sat);
+		this.setHb(hb);
 		this.hFeet = hFeet;
 		this.hInches = hInches;
 		this.hcm = hcm;
@@ -144,7 +163,48 @@ public class Vitals {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
+
 	public String toString() {
-		return "id : " + id +" pid: "+pid+" ft: "+hFeet+" in: "+hInches+" cm: "+hcm;
+		return "id : " + id + " pid: " + pid + " ft: " + hFeet + " in: " + hInches + " cm: " + hcm;
+	}
+
+	public boolean isFasting() {
+		return fasting;
+	}
+
+	public void setFasting(boolean fasting) {
+		this.fasting = fasting;
+	}
+
+	public float getBg() {
+		return bg;
+	}
+
+	public void setBg(float bg) {
+		this.bg = bg;
+	}
+
+	public String getBgUnit() {
+		return bgUnit;
+	}
+
+	public void setBgUnit(String bgUnit) {
+		this.bgUnit = bgUnit;
+	}
+
+	public float getO2sat() {
+		return o2sat;
+	}
+
+	public void setO2sat(float o2sat) {
+		this.o2sat = o2sat;
+	}
+
+	public float getHb() {
+		return hb;
+	}
+
+	public void setHb(float hb) {
+		this.hb = hb;
 	}
 }
