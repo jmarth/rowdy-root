@@ -51,13 +51,19 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 						rs.getFloat("bps"),
 						rs.getFloat("bpd"),
 						rs.getString("bpUnit"),
+						rs.getBoolean("fasting"),
+						rs.getFloat("bg"),
+						rs.getString("bgUnit"),
+						rs.getFloat("o2sat"),
+						rs.getFloat("hb"),
 						rs.getInt("hFeet"),
 						rs.getInt("hInches"),
 						rs.getInt("hcm"),
 						rs.getString("hUnit"),
 						rs.getFloat("weight"),
 						rs.getString("wUnit"),
-						rs.getString("notes")
+						rs.getString("notes"),
+						rs.getString("dateCreated")
 						);
 				
 				vitals.add(tmpVitals);
@@ -85,9 +91,9 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
-			System.out.println("from vitalstg, what was resultset:");
-			for (Vitals v: vitals )
-				System.out.println(v.getId());
+			//System.out.println("from vitalstg, what was resultset:");
+			//for (Vitals v: vitals )
+			//	System.out.println(v.getId());
 			return vitals;
 	}
 
@@ -118,13 +124,19 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 						rs.getFloat("bps"),
 						rs.getFloat("bpd"),
 						rs.getString("bpUnit"),
+						rs.getBoolean("fasting"),
+						rs.getFloat("bg"),
+						rs.getString("bgUnit"),
+						rs.getFloat("o2sat"),
+						rs.getFloat("hb"),
 						rs.getInt("hFeet"),
 						rs.getInt("hInches"),
 						rs.getInt("hcm"),
 						rs.getString("hUnit"),
 						rs.getFloat("weight"),
 						rs.getString("wUnit"),
-						rs.getString("notes")
+						rs.getString("notes"),
+						rs.getString("dateCreated")
 						);
 				
 				vitals.add(tmpVitals);
@@ -163,19 +175,24 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 		
 		try {
 			
-			st = conn.prepareStatement("insert INTO vitals (pid, bps, bpd, bpunit, hfeet, hinches, hcm, hunit, weight, wunit, notes) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ", PreparedStatement.RETURN_GENERATED_KEYS);
+			st = conn.prepareStatement("insert INTO vitals (pid, bps, bpd, bpunit, fasting, bg, bgUnit, o2sat, hb, hfeet, hinches, hcm, hunit, weight, wunit, notes) values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ", PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			st.setLong(1, v.getPid());
 			st.setFloat(2, v.getBps());
 			st.setFloat(3, v.getBpd());
 			st.setString(4, String.valueOf(v.getBpUnit()));
-			st.setInt(5, v.getHFeet());
-			st.setInt(6, v.getHInches());
-			st.setInt(7, v.getHCm());
-			st.setString(8, String.valueOf(v.getHUnit()));
-			st.setFloat(9, v.getWeight());
-			st.setString(10, String.valueOf(v.getWUnit()));
-			st.setString(11, v.getNotes());
+			st.setBoolean(5, v.isFasting());
+			st.setFloat(6, v.getBg());
+			st.setString(7, v.getBgUnit());
+			st.setFloat(8, v.getO2sat());
+			st.setFloat(9, v.getHb());
+			st.setInt(10, v.getHFeet());
+			st.setInt(11, v.getHInches());
+			st.setInt(12, v.getHCm());
+			st.setString(13, String.valueOf(v.getHUnit()));
+			st.setFloat(14, v.getWeight());
+			st.setString(15, String.valueOf(v.getWUnit()));
+			st.setString(16, v.getNotes());
 			
 			st.executeUpdate();
 			
@@ -213,6 +230,7 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 		return newId;
 	}
 	
+	@Deprecated
 	public long updateVitals(Vitals v) throws GatewayException{
 		
 		PreparedStatement st = null;
@@ -224,6 +242,11 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 					+ " bps = ?,"
 					+ " bpd = ?,"
 					+ " bpunit = ?,"
+					+ " fasting = ?,"
+					+ " bg = ?,"
+					+ " bgUnit = ?,"
+					+ " o2sat = ?,"
+					+ " hb = ?,"
 					+ " hfeet = ?,"
 					+ " hinches = ?,"
 					+ " hcm = ?,"
@@ -237,14 +260,19 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 			st.setFloat(1, v.getBps());
 			st.setFloat(2, v.getBpd());
 			st.setString(3, v.getBpUnit());
-			st.setInt(4, v.getHFeet());
-			st.setInt(5, v.getHInches());
-			st.setInt(6, v.getHCm());
-			st.setString(7, v.getHUnit());
-			st.setFloat(8, v.getWeight());
-			st.setString(9, v.getWUnit());
-			st.setString(10, v.getNotes());
-			st.setLong(11, v.getId());
+			st.setBoolean(4, v.isFasting());
+			st.setFloat(5, v.getBg());
+			st.setString(6, v.getBgUnit());
+			st.setFloat(7, v.getO2sat());
+			st.setFloat(8, v.getHb());
+			st.setInt(9, v.getHFeet());
+			st.setInt(10, v.getHInches());
+			st.setInt(11, v.getHCm());
+			st.setString(12, v.getHUnit());
+			st.setFloat(13, v.getWeight());
+			st.setString(14, v.getWUnit());
+			st.setString(15, v.getNotes());
+			st.setLong(16, v.getId());
 			st.executeUpdate();
 			
 		} catch (SQLException e) {

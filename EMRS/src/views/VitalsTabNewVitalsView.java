@@ -1,40 +1,24 @@
 package views;
 
+import javax.swing.JPanel;
+import javax.swing.JButton;
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import javax.swing.AbstractButton;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
+import net.miginfocom.swing.MigLayout;
+
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import database.CommentTableGateway;
 import database.GatewayException;
-import database.VitalsTableGateway;
 import models.Comment;
 import models.HomeModel;
 import models.Patient;
@@ -42,1200 +26,389 @@ import models.Tabs;
 import models.Vitals;
 import models.VitalsList;
 
-@SuppressWarnings("serial")
+import javax.swing.JTextField;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import javax.swing.JCheckBox;
+import javax.swing.BoxLayout;
+
 public class VitalsTabNewVitalsView extends JPanel {
 
-	private static final Logger log = LogManager.getLogger(VitalsTabNewVitalsView.class);
+	private JButton btnAppendNote;
+	private JButton btnConfirm;
+	private JButton btnCancel;
 
-	JPanel oldPanel;
-	JTable vitalsTable;
-
-	private Vitals vitals;
-	private Patient patient;
-	private VitalsTableGateway vtg;
-
-	private JTextField textField_BPSys;
-	private JTextField textField_BPDias;
-
-	private JTextField textField_HeightFt;
-	private JTextField textField_HeightIn;
-	private JTextField textField_HeightCm;
-
+	private JTextField textField_BGLevel;
+	private JTextField textField_O2Sat;
+	private JTextField textField_Hb;
+	private JTextField textField_BPS;
+	private JTextField textField_BPD;
+	private JTextField textField_Ft;
+	private JTextField textField_In;
+	private JTextField textField_Cm;
 	private JTextField textField_Weight;
 
-	private ButtonGroup bpButtonGroup = new ButtonGroup();
-	private ButtonGroup heightButtonGroup = new ButtonGroup();
-	private ButtonGroup weightButtonGroup = new ButtonGroup();
-
-	private String bPUnit;
-	private String heightUnit;
-	private String weightUnit;
-	private JLabel lblBloodPressuresys;
-	private JLabel lblBPSysUnit_1;
+	private JLabel lblFt;
+	private JLabel lblIn;
+	private JLabel lblCm;
+	private JLabel lblBP;
 	private JLabel lblWeightUnit;
+
 	private JTextArea textArea_Notes;
 
-	private JTextArea textAreaAppend;
-	private JPanel panelComments;
-	private JPanel panel_CommentButtons;
+	private JScrollPane scrollPane_Comments;
+	private JTextArea textArea_Comment;
+	private JButton btnAppendComment;
+	private JButton btnAppendCancel;
+	
+	private JRadioButton rdbtnKg;
+	private JRadioButton rdbtnLbs;
+	private JRadioButton rdbtnCm;
+	private JRadioButton rdbtnIn;
+	private JRadioButton rdbtnFtin;
+	private JRadioButton rdbtnMgdl;
+	private JRadioButton rdbtnMmoll;
+	private JRadioButton rdbtnPa;
+	private JRadioButton rdbtnMmhg;
+	private final ButtonGroup buttonGroupBP = new ButtonGroup();
+	private final ButtonGroup buttonGroupHeight = new ButtonGroup();
+	private final ButtonGroup buttonGroupWeight = new ButtonGroup();
+	private final ButtonGroup buttonGroupBloodGlucose = new ButtonGroup();
 
-	private VitalsList vl;
+	private final JTabbedPane tabbedPane;
+	private final JPanel vitalsTabView;
 
-	private List<Vitals> vitalsList;
+	private Patient patient;
+	private HomeModel homeModel;
 	private List<Comment> commentsList;
-
-	private final HomeModel homeModel;
-
-	private CommentTableGateway ctg;
-
-	// private String heightUnit;
-
+	public String heightUnit;
+	private JTable vitalsTable;
+	private List<Vitals> vitalsList;
+	private JPanel panel_CommentForm;
+	private Vitals vitals;
+	private JPanel panel_VitalsForm;
+	private JCheckBox chckbxFasting;
+	private JLabel lblBGLevelUnit;
+	private JPanel panelActualComments;
+	
+	
+	
 	/**
 	 * Create the panel.
 	 */
-	public VitalsTabNewVitalsView(final JTabbedPane tabbedPane, Patient patient, JPanel vitalsPanel,
+	public VitalsTabNewVitalsView(final JTabbedPane tabbedPane, Patient patient, final JPanel vitalsPanel,
 			final HomeModel homeModel, JTable vitalsTable, List<Vitals> vitalsList, VitalsList vl, Vitals vitals,
-			Boolean exists) {
-		this.homeModel = homeModel;
+			Boolean detailedView) {
+
 		this.patient = patient;
-		this.vitals = vitals;
-		this.vtg = homeModel.getVitalstg();
+		this.tabbedPane = tabbedPane;
+		this.vitalsTabView = vitalsPanel;
+		this.homeModel = homeModel;
 		this.vitalsTable = vitalsTable;
-		this.vl = vl;
 		this.vitalsList = vitalsList;
+		this.vitals = vitals;
 
-		ctg = homeModel.getCtg();
+		//uncomment to view in windowbuilder
+		//createView();
 		
-		
-		// this can change, to decide: load all comments on vitalstabview or
-		// when open, grab them by typeid
+		if (detailedView) {
 
-		// need if null or vitals.getId() == 0 check...
-		// also this only goes into exists
-
-		oldPanel = vitalsPanel;
-
-		/*
-		 * Try to connect to DB through VitalsTableGateway Set the gateway of
-		 * the VitalsList Load Vitals into the VitalsList
-		 */
-
-		/*
-		 * try {
-		 * 
-		 * vtg = new VitalsTableGatewaySQLite();
-		 * 
-		 * } catch (GatewayException e) {
-		 * 
-		 * System.out.println("Could not connect to DB"); e.printStackTrace();
-		 * 
-		 * } catch (IOException e) {
-		 * 
-		 * System.out.println("Could not connect to DB"); e.printStackTrace(); }
-		 */
-
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		///////////////////////////////////////////////////////////////////////////
-		//createExistingView(tabbedPane, patient, vitalsPanel, vtg, vitals, vitalsTable);
-
-		if (exists) {
-
-			// System.out.println("exists: patientid = "+patient.getId()+"");
 			commentsList = null;
+
 			try {
-				commentsList = ctg.fetchCommentsForPatientByType(patient, Comment.vitals, vitals.getId());
-				//System.out.println("\t" + vitals.getId());
-				//System.out.println("comments list: " + commentsList.toString());
+				commentsList = homeModel.getCtg().fetchCommentsForPatientByType(patient, Comment.vitalsType, vitals.getId());
+
 			} catch (GatewayException e) {
 				e.printStackTrace();
 			}
-			createExistingView(tabbedPane, patient, vitalsPanel, vtg, vitals, vitalsTable);
+
+			createView();
+			prepareExistingVitalView();
+			populateVital();
+			populateComments();
 
 		} else {
 
-			createView(tabbedPane, patient, vitalsPanel, vtg, vitalsTable);
+			createView();
 		}
-
 	}
 
-	/**
-	 * Called from ActionListener for Cancel button
-	 * 
-	 * @param tabbedPane
-	 *            JTabbedPane to alter
-	 * @param oldPanel
-	 *            Panel to switch back to
-	 */
-	public void cancel(JTabbedPane tabbedPane, JPanel oldPanel) {
-		int index = tabbedPane.indexOfTab(Tabs.vitals);
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
-	}
+	
 
-	/**
-	 * Save Vitals to database for patient
-	 * 
-	 * @param patient
-	 *            Patient that Vitals belongs to
-	 * @param vtg
-	 *            VitalsTableGateway
-	 * @param tabbedPane
-	 *            JTabbedPane to change when done saving
-	 * @param oldPanel
-	 *            JPanel to change back to when done saving
-	 */
-	public void save(Patient patient, VitalsTableGateway vtg, JTabbedPane tabbedPane, JPanel oldPanel,
-			JTable vitalsTable) {
-		StringBuilder sb = new StringBuilder(128);
-
-		/**
-		 * Create new Vitals object with correct parameters Insert the vitals to
-		 * the DB through the Gateway
-		 */
-
-		Vitals vitals = new Vitals(0, patient.getId(), Float.parseFloat(textField_BPSys.getText()),
-				Float.parseFloat(textField_BPDias.getText()), getLblBPSysUnit().getText(),
-				Integer.parseInt(((textField_HeightFt.getText().equals("")) ? "-2"
-						: textField_HeightFt.getText())),
-				Integer.parseInt(((textField_HeightIn.getText().equals("")) ? "-2"
-						: textField_HeightIn.getText())),
-				Integer.parseInt(((textField_HeightCm.getText().equals("")) ? "-2"
-						: textField_HeightCm.getText())),
-				getSelectedButtonText(heightButtonGroup),
-				Float.parseFloat(((textField_Weight.getText().equals("")) ? "-2"
-						: textField_Weight.getText())),
-				getLblWeightUnit().getText(), textArea_Notes.getText());
-		try {
-			long vid = vtg.insertVitals(vitals);
-			vitals.setId(vid);
-
-		} catch (GatewayException e) {
-			e.printStackTrace();
-		}
-
-		/*
-		 * Builds a string if ft/inches in form X'Y" otherwise, just an int
-		 */
-
-		boolean isString = false;
-
-		String height_ftin_String = null;
-		int heightInt = -1;
-
-		if (vitals.getHUnit() == null) {
-
-		} else if (vitals.getHUnit().equals(Vitals.FTIN)) {
-
-			sb.append(vitals.getHFeet());
-			sb.append('\'');
-			sb.append(vitals.getHInches());
-			sb.append('\"');
-			height_ftin_String = sb.toString();
-			isString = true;
-
-		} else if (vitals.getHUnit().equals("null")) {
-			heightInt = -100;
-		} else if (vitals.getHUnit().equals(Vitals.IN)) {
-			heightInt = vitals.getHInches();
-		} else {
-			heightInt = vitals.getHCm();
-		}
-
-		// Change the panel back to vitals table
-		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW
-		// ALLERGY
-
-		// Add the vitals to the JTable
-		// Get model of VitalsTable in order to add rows
-		DefaultTableModel model = (DefaultTableModel) vitalsTable.getModel();
-
-		// Add row
-		model.addRow(new Object[] { vitals.getBps(), vitals.getBps(), vitals.getBpUnit(),
-				(isString ? height_ftin_String : heightInt), vitals.getHUnit(), vitals.getWeight(), vitals.getWUnit(),
-				vitals.getNotes() });
-
-		vitalsList.add(vitals);
-
-		int index = tabbedPane.indexOfTab(Tabs.vitals);
-
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
-	}
-
-	/**
-	 * Save Vitals to database for patient
-	 * 
-	 * @param patient
-	 *            Patient that Vitals belongs to
-	 * @param vtg
-	 *            VitalsTableGateway
-	 * @param tabbedPane
-	 *            JTabbedPane to change when done saving
-	 * @param oldPanel
-	 *            JPanel to change back to when done saving
-	 */
-	public void update(Patient patient, VitalsTableGateway vtg, JTabbedPane tabbedPane, JPanel oldPanel,
-			JTable vitalsTable, long vid) {
-		StringBuilder sb = new StringBuilder(128);
-
-		/**
-		 * Create new Vitals object with correct parameters Insert the vitals to
-		 * the DB through the Gateway
-		 */
-
-		// !!!!!!!!!!! probably don't need to make another vital, could get it
-		// from the model
-
-		Vitals vitals = new Vitals(vid, patient.getId(), Float.parseFloat(textField_BPSys.getText()),
-				Float.parseFloat(textField_BPDias.getText()), getLblBPSysUnit().getText(),
-				Integer.parseInt(((textField_HeightFt.getText().equals("")) ? "-2"
-						: textField_HeightFt.getText())),
-				Integer.parseInt(((textField_HeightIn.getText().equals("")) ? "-2"
-						: textField_HeightIn.getText())),
-				Integer.parseInt(((textField_HeightCm.getText().equals("")) ? "-2"
-						: textField_HeightCm.getText())),
-				getSelectedButtonText(heightButtonGroup),
-				Float.parseFloat(((textField_Weight.getText().equals("")) ? "-2"
-						: textField_Weight.getText())),
-				getLblWeightUnit().getText(), textArea_Notes.getText());
-
-		try {
-
-			long vitalid = vtg.updateVitals(vitals);
-			// vitals.setId(vitalid);
-			vitalsList = vl.getVitalsList();
-
-		} catch (GatewayException e) {
-			e.printStackTrace();
-		}
-
-		/*
-		 * Builds a string if ft/inches in form X'Y" otherwise, just an int
-		 */
-
-		boolean isString = false;
-
-		String height_ftin_String = null;
-		int heightInt = -1;
-
-		if (vitals.getHUnit() == null) {
-
-		} else if (vitals.getHUnit().equals(Vitals.FTIN)) {
-
-			sb.append(vitals.getHFeet());
-			sb.append('\'');
-			sb.append(vitals.getHInches());
-			sb.append('\"');
-			height_ftin_String = sb.toString();
-			isString = true;
-
-		} else if (vitals.getHUnit().equals("null")) {
-			heightInt = -100;
-		} else if (vitals.getHUnit().equals(Vitals.IN)) {
-			heightInt = vitals.getHInches();
-		} else {
-			heightInt = vitals.getHCm();
-		}
-
-		// JTable columns:
-
-		// "BPS", "BPD", "BP Unit", "Height", "Height Unit", "Weight", "Weight
-		// Unit", "Notes"
-
-		// Update row in JTable
-		int selectedRow = vitalsTable.getSelectedRow();
-		vitalsTable.setValueAt(vitals.getBps(), selectedRow, 0);
-		vitalsTable.setValueAt(vitals.getBpd(), selectedRow, 1);
-		vitalsTable.setValueAt(vitals.getBpUnit(), selectedRow, 2);
-		vitalsTable.setValueAt((isString ? height_ftin_String : heightInt), selectedRow, 3);
-		vitalsTable.setValueAt(vitals.getHUnit(), selectedRow, 4);
-		vitalsTable.setValueAt(vitals.getWeight(), selectedRow, 5);
-		vitalsTable.setValueAt(vitals.getWUnit(), selectedRow, 6);
-		vitalsTable.setValueAt(vitals.getNotes(), selectedRow, 7);
-
-		// Update the Allergy in the allergyList
-		vitalsList.set(selectedRow, vitals);
-
-		// Change the panel back to vitals table
-		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW
-		// ALLERGY
-
-		// Add the vitals to the JTable
-		// Get model of VitalsTable in order to add rows
-
-		// DefaultTableModel dtm = (DefaultTableModel) vitalsTable.getModel();
-
-		int index = tabbedPane.indexOfTab(Tabs.vitals);
-
-		// swap the center component out for the old view
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
-	}
-
-	public void createView(final JTabbedPane tabbedPane, final Patient patient, JPanel vitalsPanel,
-			final VitalsTableGateway vtg, final JTable vitalsTable) {
-
-		setLayout(new BorderLayout(0, 0));
-
-		JPanel panel_VitalsForm = new JPanel();
-		add(panel_VitalsForm, BorderLayout.CENTER);
-		GridBagLayout gbl_panel_VitalsForm = new GridBagLayout();
-		gbl_panel_VitalsForm.columnWidths = new int[] { 0, 0, 48, 0, 0, 0 };
-		gbl_panel_VitalsForm.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_panel_VitalsForm.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_panel_VitalsForm.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-				1.0, 0.0, Double.MIN_VALUE };
-		panel_VitalsForm.setLayout(gbl_panel_VitalsForm);
-
-		JLabel lblVitals = new JLabel("Vitals");
-		lblVitals.setFont(new Font("Tahoma", Font.BOLD, 11));
-		GridBagConstraints gbc_lblVitals = new GridBagConstraints();
-		gbc_lblVitals.insets = new Insets(0, 0, 5, 5);
-		gbc_lblVitals.gridx = 1;
-		gbc_lblVitals.gridy = 1;
-		panel_VitalsForm.add(lblVitals, gbc_lblVitals);
-
-		lblBloodPressuresys = new JLabel("BP(Sys):");
-		GridBagConstraints gbc_lblBloodPressuresys = new GridBagConstraints();
-		gbc_lblBloodPressuresys.anchor = GridBagConstraints.EAST;
-		gbc_lblBloodPressuresys.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBloodPressuresys.gridx = 1;
-		gbc_lblBloodPressuresys.gridy = 3;
-		panel_VitalsForm.add(lblBloodPressuresys, gbc_lblBloodPressuresys);
-
-		textField_BPSys = new JTextField();
-		GridBagConstraints gbc_textField_BPSys = new GridBagConstraints();
-		gbc_textField_BPSys.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_BPSys.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_BPSys.gridx = 2;
-		gbc_textField_BPSys.gridy = 3;
-		panel_VitalsForm.add(textField_BPSys, gbc_textField_BPSys);
-		textField_BPSys.setColumns(10);
-
-		lblBPSysUnit_1 = new JLabel(Vitals.MMHG);
-		GridBagConstraints gbc_lblBPSysUnit_1 = new GridBagConstraints();
-		gbc_lblBPSysUnit_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBPSysUnit_1.gridx = 3;
-		gbc_lblBPSysUnit_1.gridy = 3;
-		panel_VitalsForm.add(lblBPSysUnit_1, gbc_lblBPSysUnit_1);
-
-		JPanel panel_BPGroup = new JPanel();
-		GridBagConstraints gbc_panel_BPGroup = new GridBagConstraints();
-		gbc_panel_BPGroup.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_BPGroup.fill = GridBagConstraints.VERTICAL;
-		gbc_panel_BPGroup.gridx = 4;
-		gbc_panel_BPGroup.gridy = 3;
-		panel_VitalsForm.add(panel_BPGroup, gbc_panel_BPGroup);
-
-		JRadioButton rdbtnMmhg = new JRadioButton(Vitals.MMHG);
-
-		rdbtnMmhg.setSelected(true);
-		panel_BPGroup.add(rdbtnMmhg);
-
-		JRadioButton rdbtnPa = new JRadioButton(Vitals.PA);
-
-		panel_BPGroup.add(rdbtnPa);
-
-		JLabel lblBloodPressuredias = new JLabel("BP (Dias):");
-		GridBagConstraints gbc_lblBloodPressuredias = new GridBagConstraints();
-		gbc_lblBloodPressuredias.anchor = GridBagConstraints.EAST;
-		gbc_lblBloodPressuredias.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBloodPressuredias.gridx = 1;
-		gbc_lblBloodPressuredias.gridy = 4;
-		panel_VitalsForm.add(lblBloodPressuredias, gbc_lblBloodPressuredias);
-
-		textField_BPDias = new JTextField();
-		GridBagConstraints gbc_textField_BPDias = new GridBagConstraints();
-		gbc_textField_BPDias.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_BPDias.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_BPDias.gridx = 2;
-		gbc_textField_BPDias.gridy = 4;
-		panel_VitalsForm.add(textField_BPDias, gbc_textField_BPDias);
-		textField_BPDias.setColumns(10);
-
-		JLabel lblBPDiasUnit = new JLabel(Vitals.MMHG);
-		GridBagConstraints gbc_lblBPDiasUnit = new GridBagConstraints();
-		gbc_lblBPDiasUnit.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBPDiasUnit.gridx = 3;
-		gbc_lblBPDiasUnit.gridy = 4;
-		panel_VitalsForm.add(lblBPDiasUnit, gbc_lblBPDiasUnit);
-
-		bpButtonGroup.add(rdbtnMmhg);
-		bpButtonGroup.add(rdbtnPa);
-		rdbtnMmhg.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
-		rdbtnPa.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
-
-		JLabel lblHeight = new JLabel("Height:");
-		GridBagConstraints gbc_lblHeight = new GridBagConstraints();
-		gbc_lblHeight.anchor = GridBagConstraints.EAST;
-		gbc_lblHeight.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeight.gridx = 1;
-		gbc_lblHeight.gridy = 6;
-		panel_VitalsForm.add(lblHeight, gbc_lblHeight);
-
-		textField_HeightFt = new JTextField();
-		GridBagConstraints gbc_textField_HeightFt = new GridBagConstraints();
-		gbc_textField_HeightFt.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightFt.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightFt.gridx = 2;
-		gbc_textField_HeightFt.gridy = 6;
-		panel_VitalsForm.add(textField_HeightFt, gbc_textField_HeightFt);
-		textField_HeightFt.setColumns(10);
-
-		JLabel lblHeightft = new JLabel("ft");
-		GridBagConstraints gbc_lblHeightft = new GridBagConstraints();
-		gbc_lblHeightft.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightft.gridx = 3;
-		gbc_lblHeightft.gridy = 6;
-		panel_VitalsForm.add(lblHeightft, gbc_lblHeightft);
-
-		JPanel panel_HeightGroup = new JPanel();
-		GridBagConstraints gbc_panel_HeightGroup = new GridBagConstraints();
-		gbc_panel_HeightGroup.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_HeightGroup.gridx = 4;
-		gbc_panel_HeightGroup.gridy = 6;
-		panel_VitalsForm.add(panel_HeightGroup, gbc_panel_HeightGroup);
-
-		JRadioButton rdbtnFeetInches = new JRadioButton(Vitals.FTIN);
-		rdbtnFeetInches.setSelected(true);
-		panel_HeightGroup.add(rdbtnFeetInches);
-
-		JRadioButton rdbtnInches = new JRadioButton(Vitals.IN);
-		panel_HeightGroup.add(rdbtnInches);
-
-		JRadioButton rdbtnCm = new JRadioButton(Vitals.CM);
-		panel_HeightGroup.add(rdbtnCm);
-
-		textField_HeightIn = new JTextField();
-		GridBagConstraints gbc_textField_HeightIn = new GridBagConstraints();
-		gbc_textField_HeightIn.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightIn.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightIn.gridx = 2;
-		gbc_textField_HeightIn.gridy = 7;
-		panel_VitalsForm.add(textField_HeightIn, gbc_textField_HeightIn);
-		textField_HeightIn.setColumns(10);
-
-		JLabel lblHeightIn = new JLabel(Vitals.IN);
-		GridBagConstraints gbc_lblHeightIn = new GridBagConstraints();
-		gbc_lblHeightIn.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightIn.gridx = 3;
-		gbc_lblHeightIn.gridy = 7;
-		panel_VitalsForm.add(lblHeightIn, gbc_lblHeightIn);
-
-		textField_HeightCm = new JTextField();
-		GridBagConstraints gbc_textField_HeightCm = new GridBagConstraints();
-		gbc_textField_HeightCm.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightCm.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightCm.gridx = 2;
-		gbc_textField_HeightCm.gridy = 8;
-		panel_VitalsForm.add(textField_HeightCm, gbc_textField_HeightCm);
-		textField_HeightCm.setColumns(10);
-
-		textField_HeightCm.setEnabled(false);
-
-		JLabel lblHeightCm = new JLabel(Vitals.CM);
-		GridBagConstraints gbc_lblHeightCm = new GridBagConstraints();
-		gbc_lblHeightCm.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightCm.gridx = 3;
-		gbc_lblHeightCm.gridy = 8;
-		panel_VitalsForm.add(lblHeightCm, gbc_lblHeightCm);
-
-		rdbtnFeetInches.addActionListener(new HeightListener());
-		rdbtnInches.addActionListener(new HeightListener());
-		rdbtnCm.addActionListener(new HeightListener());
-
-		heightButtonGroup.add(rdbtnFeetInches);
-		heightButtonGroup.add(rdbtnInches);
-		heightButtonGroup.add(rdbtnCm);
-
-		JLabel lblWeight = new JLabel("Weight:");
-		GridBagConstraints gbc_lblWeight = new GridBagConstraints();
-		gbc_lblWeight.anchor = GridBagConstraints.EAST;
-		gbc_lblWeight.insets = new Insets(0, 0, 5, 5);
-		gbc_lblWeight.gridx = 1;
-		gbc_lblWeight.gridy = 10;
-		panel_VitalsForm.add(lblWeight, gbc_lblWeight);
-
-		textField_Weight = new JTextField();
-		GridBagConstraints gbc_textField_Weight = new GridBagConstraints();
-		gbc_textField_Weight.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_Weight.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_Weight.gridx = 2;
-		gbc_textField_Weight.gridy = 10;
-		panel_VitalsForm.add(textField_Weight, gbc_textField_Weight);
-		textField_Weight.setColumns(10);
-
-		lblWeightUnit = new JLabel(Vitals.LBS);
-		GridBagConstraints gbc_lblWeightUnit_1 = new GridBagConstraints();
-		gbc_lblWeightUnit_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblWeightUnit_1.gridx = 3;
-		gbc_lblWeightUnit_1.gridy = 10;
-		panel_VitalsForm.add(lblWeightUnit, gbc_lblWeightUnit_1);
-
-		JPanel panel_WeightGroup = new JPanel();
-		GridBagConstraints gbc_panel_WeightGroup = new GridBagConstraints();
-		gbc_panel_WeightGroup.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_WeightGroup.gridx = 4;
-		gbc_panel_WeightGroup.gridy = 10;
-		panel_VitalsForm.add(panel_WeightGroup, gbc_panel_WeightGroup);
-
-		JRadioButton rdbtnLbs = new JRadioButton(Vitals.LBS);
-		rdbtnLbs.setSelected(true);
-		panel_WeightGroup.add(rdbtnLbs);
-
-		JRadioButton rdbtnKg = new JRadioButton(Vitals.KG);
-		panel_WeightGroup.add(rdbtnKg);
-
-		weightButtonGroup.add(rdbtnLbs);
-		weightButtonGroup.add(rdbtnKg);
-		rdbtnLbs.addActionListener(new WeightListener(lblWeightUnit));
-		rdbtnKg.addActionListener(new WeightListener(lblWeightUnit));
-
-		JLabel lblNotes = new JLabel("Notes:");
-		GridBagConstraints gbc_lblNotes = new GridBagConstraints();
-		gbc_lblNotes.anchor = GridBagConstraints.EAST;
-		gbc_lblNotes.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNotes.gridx = 1;
-		gbc_lblNotes.gridy = 12;
-		panel_VitalsForm.add(lblNotes, gbc_lblNotes);
-
-		textArea_Notes = new JTextArea();
-		textArea_Notes.setRows(4);
-		GridBagConstraints gbc_textArea_Notes = new GridBagConstraints();
-		gbc_textArea_Notes.fill = GridBagConstraints.BOTH;
-		gbc_textArea_Notes.gridheight = 2;
-		gbc_textArea_Notes.gridwidth = 3;
-		gbc_textArea_Notes.gridx = 2;
-		gbc_textArea_Notes.gridy = 12;
-		panel_VitalsForm.add(textArea_Notes, gbc_textArea_Notes);
-
-		JPanel panel_Buttons = new JPanel();
-		add(panel_Buttons, BorderLayout.SOUTH);
-
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				cancel(tabbedPane, oldPanel);
-			}
-		});
-		panel_Buttons.add(btnCancel);
-
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				save(patient, vtg, tabbedPane, oldPanel, vitalsTable);
-			}
-		});
-		panel_Buttons.add(btnSave);
-	}
-
-	public void createExistingView(final JTabbedPane tabbedPane, final Patient patient, JPanel vitalsPanel,
-			final VitalsTableGateway vtg, Vitals v, final JTable vitalsTable) {
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[] { 479, 0 };
-		gridBagLayout.rowHeights = new int[] { 596, 0 };
-		gridBagLayout.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gridBagLayout.rowWeights = new double[] { 1.0, Double.MIN_VALUE };
-		setLayout(gridBagLayout);
-
-		JPanel panel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.fill = GridBagConstraints.BOTH;
-		gbc_panel.gridx = 0;
-		gbc_panel.gridy = 0;
-		add(panel, gbc_panel);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[] { 392, 0 };
-		gbl_panel.rowHeights = new int[] { 0, 434, 0, 0, 0 };
-		gbl_panel.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panel.rowWeights = new double[] { 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
-		panel.setLayout(gbl_panel);
-
-		JButton btnAppend = new JButton("Append");
-		GridBagConstraints gbc_btnAppend = new GridBagConstraints();
-		gbc_btnAppend.fill = GridBagConstraints.VERTICAL;
-		gbc_btnAppend.insets = new Insets(0, 0, 5, 0);
-		gbc_btnAppend.gridx = 0;
-		gbc_btnAppend.gridy = 0;
-		panel.add(btnAppend, gbc_btnAppend);
-
-		JPanel panel_VitalsForm = new JPanel();
-		GridBagConstraints gbc_panel_VitalsForm = new GridBagConstraints();
-		gbc_panel_VitalsForm.fill = GridBagConstraints.BOTH;
-		gbc_panel_VitalsForm.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_VitalsForm.gridx = 0;
-		gbc_panel_VitalsForm.gridy = 1;
-		panel.add(panel_VitalsForm, gbc_panel_VitalsForm);
-		GridBagLayout gbl_panel_VitalsForm = new GridBagLayout();
-		gbl_panel_VitalsForm.columnWidths = new int[] { 0, 0, 48, 0, 0, 0 };
-		gbl_panel_VitalsForm.rowHeights = new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-		gbl_panel_VitalsForm.columnWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_panel_VitalsForm.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
-				1.0, 0.0, Double.MIN_VALUE };
-		panel_VitalsForm.setLayout(gbl_panel_VitalsForm);
-
-		JLabel lblVitals = new JLabel("Vitals");
-		lblVitals.setFont(new Font("Tahoma", Font.BOLD, 11));
-		GridBagConstraints gbc_lblVitals = new GridBagConstraints();
-		gbc_lblVitals.insets = new Insets(0, 0, 5, 5);
-		gbc_lblVitals.gridx = 1;
-		gbc_lblVitals.gridy = 1;
-		panel_VitalsForm.add(lblVitals, gbc_lblVitals);
-
-		// BP
-
-		lblBloodPressuresys = new JLabel("BP(Sys):");
-		GridBagConstraints gbc_lblBloodPressuresys = new GridBagConstraints();
-		gbc_lblBloodPressuresys.anchor = GridBagConstraints.EAST;
-		gbc_lblBloodPressuresys.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBloodPressuresys.gridx = 1;
-		gbc_lblBloodPressuresys.gridy = 3;
-		panel_VitalsForm.add(lblBloodPressuresys, gbc_lblBloodPressuresys);
-
-		// set bps text
-		textField_BPSys = new JTextField();
-		textField_BPSys.setText(String.valueOf(v.getBps()));
-		GridBagConstraints gbc_textField_BPSys = new GridBagConstraints();
-		gbc_textField_BPSys.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_BPSys.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_BPSys.gridx = 2;
-		gbc_textField_BPSys.gridy = 3;
-		panel_VitalsForm.add(textField_BPSys, gbc_textField_BPSys);
-		textField_BPSys.setColumns(10);
-
-		// set bps Unit
-		lblBPSysUnit_1 = new JLabel(v.getBpUnit());
-		GridBagConstraints gbc_lblBPSysUnit_1 = new GridBagConstraints();
-		gbc_lblBPSysUnit_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBPSysUnit_1.gridx = 3;
-		gbc_lblBPSysUnit_1.gridy = 3;
-		panel_VitalsForm.add(lblBPSysUnit_1, gbc_lblBPSysUnit_1);
-
-		JPanel panel_BPGroup = new JPanel();
-		GridBagConstraints gbc_panel_BPGroup = new GridBagConstraints();
-		gbc_panel_BPGroup.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_BPGroup.fill = GridBagConstraints.VERTICAL;
-		gbc_panel_BPGroup.gridx = 4;
-		gbc_panel_BPGroup.gridy = 3;
-		panel_VitalsForm.add(panel_BPGroup, gbc_panel_BPGroup);
-
-		JRadioButton rdbtnMmhg = new JRadioButton(Vitals.MMHG);
-		panel_BPGroup.add(rdbtnMmhg);
-		JRadioButton rdbtnPa = new JRadioButton(Vitals.PA);
-		panel_BPGroup.add(rdbtnPa);
-
-		JLabel lblBloodPressuredias = new JLabel("BP (Dias):");
-		GridBagConstraints gbc_lblBloodPressuredias = new GridBagConstraints();
-		gbc_lblBloodPressuredias.anchor = GridBagConstraints.EAST;
-		gbc_lblBloodPressuredias.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBloodPressuredias.gridx = 1;
-		gbc_lblBloodPressuredias.gridy = 4;
-		panel_VitalsForm.add(lblBloodPressuredias, gbc_lblBloodPressuredias);
-
-		// set bpd text
-		textField_BPDias = new JTextField();
-		textField_BPDias.setText(String.valueOf(v.getBpd()));
-		GridBagConstraints gbc_textField_BPDias = new GridBagConstraints();
-		gbc_textField_BPDias.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_BPDias.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_BPDias.gridx = 2;
-		gbc_textField_BPDias.gridy = 4;
-		panel_VitalsForm.add(textField_BPDias, gbc_textField_BPDias);
-		textField_BPDias.setColumns(10);
-
-		// set bpd unit
-		JLabel lblBPDiasUnit = new JLabel(v.getBpUnit());
-		GridBagConstraints gbc_lblBPDiasUnit = new GridBagConstraints();
-		gbc_lblBPDiasUnit.insets = new Insets(0, 0, 5, 5);
-		gbc_lblBPDiasUnit.gridx = 3;
-		gbc_lblBPDiasUnit.gridy = 4;
-		panel_VitalsForm.add(lblBPDiasUnit, gbc_lblBPDiasUnit);
-
-		bpButtonGroup.add(rdbtnMmhg);
-		bpButtonGroup.add(rdbtnPa);
-		rdbtnMmhg.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
-		rdbtnPa.addActionListener(new BPListener(lblBPSysUnit_1, lblBPDiasUnit));
-
-		// HEIGHT
-
-		JLabel lblHeight = new JLabel("Height:");
-		GridBagConstraints gbc_lblHeight = new GridBagConstraints();
-		gbc_lblHeight.anchor = GridBagConstraints.EAST;
-		gbc_lblHeight.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeight.gridx = 1;
-		gbc_lblHeight.gridy = 6;
-		panel_VitalsForm.add(lblHeight, gbc_lblHeight);
-
-		textField_HeightFt = new JTextField();
-		GridBagConstraints gbc_textField_HeightFt = new GridBagConstraints();
-		gbc_textField_HeightFt.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightFt.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightFt.gridx = 2;
-		gbc_textField_HeightFt.gridy = 6;
-		panel_VitalsForm.add(textField_HeightFt, gbc_textField_HeightFt);
-		textField_HeightFt.setColumns(10);
-
-		JLabel lblHeightft = new JLabel("ft");
-		GridBagConstraints gbc_lblHeightft = new GridBagConstraints();
-		gbc_lblHeightft.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightft.gridx = 3;
-		gbc_lblHeightft.gridy = 6;
-		panel_VitalsForm.add(lblHeightft, gbc_lblHeightft);
-
-		JPanel panel_HeightGroup = new JPanel();
-		GridBagConstraints gbc_panel_HeightGroup = new GridBagConstraints();
-		gbc_panel_HeightGroup.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_HeightGroup.gridx = 4;
-		gbc_panel_HeightGroup.gridy = 6;
-		panel_VitalsForm.add(panel_HeightGroup, gbc_panel_HeightGroup);
-
-		JRadioButton rdbtnFeetInches = new JRadioButton(Vitals.FTIN);
-		rdbtnFeetInches.setSelected(true);
-		panel_HeightGroup.add(rdbtnFeetInches);
-
-		JRadioButton rdbtnInches = new JRadioButton(Vitals.IN);
-		panel_HeightGroup.add(rdbtnInches);
-
-		JRadioButton rdbtnCm = new JRadioButton(Vitals.CM);
-		panel_HeightGroup.add(rdbtnCm);
-
-		rdbtnFeetInches.addActionListener(new HeightListener());
-		rdbtnInches.addActionListener(new HeightListener());
-		rdbtnCm.addActionListener(new HeightListener());
-
-		heightButtonGroup.add(rdbtnFeetInches);
-		heightButtonGroup.add(rdbtnInches);
-		heightButtonGroup.add(rdbtnCm);
-
-		textField_HeightIn = new JTextField();
-		GridBagConstraints gbc_textField_HeightIn = new GridBagConstraints();
-		gbc_textField_HeightIn.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightIn.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightIn.gridx = 2;
-		gbc_textField_HeightIn.gridy = 7;
-		panel_VitalsForm.add(textField_HeightIn, gbc_textField_HeightIn);
-		textField_HeightIn.setColumns(10);
-
-		JLabel lblHeightIn = new JLabel(Vitals.IN);
-		GridBagConstraints gbc_lblHeightIn = new GridBagConstraints();
-		gbc_lblHeightIn.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightIn.gridx = 3;
-		gbc_lblHeightIn.gridy = 7;
-		panel_VitalsForm.add(lblHeightIn, gbc_lblHeightIn);
-
-		textField_HeightCm = new JTextField();
-		GridBagConstraints gbc_textField_HeightCm = new GridBagConstraints();
-		gbc_textField_HeightCm.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_HeightCm.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_HeightCm.gridx = 2;
-		gbc_textField_HeightCm.gridy = 8;
-		panel_VitalsForm.add(textField_HeightCm, gbc_textField_HeightCm);
-		textField_HeightCm.setColumns(10);
-
-		// textField_HeightCm.setEnabled(false);
-
-		JLabel lblHeightCm = new JLabel(Vitals.CM);
-		GridBagConstraints gbc_lblHeightCm = new GridBagConstraints();
-		gbc_lblHeightCm.insets = new Insets(0, 0, 5, 5);
-		gbc_lblHeightCm.gridx = 3;
-		gbc_lblHeightCm.gridy = 8;
-		panel_VitalsForm.add(lblHeightCm, gbc_lblHeightCm);
-
-		// WEIGHT
-
-		JLabel lblWeight = new JLabel("Weight:");
-		GridBagConstraints gbc_lblWeight = new GridBagConstraints();
-		gbc_lblWeight.anchor = GridBagConstraints.EAST;
-		gbc_lblWeight.insets = new Insets(0, 0, 5, 5);
-		gbc_lblWeight.gridx = 1;
-		gbc_lblWeight.gridy = 10;
-		panel_VitalsForm.add(lblWeight, gbc_lblWeight);
-
-		// set weight
-		textField_Weight = new JTextField();
-		textField_Weight.setText(String.valueOf(v.getWeight()));
-		GridBagConstraints gbc_textField_Weight = new GridBagConstraints();
-		gbc_textField_Weight.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_Weight.insets = new Insets(0, 0, 5, 5);
-		gbc_textField_Weight.gridx = 2;
-		gbc_textField_Weight.gridy = 10;
-		panel_VitalsForm.add(textField_Weight, gbc_textField_Weight);
-		textField_Weight.setColumns(10);
-
-		// set what weight is selected
-		// set the weight radio button
-		lblWeightUnit = new JLabel(Vitals.LBS);
-		GridBagConstraints gbc_lblWeightUnit_1 = new GridBagConstraints();
-		gbc_lblWeightUnit_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblWeightUnit_1.gridx = 3;
-		gbc_lblWeightUnit_1.gridy = 10;
-		panel_VitalsForm.add(lblWeightUnit, gbc_lblWeightUnit_1);
-
-		JPanel panel_WeightGroup = new JPanel();
-		GridBagConstraints gbc_panel_WeightGroup = new GridBagConstraints();
-		gbc_panel_WeightGroup.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_WeightGroup.gridx = 4;
-		gbc_panel_WeightGroup.gridy = 10;
-		panel_VitalsForm.add(panel_WeightGroup, gbc_panel_WeightGroup);
-
-		// weight radio button group
-
-		JRadioButton rdbtnLbs = new JRadioButton(Vitals.LBS);
-		panel_WeightGroup.add(rdbtnLbs);
-
-		JRadioButton rdbtnKg = new JRadioButton(Vitals.KG);
-		panel_WeightGroup.add(rdbtnKg);
-
-		weightButtonGroup.add(rdbtnLbs);
-		rdbtnLbs.addActionListener(new WeightListener(lblWeightUnit));
-		weightButtonGroup.add(rdbtnKg);
-		rdbtnKg.addActionListener(new WeightListener(lblWeightUnit));
-
-		JLabel lblNotes = new JLabel("Notes:");
-		GridBagConstraints gbc_lblNotes = new GridBagConstraints();
-		gbc_lblNotes.anchor = GridBagConstraints.EAST;
-		gbc_lblNotes.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNotes.gridx = 1;
-		gbc_lblNotes.gridy = 12;
-		panel_VitalsForm.add(lblNotes, gbc_lblNotes);
-
-		// set notes
-
-		textArea_Notes = new JTextArea();
-		textArea_Notes.setRows(4);
-		textArea_Notes.setText(v.getNotes());
-		GridBagConstraints gbc_textArea_Notes = new GridBagConstraints();
-		gbc_textArea_Notes.fill = GridBagConstraints.BOTH;
-		gbc_textArea_Notes.gridheight = 2;
-		gbc_textArea_Notes.gridwidth = 3;
-		gbc_textArea_Notes.gridx = 2;
-		gbc_textArea_Notes.gridy = 12;
-		panel_VitalsForm.add(textArea_Notes, gbc_textArea_Notes);
-
-		JPanel panel_CommentsMain = new JPanel();
-		panel_CommentsMain
-				.setBorder(new TitledBorder(null, "Comments", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_panel_CommentsMain = new GridBagConstraints();
-		gbc_panel_CommentsMain.fill = GridBagConstraints.BOTH;
-		gbc_panel_CommentsMain.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_CommentsMain.gridx = 0;
-		gbc_panel_CommentsMain.gridy = 2;
-		panel.add(panel_CommentsMain, gbc_panel_CommentsMain);
-		GridBagLayout gbl_panel_CommentsMain = new GridBagLayout();
-		gbl_panel_CommentsMain.columnWidths = new int[] { 392, 0 };
-		gbl_panel_CommentsMain.rowHeights = new int[] { 128, 0, 0 };
-		gbl_panel_CommentsMain.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panel_CommentsMain.rowWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
-		panel_CommentsMain.setLayout(gbl_panel_CommentsMain);
-
-		JScrollPane scrollPanelAppend = new JScrollPane();
-		scrollPanelAppend.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		GridBagConstraints gbc_scrollPanelAppend = new GridBagConstraints();
-		gbc_scrollPanelAppend.fill = GridBagConstraints.BOTH;
-		gbc_scrollPanelAppend.insets = new Insets(0, 0, 5, 0);
-		gbc_scrollPanelAppend.gridx = 0;
-		gbc_scrollPanelAppend.gridy = 0;
-		panel_CommentsMain.add(scrollPanelAppend, gbc_scrollPanelAppend);
-		scrollPanelAppend.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-		JPanel panelAppend = new JPanel();
-		scrollPanelAppend.setViewportView(panelAppend);
-		GridBagLayout gbl_panelAppend = new GridBagLayout();
-		gbl_panelAppend.columnWidths = new int[] { 392, 0 };
-		gbl_panelAppend.rowHeights = new int[] { 0, 0, 0 };
-		gbl_panelAppend.columnWeights = new double[] { 1.0, Double.MIN_VALUE };
-		gbl_panelAppend.rowWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
-		panelAppend.setLayout(gbl_panelAppend);
-
-		textAreaAppend = new JTextArea();
-		textAreaAppend.setWrapStyleWord(true);
-		textAreaAppend.setLineWrap(true);
-		GridBagConstraints gbc_textAreaAppend = new GridBagConstraints();
-		gbc_textAreaAppend.insets = new Insets(0, 0, 5, 0);
-		gbc_textAreaAppend.fill = GridBagConstraints.BOTH;
-		gbc_textAreaAppend.gridx = 0;
-		gbc_textAreaAppend.gridy = 0;
-		panelAppend.add(textAreaAppend, gbc_textAreaAppend);
-
-		textAreaAppend.setVisible(false);
-
+	private void populateVital() {
 		
+		textField_BPS.setText(String.valueOf(vitals.getBps()));
+		textField_BPD.setText(String.valueOf(vitals.getBpd()));
 		
-
-		// comments
-
-		panelComments = new JPanel();
-
-		panelComments.setLayout(new BoxLayout(panelComments, BoxLayout.Y_AXIS));
-		GridBagConstraints gbc_panelComments = new GridBagConstraints();
-		gbc_panelComments.fill = GridBagConstraints.VERTICAL;
-		panelAppend.add(panelComments, gbc_panelComments);
-		
-		panel_CommentButtons = new JPanel();
-		GridBagConstraints gbc_panel_CommentButtons = new GridBagConstraints();
-		gbc_panel_CommentButtons.fill = GridBagConstraints.BOTH;
-		gbc_panel_CommentButtons.gridx = 0;
-		gbc_panel_CommentButtons.gridy = 1;
-		panel_CommentsMain.add(panel_CommentButtons, gbc_panel_CommentButtons);
-
-		JButton btnCancelComment = new JButton("Cancel");
-		panel_CommentButtons.add(btnCancelComment);
-
-		JButton btnAddComment = new JButton("Add Comment");
-		panel_CommentButtons.add(btnAddComment);
-
-		panel_CommentButtons.setVisible(false);
-		
-		
-		panelComments.removeAll();
-		// hide panelComment
-		if (commentsList == null) {
-			//System.out.print("\n comments list is null! \n\n\n\n");
-		}
-		System.out.println(commentsList.toString());
-		panelComments.setVisible(true);
-		// and Append Button
-		for (Comment c : commentsList) {
-			JLabel tmpLabel = new JLabel(c.getCommentString(), JLabel.CENTER);
-			tmpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			panelComments.add(tmpLabel);
-			panelComments.add(new JSeparator(SwingConstants.HORIZONTAL));
-		}
-
-		// show textAreaAppend and confirm/cancel buttons
-		textAreaAppend.setVisible(false);
-		panel_CommentButtons.setVisible(false);
-		
-		
-
-		JPanel panel_Buttons = new JPanel();
-		GridBagConstraints gbc_panel_Buttons = new GridBagConstraints();
-		gbc_panel_Buttons.fill = GridBagConstraints.BOTH;
-		gbc_panel_Buttons.gridx = 0;
-		gbc_panel_Buttons.gridy = 3;
-		panel.add(panel_Buttons, gbc_panel_Buttons);
-
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				cancel(tabbedPane, oldPanel);
-			}
-		});
-		panel_Buttons.add(btnCancel);
-
-		JButton btnUpdateVital = new JButton("Update Vital");
-		btnUpdateVital.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				update(patient, vtg, tabbedPane, oldPanel, vitalsTable, vitals.getId());
-			}
-		});
-		panel_Buttons.add(btnUpdateVital);
-
-		btnAppend.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-				// hide panelComment
-				panelComments.setVisible(false);
-				// and Append Button
-
-				// show textAreaAppend and confirm/cancel buttons
-				textAreaAppend.setVisible(true);
-				panel_CommentButtons.setVisible(true);
-
-				/*
-				 * editPanel.add(commentField, BorderLayout.CENTER);
-				 * editPanel.add(saveButton, BorderLayout.SOUTH);
-				 * 
-				 * BorderLayout layout = (BorderLayout) masterPanel.getLayout();
-				 * masterPanel.remove(layout.getLayoutComponent(BorderLayout.
-				 * SOUTH)); masterPanel.add(editPanel, BorderLayout.SOUTH);
-				 * 
-				 * masterPanel.validate(); masterPanel.repaint();
-				 */
-			}
-		});
-
-		btnCancelComment.addActionListener(new ActionListener() {
-			// TODO
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				panelComments.removeAll();
-				// hide panelComment
-				//System.out.println(commentsList.toString());
-				panelComments.setVisible(true);
-				// and Append Button
-				for (Comment c : commentsList) {
-					JLabel tmpLabel = new JLabel(c.getCommentString(), JLabel.CENTER);
-					tmpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-					panelComments.add(tmpLabel);
-					panelComments.add(new JSeparator(SwingConstants.HORIZONTAL));
-				}
-
-				// show textAreaAppend and confirm/cancel buttons
-				textAreaAppend.setVisible(false);
-				panel_CommentButtons.setVisible(false);
-
-				/*
-				 * editPanel.add(commentField, BorderLayout.CENTER);
-				 * editPanel.add(saveButton, BorderLayout.SOUTH);
-				 * 
-				 * BorderLayout layout = (BorderLayout) masterPanel.getLayout();
-				 * masterPanel.remove(layout.getLayoutComponent(BorderLayout.
-				 * SOUTH)); masterPanel.add(editPanel, BorderLayout.SOUTH);
-				 * 
-				 * masterPanel.validate(); masterPanel.repaint();
-				 */
-			}
-		});
-
-		btnAddComment.addActionListener(new ActionListener() {
-			// TODO
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-
-				Comment tmp = null;
-
-				// string builder...?
-
-				String commentString = textAreaAppend.getText();
-
-				tmp = new Comment(0, patient.getId(), Comment.vitals, vitals.getId(), commentString);
-
-				try {
-					ctg.insertComment(tmp);
-				} catch (GatewayException e) {
-					e.printStackTrace();
-				}
-
-				JLabel tmpLabel = new JLabel(tmp.getCommentString(), JLabel.CENTER);
-				tmpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				panelComments.add(tmpLabel);
-				panelComments.add(new JSeparator(SwingConstants.HORIZONTAL));
-				// show textAreaAppend and confirm/cancel buttons
-				panelComments.setVisible(true);
-				textAreaAppend.setVisible(false);
-				panel_CommentButtons.setVisible(false);
-
-				/*
-				 * editPanel.add(commentField, BorderLayout.CENTER);
-				 * editPanel.add(saveButton, BorderLayout.SOUTH);
-				 * 
-				 * BorderLayout layout = (BorderLayout) masterPanel.getLayout();
-				 * masterPanel.remove(layout.getLayoutComponent(BorderLayout.
-				 * SOUTH)); masterPanel.add(editPanel, BorderLayout.SOUTH);
-				 * 
-				 * masterPanel.validate(); masterPanel.repaint();
-				 */
-			}
-		});
-
-		// set what BP unit button is selected
-
-		if (v.getBpUnit().equals(Vitals.MMHG)) {
-
+		if (vitals.getBpUnit().equals(Vitals.MMHG)) {
+			
 			rdbtnMmhg.setSelected(true);
-
+			
 		} else {
-
+			
 			rdbtnPa.setSelected(true);
 		}
-
-		// set text, which fields are enabled, and radio button for height
-
-		if (v.getHUnit().equals(Vitals.FTIN)) {
-			rdbtnFeetInches.setSelected(true);
-			textField_HeightFt.setText(String.valueOf(v.getHFeet()));
-			textField_HeightIn.setText(String.valueOf(v.getHInches()));
-			textField_HeightCm.setEnabled(false);
-		} else if (v.getHUnit().equals(Vitals.IN)) {
-			rdbtnInches.setSelected(true);
-			textField_HeightIn.setText(String.valueOf(v.getHInches()));
-			textField_HeightFt.setEnabled(false);
-			textField_HeightCm.setEnabled(false);
-		} else {
-			rdbtnCm.setSelected(true);
-			textField_HeightCm.setText(String.valueOf(v.getHCm()));
-			textField_HeightFt.setEnabled(false);
-			textField_HeightIn.setEnabled(false);
+		
+		if (vitals.isFasting()) {
+			chckbxFasting.setSelected(true);
 		}
-
-		// set weight radio button selection
-
-		if (v.getWUnit().equals(Vitals.LBS)) {
-			rdbtnLbs.setSelected(true);
+		
+		textField_BGLevel.setText(String.valueOf(vitals.getBg()));;
+		
+		if (vitals.getBgUnit().equals(Vitals.mmolL)) {
+			
+			rdbtnMmoll.setSelected(true);
+			
 		} else {
+			
+			rdbtnMgdl.setSelected(true);
+		}
+		
+		textField_O2Sat.setText(String.valueOf(vitals.getO2sat()));
+		textField_Hb.setText(String.valueOf(vitals.getHb()));
+		
+		if (vitals.getHUnit().equals(Vitals.FTIN)) {
+			
+			textField_Ft.setText(String.valueOf(vitals.getHFeet()));
+			textField_In.setText(String.valueOf(vitals.getHInches()));
+			rdbtnFtin.setSelected(true);
+			
+		} else if (vitals.getHUnit().equals(Vitals.IN)) {
+			
+			textField_In.setText(String.valueOf(vitals.getHInches()));
+			rdbtnIn.setSelected(true);
+			
+		} else {
+			
+			textField_Cm.setText(String.valueOf(vitals.getHCm()));
+			rdbtnCm.setSelected(true);
+		}
+		
+		textField_Weight.setText(String.valueOf(vitals.getWeight()));
+		
+		if (vitals.getWUnit().equals(Vitals.LBS)) {
+			
+			rdbtnLbs.setSelected(true);
+			
+		} else {
+			
 			rdbtnKg.setSelected(true);
 		}
+		
+		textArea_Notes.setText(vitals.getNotes());
+		
+	}
+	
+	private void populateComments() {
+		
+		//TODO in general, comments should also be in chronological  order
+		
+		// bad attempt to reverse them
+		//List<Comment> shallowCopy = commentsList.subList(0, commentsList.size());
+		//Collections.reverse(shallowCopy);
+		
+		for (Comment c : commentsList) {
+			JLabel tmpLabel = new JLabel(c.getDateCreated() + "  | " + c.getCommentString(), JLabel.CENTER);
+			tmpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			panelActualComments.add(tmpLabel);
+			panelActualComments.add(new JSeparator(SwingConstants.HORIZONTAL));
+		}
+		
+	}
+
+	private void prepareExistingVitalView() {
+		
+		chckbxFasting.setEnabled(false);
+
+		//TODO need a smarter way to traverse the tree and disable ALL THE THINGS!!!
+		for (Component c : panel_VitalsForm.getComponents()) {
+			if (c instanceof JPanel) {
+				for (Component c2 : ((JPanel) c).getComponents()) {
+					if (c2 instanceof JTextField) {
+						((JTextField) c2).setEditable(false);
+					} else if (c2 instanceof JPanel) {
+						for (Component c3 : ((JPanel) c2).getComponents()) {
+							if (c3 instanceof JRadioButton) {
+								((JRadioButton) c3).setEnabled(false);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		textArea_Notes.setEditable(false);
+		
+		btnConfirm.setVisible(false);
+	}
+
+	private class AppendListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			btnAppendNote.setVisible(false);
+			panel_CommentForm.setVisible(true);
+		}
+
+	}
+
+	private class ConfirmVitalListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			save();
+
+			int index = tabbedPane.indexOfTab(Tabs.vitals);
+			tabbedPane.setComponentAt(index, null);
+			tabbedPane.setComponentAt(index, vitalsTabView);
+		}
+
+	}
+
+	private class CancelVitalListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			int index = tabbedPane.indexOfTab(Tabs.vitals);
+			tabbedPane.setComponentAt(index, null);
+			tabbedPane.setComponentAt(index, vitalsTabView);
+		}
+
+	}
+
+	private class AddCommentListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			btnAppendNote.setVisible(true);
+			panel_CommentForm.setVisible(false);
+
+			// probably need string builder for this or no?
+			String commentString = textArea_Comment.getText();
+
+			Comment commentTmp = new Comment(0, patient.getId(), Comment.vitalsType, vitals.getId(), commentString);
+
+			try {
+
+				homeModel.getCtg().insertComment(commentTmp);
+
+			} catch (GatewayException e1) {
+				e1.printStackTrace();
+			}
+			
+			//TODO how have time stamp be same as the format of the SQL DB? probably formatted time object or something. Just got to trim the milliseconds off...
+			// also, current system time is UTC plus or minus, depends on time zone.
+			
+			commentTmp.setDateCreated(String.valueOf(new Timestamp(System.currentTimeMillis())));
+			
+			// nope -> commentTmp.setDateCreated(String.valueOf(new Timestamp(TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis()))));
+			// nope -> commentTmp.setDateCreated(String.valueOf(new Timestamp((int)(System.currentTimeMillis())/1000)));
+			
+			//TODO is backwards, need to reverse so is chronological
+			
+			// is going to a box layout
+			JLabel tmpLabel = new JLabel(commentTmp.getDateCreated() + "  | " + commentTmp.getCommentString(), JLabel.CENTER);
+			tmpLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			panelActualComments.add(tmpLabel);
+			panelActualComments.add(new JSeparator(SwingConstants.HORIZONTAL));
+			
+		}
+
+	}
+
+	private class CancelCommentListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			btnAppendNote.setVisible(true);
+			panel_CommentForm.setVisible(false);
+		}
+
+	}
+
+	private class UpdateVitalListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+		}
+
 	}
 
 	private class BPListener implements ActionListener {
-		JLabel lblBPSysUnit, lblBPDiasUnit;
-
-		public BPListener(JLabel lblBPSysUnit, JLabel lblBPDiasUnit) {
-			this.lblBPSysUnit = lblBPSysUnit;
-			this.lblBPDiasUnit = lblBPDiasUnit;
-		}
 
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals(Vitals.MMHG)) {
-				lblBPSysUnit.setText(Vitals.MMHG);
-				lblBPDiasUnit.setText(Vitals.MMHG);
+				lblBP.setText(Vitals.MMHG);
 			} else {
-				lblBPSysUnit.setText(Vitals.PA);
-				lblBPDiasUnit.setText(Vitals.PA);
+				lblBP.setText(Vitals.PA);
 			}
 		}
 	}
+	
+	private class BGListener implements ActionListener {
 
+		public void actionPerformed(ActionEvent e) {
+			if (e.getActionCommand().equals(Vitals.mmolL)) {
+				lblBGLevelUnit.setText(Vitals.mmolL);
+			} else {
+				lblBGLevelUnit.setText(Vitals.mgdL);
+			}
+		}
+	}
+	
 	private class HeightListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 
 			if (e.getActionCommand().equals(Vitals.FTIN)) {
 
-				textField_HeightFt.setEnabled(true);
-				textField_HeightIn.setEnabled(true);
-				textField_HeightIn.setText("");
+				textField_Ft.setEnabled(true);
+				textField_In.setEnabled(true);
+				textField_In.setText("");
 
-				textField_HeightCm.setEnabled(false);
-				textField_HeightCm.setText("");
+				textField_Cm.setEnabled(false);
+				textField_Cm.setText("");
 
 				heightUnit = Vitals.FTIN;
 
 			} else if (e.getActionCommand().equals(Vitals.IN)) {
 
-				textField_HeightFt.setEnabled(false);
-				textField_HeightFt.setText("");
+				textField_Ft.setEnabled(false);
+				textField_Ft.setText("");
 
-				textField_HeightIn.setEnabled(true);
+				textField_In.setEnabled(true);
 
-				textField_HeightCm.setEnabled(false);
-				textField_HeightCm.setText("");
+				textField_Cm.setEnabled(false);
+				textField_Cm.setText("");
+
 				heightUnit = Vitals.IN;
 
 			} else {
 
-				textField_HeightFt.setEnabled(false);
-				textField_HeightFt.setText("");
+				textField_Ft.setEnabled(false);
+				textField_Ft.setText("");
 
-				textField_HeightIn.setEnabled(false);
-				textField_HeightIn.setText("");
+				textField_In.setEnabled(false);
+				textField_In.setText("");
 
-				textField_HeightCm.setEnabled(true);
+				textField_Cm.setEnabled(true);
+
 				heightUnit = Vitals.CM;
 			}
 		}
@@ -1243,75 +416,17 @@ public class VitalsTabNewVitalsView extends JPanel {
 
 	private class WeightListener implements ActionListener {
 
-		JLabel lbl;
-
-		public WeightListener(JLabel lblWeightUnit) {
-			lbl = lblWeightUnit;
-		}
-
 		public void actionPerformed(ActionEvent e) {
 
 			if (e.getActionCommand().equals(Vitals.LBS)) {
 
-				lbl.setText(Vitals.LBS);
+				lblWeightUnit.setText(Vitals.LBS);
 
 			} else {
 
-				lbl.setText(Vitals.KG);
+				lblWeightUnit.setText(Vitals.KG);
 			}
 		}
-	}
-
-	public String getBPUnit() {
-		return bPUnit;
-	}
-
-	public void setBPUnit(String bpu) {
-		bPUnit = bpu;
-	}
-
-	public String getHeightUnit() {
-		return heightUnit;
-	}
-
-	public void setHeightUnit(String hu) {
-		heightUnit = hu;
-	}
-
-	public String getWeightUnit() {
-		return weightUnit;
-	}
-
-	public void setWeightUnit(String wu) {
-		weightUnit = wu;
-	}
-
-	public JLabel getLblBPSysUnit() {
-		return lblBPSysUnit_1;
-	}
-
-	public JTextField getTextField_HeightFt() {
-		return textField_HeightFt;
-	}
-
-	public JTextField getTextField_HeightIn() {
-		return textField_HeightIn;
-	}
-
-	public JTextField getTextField_HeightCm() {
-		return textField_HeightCm;
-	}
-
-	public JTextField getTextField_Weight() {
-		return textField_Weight;
-	}
-
-	public JLabel getLblWeightUnit() {
-		return lblWeightUnit;
-	}
-
-	public JTextArea getTextArea_Notes() {
-		return textArea_Notes;
 	}
 
 	/**
@@ -1332,4 +447,432 @@ public class VitalsTabNewVitalsView extends JPanel {
 
 		return null;
 	}
+	
+	// TODO use as many final static strings from Vitals as possible
+
+	private void save() {
+		
+		
+		StringBuilder sb = new StringBuilder(128);
+
+		/**
+		 * Create new Vitals object with correct parameters Insert the vitals to
+		 * the DB through the Gateway
+		 */
+
+		//getSelectedButtonText(buttonGroupHeight) to get unit for DB
+		Vitals vitals = new Vitals(
+				0,
+				patient.getId(),
+				Float.parseFloat(textField_BPS.getText()),
+				Float.parseFloat(textField_BPD.getText()),
+				lblBP.getText(),
+				chckbxFasting.isSelected(),
+				Float.parseFloat(textField_BGLevel.getText()),
+				lblBGLevelUnit.getText(),
+				Float.parseFloat(textField_O2Sat.getText()),
+				Float.parseFloat(textField_Hb.getText()),
+				Integer.parseInt(((textField_Ft.getText().equals("")) ? "-1" : textField_Ft.getText())),
+				Integer.parseInt(((textField_In.getText().equals("")) ? "-1" : textField_In.getText())),
+				Integer.parseInt(((textField_Cm.getText().equals("")) ? "-1" : textField_Cm.getText())),
+				getSelectedButtonText(buttonGroupHeight),
+				Float.parseFloat(((textField_Weight.getText().equals("")) ? "-1" : textField_Weight.getText())),
+				lblWeightUnit.getText(),
+				textArea_Notes.getText()
+				);
+		try {
+			long vid = homeModel.getVitalstg().insertVitals(vitals);
+			vitals.setId(vid);
+
+		} catch (GatewayException e) {
+			e.printStackTrace();
+		}
+
+		/*
+		 * Builds a strings for table
+		 */
+
+		// need to make a method for this...
+		boolean isString = false;
+
+		String height_ftin_String = null;
+		int heightInt = -1;
+
+		if (vitals.getHUnit() == null) {
+
+		} else if (vitals.getHUnit().equals(Vitals.FTIN)) {
+
+			sb.append(vitals.getHFeet());
+			sb.append('\'');
+			sb.append(vitals.getHInches());
+			sb.append('\"');
+			height_ftin_String = sb.toString();
+			isString = true;
+
+		} else if (vitals.getHUnit().equals("")) {
+
+			heightInt = -100;
+
+		} else if (vitals.getHUnit().equals(Vitals.IN)) {
+
+			heightInt = vitals.getHInches();
+
+		} else {
+
+			heightInt = vitals.getHCm();
+		}
+
+		//TODO needs the date from the DB...
+		
+		// Add the vitals to the JTable
+		// Get model of VitalsTable in order to add rows
+		DefaultTableModel model = (DefaultTableModel) vitalsTable.getModel();
+
+		// Add row
+		model.addRow(new Object[] {
+				vitals.getDateCreated(),
+				vitals.getBps() + "/" + vitals.getBps() + " " + vitals.getBpUnit(),
+				vitals.getBg() + " " + vitals.getBgUnit(),
+				vitals.getO2sat() + "%",
+				vitals.getHb() + " " + Vitals.gdL,
+				(isString ? height_ftin_String : heightInt + " " + vitals.getHUnit()),
+				vitals.getWeight() + " " + vitals.getWUnit(),
+				vitals.getNotes()				
+				});
+
+		vitalsList.add(vitals);
+
+	}
+
+	private void createView() {
+		setLayout(new BorderLayout(0, 0));
+
+		// Append Button at top
+
+		JPanel panel_AppendButton = new JPanel();
+		add(panel_AppendButton, BorderLayout.NORTH);
+		panel_AppendButton.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
+		btnAppendNote = new JButton("Append Comment");
+		panel_AppendButton.add(btnAppendNote);
+
+		btnAppendNote.addActionListener(new AppendListener());
+
+		
+		
+		// Main panels where all the fun stuff is
+
+		JPanel panel_CenterMain = new JPanel();
+		add(panel_CenterMain, BorderLayout.CENTER);
+		panel_CenterMain.setLayout(new BorderLayout(0, 0));
+
+		//
+		panel_VitalsForm = new JPanel();
+		panel_VitalsForm
+				.setBorder(new TitledBorder(null, "Vitals", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_CenterMain.add(panel_VitalsForm, BorderLayout.CENTER);
+		panel_VitalsForm.setLayout(new MigLayout("", "[grow]", "[grow][grow][grow][grow][grow][grow][grow][grow]"));
+
+		JPanel panel_BloodPressure = new JPanel();
+		panel_BloodPressure.setBorder(
+				new TitledBorder(null, "Blood Pressure", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_VitalsForm.add(panel_BloodPressure, "cell 0 0,alignx left,aligny center");
+		panel_BloodPressure.setLayout(new MigLayout("", "[][grow][][][][grow]", "[grow]"));
+
+		
+		
+		// BP form
+
+		JLabel lblBpSys = new JLabel("BP Sys/Dia");
+		panel_BloodPressure.add(lblBpSys, "cell 0 0,alignx right");
+
+		textField_BPS = new JTextField();
+		panel_BloodPressure.add(textField_BPS, "cell 1 0,alignx left");
+		textField_BPS.setColumns(5);
+
+		JLabel label_Slash = new JLabel("/");
+		panel_BloodPressure.add(label_Slash, "cell 2 0,alignx trailing");
+
+		textField_BPD = new JTextField();
+		panel_BloodPressure.add(textField_BPD, "cell 3 0,alignx left");
+		textField_BPD.setColumns(5);
+
+		lblBP = new JLabel(Vitals.MMHG);
+		panel_BloodPressure.add(lblBP, "cell 4 0,alignx left");
+		
+		// BP radio buttons
+
+		JPanel panel_BPUnit = new JPanel();
+		panel_BPUnit.setBorder(new TitledBorder(null, "BP Unit", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_BloodPressure.add(panel_BPUnit, "cell 5 0,alignx center,aligny center");
+
+		rdbtnMmhg = new JRadioButton("mm/Hg");
+		rdbtnMmhg.setSelected(true);
+		buttonGroupBP.add(rdbtnMmhg);
+		panel_BPUnit.add(rdbtnMmhg);
+
+		rdbtnPa = new JRadioButton("Pa");
+		buttonGroupBP.add(rdbtnPa);
+		panel_BPUnit.add(rdbtnPa);
+
+		rdbtnMmhg.addActionListener(new BPListener());
+		rdbtnPa.addActionListener(new BPListener());
+
+		
+		
+		// Blood glucose
+
+		JPanel panel_BloodGlucose = new JPanel();
+		panel_BloodGlucose.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null),
+				"Blood Glucose", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_VitalsForm.add(panel_BloodGlucose, "cell 0 1,alignx left,aligny center");
+		panel_BloodGlucose.setLayout(new MigLayout("", "[][][grow][][grow]", "[grow]"));
+
+		chckbxFasting = new JCheckBox("Fasting");
+		panel_BloodGlucose.add(chckbxFasting, "cell 0 0");
+
+		JLabel lblBgLevel = new JLabel("BG Level");
+		panel_BloodGlucose.add(lblBgLevel, "cell 1 0,alignx right");
+
+		textField_BGLevel = new JTextField();
+		panel_BloodGlucose.add(textField_BGLevel, "cell 2 0,alignx left");
+		textField_BGLevel.setColumns(5);
+
+		lblBGLevelUnit = new JLabel("mmol/L");
+		panel_BloodGlucose.add(lblBGLevelUnit, "cell 3 0,alignx left");
+		
+		JPanel panel_BGLevelUnit = new JPanel();
+		panel_BGLevelUnit.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null),
+				"BG Level Unit", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_BloodGlucose.add(panel_BGLevelUnit, "cell 4 0,alignx center,aligny center");
+
+		rdbtnMmoll = new JRadioButton("mmol/L");
+		rdbtnMmoll.setSelected(true);
+		buttonGroupBloodGlucose.add(rdbtnMmoll);
+		panel_BGLevelUnit.add(rdbtnMmoll);
+
+		rdbtnMgdl = new JRadioButton("mg/dL");
+		buttonGroupBloodGlucose.add(rdbtnMgdl);
+		panel_BGLevelUnit.add(rdbtnMgdl);
+		
+		rdbtnMmoll.addActionListener(new BGListener());
+		rdbtnMgdl.addActionListener(new BGListener());
+		
+		
+		
+		// O2 saturation
+
+		JPanel panel_O2Saturation = new JPanel();
+		panel_O2Saturation
+				.setBorder(new TitledBorder(null, "O2 Saturation", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_VitalsForm.add(panel_O2Saturation, "cell 0 2,alignx left,aligny center");
+		panel_O2Saturation.setLayout(new MigLayout("", "[][][][grow]", "[]"));
+
+		JLabel lblOSaturation = new JLabel("O2 Saturation");
+		panel_O2Saturation.add(lblOSaturation, "cell 0 0,alignx trailing");
+
+		textField_O2Sat = new JTextField();
+		panel_O2Saturation.add(textField_O2Sat, "cell 1 0,alignx left");
+		textField_O2Sat.setColumns(5);
+
+		JLabel label = new JLabel("%");
+		panel_O2Saturation.add(label, "cell 2 0,alignx left");
+		
+		
+		
+		// Hemoglobin
+
+		JPanel panel_Hemoglobin = new JPanel();
+		panel_Hemoglobin
+				.setBorder(new TitledBorder(null, "Hemogobin", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_VitalsForm.add(panel_Hemoglobin, "cell 0 3,alignx left,aligny center");
+		panel_Hemoglobin.setLayout(new MigLayout("", "[][grow]", "[]"));
+
+		JLabel lblHb = new JLabel("Hb");
+		panel_Hemoglobin.add(lblHb, "cell 0 0,alignx trailing");
+
+		textField_Hb = new JTextField();
+		panel_Hemoglobin.add(textField_Hb, "flowx,cell 1 0,alignx left,aligny center");
+		textField_Hb.setColumns(5);
+
+		JLabel lblGmdl = new JLabel("gm/dL");
+		panel_Hemoglobin.add(lblGmdl, "cell 1 0");
+
+		
+		
+		// Height form
+
+		JPanel panel_Height = new JPanel();
+		panel_Height.setBorder(new TitledBorder(null, "Height", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_VitalsForm.add(panel_Height, "cell 0 4,alignx left,aligny center");
+		panel_Height.setLayout(new MigLayout("", "[][grow][grow]", "[grow][][]"));
+
+		JLabel lblHeight = new JLabel("Height");
+		panel_Height.add(lblHeight, "cell 0 0,alignx right");
+
+		textField_Ft = new JTextField();
+		panel_Height.add(textField_Ft, "flowx,cell 1 0,alignx left");
+		textField_Ft.setColumns(5);
+
+		lblFt = new JLabel("ft");
+		panel_Height.add(lblFt, "cell 1 0");
+
+		textField_In = new JTextField();
+		panel_Height.add(textField_In, "flowx,cell 1 1,alignx left");
+		textField_In.setColumns(5);
+
+		lblIn = new JLabel(Vitals.IN);
+		panel_Height.add(lblIn, "cell 1 1");
+
+		textField_Cm = new JTextField();
+		textField_Cm.setEnabled(false);
+		panel_Height.add(textField_Cm, "flowx,cell 1 2,alignx left");
+		textField_Cm.setColumns(5);
+
+		lblCm = new JLabel(Vitals.CM);
+		panel_Height.add(lblCm, "cell 1 2");
+
+		// Height radio buttons
+
+		JPanel panel_HeightUnit = new JPanel();
+		panel_HeightUnit
+				.setBorder(new TitledBorder(null, "Height Unit", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_Height.add(panel_HeightUnit, "cell 2 0 1 3,alignx center,aligny center");
+
+		rdbtnFtin = new JRadioButton(Vitals.FTIN);
+		buttonGroupHeight.add(rdbtnFtin);
+		panel_HeightUnit.add(rdbtnFtin);
+
+		rdbtnIn = new JRadioButton(Vitals.IN);
+		buttonGroupHeight.add(rdbtnIn);
+		panel_HeightUnit.add(rdbtnIn);
+
+		rdbtnCm = new JRadioButton(Vitals.CM);
+		buttonGroupHeight.add(rdbtnCm);
+		panel_HeightUnit.add(rdbtnCm);
+
+		rdbtnFtin.setSelected(true);
+
+		rdbtnFtin.addActionListener(new HeightListener());
+		rdbtnIn.addActionListener(new HeightListener());
+		rdbtnCm.addActionListener(new HeightListener());
+
+		
+		
+		// Weight form
+
+		JPanel panel_Weight = new JPanel();
+		panel_Weight.setBorder(new TitledBorder(null, "Weight", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_VitalsForm.add(panel_Weight, "cell 0 5,alignx left,aligny center");
+		panel_Weight.setLayout(new MigLayout("", "[][grow][grow]", "[grow]"));
+
+		JLabel lblWeight = new JLabel("Weight");
+		panel_Weight.add(lblWeight, "cell 0 0,alignx right");
+
+		textField_Weight = new JTextField();
+		panel_Weight.add(textField_Weight, "flowx,cell 1 0,alignx left");
+		textField_Weight.setColumns(5);
+
+		lblWeightUnit = new JLabel("lbs");
+		panel_Weight.add(lblWeightUnit, "cell 1 0");
+
+		// Weight radio buttons
+
+		JPanel panel_WeightUnit = new JPanel();
+		panel_WeightUnit
+				.setBorder(new TitledBorder(null, "Weight Unit", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_Weight.add(panel_WeightUnit, "cell 2 0,alignx center,aligny center");
+
+		rdbtnLbs = new JRadioButton("lbs");
+		buttonGroupWeight.add(rdbtnLbs);
+		panel_WeightUnit.add(rdbtnLbs);
+
+		rdbtnKg = new JRadioButton("kg");
+		buttonGroupWeight.add(rdbtnKg);
+		panel_WeightUnit.add(rdbtnKg);
+
+		rdbtnLbs.setSelected(true);
+
+		rdbtnLbs.addActionListener(new WeightListener());
+		rdbtnKg.addActionListener(new WeightListener());
+
+		
+		
+		// Note form
+
+		JPanel panel_Notes = new JPanel();
+		panel_Notes.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Addtional Notes",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_VitalsForm.add(panel_Notes, "cell 0 6,grow");
+		panel_Notes.setLayout(new MigLayout("", "[grow]", "[grow]"));
+
+		textArea_Notes = new JTextArea();
+		textArea_Notes.setLineWrap(true);
+		textArea_Notes.setWrapStyleWord(true);
+		panel_Notes.add(textArea_Notes, "cell 0 0,grow");
+
+		
+		
+		// Comments Panel
+
+		JPanel panel_Comments = new JPanel();
+		panel_Comments.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Comments",
+				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_VitalsForm.add(panel_Comments, "cell 0 7,growx,aligny center");
+		panel_Comments.setLayout(new MigLayout("", "[grow]", "[:50px:100px,grow][grow]"));
+
+		scrollPane_Comments = new JScrollPane();
+		scrollPane_Comments.setEnabled(true);
+		scrollPane_Comments.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		panel_Comments.add(scrollPane_Comments, "cell 0 0,grow");
+		
+		panelActualComments = new JPanel();
+		scrollPane_Comments.	setViewportView(panelActualComments);
+		panelActualComments.setLayout(new BoxLayout(panelActualComments, BoxLayout.Y_AXIS));
+
+		panel_CommentForm = new JPanel();
+		panel_CommentForm.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null),
+				"Append a Comment", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_Comments.add(panel_CommentForm, "cell 0 1,grow");
+		panel_CommentForm.setLayout(new BorderLayout(0, 0));
+
+		panel_CommentForm.setVisible(false);
+
+		JPanel panel_CommentScroll = new JPanel();
+		panel_CommentForm.add(panel_CommentScroll, BorderLayout.CENTER);
+		panel_CommentScroll.setLayout(new BorderLayout(0, 0));
+
+		textArea_Comment = new JTextArea();
+		panel_CommentScroll.add(textArea_Comment);
+
+		JPanel panel_ButtonsCommentForm = new JPanel();
+		panel_CommentForm.add(panel_ButtonsCommentForm, BorderLayout.SOUTH);
+
+		btnAppendComment = new JButton("Append Comment");
+		panel_ButtonsCommentForm.add(btnAppendComment);
+
+		btnAppendCancel = new JButton("Cancel");
+		panel_ButtonsCommentForm.add(btnAppendCancel);
+
+		btnAppendComment.addActionListener(new AddCommentListener());
+		btnAppendCancel.addActionListener(new CancelCommentListener());
+
+		
+		
+		// Buttons at bottom
+
+		JPanel panel_ConfirmCancel = new JPanel();
+		add(panel_ConfirmCancel, BorderLayout.SOUTH);
+
+		btnConfirm = new JButton("Save");
+		panel_ConfirmCancel.add(btnConfirm);
+
+		btnCancel = new JButton("Cancel");
+		panel_ConfirmCancel.add(btnCancel);
+
+		btnConfirm.addActionListener(new ConfirmVitalListener());
+		btnCancel.addActionListener(new CancelVitalListener());
+
+	}
+
 }

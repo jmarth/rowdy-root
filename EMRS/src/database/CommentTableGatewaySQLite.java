@@ -56,7 +56,7 @@ public class CommentTableGatewaySQLite implements CommentTableGateway {
 			// add each to list of comments to return
 
 			while (rs.next()) {
-				Comment tmpComment = new Comment(rs.getLong("id"), rs.getLong("pid"), rs.getInt("type"), rs.getLong("typeid"), rs.getString("comment"));
+				Comment tmpComment = new Comment(rs.getLong("id"), rs.getLong("pid"), rs.getInt("type"), rs.getLong("typeid"), rs.getString("comment"), rs.getString("dateCreated"));
 				comments.add(tmpComment);
 			}
 		} catch (SQLException e) {
@@ -102,7 +102,7 @@ public class CommentTableGatewaySQLite implements CommentTableGateway {
 			// add each to list of comments to return
 			while (rs.next()) {
 
-				Comment tmpComment = new Comment(rs.getLong("id"), rs.getLong("pid"), rs.getInt("type"), rs.getLong("typeid"), rs.getString("comment"));
+				Comment tmpComment = new Comment(rs.getLong("id"), rs.getLong("pid"), rs.getInt("type"), rs.getLong("typeid"), rs.getString("comment"), rs.getString("dateCreated"));
 				comments.add(tmpComment);
 			}
 		} catch (SQLException e) {
@@ -174,7 +174,7 @@ public class CommentTableGatewaySQLite implements CommentTableGateway {
 			// add each to list of comments to return
 			while (rs.next()) {
 
-				Comment tmpComment = new Comment(rs.getLong("id"), rs.getLong("pid"), rs.getInt("type"), rs.getLong("typeid"), rs.getString("comment"));
+				Comment tmpComment = new Comment(rs.getLong("id"), rs.getLong("pid"), rs.getInt("type"), rs.getLong("typeid"), rs.getString("comment"), rs.getString("dateCreated"));
 				comments.add(tmpComment);
 			}
 		} catch (SQLException e) {
@@ -253,7 +253,7 @@ public class CommentTableGatewaySQLite implements CommentTableGateway {
 	public void updateComment(Comment a) throws GatewayException {
 
 		PreparedStatement st = null;
-		ResultSet rs = null;
+		//ResultSet rs = null;
 
 		try {
 			st = conn.prepareStatement("UPDATE comments SET" + " comment = ?" + " WHERE id = ? ",

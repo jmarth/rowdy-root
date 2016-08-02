@@ -43,6 +43,7 @@ public class VitalsTabView extends JPanel {
 	private Patient patient;
 	private int selectedRow;
 	
+	@SuppressWarnings("unused")
 	private final HomeModel homeModel;
 	
 	/**
@@ -171,12 +172,15 @@ public class VitalsTabView extends JPanel {
 		});
 		
 		// Add JTable to scrollPane
+		
+		//BP contains sys/dia then unit, etc and et al
+		
 		vitalsTable.setToolTipText("");
 		vitalsTable.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"BPS", "BPD", "BP Unit", "Height", "Height Unit", "Weight", "Weight Unit", "Notes"
+				"Date", "BP", "BG", "O2", "Hb", "Height", "Weight", "Notes"
 			}
 		)/* {
 			private static final long serialVersionUID = 1L;
@@ -187,7 +191,7 @@ public class VitalsTabView extends JPanel {
 				return columnTypes[columnIndex];
 			}
 		}*/);
-		
+		/*
 		vitalsTable.getColumnModel().getColumn(0).setPreferredWidth(30);
 		vitalsTable.getColumnModel().getColumn(1).setPreferredWidth(30);
 		vitalsTable.getColumnModel().getColumn(2).setPreferredWidth(50);
@@ -196,7 +200,7 @@ public class VitalsTabView extends JPanel {
 		vitalsTable.getColumnModel().getColumn(5).setPreferredWidth(40);
 		vitalsTable.getColumnModel().getColumn(6).setPreferredWidth(30);
 		vitalsTable.getColumnModel().getColumn(7).setPreferredWidth(100);
-		
+		*/
 		populateVitalsTable();
 		
 		scrollPane.setViewportView(vitalsTable);
@@ -214,10 +218,12 @@ public class VitalsTabView extends JPanel {
 		// Declare variables
 		DefaultTableModel dtm = (DefaultTableModel) vitalsTable.getModel();
 		
+		
+		// TODO investigate this sketchy stuff
 		vl.setGateway(vtg);
 		vl.loadFromGateway();
 		
-		System.out.print("printing list "+vl);
+		//System.out.print("printing list "+vl);
 		
 		// Find all allergies for the given patient
 		myVitalsList = vl.getVitalsListForPatient(patient);
@@ -229,7 +235,7 @@ public class VitalsTabView extends JPanel {
 		 * If it is a height, must be displayed depending on ft/inches or inches or cm
 		 */		
 		
-		for(Vitals v : myVitalsList) {
+		for(Vitals vitals : myVitalsList) {
 			
 			// read somewhere sb should get a size in bytes of
 			// roughly how big of a string you are going to build
@@ -241,34 +247,34 @@ public class VitalsTabView extends JPanel {
 	        String height_ftin_String = "";
 	        int heightInt = -1;
 	       
-	        if (v.getHUnit() == null) {
+	        if (vitals.getHUnit() == null) {
 	           
-	        } else if (v.getHUnit().equals(Vitals.FTIN)) {
+	        } else if (vitals.getHUnit().equals(Vitals.FTIN)) {
 	           
-	            sb.append(v.getHFeet());
+	            sb.append(vitals.getHFeet());
 	            sb.append('\'');
-	            sb.append(v.getHInches());
+	            sb.append(vitals.getHInches());
 	            sb.append('\"');
 	            height_ftin_String = sb.toString();
 	            isString = true;
 	           
-	        } else if (v.getHUnit().equals("null")) {
+	        } else if (vitals.getHUnit().equals("null")) {
 	            heightInt = -100;
-	        } else if (v.getHUnit().equals(Vitals.IN)) {
-	            heightInt = v.getHInches();
+	        } else if (vitals.getHUnit().equals(Vitals.IN)) {
+	            heightInt = vitals.getHInches();
 	        } else {
-	            heightInt = v.getHCm();
+	            heightInt = vitals.getHCm();
 	        }
 	        
 			dtm.addRow(new Object[]{
-					v.getBps(),
-	                v.getBps(),
-	                v.getBpUnit(),
-	                (isString ? height_ftin_String : heightInt),
-	                v.getHUnit(),
-	                v.getWeight(),
-	                v.getWUnit(),
-	                v.getNotes()
+					vitals.getDateCreated(),
+					vitals.getBps() + "/" + vitals.getBps() + " " + vitals.getBpUnit(),
+					vitals.getBg() + " " + vitals.getBgUnit(),
+					vitals.getO2sat() + "%",
+					vitals.getHb() + " " + Vitals.gdL,
+					(isString ? height_ftin_String : heightInt + " " + vitals.getHUnit()),
+					vitals.getWeight() + " " + vitals.getWUnit(),
+					vitals.getNotes()	
 				});
 		}
 		

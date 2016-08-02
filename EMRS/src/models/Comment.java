@@ -2,9 +2,9 @@ package models;
 
 public class Comment {
 	
-	public final static int allergies = 1;
-	public static final int visits = 2;
-	public static final int vitals =3;
+	public final static int allergiesType = 1;
+	public static final int visitsType = 2;
+	public static final int vitalsType =3;
 	
 	private long id;
 	private long pid;
@@ -12,6 +12,7 @@ public class Comment {
 	private long typeid;
 
 	private String commentString;
+	private String dateCreated;
 	
 	
 	/**
@@ -20,6 +21,16 @@ public class Comment {
 	 * @param pid Patient id corresponding to this Comment
 	 * @param commentString Comment
 	 */
+	public Comment(long id, long pid, int type, long typeid, String commentString, String dateCreated) {
+		super();
+		this.id = id;
+		this.pid = pid;
+		this.type = type;
+		this.typeid = typeid;
+		this.commentString = commentString;
+		this.setDateCreated(dateCreated);
+	}
+	
 	public Comment(long id, long pid, int type, long typeid, String commentString) {
 		super();
 		this.id = id;
@@ -28,6 +39,7 @@ public class Comment {
 		this.typeid = typeid;
 		this.commentString = commentString;
 	}
+	
 
 	public int getType() {
 		return type;
@@ -44,12 +56,6 @@ public class Comment {
 	public void setTypeid(long typeid) {
 		this.typeid = typeid;
 	}
-
-	/**
-	 * 
-	 * GETTERS AND SETTERS
-	 * 
-	 */
 	
 	public long getPid() {
 		return pid;
@@ -73,5 +79,13 @@ public class Comment {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+
+	public String getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(String dateCreated) {
+		this.dateCreated = dateCreated;
 	}
 }
