@@ -1,11 +1,13 @@
 package models;
 
 import java.io.File;
-
+// 812w 9n
 public class Visit {
+	
 	private long id;
 	private long pid;
 	private String chiefComplaint;
+	
 	private double autorefractionOdSphere;
 	private double autorefractionOdCylinder;
 	private double autorefractionOdAxis;
@@ -22,10 +24,15 @@ public class Visit {
 	private double feRow1Col2;
 	private double feRow2Col1;
 	private double feRow2Col2;
-	private String assessment;
 	private String dateCreated;
 	private File sketch1;
 	
+	
+	
+	
+	
+	private String assessment;
+	private String plan;
 	/**
 	 * Constructor
 	 * @param chiefComplaint
