@@ -628,6 +628,7 @@ public class VisitTabViewNewVisit extends JPanel {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				//TODO: MAKE IT HAPPEN
 				//TODO: ERROR CHECKS
 				
 				Visit visit = new Visit(patient.getId(),

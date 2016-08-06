@@ -7,29 +7,8 @@ public class Visit {
 	private long id;
 	private long pid;
 	private String chiefComplaint;
-	
-	private double autorefractionOdSphere;
-	private double autorefractionOdCylinder;
-	private double autorefractionOdAxis;
-	private double autorefractionOsSphere;
-	private double autorefractionOsCylinder;
-	private double autorefractionOsdAxis;
-	private double arcOdSphere;
-	private double arcOdCylinder;
-	private double arcOdAxis;
-	private double arcOsSphere;
-	private double arcOsCylinder;
-	private double arcOsAxis;
-	private double feRow1Col1;
-	private double feRow1Col2;
-	private double feRow2Col1;
-	private double feRow2Col2;
 	private String dateCreated;
-	private File sketch1;
-	
-	
-	
-	
+	private File sketch1;	
 	
 	private String assessment;
 	private String plan;
