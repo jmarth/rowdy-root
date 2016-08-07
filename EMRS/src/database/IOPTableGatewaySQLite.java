@@ -9,10 +9,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.IOPMeasurement;
 import models.Patient;
-import models.Visit;
 
-public class VisitTableGatewaySQLite implements VisitTableGateway {
+public class IOPTableGatewaySQLite implements IOPTableGateway {
 	
 	/**
 	 * external DB connection
@@ -24,7 +24,7 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 	 * @throws GatewayException
 	 * @throws IOException 
 	 */
-	public VisitTableGatewaySQLite() throws GatewayException, IOException {
+	public IOPTableGatewaySQLite() throws GatewayException, IOException {
 
 		try {
 			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
@@ -35,44 +35,49 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 	}
 	
 	/**
-	 * Fetch all visits from DB
-	 * @return list of visits
+	 * Fetch all iops from DB
+	 * @return list of iops
 	 * @throws GatewayException
 	 */
-	public List<Visit> fetchVisits() throws GatewayException {
+	public List<IOPMeasurement> fetchIOPMeasurements() throws GatewayException {
 		
-		ArrayList<Visit> visits = new ArrayList<Visit>();
+		ArrayList<IOPMeasurement> iops = new ArrayList<IOPMeasurement>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			//fetch parts
-			System.out.print("getting info");
+//			System.out.print("getting info");
 			
-			st = conn.prepareStatement("select * from visits");
+			st = conn.prepareStatement("select * from iop");
 			rs = st.executeQuery();
 			
-			System.out.print("\ninfo loaded");
+//			System.out.print("\ninfo loaded");
 			
 			//add each to list of parts to return
 			while(rs.next()) {
 				
-				System.out.print("\ncreating visit object");
+//				System.out.print("\ncreating iop object");
 				
-				Visit v = new Visit(rs.getLong("id"),
-						rs.getLong("pid"),
-						rs.getString("chiefComplaint"),
-						rs.getString("plan"),
-						rs.getString("assessment"),
+				
+				IOPMeasurement v = new IOPMeasurement(
+						rs.getLong("id"),
+						rs.getLong("vid"),
+						rs.getString("ODValue"),
+						rs.getString("ODType"),
+						rs.getString("ODNotes"),
+						rs.getString("OSValue"),
+						rs.getString("OSType"),
+						rs.getString("OSNotes"),
 						rs.getString("dateCreated")
 						);
 				
-				System.out.print("\nvisit object created");
+//				System.out.print("\niop object created");
 				
-				visits.add(v);
+				iops.add(v);
 				
-				System.out.print("\nvisit object added");
+//				System.out.print("\niop object added");
 				
 			}
 		} catch (SQLException e) {
@@ -91,40 +96,43 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 			}
 		}
 		
-		return visits;
+		return iops;
 	}
 	
 	/**
-	 * Fetch visits from DB for patient
-	 * @return list of visits for patient
+	 * Fetch iops from DB for patient
+	 * @return list of iops for patient
 	 * @throws GatewayException
 	 */
-	public List<Visit> fetchVisitsForPatinet(Patient p) throws GatewayException {
+	public List<IOPMeasurement> fetchIOPMeasurementsForPatient(Patient p) throws GatewayException {
 		
-		ArrayList<Visit> visits = new ArrayList<Visit>();
+		ArrayList<IOPMeasurement> iops = new ArrayList<IOPMeasurement>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			//fetch parts
-			st = conn.prepareStatement("select * from visits where pid=?");
+			st = conn.prepareStatement("select * from iop where pid=?");
 			st.setLong(1, p.getId());
 			
 			rs = st.executeQuery();
 			
 			//add each to list of parts to return
 			while(rs.next()) {
-				Visit v = new Visit(
+				IOPMeasurement v = new IOPMeasurement(
 						rs.getLong("id"),
-						rs.getLong("pid"),
-						rs.getString("cc"),
-						rs.getString("plan"),
-						rs.getString("assessment"),
+						rs.getLong("vid"),
+						rs.getString("ODValue"),
+						rs.getString("ODType"),
+						rs.getString("ODNotes"),
+						rs.getString("OSValue"),
+						rs.getString("OSType"),
+						rs.getString("OSNotes"),
 						rs.getString("dateCreated")
 						);
 				
-				visits.add(v);
+				iops.add(v);
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -142,33 +150,40 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 			}
 		}
 		
-		return visits;
+		return iops;
 	}
 	
 	/**
-	 * Inserts visit into visits table
+	 * Inserts iop into iops table
 	 */
-	public long insertVisit(Visit v) throws GatewayException {
+	public long insertIOPMeasurement(IOPMeasurement iop) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		
+				
 		try {
 			st = conn.prepareStatement(
-					"insert INTO visits"
-					+ "(pid,"
-					+ " cc,"
-					+ " assessment,"
-					+ " plan) "
-					+ " values ( ?, ?, ?, ? ) ",
+					"insert INTO iop"
+					+ "(vid,"
+					+ " ODValue,"
+					+ " ODType,"
+					+ " ODNotes,"
+					+ " OSValue,"
+					+ " OSType,"
+					+ " OSNotes )"
+					+ " values ( ?, ?, ?, ?, ?, ?, ? ) ",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			
-			st.setLong(1, v.getPid());
-			st.setString(2, v.getChiefComplaint());
-			st.setString(3, v.getAssessment());
+			st.setLong(1, iop.getVid());
+			st.setString(2, iop.getODValue());
+			st.setString(3, iop.getODType());
+			st.setString(4, iop.getODNotes());
+			st.setString(5, iop.getOSValue());
+			st.setString(6, iop.getOSValue());
+			st.setString(7, iop.getOSNotes());
 	
 			st.executeUpdate();
 			
@@ -195,10 +210,17 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		
 		return newId;
 	}
+	
+	@Override
+	public void removeIOPMeasurements(Long vid) throws GatewayException {
+		// TODO Auto-generated method stub
+		
+	}
 
 	public void close() {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }

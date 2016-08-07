@@ -92,7 +92,7 @@ public class VisitsTabView extends JPanel {
 	
 		btnNewVisit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VisitTabViewNewVisit vtvnv = new VisitTabViewNewVisit(tabbedPane, patient, homeModel);
+				VisitTabViewNewVisit vtvnv = new VisitTabViewNewVisit(patient, tabbedPane, homeModel);
 				JScrollPane rightPane = new JScrollPane(vtvnv);
 				splitPane.setRightComponent(rightPane);
 			}
@@ -128,7 +128,7 @@ public class VisitsTabView extends JPanel {
 			pane.setAnimated(false);
 			pane.setCollapsed(true);
 			pane.setScrollOnExpand(true);
-			pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, false));
+			pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, true));
 			mainTaskPane.add(pane);
 		}
 		
