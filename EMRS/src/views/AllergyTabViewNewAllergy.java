@@ -126,7 +126,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	 * @param oldPanel Panel to switch back to
 	 */
 	public void cancel(JTabbedPane tabbedPane, JPanel oldPanel){
-		int index = tabbedPane.indexOfTab(Tabs.allergiesAndMeds);
+		int index = tabbedPane.indexOfTab(Tabs.hx);
 		tabbedPane.setComponentAt(index, null);
 		tabbedPane.setComponentAt(index, oldPanel);
 	}
@@ -204,7 +204,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		// Add allergy to allergyList
 		allergyList.add(allergy);
 		
-		int index = tabbedPane.indexOfTab(Tabs.allergiesAndMeds);
+		int index = tabbedPane.indexOfTab(Tabs.hx);
 		
 		tabbedPane.setComponentAt(index, null);
 		tabbedPane.setComponentAt(index, oldPanel);
@@ -281,7 +281,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		// Change the panel back to allergy table
 		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
 		
-		int index = tabbedPane.indexOfTab(Tabs.allergiesAndMeds);
+		int index = tabbedPane.indexOfTab(Tabs.hx);
 		tabbedPane.setComponentAt(index, null);
 		tabbedPane.setComponentAt(index, oldPanel);
 	}

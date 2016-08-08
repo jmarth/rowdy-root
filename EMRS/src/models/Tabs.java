@@ -15,5 +15,7 @@ public final class Tabs {
 	public static final String labs = "Labs & Procedures";
 
 	public static String docs = "Documents";
+	
+	public static final String hx = "Health History";
 
 }
