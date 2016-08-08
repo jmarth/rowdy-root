@@ -11,6 +11,8 @@ import database.CommentTableGatewaySQLite;
 import database.DocumentTableGateway;
 import database.DocumentTableGatewaySQLite;
 import database.GatewayException;
+import database.MedicationsTableGateway;
+import database.MedicationsTableGatewaySQLite;
 import database.PatientTableGateway;
 import database.PatientTableGatewaySQLite;
 import database.SketchTableGateway;
@@ -44,6 +46,7 @@ public class HomeModel {
 	private SurgeryTemplatesTableGateway sttg = null;
 	private SurgeryTableGateway srg = null;
 	private CommentTableGateway ctg =null;
+	private MedicationsTableGateway mtg = null;
 
 
 	
@@ -68,6 +71,7 @@ public class HomeModel {
 			vitalstg = new VitalsTableGatewaySQLite();
 			dtg = new DocumentTableGatewaySQLite();
 			ctg = new CommentTableGatewaySQLite();
+			mtg = new MedicationsTableGatewaySQLite();
 			
 			vl.setGateway(vtg);
         	vl.loadFromGateway();
@@ -187,5 +191,9 @@ public class HomeModel {
 
 	public void setCtg(CommentTableGateway ctg) {
 		this.ctg = ctg;
+	}
+
+	public MedicationsTableGateway getMtg() {
+		return this.mtg;
 	}
 }
