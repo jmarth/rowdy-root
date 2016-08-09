@@ -62,15 +62,19 @@ public class hxView extends JPanel {
 		allergyMasterPanel = new JPanel();
 		allergyMasterPanel.setForeground(Color.BLACK);
 		allergyMasterPanel.setBackground(CL.belize);
-		allergyMasterPanel.setBorder(new TitledBorder(new LineBorder(CL.blueGrey, 2, false), "ALLERGIES", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.BOLD, 20), new Color(255, 255, 255)));
+		allergyMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(207, 216, 220), 2), "Allergies", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		
 		medMasterPanel = new JPanel();
 		medMasterPanel.setBackground(CL.belize);
-		medMasterPanel.setBorder(new TitledBorder(new LineBorder(CL.blueGrey, 2, false), "MEDICATIONS", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.BOLD, 20), new Color(255, 255, 255)));
+		medMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(207, 216, 220), 2), "Medications", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		
 		JPanel hxMasterPanel = new JPanel();
 		hxMasterPanel.setBackground(CL.belize);
-		hxMasterPanel.setBorder(new TitledBorder(new LineBorder(CL.blueGrey, 2, false), "HEALTH HISTORY", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.BOLD, 20), new Color(255, 255, 255)));
+		hxMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(207, 216, 220), 2), "Health History", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		
+		JPanel presentConditionPanel = new JPanel();
+		presentConditionPanel.setBackground(CL.belize);
+		presentConditionPanel.setBorder(new TitledBorder(new LineBorder(new Color(207, 216, 220), 2), "History of Present Condition", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -79,9 +83,11 @@ public class hxView extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(hxMasterPanel, GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(allergyMasterPanel, GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(medMasterPanel, GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)))
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(allergyMasterPanel, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
+								.addComponent(presentConditionPanel, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(medMasterPanel, GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
@@ -89,10 +95,13 @@ public class hxView extends JPanel {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(medMasterPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)
-						.addComponent(allergyMasterPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
+						.addComponent(medMasterPanel, GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(presentConditionPanel, GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(allergyMasterPanel, GroupLayout.PREFERRED_SIZE, 73, Short.MAX_VALUE)))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(hxMasterPanel, GroupLayout.DEFAULT_SIZE, 169, Short.MAX_VALUE)
+					.addComponent(hxMasterPanel, GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
 					.addContainerGap())
 		);
 		medMasterPanel.setLayout(new BorderLayout(0, 0));
@@ -107,9 +116,11 @@ public class hxView extends JPanel {
 
 		
 		JButton btnAddMED = new JButton("ADD");
+		btnAddMED.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		medButtonPanel.add(btnAddMED);
 		
 		JButton btnEditMED = new JButton("EDIT");
+		btnEditMED.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		medButtonPanel.add(btnEditMED);		
 		
 		
@@ -141,12 +152,7 @@ public class hxView extends JPanel {
 
 		populateAllergyTable();
 		
-		
-		
-		allergyMasterPanel.setLayout(new BorderLayout(0, 0));
-		
 		allergyPanel = new JPanel();
-		allergyMasterPanel.add(allergyPanel, BorderLayout.CENTER);
 		allergyPanel.setLayout(new BorderLayout(0, 0));
 		
 		JPanel allergyButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -154,6 +160,7 @@ public class hxView extends JPanel {
 		allergyButtonPanel.setBackground(CL.belize);
 		
 		JButton btnAddAllergy = new JButton("ADD");
+		btnAddAllergy.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnAddAllergy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int index = tabbedPane.indexOfTab(Tabs.hx);
@@ -164,6 +171,7 @@ public class hxView extends JPanel {
 		allergyButtonPanel.add(btnAddAllergy);
 		
 		JButton btnEditAllergy = new JButton("EDIT");
+		btnEditAllergy.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		btnEditAllergy.addActionListener(new ActionListener() {
 
 			@Override
@@ -184,11 +192,13 @@ public class hxView extends JPanel {
 			}
 			
 		});
+		allergyMasterPanel.setLayout(new BorderLayout(0, 0));
 		allergyButtonPanel.add(btnEditAllergy);
 		
 		
 		allergyScroller = new JScrollPane(allergyTable);
 		allergyPanel.add(allergyScroller, BorderLayout.CENTER);
+		allergyMasterPanel.add(allergyPanel);
 		setLayout(groupLayout);
 
 	}
