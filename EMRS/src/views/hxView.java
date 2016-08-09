@@ -249,7 +249,7 @@ public class hxView extends JPanel {
 					med.getName(), 
 					med.getDate(), 
 					med.getReason()
-				});
+			});
 		}
 	}
 }
