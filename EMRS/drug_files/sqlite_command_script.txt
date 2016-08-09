@@ -1,0 +1,6 @@
+Commands to import text file into table:
+
+.open /path/to/database.db
+create table tableName(row1 DATATYPE, row2 DATATYPE);
+.separator “,”   // can be any character i.e. “:”
+.import myData.txt tableName
