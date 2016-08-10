@@ -77,7 +77,7 @@ public class HistoryTabView extends JPanel {
 			pane.setTitle(v.getDateCreated() + "\t|\t" + v.getChiefComplaint());
 			pane.setAnimated(false);
 			pane.setCollapsed(true);
-			pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, false));
+			pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, true));
 			mainTaskPane.add(pane);
 		}
 		
