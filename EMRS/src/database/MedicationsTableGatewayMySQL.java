@@ -23,7 +23,7 @@ import models.Patient;
  *
  */
 
-public class MedicationsTableGatewayMySQL {
+public class MedicationsTableGatewayMySQL implements MedicationsTableGateway {
 
 	/**
 	 * external DB connection
@@ -58,13 +58,8 @@ public class MedicationsTableGatewayMySQL {
 			throw new GatewayException("SQL Error: " + e.getMessage());
 		}
 	}
-	
-	/**
-	 * Fetch all meds in the DB
-	 * @throws GatewayException 
-	 */
-	public List<Med> fetchMeds() throws GatewayException{
-		
+	@Override
+	public List<Med> fetchMeds() throws GatewayException {
 		ArrayList<Med> meds = new ArrayList<Med>();
 		
 		PreparedStatement st = null;
@@ -73,21 +68,23 @@ public class MedicationsTableGatewayMySQL {
 		try {
 			//fetch Meds
 			st = conn.prepareStatement("select * from medications");
+			
 			rs = st.executeQuery();
 			
 			//add each to list of meds to return
+			
 			while(rs.next()) {
 				Med tmpMed = new Med(
 						rs.getLong("id"),
 						rs.getLong("pid"),
-						rs.getString("name"),
-						rs.getString("date"),
-						rs.getString("reason")
+						rs.getString("trade"),
+						rs.getString("generic")
 						);
 				meds.add(tmpMed);
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
+			
 		} finally {
 			//clean up
 			try {
@@ -104,33 +101,30 @@ public class MedicationsTableGatewayMySQL {
 		
 		return meds;
 	}
-	
-	/**
-	 * Fetch all Meds for a Patient in the DB
-	 * @throws GatewayException 
-	 */
-	public List<Med> fetchMedsForPatient(Patient p) throws GatewayException{
-		
+
+	@Override
+	public List<Med> fetchMedsForPatient(Patient p) throws GatewayException {
 		ArrayList<Med> meds = new ArrayList<Med>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
+			
 			//fetch Meds
 			st = conn.prepareStatement("select * from medications WHERE pid=?");
 			st.setLong(1, p.getId());
 			
 			rs = st.executeQuery();
 			
-			//add each to list of Meds to return
+			//add each to list of meds to return
 			while(rs.next()) {
+				
 				Med tmpMed = new Med(
 						rs.getLong("id"),
 						rs.getLong("pid"),
-						rs.getString("name"),
-						rs.getString("date"),
-						rs.getString("reason")
+						rs.getString("trade"),
+						rs.getString("generic")
 						);
 				meds.add(tmpMed);
 			}
@@ -152,41 +146,34 @@ public class MedicationsTableGatewayMySQL {
 		
 		return meds;
 	}
-	
-	/**
-	 * Insert Med into Database
-	 */
+
+	@Override
 	public long insertMed(Med m) throws GatewayException {
-		
 		//init new id to invalid
 		long newId = 0;
-		
+
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		
+
 		try {
-			st = conn.prepareStatement("insert INTO meds (pid,"
-					+ " name,"
-					+ " date,"
-					+ " reason) "
-					+ " values ( ?, ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
-			//st.setInt(1, p.getHasPatientName() ? 1 : 0);
+			st = conn.prepareStatement("insert INTO medications (pid,"
+					+ " trade,"
+					+ " generic) "
+					+ " values ( ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
+
 			st.setLong(1, m.getPid());
-			st.setString(2, m.getName());
-			st.setString(3, m.getDate());
-			st.setString(4, m.getReason());
-	
+			st.setString(2, m.getTradeName());
+			st.setString(3, m.getGenericName());
+
 			st.executeUpdate();
-			
+
 			//get the generated key
 			rs = st.getGeneratedKeys();
-			
+
 			if(rs != null && rs.next()) {
-				
-			    newId = rs.getLong(1);
-			    
-			    System.out.println("Med is ID: " + newId + "");
-			    
+				newId = rs.getLong(1);
+				System.out.println("Med is ID: " + newId + "");
+
 			} else {
 				throw new GatewayException("Could not insert new record.");
 			}
@@ -197,36 +184,29 @@ public class MedicationsTableGatewayMySQL {
 			try {
 				if(st != null)
 					st.close();
-				
+
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
-		
+
 		return newId;
 	}
-	
-	/**
-	 * Update an Med in the DB
-	 * @param m Med to update
-	 */
-	public void updateMed(Med m) throws GatewayException{
-		
+
+	@Override
+	public void updateMed(Med m) throws GatewayException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			st = conn.prepareStatement("UPDATE medications SET"
-					+ " name = ?,"
-					+ " date = ?,"
-					+ " reason = ?"
+					+ " trade = ?,"
+					+ " generic = ?"
 					+ " WHERE id = ? ", PreparedStatement.RETURN_GENERATED_KEYS);
 			
-			//st.setInt(1, p.getHasPatientName() ? 1 : 0);
-			st.setString(1, m.getName());
-			st.setString(2, m.getDate());
-			st.setString(3, m.getReason());
-			st.setLong(4, m.getId());
+			st.setString(1, m.getTradeName());
+			st.setString(2, m.getGenericName());
+			st.setLong(3, m.getId());
 
 			st.executeUpdate();
 			
@@ -241,8 +221,7 @@ public class MedicationsTableGatewayMySQL {
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
-		}
-		
+		}		
 	}
 	
 	/**

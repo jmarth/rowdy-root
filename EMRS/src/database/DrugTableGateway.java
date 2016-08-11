@@ -7,4 +7,5 @@ import models.Drug;
 public interface DrugTableGateway {
 	public abstract List<Drug> fetchDrugs() throws GatewayException;
 	public Drug fetchDrug(String trade) throws GatewayException;
+	public abstract List<Drug> searchByPrefix(String prefix) throws GatewayException;
 }
