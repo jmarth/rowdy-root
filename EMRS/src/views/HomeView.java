@@ -64,6 +64,9 @@ public class HomeView extends JFrame {
 	
 	Patient p;
 	JButton btnAllergyAlert;
+	
+	private final JPanel panel_1 = new JPanel();
+	
 
 	/**
 	 * Home constructor.
@@ -77,7 +80,7 @@ public class HomeView extends JFrame {
 		homeModel = new HomeModel(this);
 		
 		setTitle("EMRS");
-		
+				
 		// @why final
 		final HomeView home = this;
 	
@@ -91,6 +94,11 @@ public class HomeView extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		
 		contentPane.setBackground(CL.cararra);
+		panel_1.setLayout(new BorderLayout(0, 0));
+		
+		// setup slide show in center panel_1
+		SlideShowPanel ssp = new SlideShowPanel();		
+		panel_1.add(ssp);
 				
 		
 		
@@ -304,6 +312,8 @@ public class HomeView extends JFrame {
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		panel.setLayout(gl_panel);
 		
+		contentPane.add(panel_1, BorderLayout.CENTER);
+		
 	}
 	
 	/**
@@ -346,6 +356,9 @@ public class HomeView extends JFrame {
 		
 		if(centerComponent != null ) {
 			contentPane.remove(centerComponent);
+			
+			SlideShowPanel ssp = new SlideShowPanel();
+			contentPane.add(ssp);
 		}
 		
 		if(homeModel.getAddPatientView() != null)
