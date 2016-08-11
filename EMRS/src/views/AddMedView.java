@@ -174,7 +174,7 @@ public class AddMedView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<String> selectedValues = (ArrayList<String>) list.getSelectedValuesList();
+				String[] selectedValues = (String[]) list.getSelectedValues();
 				for (String s : selectedValues) {
 					String[] pieces = s.split("\\|");
 					Med tmp = new Med((long) 0, patient.getId(), pieces[0].trim(), pieces[1].trim());
