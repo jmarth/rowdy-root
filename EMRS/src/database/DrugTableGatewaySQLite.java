@@ -99,4 +99,42 @@ public class DrugTableGatewaySQLite implements DrugTableGateway {
 		return tmpDrug;
 	}
 
+	@Override
+	public List<Drug> searchByPrefix(String prefix) throws GatewayException {
+		ArrayList<Drug> tmpList = new ArrayList<Drug>();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.prepareStatement("SELECT * FROM drugs WHERE PROPRIETARYNAME LIKE " + "'" + prefix + "%'" +  "or NONPROPRIETARYNAME LIKE" + "'" + prefix + "%'");
+			
+			rs = st.executeQuery();
+			
+			while 
+			(rs.next()) {
+				Drug tmp = new Drug(
+						rs.getString("PROPRIETARYNAME"),
+						rs.getString("NONPROPRIETARYNAME")
+						);
+				tmpList.add(tmp);
+			}
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(rs != null)
+					rs.close();
+				
+				if(st != null)
+					st.close();
+				
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+		return tmpList;
+	}
+
 }

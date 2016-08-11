@@ -4,3 +4,6 @@ Commands to import text file into table:
 create table tableName(row1 DATATYPE, row2 DATATYPE);
 .separator “,”   // can be any character i.e. “:”
 .import myData.txt tableName
+
+
+select * from drugs where PROPRIETARYNAME like 'caffeine%' or NONPROPRIETARYNAME LIKE 'caffeine%'

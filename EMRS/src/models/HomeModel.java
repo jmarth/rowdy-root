@@ -10,6 +10,8 @@ import database.CommentTableGateway;
 import database.CommentTableGatewaySQLite;
 import database.DocumentTableGateway;
 import database.DocumentTableGatewaySQLite;
+import database.DrugTableGateway;
+import database.DrugTableGatewaySQLite;
 import database.GatewayException;
 import database.MedicationsTableGateway;
 import database.MedicationsTableGatewaySQLite;
@@ -47,6 +49,7 @@ public class HomeModel {
 	private SurgeryTableGateway srg = null;
 	private CommentTableGateway ctg =null;
 	private MedicationsTableGateway mtg = null;
+	private DrugTableGateway rtg = null;
 
 
 	
@@ -72,12 +75,13 @@ public class HomeModel {
 			dtg = new DocumentTableGatewaySQLite();
 			ctg = new CommentTableGatewaySQLite();
 			mtg = new MedicationsTableGatewaySQLite();
+			rtg = new DrugTableGatewaySQLite();
 			
 			vl.setGateway(vtg);
         	vl.loadFromGateway();
         	
         	sttg = new SurgeryTemplatesTableGatewaySQLite();
-        	setSrg(new SurgeryTableGatewaySQLite());
+        	srg = new SurgeryTableGatewaySQLite();
         	        	
 		} catch (GatewayException e) {
 			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
@@ -195,5 +199,13 @@ public class HomeModel {
 
 	public MedicationsTableGateway getMtg() {
 		return this.mtg;
+	}
+
+	public DrugTableGateway getRtg() {
+		return rtg;
+	}
+
+	public void setRtg(DrugTableGateway rtg) {
+		this.rtg = rtg;
 	}
 }

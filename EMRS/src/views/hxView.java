@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import database.AllergyTableGateway;
+import database.DrugTableGateway;
 import database.GatewayException;
 import database.MedicationsTableGateway;
 import models.Allergy;
@@ -36,6 +38,7 @@ public class hxView extends JPanel {
 	private List<Allergy> allergyList;
 	private AllergyTableGateway atg;
 	private MedicationsTableGateway mtg;
+	private DrugTableGateway rtg;
 	private Patient patient;
 	private JTable allergyTable = new JTable();
 	
@@ -50,12 +53,15 @@ public class hxView extends JPanel {
 
 	/**
 	 * Create the panel.
+	 * @param drugTableGateway 
 	 */
-	public hxView(final Patient patient, final JTabbedPane tabbedPane, final AllergyTableGateway atg, final MedicationsTableGateway mtg) {
+	public hxView(final Patient patient, final JTabbedPane tabbedPane, final AllergyTableGateway atg, final MedicationsTableGateway mtg, DrugTableGateway drugTableGateway) {
 		
 		this.atg = atg;
 		this.mtg = mtg;
+		this.rtg = drugTableGateway;
 		this.patient = patient;
+		
 		
 		setBackground(CL.belize);
 		
@@ -83,10 +89,10 @@ public class hxView extends JPanel {
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addComponent(hxMasterPanel, GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(allergyMasterPanel, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE)
-								.addComponent(presentConditionPanel, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(presentConditionPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 214, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(medMasterPanel, GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)))
 					.addContainerGap())
 		);
@@ -117,20 +123,29 @@ public class hxView extends JPanel {
 		
 		JButton btnAddMED = new JButton("ADD");
 		btnAddMED.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnAddMED.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JPanel prevPanel = hxView.this;
+				int index = tabbedPane.indexOfTab("Health History");
+				tabbedPane.setComponentAt(index, new AddMedView(rtg, hxView.this.mtg, tabbedPane, hxView.this, hxView.this.patient));
+				revalidate();
+				repaint();
+			}
+			
+		});
 		medButtonPanel.add(btnAddMED);
-		
-		JButton btnEditMED = new JButton("EDIT");
-		btnEditMED.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		medButtonPanel.add(btnEditMED);		
 		
 		
 		medTable = new JTable();
+		medTable.setEnabled(false);
 		
 		medTable.setModel(new DefaultTableModel(
 				new Object[][] {
 				},
 				new String[] {
-					"Name", "Started Taking", "Reason"
+					"Trade Name", "Generic Name"
 				}
 		));
 		
@@ -242,12 +257,15 @@ public class hxView extends JPanel {
 		} catch (GatewayException e) {
 			e.printStackTrace();
 		}
+		System.out.println(tmpList.size());
 		
-
 		
 		// Get model of MedTable in order to add rows
 		// Declare variables
 		DefaultTableModel model = (DefaultTableModel) medTable.getModel();
+		
+		// reset data in table
+		model.setRowCount(0);
 		
 						
 		/**
@@ -256,9 +274,8 @@ public class hxView extends JPanel {
 		 */
 		for(Med med : tmpList) {
 			model.addRow(new Object[]{
-					med.getName(), 
-					med.getDate(), 
-					med.getReason()
+					med.getTradeName(), 
+					med.getGenericName(), 
 			});
 		}
 	}
