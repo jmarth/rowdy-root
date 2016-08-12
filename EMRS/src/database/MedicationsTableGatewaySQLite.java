@@ -156,7 +156,7 @@ public class MedicationsTableGatewaySQLite implements MedicationsTableGateway {
 
 			if(rs != null && rs.next()) {
 				newId = rs.getLong(1);
-				System.out.println("Med is ID: " + newId + "");
+				System.out.println("Hx is ID: " + newId + "");
 
 			} else {
 				throw new GatewayException("Could not insert new record.");

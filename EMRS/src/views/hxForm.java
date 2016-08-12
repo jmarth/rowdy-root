@@ -7,6 +7,9 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.TitledBorder;
 
 import models.CL;
+import models.Hx;
+import models.Patient;
+import models.Tabs;
 
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -17,11 +20,17 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.JLabel;
 import javax.swing.JCheckBox;
 import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
+
 import java.awt.SystemColor;
 import javax.swing.JRadioButton;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import database.GatewayException;
+import database.HxTableGateway;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
 import javax.swing.BoxLayout;
@@ -38,17 +47,70 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.Component;
 import javax.swing.Box;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.event.ActionEvent;
 
 public class hxForm extends JPanel {
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField pcTextField;
+	private JTextField hasDATextField;
+	private JTextField pshTextField;
+	private JTextField fhTextField;
+	
+	private HxTableGateway htg;
+	
+	private Patient patient;
+	private JRadioButton nkda;
+	private JRadioButton hasDA;
+	private JRadioButton sickleYes;
+	private JRadioButton sickleNo;
+	private JCheckBox aspirinCk;
+	private JCheckBox plavixCk;
+	private JCheckBox bleedingdisorderCk;
+	private JCheckBox htnCk;
+	private JCheckBox diabetesCk;
+	private JCheckBox cadCk;
+	private JCheckBox copdCk;
+	private JCheckBox pvdCk;
+	private JCheckBox chfCk;
+	private JCheckBox hypoCk;
+	private JRadioButton lawYes;
+	private JRadioButton lawNo;
+	private JRadioButton lawNotYet;
+	private JCheckBox ck1;
+	private JCheckBox ck2;
+	private JCheckBox ck3;
+	private JCheckBox ck4;
+	private JCheckBox ck5;
+	private JCheckBox ck6;
+	private JCheckBox ck7;
+	private JCheckBox ck8;
+	private JCheckBox ck9;
+	private JCheckBox ck10;
+	private JCheckBox ck11;
+	private JCheckBox ck12;
+	private JCheckBox ck13;
+	private ButtonGroup btnGroupAllergy;
+	private ButtonGroup btnGroupSickleCell;
+	private ButtonGroup lawBtnGroup;
+	private List<JCheckBox> pmhGroup;
+	private List<JCheckBox> bleedingTendencyGroup;
+	private List<JCheckBox> peGroup;
+	private JPanel prevPanel;
+	private JTabbedPane tabbedPane;
 
 	/**
 	 * Create the panel.
+	 * @param prevPanel 
+	 * @param tabbedPane 
 	 */
-	public hxForm() {
+	public hxForm(Patient p, HxTableGateway hxTableGateway, final hxView prevPanel, final JTabbedPane tabbedPane) {
+		
+		this.htg = hxTableGateway;
+		this.patient = p;
+		this.prevPanel = prevPanel;
+		this.tabbedPane = tabbedPane;
 		
 		setBackground(CL.cararra);
 		
@@ -110,13 +172,13 @@ public class hxForm extends JPanel {
 		Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_1);
 		
-		JCheckBox checkBox = new JCheckBox("");
-		checkBox.setOpaque(true);
-		checkBox.setBorderPainted(true);
-		checkBox.setForeground(Color.BLACK);
-		checkBox.setBackground(Color.LIGHT_GRAY);
-		checkBox.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox);
+		ck1 = new JCheckBox("");
+		ck1.setOpaque(true);
+		ck1.setBorderPainted(true);
+		ck1.setForeground(Color.BLACK);
+		ck1.setBackground(Color.LIGHT_GRAY);
+		ck1.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck1);
 		
 		JLabel lblNeurological = new JLabel("Neurological");
 		lblNeurological.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -126,12 +188,12 @@ public class hxForm extends JPanel {
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_2);
 		
-		JCheckBox checkBox_2 = new JCheckBox("");
-		checkBox_2.setBorderPainted(true);
-		checkBox_2.setOpaque(true);
-		checkBox_2.setBackground(Color.LIGHT_GRAY);
-		checkBox_2.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_2);
+		ck2 = new JCheckBox("");
+		ck2.setBorderPainted(true);
+		ck2.setOpaque(true);
+		ck2.setBackground(Color.LIGHT_GRAY);
+		ck2.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck2);
 		
 		JLabel lblHeadNeck = new JLabel("Head & Neck");
 		lblHeadNeck.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -141,12 +203,12 @@ public class hxForm extends JPanel {
 		Component rigidArea_3 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_3);
 		
-		JCheckBox checkBox_3 = new JCheckBox("");
-		checkBox_3.setOpaque(true);
-		checkBox_3.setBackground(Color.LIGHT_GRAY);
-		checkBox_3.setBorderPainted(true);
-		checkBox_3.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_3);
+		ck3 = new JCheckBox("");
+		ck3.setOpaque(true);
+		ck3.setBackground(Color.LIGHT_GRAY);
+		ck3.setBorderPainted(true);
+		ck3.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck3);
 		
 		JLabel lblMouthThroat = new JLabel("Mouth & Throat");
 		lblMouthThroat.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -156,12 +218,12 @@ public class hxForm extends JPanel {
 		Component rigidArea_4 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_4);
 		
-		JCheckBox checkBox_1 = new JCheckBox("");
-		checkBox_1.setBackground(Color.LIGHT_GRAY);
-		checkBox_1.setBorderPainted(true);
-		checkBox_1.setOpaque(true);
-		checkBox_1.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_1);
+		ck4 = new JCheckBox("");
+		ck4.setBackground(Color.LIGHT_GRAY);
+		ck4.setBorderPainted(true);
+		ck4.setOpaque(true);
+		ck4.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck4);
 		
 		JLabel lblBreast = new JLabel("Breast");
 		lblBreast.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -171,12 +233,12 @@ public class hxForm extends JPanel {
 		Component rigidArea_5 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_5);
 		
-		JCheckBox checkBox_5 = new JCheckBox("");
-		checkBox_5.setOpaque(true);
-		checkBox_5.setBorderPainted(true);
-		checkBox_5.setBackground(Color.LIGHT_GRAY);
-		checkBox_5.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_5);
+		ck5 = new JCheckBox("");
+		ck5.setOpaque(true);
+		ck5.setBorderPainted(true);
+		ck5.setBackground(Color.LIGHT_GRAY);
+		ck5.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck5);
 		
 		JLabel lblHeart = new JLabel("Heart");
 		lblHeart.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -186,12 +248,12 @@ public class hxForm extends JPanel {
 		Component rigidArea_6 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_6);
 		
-		JCheckBox checkBox_4 = new JCheckBox("");
-		checkBox_4.setBackground(Color.LIGHT_GRAY);
-		checkBox_4.setBorderPainted(true);
-		checkBox_4.setOpaque(true);
-		checkBox_4.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_4);
+		ck6 = new JCheckBox("");
+		ck6.setBackground(Color.LIGHT_GRAY);
+		ck6.setBorderPainted(true);
+		ck6.setOpaque(true);
+		ck6.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck6);
 		
 		JLabel lblLungs = new JLabel("Lungs");
 		lblLungs.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -201,10 +263,10 @@ public class hxForm extends JPanel {
 		Component rigidArea_7 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_7);
 		
-		JCheckBox checkBox_7 = new JCheckBox("");
-		checkBox_7.setBorderPainted(true);
-		checkBox_7.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_7);
+		ck7 = new JCheckBox("");
+		ck7.setBorderPainted(true);
+		ck7.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck7);
 		
 		JLabel lblAbdomen = new JLabel("Abdomen");
 		lblAbdomen.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -214,10 +276,10 @@ public class hxForm extends JPanel {
 		Component rigidArea_8 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_8);
 		
-		JCheckBox checkBox_6 = new JCheckBox("");
-		checkBox_6.setBorderPainted(true);
-		checkBox_6.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_6);
+		ck8 = new JCheckBox("");
+		ck8.setBorderPainted(true);
+		ck8.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck8);
 		
 		JLabel lblExtremities = new JLabel("Extremities");
 		lblExtremities.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -227,10 +289,10 @@ public class hxForm extends JPanel {
 		Component rigidArea_9 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_9);
 		
-		JCheckBox checkBox_9 = new JCheckBox("");
-		checkBox_9.setBorderPainted(true);
-		checkBox_9.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_9);
+		ck9 = new JCheckBox("");
+		ck9.setBorderPainted(true);
+		ck9.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck9);
 		
 		JLabel lblGureproductive = new JLabel("Gu/Reproductive");
 		lblGureproductive.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -240,10 +302,10 @@ public class hxForm extends JPanel {
 		Component rigidArea_10 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_10);
 		
-		JCheckBox checkBox_8 = new JCheckBox("");
-		checkBox_8.setBorderPainted(true);
-		checkBox_8.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_8);
+		ck10 = new JCheckBox("");
+		ck10.setBorderPainted(true);
+		ck10.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck10);
 		
 		JLabel lblRectal = new JLabel("Rectal");
 		lblRectal.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -253,10 +315,10 @@ public class hxForm extends JPanel {
 		Component rigidArea_11 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_11);
 		
-		JCheckBox checkBox_11 = new JCheckBox("");
-		checkBox_11.setBorderPainted(true);
-		checkBox_11.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_11);
+		ck11 = new JCheckBox("");
+		ck11.setBorderPainted(true);
+		ck11.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck11);
 		
 		JLabel lblLabekgResults = new JLabel("Lab/EKG Results");
 		lblLabekgResults.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -266,10 +328,10 @@ public class hxForm extends JPanel {
 		Component rigidArea_12 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_12);
 		
-		JCheckBox checkBox_12 = new JCheckBox("");
-		checkBox_12.setBorderPainted(true);
-		checkBox_12.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_12);
+		ck12 = new JCheckBox("");
+		ck12.setBorderPainted(true);
+		ck12.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck12);
 		
 		JLabel lblXrayResults = new JLabel("X-Ray Results");
 		lblXrayResults.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -279,19 +341,34 @@ public class hxForm extends JPanel {
 		Component rigidArea_13 = Box.createRigidArea(new Dimension(20, 20));
 		panel_1.add(rigidArea_13);
 		
-		JCheckBox checkBox_10 = new JCheckBox("");
-		checkBox_10.setBorderPainted(true);
-		checkBox_10.setHorizontalAlignment(SwingConstants.CENTER);
-		panel_1.add(checkBox_10);
+		ck13 = new JCheckBox("");
+		ck13.setBorderPainted(true);
+		ck13.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_1.add(ck13);
 		panel.setLayout(new MigLayout("", "[][grow]", "[][][][][][][][][][][][][][][][][][][][]"));
+		
+		peGroup = new ArrayList<JCheckBox>();
+		peGroup.add(ck1);
+		peGroup.add(ck2);
+		peGroup.add(ck3);
+		peGroup.add(ck4);
+		peGroup.add(ck5);
+		peGroup.add(ck6);
+		peGroup.add(ck7);
+		peGroup.add(ck8);
+		peGroup.add(ck9);
+		peGroup.add(ck10);
+		peGroup.add(ck11);
+		peGroup.add(ck12);
+		peGroup.add(ck13);
 		
 		JLabel lblPresentCondition = new JLabel("Present Condition:");
 		lblPresentCondition.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel.add(lblPresentCondition, "cell 0 0");
 		
-		textField = new JTextField();
-		panel.add(textField, "cell 1 0,growx");
-		textField.setColumns(10);
+		pcTextField = new JTextField();
+		panel.add(pcTextField, "cell 1 0,growx");
+		pcTextField.setColumns(10);
 		
 		JSeparator separator = new JSeparator();
 		separator.setBackground(CL.belize);
@@ -301,41 +378,41 @@ public class hxForm extends JPanel {
 		lblAllergies.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel.add(lblAllergies, "flowx,cell 0 2");
 		
-		JRadioButton rdbtnNkda = new JRadioButton("NKDA");
-		rdbtnNkda.setBorderPainted(true);
-		rdbtnNkda.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(rdbtnNkda, "flowx,cell 1 2");
+		nkda = new JRadioButton("NKDA");
+		nkda.setBorderPainted(true);
+		nkda.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(nkda, "flowx,cell 1 2");
 		
-		JRadioButton hasDA = new JRadioButton("Drug Allergy:");
+		hasDA = new JRadioButton("Drug Allergy:");
 		hasDA.setBorderPainted(true);
 		hasDA.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		panel.add(hasDA, "cell 1 2");
 		
-		ButtonGroup btnGroupAllergy = new ButtonGroup();
-		btnGroupAllergy.add(rdbtnNkda);
+		btnGroupAllergy = new ButtonGroup();
+		btnGroupAllergy.add(nkda);
 		btnGroupAllergy.add(hasDA);
 		
-		textField_1 = new JTextField();
-		panel.add(textField_1, "cell 1 2");
-		textField_1.setColumns(10);
+		hasDATextField = new JTextField();
+		panel.add(hasDATextField, "cell 1 2");
+		hasDATextField.setColumns(10);
 		
 		JLabel lblSickleCell = new JLabel("Sickle Cell?");
 		lblSickleCell.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel.add(lblSickleCell, "cell 0 3");
 		
-		JRadioButton rdbtnYes = new JRadioButton("Yes");
-		rdbtnYes.setBorderPainted(true);
-		rdbtnYes.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(rdbtnYes, "flowx,cell 1 3");
+		sickleYes = new JRadioButton("Yes");
+		sickleYes.setBorderPainted(true);
+		sickleYes.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(sickleYes, "flowx,cell 1 3");
 		
-		JRadioButton rdbtnNo = new JRadioButton("No");
-		rdbtnNo.setBorderPainted(true);
-		rdbtnNo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(rdbtnNo, "cell 1 3");
+		sickleNo = new JRadioButton("No");
+		sickleNo.setBorderPainted(true);
+		sickleNo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(sickleNo, "cell 1 3");
 		
-		ButtonGroup btnGroupSickleCell = new ButtonGroup();
-		btnGroupSickleCell.add(rdbtnYes);
-		btnGroupSickleCell.add(rdbtnNo);
+		btnGroupSickleCell = new ButtonGroup();
+		btnGroupSickleCell.add(sickleYes);
+		btnGroupSickleCell.add(sickleNo);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBackground(CL.belize);
@@ -345,20 +422,25 @@ public class hxForm extends JPanel {
 		lblBleedingTendency.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel.add(lblBleedingTendency, "cell 0 5");
 		
-		JCheckBox chckbxHypertension = new JCheckBox("Aspirin");
-		chckbxHypertension.setBorderPainted(true);
-		chckbxHypertension.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(chckbxHypertension, "flowx,cell 0 6 2 1");
+		aspirinCk = new JCheckBox("Aspirin");
+		aspirinCk.setBorderPainted(true);
+		aspirinCk.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(aspirinCk, "flowx,cell 0 6 2 1");
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Plavix");
-		chckbxNewCheckBox.setBorderPainted(true);
-		chckbxNewCheckBox.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(chckbxNewCheckBox, "cell 0 6 2 1");
+		plavixCk = new JCheckBox("Plavix");
+		plavixCk.setBorderPainted(true);
+		plavixCk.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(plavixCk, "cell 0 6 2 1");
 		
-		JCheckBox chckbxBleedingDisorder = new JCheckBox("Bleeding Disorder");
-		chckbxBleedingDisorder.setBorderPainted(true);
-		chckbxBleedingDisorder.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(chckbxBleedingDisorder, "cell 0 6 2 1");
+		bleedingdisorderCk = new JCheckBox("Bleeding Disorder");
+		bleedingdisorderCk.setBorderPainted(true);
+		bleedingdisorderCk.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(bleedingdisorderCk, "cell 0 6 2 1");
+		
+		bleedingTendencyGroup = new ArrayList<JCheckBox>();
+		bleedingTendencyGroup.add(aspirinCk);
+		bleedingTendencyGroup.add(plavixCk);
+		bleedingTendencyGroup.add(bleedingdisorderCk);
 		
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBackground(CL.belize);
@@ -368,40 +450,50 @@ public class hxForm extends JPanel {
 		lblPastMedicalHistory.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel.add(lblPastMedicalHistory, "cell 0 8");
 		
-		JCheckBox chckbxHypertension_1 = new JCheckBox("Hypertension (HTN)");
-		chckbxHypertension_1.setBorderPainted(true);
-		chckbxHypertension_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(chckbxHypertension_1, "cell 1 8");
+		htnCk = new JCheckBox("Hypertension (HTN)");
+		htnCk.setBorderPainted(true);
+		htnCk.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(htnCk, "cell 1 8");
 		
-		JCheckBox chckbxDiabetes = new JCheckBox("Diabetes");
-		chckbxDiabetes.setBorderPainted(true);
-		chckbxDiabetes.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(chckbxDiabetes, "cell 0 9");
+		diabetesCk = new JCheckBox("Diabetes");
+		diabetesCk.setBorderPainted(true);
+		diabetesCk.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(diabetesCk, "cell 0 9");
 		
-		JCheckBox chckbxCoronaryArteryDisease = new JCheckBox("Coronary Artery Disease (CAD)");
-		chckbxCoronaryArteryDisease.setBorderPainted(true);
-		chckbxCoronaryArteryDisease.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(chckbxCoronaryArteryDisease, "cell 1 9");
+		cadCk = new JCheckBox("Coronary Artery Disease (CAD)");
+		cadCk.setBorderPainted(true);
+		cadCk.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(cadCk, "cell 1 9");
 		
-		JCheckBox chckbxCopd = new JCheckBox("COPD");
-		chckbxCopd.setBorderPainted(true);
-		chckbxCopd.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(chckbxCopd, "cell 0 10");
+		copdCk = new JCheckBox("COPD");
+		copdCk.setBorderPainted(true);
+		copdCk.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(copdCk, "cell 0 10");
 		
-		JCheckBox chckbxPeripheralVascularDisease = new JCheckBox("Peripheral Vascular Disease (PVD)");
-		chckbxPeripheralVascularDisease.setBorderPainted(true);
-		chckbxPeripheralVascularDisease.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(chckbxPeripheralVascularDisease, "cell 1 10");
+		pvdCk = new JCheckBox("Peripheral Vascular Disease (PVD)");
+		pvdCk.setBorderPainted(true);
+		pvdCk.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(pvdCk, "cell 1 10");
 		
-		JCheckBox chckbxCongestiveHeartFailure = new JCheckBox("Congestive Heart Failure (CHF)");
-		chckbxCongestiveHeartFailure.setBorderPainted(true);
-		chckbxCongestiveHeartFailure.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(chckbxCongestiveHeartFailure, "flowx,cell 1 11");
+		chfCk = new JCheckBox("Congestive Heart Failure (CHF)");
+		chfCk.setBorderPainted(true);
+		chfCk.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(chfCk, "flowx,cell 1 11");
 		
-		JCheckBox chckbxHypothyroidism = new JCheckBox("Hypothyroidism");
-		chckbxHypothyroidism.setBorderPainted(true);
-		chckbxHypothyroidism.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(chckbxHypothyroidism, "cell 1 12");
+		hypoCk = new JCheckBox("Hypothyroidism");
+		hypoCk.setBorderPainted(true);
+		hypoCk.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(hypoCk, "cell 1 12");
+		
+		pmhGroup = new ArrayList<JCheckBox>();
+		pmhGroup.add(htnCk);
+		pmhGroup.add(diabetesCk);
+		pmhGroup.add(cadCk);
+		pmhGroup.add(copdCk);
+		pmhGroup.add(pvdCk);
+		pmhGroup.add(chfCk);
+		pmhGroup.add(hypoCk);
+		
 		
 		JSeparator separator_3 = new JSeparator();
 		separator_3.setBackground(CL.belize);
@@ -411,17 +503,17 @@ public class hxForm extends JPanel {
 		lblPastSurgicalHistory.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel.add(lblPastSurgicalHistory, "cell 0 14,alignx trailing");
 		
-		textField_2 = new JTextField();
-		panel.add(textField_2, "cell 1 14,growx");
-		textField_2.setColumns(10);
+		pshTextField = new JTextField();
+		panel.add(pshTextField, "cell 1 14,growx");
+		pshTextField.setColumns(10);
 		
 		JLabel lblFamilyHistory = new JLabel("Family History:");
 		lblFamilyHistory.setFont(new Font("Tahoma", Font.BOLD, 12));
 		panel.add(lblFamilyHistory, "cell 0 15,alignx trailing");
 		
-		textField_3 = new JTextField();
-		panel.add(textField_3, "cell 1 15,growx");
-		textField_3.setColumns(10);
+		fhTextField = new JTextField();
+		panel.add(fhTextField, "cell 1 15,growx");
+		fhTextField.setColumns(10);
 		
 		JSeparator separator_4 = new JSeparator();
 		separator_4.setBackground(CL.belize);
@@ -435,32 +527,106 @@ public class hxForm extends JPanel {
 		lblAndAlternativesFor.setFont(new Font("Lucida Grande", Font.ITALIC, 12));
 		panel.add(lblAndAlternativesFor, "cell 0 18 2 1");
 		
-		JRadioButton rdbtnYes_1 = new JRadioButton("Yes");
-		rdbtnYes_1.setBorderPainted(true);
-		rdbtnYes_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(rdbtnYes_1, "flowx,cell 0 19 2 1");
+		lawYes = new JRadioButton("Yes");
+		lawYes.setBorderPainted(true);
+		lawYes.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(lawYes, "flowx,cell 0 19 2 1");
 		
-		JRadioButton rdbtnNo_1 = new JRadioButton("No");
-		rdbtnNo_1.setBorderPainted(true);
-		rdbtnNo_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(rdbtnNo_1, "cell 0 19");
+		lawNo = new JRadioButton("No");
+		lawNo.setBorderPainted(true);
+		lawNo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(lawNo, "cell 0 19");
 		
-		JRadioButton rdbtnNotYet = new JRadioButton("Not Yet");
-		rdbtnNotYet.setBorderPainted(true);
-		rdbtnNotYet.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		panel.add(rdbtnNotYet, "cell 0 19");
+		lawNotYet = new JRadioButton("Not Yet");
+		lawNotYet.setBorderPainted(true);
+		lawNotYet.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		panel.add(lawNotYet, "cell 0 19");
 		
-		ButtonGroup lawBtnGroup = new ButtonGroup();
-		lawBtnGroup.add(rdbtnYes_1);
-		lawBtnGroup.add(rdbtnNo_1);
-		lawBtnGroup.add(rdbtnNotYet);
+		lawBtnGroup = new ButtonGroup();
+		lawBtnGroup.add(lawYes);
+		lawBtnGroup.add(lawNo);
+		lawBtnGroup.add(lawNotYet);
 		
 		JButton btnSave = new JButton("Save");
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				Hx tmpHx = hxForm.this.getAllFields();
+				try {
+					htg.insertHx(tmpHx);
+				} catch (GatewayException e1) {
+					e1.printStackTrace();
+				}
+				prevPanel.populateHealthHistory();
+				int index = tabbedPane.indexOfTab(Tabs.hx);
+				tabbedPane.setComponentAt(index, null);
+				tabbedPane.setComponentAt(index, prevPanel);
+				
+			}
+			
+		});
 		panel_2.add(btnSave);
 		
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int index = tabbedPane.indexOfTab(Tabs.hx);
+				tabbedPane.setComponentAt(index, null);
+				tabbedPane.setComponentAt(index, prevPanel);
+			}
+			
+		});
 		panel_2.add(btnCancel);
 		setLayout(groupLayout);
 
+	}
+
+	protected Hx getAllFields() {
+		String drugAllergy = "";
+		drugAllergy += (nkda.isSelected()) ? "NKDA" : hasDATextField.getText();
+		
+		// bleedingTendency = aspirin:plavix:bleedingdisorder:sicklecell
+		String bleedingTendency = "";
+		for (JCheckBox c : bleedingTendencyGroup) {
+			bleedingTendency += (c.isSelected()) ? "1" : "0";
+		}
+		bleedingTendency += (sickleYes.isSelected()) ? "1" : "0";
+		
+		String pastMedicalHistory = "";
+		for (JCheckBox c : pmhGroup) {
+			pastMedicalHistory += (c.isSelected()) ? "1" : "0";
+		}
+		
+		String law = "Risks, benefits, potential complications, and alternatives for surgery discussed with patient?  ";
+		
+		if (lawYes.isSelected())
+			law += "YES";
+		else if (lawNo.isSelected())
+			law += "NO";
+		else
+			law += "NOT YET";
+		
+		String pe = "";
+		
+		for (JCheckBox c : peGroup) {
+			pe += (c.isSelected()) ? "1" : "0";
+		}
+		
+		 Hx tmpHx = new Hx(
+				(long) 0, 
+				patient.getId(), 
+				pcTextField.getText(), 
+				drugAllergy, 
+				bleedingTendency, 
+				pastMedicalHistory, 
+				pshTextField.getText(), 
+				fhTextField.getText(), 
+				law, 
+				pe);
+				
+		
+		return tmpHx;
 	}
 }
