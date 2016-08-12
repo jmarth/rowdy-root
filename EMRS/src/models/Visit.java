@@ -8,26 +8,12 @@ public class Visit {
 	private long pid;
 	private String chiefComplaint;
 	private String dateCreated;
-	private FundusExam fe;
-	private IOPMeasurement iopm;
-	private SlitLampExam sle;
-	private VisionExam ve;
 	private String assessment;
 	private String plan;
 	
 	private File sketch1;	
 
 	
-	
-	public Visit(Long id, Long pid, String chiefComplaint, VisionExam ve, SlitLampExam sle, IOPMeasurement iopm, FundusExam fe, String assessment, String plan, String dateCreated) {
-		super();
-		this.id = id;
-		this.pid = pid;
-		this.chiefComplaint = chiefComplaint;
-		this.assessment = assessment;
-		this.plan = plan;
-		this.dateCreated = dateCreated;
-	}
 	
 	public Visit(Long id, Long pid, String chiefComplaint, String assessment, String plan, String dateCreated) {
 		super();
@@ -39,13 +25,6 @@ public class Visit {
 		this.dateCreated = dateCreated;
 	}
 
-	public Visit(Long pid, String chiefComplaint, VisionExam ve, SlitLampExam sle, IOPMeasurement iopm, FundusExam fe,  String plan, String assessment) {
-		super();
-		this.pid = pid;
-		this.chiefComplaint = chiefComplaint;
-		this.plan = plan;
-		this.assessment = assessment;
-	}
 	
 	public Visit(Long pid, String chiefComplaint, String plan, String assessment) {
 		super();
@@ -140,5 +119,9 @@ public class Visit {
 
 	public void setSketch1(File sketch1) {
 		this.sketch1 = sketch1;
+	}
+
+	public String getPlan() {
+		return plan;
 	}
 }

@@ -4,17 +4,27 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
+import database.ACTableGateway;
+import database.ACTableGatewaySQLite;
 import database.AllergyTableGateway;
 import database.AllergyTableGatewaySQLite;
 import database.CommentTableGateway;
 import database.CommentTableGatewaySQLite;
+import database.DistanceVisionTableGateway;
+import database.DistanceVisionTableGatewaySQLite;
 import database.DocumentTableGateway;
 import database.DocumentTableGatewaySQLite;
 import database.GatewayException;
+import database.GlassesRxTableGateway;
+import database.GlassesRxTableGatewaySQLite;
 import database.MedicationsTableGateway;
 import database.MedicationsTableGatewaySQLite;
 import database.PatientTableGateway;
 import database.PatientTableGatewaySQLite;
+import database.PupilsTableGateway;
+import database.PupilsTableGatewaySQLite;
+import database.RefractionTableGateway;
+import database.RefractionTableGatewaySQLite;
 import database.SketchTableGateway;
 import database.SketchTableGatewaySQLite;
 import database.SurgeryTableGateway;
@@ -47,8 +57,12 @@ public class HomeModel {
 	private SurgeryTableGateway srg = null;
 	private CommentTableGateway ctg =null;
 	private MedicationsTableGateway mtg = null;
-
-
+	
+	private DistanceVisionTableGateway dvtg;
+	private GlassesRxTableGateway glsRxT;
+	private RefractionTableGateway refractionTG;
+	private PupilsTableGateway pupilsTG;
+	private ACTableGateway aCTG;
 	
 	public HomeModel(HomeView homeView) {
 		super();
@@ -63,7 +77,7 @@ public class HomeModel {
 		//Gateway creations
 		
 		try {
-			
+			// for MySQL, these need to 
 			ptg = new PatientTableGatewaySQLite();
 			atg = new AllergyTableGatewaySQLite();
 			vtg = new VisitTableGatewaySQLite();
@@ -72,6 +86,12 @@ public class HomeModel {
 			dtg = new DocumentTableGatewaySQLite();
 			ctg = new CommentTableGatewaySQLite();
 			mtg = new MedicationsTableGatewaySQLite();
+			
+			setDvtg(new DistanceVisionTableGatewaySQLite());
+			setGlsRxT(new GlassesRxTableGatewaySQLite());
+			setRefractionTG(new RefractionTableGatewaySQLite());
+			setPupilsTG(new PupilsTableGatewaySQLite());
+			aCTG = new ACTableGatewaySQLite();
 			
 			vl.setGateway(vtg);
         	vl.loadFromGateway();
@@ -195,5 +215,46 @@ public class HomeModel {
 
 	public MedicationsTableGateway getMtg() {
 		return this.mtg;
+	}
+	
+
+	public RefractionTableGateway getRefractionTG() {
+		return refractionTG;
+	}
+
+	public void setRefractionTG(RefractionTableGateway refractionTG) {
+		this.refractionTG = refractionTG;
+	}
+
+	public DistanceVisionTableGateway getDvtg() {
+		return dvtg;
+	}
+
+	public void setDvtg(DistanceVisionTableGateway dvtg) {
+		this.dvtg = dvtg;
+	}
+
+	public GlassesRxTableGateway getGlsRxT() {
+		return glsRxT;
+	}
+
+	public void setGlsRxT(GlassesRxTableGateway glsRxT) {
+		this.glsRxT = glsRxT;
+	}
+
+	public PupilsTableGateway getPupilsTG() {
+		return pupilsTG;
+	}
+
+	public void setPupilsTG(PupilsTableGateway pupilsTG) {
+		this.pupilsTG = pupilsTG;
+	}
+
+	public ACTableGateway getaCTG() {
+		return aCTG;
+	}
+
+	public void setaCTG(ACTableGateway aCTG) {
+		this.aCTG = aCTG;
 	}
 }

@@ -63,8 +63,8 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 				Visit v = new Visit(rs.getLong("id"),
 						rs.getLong("pid"),
 						rs.getString("chiefComplaint"),
-						rs.getString("plan"),
 						rs.getString("assessment"),
+						rs.getString("plan"),
 						rs.getString("dateCreated")
 						);
 				
@@ -118,9 +118,9 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 				Visit v = new Visit(
 						rs.getLong("id"),
 						rs.getLong("pid"),
-						rs.getString("cc"),
-						rs.getString("plan"),
+						rs.getString("chiefComplaint"),
 						rs.getString("assessment"),
+						rs.getString("plan"),
 						rs.getString("dateCreated")
 						);
 				
@@ -160,7 +160,7 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 			st = conn.prepareStatement(
 					"insert INTO visits"
 					+ "(pid,"
-					+ " cc,"
+					+ " chiefComplaint,"
 					+ " assessment,"
 					+ " plan) "
 					+ " values ( ?, ?, ?, ? ) ",
@@ -168,7 +168,9 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 			
 			st.setLong(1, v.getPid());
 			st.setString(2, v.getChiefComplaint());
+			
 			st.setString(3, v.getAssessment());
+			st.setString(4, v.getPlan());
 	
 			st.executeUpdate();
 			
@@ -197,8 +199,12 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 	}
 
 	public void close() {
-		// TODO Auto-generated method stub
-		
+		try {
+			conn.close();
+			conn = null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
