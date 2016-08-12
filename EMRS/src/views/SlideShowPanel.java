@@ -56,6 +56,7 @@ public class SlideShowPanel extends JPanel {
                     x = 0; 
             }
         });
+        tm.setInitialDelay(600);
         setLayout(new BorderLayout(0, 0));
         add(pic);
         tm.start();
