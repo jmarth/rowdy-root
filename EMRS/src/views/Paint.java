@@ -75,10 +75,9 @@ public class Paint extends JFrame{
   };
   private JPanel panel;
   private JLabel lblNewLabel;
-  private JButton btnNewButton;
-  private JButton btnBrownEye;
-  private JButton btnGreenEye;
-  private JButton btnBlueEye;
+  private JButton btnImage1;
+  private JButton btnImage2;
+  private JButton btnImage3;
   private JButton btnNewButton_1;
   private JButton btnSave;
  
@@ -116,12 +115,12 @@ public class Paint extends JFrame{
     gbc_lblNewLabel.gridy = 0;
     panel.add(lblNewLabel, gbc_lblNewLabel);
     
-    btnNewButton = new JButton("Circle");
-    btnNewButton.addActionListener(new ActionListener() {
+    btnImage1 = new JButton("Image 1");
+    btnImage1.addActionListener(new ActionListener() {
     	public void actionPerformed(ActionEvent e) {
     		BufferedImage bimg = null;
     		try {
-				bimg = ImageIO.read(new File("circle.png"));
+				bimg = ImageIO.read(new File("eye-diagrams/draw1.jpg"));
 			} catch (IOException e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -140,36 +139,59 @@ public class Paint extends JFrame{
     gbc_btnNewButton.insets = new Insets(0, 0, 5, 0);
     gbc_btnNewButton.gridx = 0;
     gbc_btnNewButton.gridy = 1;
-    panel.add(btnNewButton, gbc_btnNewButton);
+    panel.add(btnImage1, gbc_btnNewButton);
     
-    btnBrownEye = new JButton("Brown Eye");
+    btnImage2 = new JButton("Image 2");
+    btnImage2.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+    		BufferedImage bimg = null;
+    		try {
+				bimg = ImageIO.read(new File("eye-diagrams/draw2.jpg"));
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+	        //Image image = imageIcon.getImage(); // transform it 
+	        try {
+				drawArea.setBackgroundImage(bimg);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+    });
     GridBagConstraints gbc_btnBrownEye = new GridBagConstraints();
     gbc_btnBrownEye.insets = new Insets(0, 0, 5, 0);
     gbc_btnBrownEye.fill = GridBagConstraints.HORIZONTAL;
     gbc_btnBrownEye.gridx = 0;
     gbc_btnBrownEye.gridy = 2;
-    panel.add(btnBrownEye, gbc_btnBrownEye);
+    panel.add(btnImage2, gbc_btnBrownEye);
     
-    btnGreenEye = new JButton("Hazel Eye");
+    btnImage3 = new JButton("Image 3");
+    btnImage3.addActionListener(new ActionListener() {
+    	public void actionPerformed(ActionEvent e) {
+    		BufferedImage bimg = null;
+    		try {
+				bimg = ImageIO.read(new File("eye-diagrams/draw3.jpg"));
+			} catch (IOException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+	        //Image image = imageIcon.getImage(); // transform it 
+	        try {
+				drawArea.setBackgroundImage(bimg);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    	}
+    });
     GridBagConstraints gbc_btnGreenEye = new GridBagConstraints();
+    gbc_btnGreenEye.fill = GridBagConstraints.HORIZONTAL;
     gbc_btnGreenEye.insets = new Insets(0, 0, 5, 0);
     gbc_btnGreenEye.gridx = 0;
     gbc_btnGreenEye.gridy = 3;
-    panel.add(btnGreenEye, gbc_btnGreenEye);
-    
-    btnBlueEye = new JButton("Blue Eye");
-    GridBagConstraints gbc_btnBlueEye = new GridBagConstraints();
-    gbc_btnBlueEye.fill = GridBagConstraints.HORIZONTAL;
-    gbc_btnBlueEye.insets = new Insets(0, 0, 5, 0);
-    gbc_btnBlueEye.gridx = 0;
-    gbc_btnBlueEye.gridy = 4;
-    panel.add(btnBlueEye, gbc_btnBlueEye);
-    
-    btnNewButton_1 = new JButton("New button");
-    GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-    gbc_btnNewButton_1.gridx = 0;
-    gbc_btnNewButton_1.gridy = 5;
-    panel.add(btnNewButton_1, gbc_btnNewButton_1);
+    panel.add(btnImage3, gbc_btnGreenEye);
 
     // create controls to apply colors and call clear feature
     JPanel controls = new JPanel();
