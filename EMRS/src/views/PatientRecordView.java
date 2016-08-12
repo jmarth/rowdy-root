@@ -58,7 +58,7 @@ public class PatientRecordView extends JTabbedPane {
 		lab2.setPreferredSize(new Dimension(145, 30));
 		lab2.setHorizontalAlignment(JLabel.CENTER);
 		
-		JPanel hxView = new hxView(patient, this, homeModel.getAtg(), homeModel.getMtg(), homeModel.getRtg());
+		JPanel hxView = new hxView(patient, this, homeModel.getAtg(), homeModel.getMtg(), homeModel.getRtg(), homeModel.getHtg());
 		this.addTab(Tabs.hx, null, hxView, null);
 		this.setTabComponentAt(1, lab2);
 		

@@ -174,9 +174,9 @@ public class AddMedView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String[] selectedValues = (String[]) list.getSelectedValues();
-				for (String s : selectedValues) {
-					String[] pieces = s.split("\\|");
+				Object[] selectedValues = list.getSelectedValues();
+				for (Object s : selectedValues) {
+					String[] pieces = ((String) s).split("\\|");
 					Med tmp = new Med((long) 0, patient.getId(), pieces[0].trim(), pieces[1].trim());
 					try {
 						AddMedView.this.mtg.insertMed(tmp);
