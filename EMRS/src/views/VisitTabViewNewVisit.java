@@ -432,14 +432,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbc_lblToBeContinued.insets = new Insets(0, 0, 0, 5);
 		gbc_lblToBeContinued.gridx = 0;
 		gbc_lblToBeContinued.gridy = 8;
-		//visionPanel.add(lblToBeContinued, gbc_lblToBeContinued);
-		
-		JLabel label = new JLabel("...");
-		GridBagConstraints gbc_label = new GridBagConstraints();
-		gbc_label.insets = new Insets(0, 0, 0, 5);
-		gbc_label.gridx = 2;
-		gbc_label.gridy = 8;
-		visionPanel.add(label, gbc_label);
 		
 		final JPanel panel_VisionSketch = new JPanel();
 		GridBagConstraints gbc_panel_VisionSketch = new GridBagConstraints();
@@ -505,28 +497,21 @@ public class VisitTabViewNewVisit extends JPanel {
 		gbl_panel_FundusExam.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_FundusExam.setLayout(gbl_panel_FundusExam);
 		
-		JLabel lblFE1 = new JLabel("FE 1");
-		GridBagConstraints gbc_lblFE1 = new GridBagConstraints();
-		gbc_lblFE1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblFE1.gridx = 0;
-		gbc_lblFE1.gridy = 0;
-		panel_FundusExam.add(lblFE1, gbc_lblFE1);
-		
-		JLabel lblFE1C1 = new JLabel("FE 1 Col 1");
+		JLabel lblFE1C1 = new JLabel("C/D");
 		GridBagConstraints gbc_lblFE1C1 = new GridBagConstraints();
 		gbc_lblFE1C1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFE1C1.gridx = 2;
 		gbc_lblFE1C1.gridy = 0;
 		panel_FundusExam.add(lblFE1C1, gbc_lblFE1C1);
 		
-		JLabel lblFE1C2 = new JLabel("FE 1 Col 2");
+		JLabel lblFE1C2 = new JLabel("Macula");
 		GridBagConstraints gbc_lblFE1C2 = new GridBagConstraints();
 		gbc_lblFE1C2.insets = new Insets(0, 0, 5, 0);
 		gbc_lblFE1C2.gridx = 4;
 		gbc_lblFE1C2.gridy = 0;
 		panel_FundusExam.add(lblFE1C2, gbc_lblFE1C2);
 		
-		JLabel lblFE1_r1 = new JLabel("FE 1 Row 1");
+		JLabel lblFE1_r1 = new JLabel("OD");
 		GridBagConstraints gbc_lblFE1_r1 = new GridBagConstraints();
 		gbc_lblFE1_r1.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFE1_r1.gridx = 0;
@@ -549,7 +534,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		panel_FundusExam.add(textField_FE1_1_2, gbc_textField_FE1_1_2);
 		textField_FE1_1_2.setColumns(5);
 		
-		JLabel lblFE1_r2 = new JLabel("FE 1 Row 2");
+		JLabel lblFE1_r2 = new JLabel("OS");
 		GridBagConstraints gbc_lblFE1_r2 = new GridBagConstraints();
 		gbc_lblFE1_r2.insets = new Insets(0, 0, 0, 5);
 		gbc_lblFE1_r2.gridx = 0;
