@@ -568,7 +568,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		JPanel panel_Sketch2_Placehold = new JPanel();
 		panelFundusSketch.add(panel_Sketch2_Placehold);
 		
-		JLabel lblSketch2 = new JLabel("Sketch #2 goes here");
+		JLabel lblSketch2 = new JLabel("");
 		panel_Sketch2_Placehold.add(lblSketch2);
 		
 		JLabel lblAp = new JLabel("Assessment/Plan:");
