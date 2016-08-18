@@ -305,8 +305,14 @@ public class hxView extends JPanel {
 		} catch (GatewayException e) {
 			e.printStackTrace();
 		}
+		Hx hx = null;
 		
-		Hx hx = healthHistory.get(0);
+		if (healthHistory.size() > 0)
+			hx = healthHistory.get(0);
+		else
+			return;
+		
+		
 		presentConditionPanel.add(new JLabel(hx.getPc()));
 		
 		drugAllergyPanel.add(new JLabel(hx.getDa(), JLabel.CENTER));
@@ -493,6 +499,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_1);
 		
 		ck1 = new JCheckBox("");
+		ck1.setEnabled(false);
 		ck1.setOpaque(true);
 		ck1.setHorizontalAlignment(SwingConstants.CENTER);
 		ck1.setForeground(Color.BLACK);
@@ -509,6 +516,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_2);
 		
 		ck2 = new JCheckBox("");
+		ck2.setEnabled(false);
 		ck2.setOpaque(true);
 		ck2.setHorizontalAlignment(SwingConstants.CENTER);
 		ck2.setBorderPainted(true);
@@ -524,6 +532,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_3);
 		
 		ck3 = new JCheckBox("");
+		ck3.setEnabled(false);
 		ck3.setOpaque(true);
 		ck3.setHorizontalAlignment(SwingConstants.CENTER);
 		ck3.setBorderPainted(true);
@@ -539,6 +548,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_4);
 		
 		ck4 = new JCheckBox("");
+		ck4.setEnabled(false);
 		ck4.setOpaque(true);
 		ck4.setHorizontalAlignment(SwingConstants.CENTER);
 		ck4.setBorderPainted(true);
@@ -554,6 +564,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_5);
 		
 		ck5 = new JCheckBox("");
+		ck5.setEnabled(false);
 		ck5.setOpaque(true);
 		ck5.setHorizontalAlignment(SwingConstants.CENTER);
 		ck5.setBorderPainted(true);
@@ -569,6 +580,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_6);
 		
 		ck6 = new JCheckBox("");
+		ck6.setEnabled(false);
 		ck6.setOpaque(true);
 		ck6.setHorizontalAlignment(SwingConstants.CENTER);
 		ck6.setBorderPainted(true);
@@ -584,6 +596,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_7);
 		
 		ck7 = new JCheckBox("");
+		ck7.setEnabled(false);
 		ck7.setBackground(new Color(255, 255, 255));
 		ck7.setHorizontalAlignment(SwingConstants.CENTER);
 		ck7.setBorderPainted(true);
@@ -598,6 +611,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_8);
 		
 		ck8 = new JCheckBox("");
+		ck8.setEnabled(false);
 		ck8.setBackground(new Color(255, 255, 255));
 		ck8.setHorizontalAlignment(SwingConstants.CENTER);
 		ck8.setBorderPainted(true);
@@ -612,6 +626,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_9);
 		
 		ck9 = new JCheckBox("");
+		ck9.setEnabled(false);
 		ck9.setBackground(new Color(255, 255, 255));
 		ck9.setHorizontalAlignment(SwingConstants.CENTER);
 		ck9.setBorderPainted(true);
@@ -626,6 +641,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_10);
 		
 		ck10 = new JCheckBox("");
+		ck10.setEnabled(false);
 		ck10.setBackground(new Color(255, 255, 255));
 		ck10.setHorizontalAlignment(SwingConstants.CENTER);
 		ck10.setBorderPainted(true);
@@ -640,6 +656,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_11);
 		
 		ck11 = new JCheckBox("");
+		ck11.setEnabled(false);
 		ck11.setBackground(new Color(255, 255, 255));
 		ck11.setHorizontalAlignment(SwingConstants.CENTER);
 		ck11.setBorderPainted(true);
@@ -654,6 +671,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_12);
 		
 		ck12 = new JCheckBox("");
+		ck12.setEnabled(false);
 		ck12.setForeground(new Color(0, 0, 0));
 		ck12.setBackground(new Color(255, 255, 255));
 		ck12.setHorizontalAlignment(SwingConstants.CENTER);
@@ -669,6 +687,7 @@ public class hxView extends JPanel {
 		pePanel.add(rigidArea_13);
 		
 		ck13 = new JCheckBox("");
+		ck13.setEnabled(false);
 		ck13.setBackground(new Color(255, 255, 255));
 		ck13.setHorizontalAlignment(SwingConstants.CENTER);
 		ck13.setBorderPainted(true);
