@@ -12,7 +12,9 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 
 import database.GatewayException;
@@ -21,6 +23,7 @@ import models.CL;
 import models.Surgery;
 import models.SurgeryTemplate;
 import models.SurgeryTemplatesList;
+import models.Tabs;
 
 public class NewProcedureView extends JPanel {
 	
@@ -34,7 +37,7 @@ public class NewProcedureView extends JPanel {
 	// Buttons -----------------------------------------
 	private JButton saveButton;
 	private JButton cancelButton;
-	private JComboBox comboBox;
+	private JComboBox<String> comboBox;
 	
 	
 	// Labels ------------------------------------------
@@ -43,11 +46,14 @@ public class NewProcedureView extends JPanel {
 	
 	// Fields ------------------------------------------
 	private JTextArea textArea;
+	private JTextPane textPane;
 
 	
 	// Other -------------------------------------------
 	private SurgeryTemplatesList list; 
 	private SurgeryTemplatesTableGateway gateway;
+	
+	private JScrollPane scroller;
 	
 
 	
@@ -83,36 +89,39 @@ public class NewProcedureView extends JPanel {
 		textArea.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		textArea.setBorder(BorderFactory.createLineBorder(CL.blueGrey, 3));
 		
+		textPane = new JTextPane();
+		
+		scroller = new JScrollPane();
+		scroller.setViewportView(textPane);
+		
 		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
-		saveButton = new JButton("Confirm");
+		saveButton = new JButton("Save");
 		saveButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
 				Object tmp = comboBox.getSelectedItem();
+				
+				/** tmp will be null when nothing has been selected from the combo box **/
 				if (tmp == null) {
 					return;
 				}
-				String title = (String) tmp.toString();
-				String body = textArea.getText();
+				
+				/** get the title of the template **/
+				String title = ((String) tmp).toString();
+				
+				/** get the body of the template (description) **/
+				String body = textPane.getText();
 				long pid = parent.getPatient().getId();
-				
-				long newID = 0;
-				
+								
 				Surgery s = new Surgery(0, pid, title, body);
-				
-				try {
-					newID = parent.gate1.insertSurgery(s);
-				} catch (GatewayException e1) {
-					e1.printStackTrace();
-				}
-				
-				s.setID(newID);
-				
-				parent.resetAndUpdate();
-				
+								
+				int index = parent.prv.indexOfTab(Tabs.labs);
+				parent.prv.setComponentAt(index, null);
+				parent.prv.setComponentAt(index, new SafeSurgery(s, parent, NewProcedureView.this));
+								
 			}
 			
 		});
@@ -123,7 +132,9 @@ public class NewProcedureView extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				parent.reset();
-				
+				int index = parent.prv.indexOfTab(Tabs.labs);
+				parent.prv.setComponentAt(index, null);
+				parent.prv.setComponentAt(index, parent);
 			}
 			
 		});
@@ -133,7 +144,7 @@ public class NewProcedureView extends JPanel {
 		buttonPanel.add(cancelButton);
 		
 		mainPanel.add(comboboxPanel, BorderLayout.NORTH);
-		mainPanel.add(textArea, BorderLayout.CENTER);
+		mainPanel.add(scroller, BorderLayout.CENTER);
 		add(mainPanel, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 		
@@ -155,17 +166,18 @@ public class NewProcedureView extends JPanel {
 		}
 		
 		
-		comboBox = new JComboBox(array);
+		comboBox = new JComboBox<String>(array);
 		comboBox.setSelectedItem(null);
 		
 		comboBox.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JComboBox tmp = (JComboBox) e.getSource();
+				JComboBox<String> tmp = (JComboBox<String>) e.getSource();
 				String title = (String) tmp.getSelectedItem();
 				SurgeryTemplate template = list.findTemplate(title);
-				textArea.setText(template.getDescription());
+				//textArea.setText(template.getDescription());
+				textPane.setText(template.getDescription());
 			}
 			
 		});
