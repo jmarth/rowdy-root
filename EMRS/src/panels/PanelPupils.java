@@ -2,6 +2,9 @@ package panels;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -31,7 +34,7 @@ public class PanelPupils extends JPanel {
 	private JRadioButton rdbtn_Y_SynechiaBoth;
 	private JRadioButton rdbtn_N_SynechiaBoth;
 	private JCheckBox chckBx_NormalPupilsRight;
-	private JRadioButton rdbtn_RoundPupilsRight;
+	private JRadioButton rdbtn_RoundPupilRight;
 	private JRadioButton rdbtn_IrregularPupilsRight;
 	private JComboBox comboBox_PupilDiameterRight;
 	private JRadioButton rdbtn_Y_RAPDRight;
@@ -70,7 +73,9 @@ public class PanelPupils extends JPanel {
 		add(panel_PupilsBoth, "cell 0 0,grow");
 		
 		chckbx_NormalPupilsBoth = new JCheckBox("Normal");
+		
 		chckbx_NormalPupilsBoth.setAlignmentX(Component.CENTER_ALIGNMENT);
+		chckbx_NormalPupilsBoth.addActionListener(new NormalBothListener());
 		
 		JPanel panel_ShapeB = new JPanel();
 		panel_ShapeB.setBorder(new TitledBorder(null, "Shape", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -131,6 +136,7 @@ public class PanelPupils extends JPanel {
 		
 		chckBx_NormalPupilsRight = new JCheckBox("Normal");
 		chckBx_NormalPupilsRight.setAlignmentX(Component.CENTER_ALIGNMENT);
+		chckBx_NormalPupilsRight.addActionListener(new NormalRightListener());
 		panel_PupilsRight.add(chckBx_NormalPupilsRight);
 		
 		JPanel panel_1 = new JPanel();
@@ -138,9 +144,9 @@ public class PanelPupils extends JPanel {
 		panel_PupilsRight.add(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 		
-		rdbtn_RoundPupilsRight = new JRadioButton("Round");
-		bgRightShape.add(rdbtn_RoundPupilsRight);
-		panel_1.add(rdbtn_RoundPupilsRight);
+		rdbtn_RoundPupilRight = new JRadioButton("Round");
+		bgRightShape.add(rdbtn_RoundPupilRight);
+		panel_1.add(rdbtn_RoundPupilRight);
 		
 		rdbtn_IrregularPupilsRight = new JRadioButton("Irregular");
 		bgRightShape.add(rdbtn_IrregularPupilsRight);
@@ -188,6 +194,7 @@ public class PanelPupils extends JPanel {
 		
 		chkbx_NormalPupilLeft = new JCheckBox("Normal");
 		chkbx_NormalPupilLeft.setAlignmentX(Component.CENTER_ALIGNMENT);
+		chkbx_NormalPupilLeft.addActionListener(new NormalLeftListener());
 		panel_PupilsLeft.add(chkbx_NormalPupilLeft);
 		
 		JPanel panel_5 = new JPanel();
@@ -239,6 +246,50 @@ public class PanelPupils extends JPanel {
 		panel_8.add(rdbtn_N_SynechiaLeft);
 		
 	}
+	
+	private class NormalBothListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (chckbx_NormalPupilsBoth.isSelected()) {
+				rdbtn_RoundPupilsBoth.setSelected(true);
+				comboBox_PupilsDiameterBoth.setSelectedIndex(2);
+				rdbtn_N_RAPDBoth.setSelected(true);
+				rdbtn_N_SynechiaBoth.setSelected(true);	
+			}
+					
+		}
+		
+	}
+	
+	private class NormalRightListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (chckBx_NormalPupilsRight.isSelected()) {
+
+				rdbtn_RoundPupilRight.setSelected(true);
+				comboBox_PupilDiameterRight.setSelectedIndex(2);
+				rdbtn_N_RAPDRight.setSelected(true);
+				rdbtn_N_SynechiaRight.setSelected(true);
+			}
+		}
+		
+	}
+	
+	private class NormalLeftListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (chkbx_NormalPupilLeft.isSelected()) {
+				rdbtn_RoundPupilLeft.setSelected(true);
+				comboBox_PupilDiameterLeft.setSelectedIndex(2);
+				rdbtn_N_RAPDLeft.setSelected(true);
+				rdbtn_N_SynechiaLeft.setSelected(true);	
+			}
+		}
+		
+	}
 
 	public Pupils createNewPupils() {
 		
@@ -284,5 +335,51 @@ public class PanelPupils extends JPanel {
 		}
 
 		return null;
+	}
+
+	public void setFields(ArrayList<Object> pupilsCols) {
+		
+		int i = 0;
+		
+		if (pupilsCols.get(i).toString().equals("0")) {
+			chckbx_NormalPupilsBoth.setSelected(false);
+		}
+		
+		if (pupilsCols.get(i+1).toString().equals("Round")) {rdbtn_RoundPupilsBoth.setSelected(true);}
+		else { rdbtn_IrregularPupilsBoth.setSelected(true); }
+		
+		comboBox_PupilsDiameterBoth.setSelectedItem(pupilsCols.get(i+1).toString());
+		
+		if (pupilsCols.get(i+1).toString().equals("1")) {rdbtn_Y_RAPDBoth.setSelected(true);}
+		else {rdbtn_N_RAPDBoth.setSelected(true);}
+		
+		if (pupilsCols.get(i+1).toString().equals("1")) {rdbtn_Y_SynechiaBoth.setSelected(true);}
+		else {rdbtn_N_SynechiaBoth.setSelected(true);}
+		
+		if (pupilsCols.get(i+1).toString().equals("0")) {chckBx_NormalPupilsRight.setSelected(false);}
+		
+		if (pupilsCols.get(i+1).toString().equals("Round")) {rdbtn_RoundPupilRight.setSelected(true);}
+		else {rdbtn_IrregularPupilsRight.setSelected(true);}
+		
+		comboBox_PupilDiameterRight.setSelectedItem(pupilsCols.get(i+1).toString());
+		
+		if (pupilsCols.get(i+1).toString().equals("1")) {rdbtn_Y_RAPDRight.setSelected(true);}
+		else  {rdbtn_N_RAPDRight.setSelected(true);}
+		
+		if (pupilsCols.get(i+1).toString().equals("1")) {rdbtn_Y_SynechiaRight.setSelected(true);}
+		else {rdbtn_N_SynechiaRight.setSelected(true);}
+		
+		if (pupilsCols.get(i+1).toString().equals("0")) {chkbx_NormalPupilLeft.setSelected(false);}
+		
+		if (pupilsCols.get(i+1).toString().equals("Round")) {rdbtn_RoundPupilLeft.setSelected(true);}
+		else {rdbtn_IrregularPupilLeft.setSelected(true);}
+		
+		comboBox_PupilDiameterLeft.setSelectedItem(pupilsCols.get(i+1).toString());
+		
+		if (pupilsCols.get(i+1).toString().equals("1")) {rdbtn_Y_RAPDLeft.setSelected(true);}
+		else {rdbtn_N_RAPDLeft.setSelected(true);}
+		
+		if (pupilsCols.get(i+1).toString().equals("1")) {rdbtn_Y_SynechiaLeft.setSelected(true);}
+		else {rdbtn_N_SynechiaLeft.setSelected(true);}
 	}
 }

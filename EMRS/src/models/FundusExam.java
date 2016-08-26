@@ -28,9 +28,7 @@ public class FundusExam {
 	private String retinaODNotes;
 	private boolean retinaOSAb; 
 	private String retinaOSNotes;
-	
-	private String dateCreated;
-	
+
 	/**
 	 * Comes from the DB
 	 * @param id
@@ -55,7 +53,7 @@ public class FundusExam {
 	 */
 	public FundusExam(long id, long vid, boolean dialated, String dialNotes, boolean cDODAb, float cDOD, String cDODNotes, boolean cDOSAb, float cDOS,
 			String cDOSNotes, boolean maculaODAb, String maculaODNotes, boolean maculaOSAb, String maculaOSNotes,
-			boolean retinaODAb, String retinaODNotes, boolean retinaOSAb, String retinaOSNotes, String dateCreated) {
+			boolean retinaODAb, String retinaODNotes, boolean retinaOSAb, String retinaOSNotes) {
 		super();
 		this.id = id;
 		this.vid = vid;
@@ -75,7 +73,6 @@ public class FundusExam {
 		this.retinaODNotes = retinaODNotes;
 		this.retinaOSAb = retinaOSAb;
 		this.retinaOSNotes = retinaOSNotes;
-		this.setDateCreated(dateCreated);
 	}
 	
 	/**
@@ -98,11 +95,10 @@ public class FundusExam {
 	 * @param retinaOSAb
 	 * @param retinaOSNotes
 	 */
-	public FundusExam(long vid, boolean dialated, String dialNotes, boolean cDODAb, float cDOD, String cDODNotes, boolean cDOSAb, float cDOS,
+	public FundusExam(boolean dialated, String dialNotes, boolean cDODAb, float cDOD, String cDODNotes, boolean cDOSAb, float cDOS,
 			String cDOSNotes, boolean maculaODAb, String maculaODNotes, boolean maculaOSAb, String maculaOSNotes,
 			boolean retinaODAb, String retinaODNotes, boolean retinaOSAb, String retinaOSNotes) {
 		super();
-		this.vid = vid;
 		this.dialated = dialated;
 		this.dialNotes = dialNotes;
 		CDOD = cDOD;
@@ -265,13 +261,6 @@ public class FundusExam {
 		this.retinaOSNotes = retinaOSNotes;
 	}
 
-	public String getDateCreated() {
-		return dateCreated;
-	}
-
-	public void setDateCreated(String dateCreated) {
-		this.dateCreated = dateCreated;
-	}
 	
 	
 }

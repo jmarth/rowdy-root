@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import models.IOPMeasurement;
 import net.miginfocom.swing.MigLayout;
 
 public class PanelIOP extends JPanel {
@@ -63,4 +64,16 @@ public class PanelIOP extends JPanel {
 		add(textField_IOP_Notes_OS, "cell 3 2,growx");
 	}
 
+	public IOPMeasurement createNewIOP() {
+		IOPMeasurement iop = new IOPMeasurement(
+				textField_IOP_Value_OD.getText(),
+				textField_IOP_Type_OD.getText(),
+				textField_IOP_Notes_OD.getText(),
+				textField_IOP_Value_OS.getText(),
+				textField_IOP_Type_OS.getText(),
+				textField_IOP_Notes_OS.getText()
+				);
+		return iop;
+				
+	}
 }

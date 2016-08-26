@@ -132,8 +132,33 @@ public class PanelLens extends JPanel {
 	}
 
 	public Lens createNewLens() {
+		
+		String NS_OD = (String)comboBox_SLE_NS_OD.getSelectedItem();
+		String NS_OS = (String)comboBox_SLE_NS_OS.getSelectedItem();
+		String Coritcal_OD = (String)comboBox_SLE_Coritcal_OD.getSelectedItem();
+		String Coritcal_OS = (String)comboBox_SLE_Coritcal_OS.getSelectedItem();
+		String PSC_OD = (String)comboBox_SLE_NS_OD.getSelectedItem();
+		String PSC_OS = (String)comboBox_SLE_NS_OD.getSelectedItem();
+		
 		Lens l = new Lens(
-				
+				NS_OD,
+				textField_SLE_NS_OD.getText(),
+				NS_OS,
+				textField_SLE_NS_OS.getText(),
+				chckbxStableLensOD.isSelected(),
+				chckbxStableLensOS.isSelected(),
+				chckbx_SLE_Pseudophakia_OD.isSelected(),
+				chckbx_SLE_Pseudophakia_OS.isSelected(),
+				chckbx_SLE_PCO_OD.isSelected(),
+				chckbx_SLE_PCO_OS.isSelected(),
+				Coritcal_OD,
+				textField_SLE_Cortical_OD.getText(),
+				Coritcal_OS,
+				textField_SLE_Cortical_OS.getText(),
+				PSC_OD,
+				textField_SLE_PSC_OD.getText(),
+				PSC_OS,
+				textField_SLE_PSC_OS.getText()
 				);
 		return l;
 	}

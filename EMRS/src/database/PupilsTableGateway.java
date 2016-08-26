@@ -1,5 +1,6 @@
 package database;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import models.Pupils;
@@ -11,4 +12,5 @@ public interface PupilsTableGateway {
 	public long insertPupils(Pupils dv) throws GatewayException;
 	//public long updateVitals(VisionExam v) throws GatewayException;
 	public void removePupils(Long vid) throws GatewayException;
+	public ArrayList<Object> fetchPupilsColsForVisit(long id) throws GatewayException;
 }

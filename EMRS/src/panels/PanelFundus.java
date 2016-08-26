@@ -1,7 +1,11 @@
 package panels;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -14,11 +18,17 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
+import models.FundusExam;
+import models.HomeModel;
+import models.Patient;
 import net.miginfocom.swing.MigLayout;
+import views.Paint;
+
 import javax.swing.border.EtchedBorder;
 
 public class PanelFundus extends JPanel {
 
+	// TODO vvvvvvvvvvvvvvvvvvvvvvv OUT OF ORDER, not in order of db
 	private JCheckBox chckbxDialated;
 	private JTextField textField_Dial_Notes;
 	private JCheckBox chckbxAbnormal_CD_OD;
@@ -37,11 +47,22 @@ public class PanelFundus extends JPanel {
 	private JTextField textField_Macula_Notes_OS;
 	private JButton btnFundusSketch;
 	private JLabel lblFundusSketch;
+	
+	// ^^^^^^^^^^^^^^^^^^^^^^^^^^ OUT OF ORDER, not in order of db
+	
+	HomeModel hm;
+	Patient p;
+	
+	private JPanel panel_1 = new JPanel();
 
 	/**
 	 * Create the panel.
 	 */
-	public PanelFundus() {
+	public PanelFundus(HomeModel hm, Patient p) {
+		
+		this.hm = hm;
+		this.p = p;
+		
 		setBorder(new TitledBorder(null, "Fundus Exam", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setLayout(new MigLayout("", "[grow]", "[][][grow]"));
 		
@@ -167,9 +188,53 @@ public class PanelFundus extends JPanel {
 		
 		btnFundusSketch = new JButton("Sketch");
 		panel_FundusImage.add(btnFundusSketch);
-		
-		lblFundusSketch = new JLabel("<fundus image>");
+		btnFundusSketch.addActionListener(new FundusSketchListener());
+		lblFundusSketch = new JLabel("");
 		panel_FundusImage.add(lblFundusSketch);
+	}
+	private class FundusSketchListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Paint firstSketch = new Paint(hm, p, lblFundusSketch, "FundusTempSketch");
+			firstSketch.setContentPane(firstSketch.getContentPane());
+			firstSketch.setSize(new Dimension(600,600));
+			firstSketch.setResizable(false);
+			
+			panel_1 = (JPanel) firstSketch.getContentPane();
+			panel_1.setVisible(true);
+			firstSketch.setVisible(true);
+		}
+		
+	}
+	public FundusExam createNewFundusExam() {
+		
+		String cdOD = (String)comboBox_CD_OD.getSelectedItem();
+		String cdOS = (String)comboBox_CD_OS.getSelectedItem();
+ 		
+		FundusExam fe = new FundusExam(
+			chckbxDialated.isSelected(),
+			textField_Dial_Notes.getText(),
+			chckbxAbnormal_CD_OD.isSelected(),
+			Float.parseFloat(cdOD),
+			textField_CD_OD.getText(),
+			chckbxAbnormal_CD_OS.isSelected(),
+			Float.parseFloat(cdOS),
+			textField_CD_OS.getText(),
+			checkBox_Retina_OD.isSelected(),
+			textField_Retina_OD.getText(),
+			checkBox_Retina_OS.isSelected(),
+			textField_Retina_OS.getText(),
+			checkBox_Macula_OD.isSelected(),
+			textField_Macula_Notes_OD.getText(),
+			checkBox_Macula_OS.isSelected(),
+			textField_Macula_Notes_OS.getText()
+			);
+		
+		return fe;
+	}
+	public JLabel getSketchLabel() {
+		return lblFundusSketch;
 	}
 
 }

@@ -14,9 +14,17 @@ import database.DistanceVisionTableGateway;
 import database.DistanceVisionTableGatewaySQLite;
 import database.DocumentTableGateway;
 import database.DocumentTableGatewaySQLite;
+import database.FundusTableGateway;
+import database.FundusTableGatewaySQLite;
 import database.GatewayException;
 import database.GlassesRxTableGateway;
 import database.GlassesRxTableGatewaySQLite;
+import database.GonioTableGateway;
+import database.GonioTableGatewaySQLite;
+import database.IOPTableGateway;
+import database.IOPTableGatewaySQLite;
+import database.LensTableGateway;
+import database.LensTableGatewaySQLite;
 import database.MedicationsTableGateway;
 import database.MedicationsTableGatewaySQLite;
 import database.PatientTableGateway;
@@ -59,10 +67,14 @@ public class HomeModel {
 	private MedicationsTableGateway mtg = null;
 	
 	private DistanceVisionTableGateway dvtg;
-	private GlassesRxTableGateway glsRxT;
+	private GlassesRxTableGateway glsRxTG;
 	private RefractionTableGateway refractionTG;
 	private PupilsTableGateway pupilsTG;
 	private ACTableGateway aCTG;
+	private LensTableGateway lensTG;
+	private IOPTableGateway iopTG;
+	private GonioTableGateway gonioTG;
+	private FundusTableGateway fundusTG;
 	
 	public HomeModel(HomeView homeView) {
 		super();
@@ -91,7 +103,11 @@ public class HomeModel {
 			setGlsRxT(new GlassesRxTableGatewaySQLite());
 			setRefractionTG(new RefractionTableGatewaySQLite());
 			setPupilsTG(new PupilsTableGatewaySQLite());
-			aCTG = new ACTableGatewaySQLite();
+			setaCTG(new ACTableGatewaySQLite());
+			setLensTG(new LensTableGatewaySQLite());
+			setIopTG(new IOPTableGatewaySQLite());
+			setGonioTG(new GonioTableGatewaySQLite());
+			setFundusTG(new FundusTableGatewaySQLite());
 			
 			vl.setGateway(vtg);
         	vl.loadFromGateway();
@@ -234,12 +250,12 @@ public class HomeModel {
 		this.dvtg = dvtg;
 	}
 
-	public GlassesRxTableGateway getGlsRxT() {
-		return glsRxT;
+	public GlassesRxTableGateway getGlsRxTG() {
+		return glsRxTG;
 	}
 
 	public void setGlsRxT(GlassesRxTableGateway glsRxT) {
-		this.glsRxT = glsRxT;
+		this.glsRxTG = glsRxT;
 	}
 
 	public PupilsTableGateway getPupilsTG() {
@@ -256,5 +272,37 @@ public class HomeModel {
 
 	public void setaCTG(ACTableGateway aCTG) {
 		this.aCTG = aCTG;
+	}
+
+	public LensTableGateway getLensTG() {
+		return lensTG;
+	}
+
+	public void setLensTG(LensTableGateway lensTG) {
+		this.lensTG = lensTG;
+	}
+
+	public IOPTableGateway getIopTG() {
+		return iopTG;
+	}
+
+	public void setIopTG(IOPTableGateway iopTG) {
+		this.iopTG = iopTG;
+	}
+
+	public GonioTableGateway getGonioTG() {
+		return gonioTG;
+	}
+
+	public void setGonioTG(GonioTableGateway gonioTG) {
+		this.gonioTG = gonioTG;
+	}
+
+	public FundusTableGateway getFundusTG() {
+		return fundusTG;
+	}
+
+	public void setFundusTG(FundusTableGateway fundusTG) {
+		this.fundusTG = fundusTG;
 	}
 }

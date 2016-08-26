@@ -223,4 +223,114 @@ public class SketchTableGatewaySQLite implements SketchTableGateway {
 		
 	}
 
+	@Override
+	public long insertSketchToTable(File f, long vid, String table) throws GatewayException {
+
+		long newId = 0;
+		
+		PreparedStatement st = null;
+		FileInputStream fis = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			try {
+				
+				fis = new FileInputStream(f);
+				
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+			st = conn.prepareStatement("insert INTO "+table+" (vid,"
+					+ " image) "
+					+ " values ( ?, ?) ",
+					PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			st.setLong(1, vid);
+			st.setBinaryStream(2, fis, (int) f.length());
+	
+			st.executeUpdate();
+			
+			//get the generated key
+			rs = st.getGeneratedKeys();
+			
+			if(rs != null && rs.next()) {
+				
+			    newId = rs.getLong(1);
+			    
+			} else {
+				throw new GatewayException("Could not insert new record.");
+			}
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+				
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+		return newId;
+	}
+
+	@Override
+	public List<Image> fetchSketchesForVisitByTable(long vid, String table) throws GatewayException {
+ArrayList<Image> sketches = new ArrayList<Image>();
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			//fetch parts
+			st = conn.prepareStatement("select image from "+table+" where vid=?");
+			st.setLong(1, vid);
+			
+			rs = st.executeQuery();
+			
+			//add each to list of parts to return
+			while(rs.next()) {
+				
+				//sketches.add(rs.getbin)
+				InputStream stream = rs.getBinaryStream("image");
+			    ByteArrayOutputStream output = new ByteArrayOutputStream();
+			    
+			    int a1 = stream.read();
+			    
+			    while (a1 >= 0) {
+			      output.write((char) a1);
+			      a1 = stream.read();
+			    }
+			    
+			    Image sketch = Toolkit.getDefaultToolkit().createImage(output.toByteArray());
+				sketches.add(sketch);
+				
+				output.close();
+			}
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			//clean up
+			try {
+				if(rs != null)
+					rs.close();
+				
+				if(st != null)
+					st.close();
+				
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+		return sketches;
+	}
+
 }

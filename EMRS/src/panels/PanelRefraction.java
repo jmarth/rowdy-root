@@ -10,6 +10,7 @@ import models.Refraction;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.swing.border.EtchedBorder;
@@ -39,6 +40,7 @@ public class PanelRefraction extends JPanel {
 	
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 
+	
 	/**
 	 * Create the panel.
 	 */
@@ -146,7 +148,7 @@ public class PanelRefraction extends JPanel {
 
 	public Refraction createNewRefraction() {
 		Refraction r = new Refraction(
-				((getSelectedButtonText(buttonGroup).equals("Manifest Refraction")) ? true : false),
+				(rdbtn_ManifestRefraction.isSelected() ? true : false),
 				Float.parseFloat(textField_ARSC_OD_Sphere.getText()),
 				Float.parseFloat(textField_ARSC_OD_Cyl.getText()),
 				Float.parseFloat(textField_ARSC_OD_Axis.getText()),
@@ -160,7 +162,22 @@ public class PanelRefraction extends JPanel {
 				Float.parseFloat(textField_ARCC_OS_Cyl.getText()),
 				Float.parseFloat(textField_ARCC_OS_Axis.getText())
 				);
+		
 		return r;
+		
+		/*Float.parseFloat((textField_ARSC_OD_Sphere.getText().isEmpty() ? "-1" : textField_ARSC_OD_Sphere.getText() )),
+		Float.parseFloat((textField_ARSC_OD_Cyl.getText().isEmpty() ? "-1" : textField_ARSC_OD_Cyl.getText() )),
+		Float.parseFloat((textField_ARSC_OD_Axis.getText().isEmpty() ? "-1" : textField_ARSC_OD_Axis.getText() )),
+		Float.parseFloat((textField_ARSC_OS_Sphere.getText().isEmpty() ? "-1" : textField_ARSC_OS_Sphere.getText() )),
+		Float.parseFloat((textField_ARSC_OS_Cyl.getText().isEmpty() ? "-1" : textField_ARSC_OS_Cyl.getText() )),
+		Float.parseFloat((textField_ARSC_OS_Axis.getText().isEmpty() ? "-1" : textField_ARSC_OS_Axis.getText() )),
+		Float.parseFloat((textField_ARCC_OD_Sphere.getText().isEmpty() ? "-1" : textField_ARCC_OD_Sphere.getText() )),
+		Float.parseFloat((textField_ARCC_OD_Cyl.getText().isEmpty() ? "-1" : textField_ARCC_OD_Cyl.getText() )),
+		Float.parseFloat((textField_ARCC_OD_Axis.getText().isEmpty() ? "-1" : textField_ARCC_OD_Axis.getText() )),
+		Float.parseFloat((textField_ARCC_OS_Sphere.getText().isEmpty() ? "-1" : textField_ARCC_OS_Sphere.getText() )),
+		Float.parseFloat((textField_ARCC_OS_Cyl.getText().isEmpty() ? "-1" : textField_ARCC_OS_Cyl.getText() )),
+		Float.parseFloat((textField_ARCC_OS_Axis.getText().isEmpty() ? "-1" : textField_ARCC_OS_Axis.getText() ))
+		*/
 	}
 	
 	/**
@@ -180,5 +197,13 @@ public class PanelRefraction extends JPanel {
 		}
 
 		return null;
+	}
+	
+	public void setFields(ArrayList<Object> refractCols) {
+		if (refractCols.get(0).toString().equals("0")) {
+			rdbtn_AutoRefraction.setSelected(true);
+		} else {
+			rdbtn_ManifestRefraction.setSelected(true);
+		}
 	}
 }

@@ -50,7 +50,7 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 			//fetch parts
 //			System.out.print("getting info");
 			
-			st = conn.prepareStatement("select * from iop");
+			st = conn.prepareStatement("select * from iops");
 			rs = st.executeQuery();
 			
 //			System.out.print("\ninfo loaded");
@@ -113,7 +113,7 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 		
 		try {
 			//fetch parts
-			st = conn.prepareStatement("select * from iop where pid=?");
+			st = conn.prepareStatement("select * from iops where vid=?");
 			st.setLong(1, p.getId());
 			
 			rs = st.executeQuery();
@@ -166,7 +166,7 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 				
 		try {
 			st = conn.prepareStatement(
-					"insert INTO iop"
+					"insert INTO iops"
 					+ "(vid,"
 					+ " ODValue,"
 					+ " ODType,"

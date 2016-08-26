@@ -27,10 +27,9 @@ public class IOPMeasurement {
 		this.dateCreated = dateCreated;
 	}
 	
-	public IOPMeasurement(long vid, String oDValue, String oDType, String oDNotes, String oSValue, String oSType,
+	public IOPMeasurement(String oDValue, String oDType, String oDNotes, String oSValue, String oSType,
 			String oSNotes) {
 		super();
-		this.vid = vid;
 		ODValue = oDValue;
 		ODType = oDType;
 		ODNotes = oDNotes;

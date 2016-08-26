@@ -29,7 +29,7 @@ import models.HomeModel;
 import models.Patient;
  
 public class Paint extends JFrame{
- 
+ private String filename;
   private JButton clearBtn, colorPickerBtn, setBackgroundBtn;
   private DrawArea drawArea;
   private JPanel contentPane;
@@ -82,9 +82,9 @@ public class Paint extends JFrame{
   private JButton btnNewButton_1;
   private JButton btnSave;
  
-  public Paint(final HomeModel homeModel, final Patient patient, final JLabel sketchLabel) {
+  public Paint(final HomeModel homeModel, final Patient patient, final JLabel sketchLabel, final String filename) {
 	 this.setMaximumSize(new Dimension(500,500)); 
-	 
+	 this.filename = filename;
     contentPane = new JPanel();
 	contentPane.setLayout(new BorderLayout());
 	
@@ -198,8 +198,8 @@ public class Paint extends JFrame{
     		BufferedImage im = new BufferedImage(drawArea.getWidth(), drawArea.getHeight(), BufferedImage.TYPE_INT_ARGB);
     		drawArea.paint(im.getGraphics());
     		try {
-				ImageIO.write(im, "PNG", new File("firstSketch.png"));
-				BufferedImage bufImg=ImageIO.read(new File("firstSketch.png"));
+				ImageIO.write(im, "PNG", new File(filename+".png"));
+				BufferedImage bufImg=ImageIO.read(new File(filename+".png"));
 			    sketchLabel.setIcon(new ImageIcon(bufImg));
 
 				dispose();

@@ -50,7 +50,7 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 			//fetch parts
 			System.out.print("getting info");
 			
-			st = conn.prepareStatement("select * from fundus exams");
+			st = conn.prepareStatement("select * from fundus_exams");
 			rs = st.executeQuery();
 			
 			System.out.print("\ninfo loaded");
@@ -64,23 +64,22 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 				FundusExam fe = new FundusExam(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("dialated"),
+						rs.getBoolean("isDialated"),
 						rs.getString("dialNotes"),
-						rs.getBoolean("CDODAb"),
+						rs.getBoolean("isCDODAb"),
 						rs.getFloat("CDOD"),
 						rs.getString("CDODNotes"),
-						rs.getBoolean("CDOSAb"),
+						rs.getBoolean("isCDOSAb"),
 						rs.getFloat("CDOS"),
 						rs.getString("CDOSNotes"),
-						rs.getBoolean("MaculaODAb"),
+						rs.getBoolean("isMaculaODAb"),
 						rs.getString("MaculaODNotes"),
-						rs.getBoolean("MaculaOSAb"),
+						rs.getBoolean("isMaculaOSAb"),
 						rs.getString("MaculaOSNotes"),
-						rs.getBoolean("RetinaODAb"),
+						rs.getBoolean("isRetinaODAb"),
 						rs.getString("RetinaODNotes"),
-						rs.getBoolean("RetinaOSAb"),
-						rs.getString("RetinaOSNotes"),
-						rs.getString("dateCreated")
+						rs.getBoolean("isRetinaOSAb"),
+						rs.getString("RetinaOSNotes")
 						);
 				
 				//System.out.print("\nFundusExamobject created");
@@ -123,7 +122,7 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 		
 		try {
 			//fetch parts
-			st = conn.prepareStatement("select * from fundus where pid=?");
+			st = conn.prepareStatement("select * from fundus_exams where pid=?");
 			st.setLong(1, p.getId());
 			
 			rs = st.executeQuery();
@@ -133,23 +132,22 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 				FundusExam fe = new FundusExam(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("dialated"),
+						rs.getBoolean("isDialated"),
 						rs.getString("dialNotes"),
-						rs.getBoolean("CDODAb"),
+						rs.getBoolean("isCDODAb"),
 						rs.getFloat("CDOD"),
 						rs.getString("CDODNotes"),
-						rs.getBoolean("CDOSAb"),
+						rs.getBoolean("isCDOSAb"),
 						rs.getFloat("CDOS"),
 						rs.getString("CDOSNotes"),
-						rs.getBoolean("MaculaODAb"),
+						rs.getBoolean("isMaculaODAb"),
 						rs.getString("MaculaODNotes"),
-						rs.getBoolean("MaculaOSAb"),
+						rs.getBoolean("isMaculaOSAb"),
 						rs.getString("MaculaOSNotes"),
-						rs.getBoolean("RetinaODAb"),
+						rs.getBoolean("isRetinaODAb"),
 						rs.getString("RetinaODNotes"),
-						rs.getBoolean("RetinaOSAb"),
-						rs.getString("RetinaOSNotes"),
-						rs.getString("dateCreated")
+						rs.getBoolean("isRetinaOSAb"),
+						rs.getString("RetinaOSNotes")
 						);
 				
 				fundusExams.add(fe);
@@ -186,24 +184,24 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 		
 		try {
 			st = conn.prepareStatement(
-					"insert INTO fundus"
+					"insert INTO fundus_exams"
 					+ " (vid,"
-					+ " dialated,"
+					+ " isDialated,"
 					+ " dialNotes,"
-					+ " CDODAb,"
+					+ " isCDODAb,"
 					+ " CDOD,"
 					+ " CDODNotes,"
-					+ " CDOSAb,"
+					+ " isCDOSAb,"
 					+ " CDOS,"
 					+ " CDOSNotes,"
-					+ " MaculaODAb,"
+					+ " isMaculaODAb,"
 					+ " MaculaODNotes,"
-					+ " MaculaOSAb,"
+					+ " isMaculaOSAb,"
 					+ " MaculaOSNotes,"
-					+ " RetinaODAb,"
+					+ " isRetinaODAb,"
 					+ " RetinaODNotes,"
-					+ " RetinaOSAb,"
-					+ " RetinaOSNotes,"
+					+ " isRetinaOSAb,"
+					+ " RetinaOSNotes)"
 					+ " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 	

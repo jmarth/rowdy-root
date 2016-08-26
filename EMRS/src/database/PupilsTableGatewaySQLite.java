@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,19 +58,19 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 						rs.getLong("id"),
 						rs.getLong("vid"),
 						rs.getBoolean("areBothPupilsNormal"),
-						rs.getString("bothShape`"),
+						rs.getString("bothShape"),
 						rs.getInt("bothDiameter"),
-						rs.getBoolean("isBothRAPD`"),
-						rs.getBoolean("isBothSynechia`"),
+						rs.getBoolean("isBothRAPD"),
+						rs.getBoolean("isBothSynechia"),
 						rs.getBoolean("isRightPupilNormal"),
-						rs.getString("rightShape`"),
+						rs.getString("rightShape"),
 						rs.getInt("rightDiameter"),
-						rs.getBoolean("isRightRAPD`"),
-						rs.getBoolean("isRightSynechia`"),
+						rs.getBoolean("isRightRAPD"),
+						rs.getBoolean("isRightSynechia"),
 						rs.getBoolean("isLeftPupilNormal"),
-						rs.getString("leftShape`"),
+						rs.getString("leftShape"),
 						rs.getInt("leftDiameter"),
-						rs.getBoolean("isLeftRAPD`"),
+						rs.getBoolean("isLeftRAPD"),
 						rs.getBoolean("isLeftSynechia")
 						);
 				
@@ -119,19 +120,19 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 						rs.getLong("id"),
 						rs.getLong("vid"),
 						rs.getBoolean("areBothPupilsNormal"),
-						rs.getString("bothShape`"),
+						rs.getString("bothShape"),
 						rs.getInt("bothDiameter"),
-						rs.getBoolean("isBothRAPD`"),
-						rs.getBoolean("isBothSynechia`"),
+						rs.getBoolean("isBothRAPD"),
+						rs.getBoolean("isBothSynechia"),
 						rs.getBoolean("isRightPupilNormal"),
-						rs.getString("rightShape`"),
+						rs.getString("rightShape"),
 						rs.getInt("rightDiameter"),
-						rs.getBoolean("isRightRAPD`"),
-						rs.getBoolean("isRightSynechia`"),
+						rs.getBoolean("isRightRAPD"),
+						rs.getBoolean("isRightSynechia"),
 						rs.getBoolean("isLeftPupilNormal"),
-						rs.getString("leftShape`"),
+						rs.getString("leftShape"),
 						rs.getInt("leftDiameter"),
-						rs.getBoolean("isLeftRAPD`"),
+						rs.getBoolean("isLeftRAPD"),
 						rs.getBoolean("isLeftSynechia")
 						);
 				
@@ -234,6 +235,54 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 		}
 		
 		return newId;
+	}
+	public ArrayList<Object> fetchPupilsColsForVisit(long id) throws GatewayException {
+
+	    ArrayList<Object> row = new ArrayList<Object>();
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			//fetch parts
+			st = conn.prepareStatement("select * from pupils where vid=?");
+			st.setLong(1, id);
+			
+			rs = st.executeQuery();
+			
+			//get metadata
+		    ResultSetMetaData meta = null;
+		    meta = rs.getMetaData();
+		    
+		    int colCount = meta.getColumnCount();
+		    System.out.println("====PUPILS======" + colCount);
+		    System.out.println("META: " + colCount);
+			
+			while(rs.next()) {
+				for (int i = 3; i <= colCount; i++) {
+					row.add(rs.getObject(i));
+					System.out.println("column #"+ i + " : " + rs.getObject(i));
+				}
+			}
+			System.out.println("\n****************\n PUPILS ROW:"+row.toString());
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(rs != null)
+					rs.close();
+				
+				if(st != null)
+					st.close();
+				
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+		return row;
 	}
 
 	@Override

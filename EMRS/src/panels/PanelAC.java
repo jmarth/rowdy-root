@@ -12,6 +12,9 @@ import javax.swing.border.TitledBorder;
 import models.AnteriorChamber;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.swing.ButtonGroup;
@@ -114,6 +117,7 @@ public class PanelAC extends JPanel {
 		panel.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][]"));
 		
 		chkbx_ACODNormal = new JCheckBox("Normal");
+		chkbx_ACODNormal.addActionListener(new ACODNormalListener());
 		panel.add(chkbx_ACODNormal, "cell 0 0,aligny top");
 		chkbx_ACODNormal.setAlignmentY(0.0f);
 		
@@ -257,6 +261,7 @@ public class PanelAC extends JPanel {
 		panel_1.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow]"));
 		
 		chkbx_ACOSNormal = new JCheckBox("Normal");
+		chkbx_ACOSNormal.addActionListener(new ACOSNormalListener());
 		panel_1.add(chkbx_ACOSNormal, "cell 0 0,aligny top");
 		chkbx_ACOSNormal.setAlignmentY(0.0f);
 		
@@ -394,7 +399,50 @@ public class PanelAC extends JPanel {
 		bgOSKSpin.add(rdbtn_N_KSpindleOS);
 		panel_15.add(rdbtn_N_KSpindleOS);
 	}
-	
+	private class ACODNormalListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (chkbx_ACODNormal.isSelected()) {
+				
+				rdbtn_ACDepthOD4.setSelected(true);
+				rdbtn_ACAngleODOpen.setSelected(true);
+				rdbtn_N_PASOD.setSelected(true);
+				bgODKP.clearSelection();
+				rdbtn_ShuntOD.setSelected(false);
+				rdbtn_ScarringOD.setSelected(false);
+				rdbtn_TraumaOD.setSelected(false);
+				rdbtn_BlebOD.setSelected(false);
+				bgODVascular.clearSelection();
+				bgODBleb.clearSelection();
+				bgODKSpin.clearSelection();
+				
+			}
+		}
+		
+	}
+	private class ACOSNormalListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (chkbx_ACOSNormal.isSelected()) {
+				
+				rdbtn_ACDepthOS4.setSelected(true);
+				rdbtn_ACAngleOSOpen.setSelected(true);
+				rdbtn_N_PASOS.setSelected(true);
+				bgOSKP.clearSelection();
+				rdbtn_ShuntOS.setSelected(false);
+				rdbtn_ScarringOS.setSelected(false);
+				rdbtn_TraumaOS.setSelected(false);
+				rdbtn_BlebOS.setSelected(false);
+				bgOSVascular.clearSelection();
+				bgOSBleb.clearSelection();
+				bgOSKSpin.clearSelection();
+			}
+			
+		}
+		
+	}
 	public AnteriorChamber createNewAC() {
 		
 		
@@ -402,14 +450,14 @@ public class PanelAC extends JPanel {
 		AnteriorChamber ac = new AnteriorChamber(
 				chkbx_ACODNormal.isSelected(),
 				chkbx_ACOSNormal.isSelected(),
-				Integer.parseInt(getSelectedButtonText(bgODDepth).substring(1, 2)),
-				Integer.parseInt(getSelectedButtonText(bgOSDepth).substring(1, 2)),
+				Integer.parseInt(getSelectedButtonText(bgODDepth) == null ? "-1" : getSelectedButtonText(bgODDepth).substring(1, 2)),
+				Integer.parseInt(getSelectedButtonText(bgOSDepth) == null ? "-1" : getSelectedButtonText(bgOSDepth).substring(1, 2)),
 				getSelectedButtonText(bgODAngle),
 				getSelectedButtonText(bgOSAngle),
 				getSelectedButtonText(bgODPAS),
 				getSelectedButtonText(bgOSPAS),
-				Integer.parseInt(getSelectedButtonText(bgODKP).substring(1, 2)),
-				Integer.parseInt(getSelectedButtonText(bgOSKP).substring(1, 2)),
+				Integer.parseInt(getSelectedButtonText(bgODKP) == null || getSelectedButtonText(bgODKP).substring(1, 2).isEmpty() ? "-1" : getSelectedButtonText(bgODKP).substring(1, 2)),
+				Integer.parseInt(getSelectedButtonText(bgOSKP) == null ? "-1" : getSelectedButtonText(bgOSKP).substring(1, 2)),
 				rdbtn_ShuntOD.isSelected(),
 				rdbtn_ScarringOD.isSelected(),
 				rdbtn_TraumaOD.isSelected(),
@@ -419,9 +467,9 @@ public class PanelAC extends JPanel {
 				rdbtn_TraumaOS.isSelected(),
 				rdbtn_BlebOS.isSelected(),
 				(rdbtn_VascularOD.isSelected() ? true : false),
-				Integer.parseInt(getSelectedButtonText(bgODBleb).substring(1, 2)),
+				Integer.parseInt(getSelectedButtonText(bgODBleb) == null ? "-1": getSelectedButtonText(bgODBleb).substring(1, 2)),
 				(rdbtn_VascularOD.isSelected() ? true : false),
-				Integer.parseInt(getSelectedButtonText(bgOSBleb).substring(1, 2)),
+				Integer.parseInt(getSelectedButtonText(bgOSBleb) == null ? "-1" : getSelectedButtonText(bgOSBleb).substring(1, 2)),
 				(rdbtn_Y_KSpindleOD.isSelected() ? true : false),
 				(rdbtn_Y_KSpindleOD.isSelected() ? true : false)
 				);
@@ -446,5 +494,190 @@ public class PanelAC extends JPanel {
 		}
 
 		return null;
+	}
+
+	public void setFields(ArrayList<Object> acCols) {
+		int i = -1;
+		if(acCols.get(++i).toString().equals("1"))
+				chkbx_ACODNormal.setSelected(true);
+		
+		if(acCols.get(++i).toString().equals("1"))
+				chkbx_ACOSNormal.setSelected(true);
+		
+		switch (Integer.parseInt(acCols.get(++i).toString())) {
+		case 1:
+			rdbtn_ACDepthOD1.setSelected(true);
+			break;
+		case 2:
+			rdbtn_ACDepthOD2.setSelected(true);
+			break;
+		case 3:
+			rdbtn_ACDepthOD3.setSelected(true);
+			break;
+		case 4:
+			rdbtn_ACDepthOD4.setSelected(true);
+			break;
+		default:
+			rdbtn_ACDepthOD1.setSelected(true);
+			
+		}
+		
+		switch (Integer.parseInt(acCols.get(++i).toString())) {
+		case 1:
+			rdbtn_ACDepthOS1.setSelected(true);
+			break;
+		case 2:
+			rdbtn_ACDepthOS2.setSelected(true);
+			break;
+		case 3:
+			rdbtn_ACDepthOS3.setSelected(true);
+			break;
+		case 4:
+			rdbtn_ACDepthOS4.setSelected(true);
+			break;
+		default:
+			rdbtn_ACDepthOS1.setSelected(true);
+			
+		}
+
+		if(acCols.get(++i).toString().equals("Open"))
+			rdbtn_ACAngleODOpen.setSelected(true);
+		else
+			rdbtn_ACAngleODClosed.setSelected(true);
+
+		if(acCols.get(++i).toString().equals("Open"))
+			rdbtn_ACAngleOSOpen.setSelected(true);
+		else
+			rdbtn_ACAngleOSClosed.setSelected(true);
+
+		if(acCols.get(++i).toString().equals("Absent"))
+			rdbtn_N_PASOD.setSelected(true);
+		else
+			rdbtn_Y_PASOD.setSelected(true);
+		
+		if(acCols.get(++i).toString().equals("Absent"))
+			rdbtn_N_PASOS.setSelected(true);
+		else
+			rdbtn_Y_PASOS.setSelected(true);
+		
+		
+		switch (Integer.parseInt(acCols.get(++i).toString())) {
+		case 1:
+			rdbtn_ACODKP1.setSelected(true);
+			break;
+		case 2:
+			rdbtn_ACODKP2.setSelected(true);
+			break;
+		case 3:
+			rdbtn_ACODKP3.setSelected(true);
+			break;
+		case 4:
+			rdbtn_ACODKP4.setSelected(true);
+			break;
+		default:
+			bgODKP.clearSelection();
+			
+		}
+		
+		switch (Integer.parseInt(acCols.get(++i).toString())) {
+		case 1:
+			rdbtn_ACOSKP1.setSelected(true);
+			break;
+		case 2:
+			rdbtn_ACOSKP2.setSelected(true);
+			break;
+		case 3:
+			rdbtn_ACOSKP3.setSelected(true);
+			break;
+		case 4:
+			rdbtn_ACOSKP4.setSelected(true);
+			break;
+		default:
+			bgODKP.clearSelection();
+			
+		}
+
+		if(acCols.get(++i).toString().equals("1"))
+			rdbtn_ShuntOD.setSelected(true);
+		if(acCols.get(++i).toString().equals("1"))
+			rdbtn_ScarringOD.setSelected(true);
+		if(acCols.get(++i).toString().equals("1"))
+			rdbtn_TraumaOD.setSelected(true);
+		if(acCols.get(++i).toString().equals("1"))
+			rdbtn_BlebOD.setSelected(true);
+		
+		if(acCols.get(++i).toString().equals("1"))
+			rdbtn_ShuntOS.setSelected(true);
+		if(acCols.get(++i).toString().equals("1"))
+			rdbtn_ScarringOS.setSelected(true);
+		if(acCols.get(++i).toString().equals("1"))
+			rdbtn_TraumaOS.setSelected(true);
+		if(acCols.get(++i).toString().equals("1"))
+			rdbtn_BlebOS.setSelected(true);
+		
+		if(acCols.get(++i).toString().equals("0"))
+			rdbtn_AvascularOD.setSelected(true);
+		else if (acCols.get(++i).toString().equals("1"))
+			rdbtn_VascularOD.setSelected(true);
+		else
+			bgODVascular.clearSelection();
+		
+		switch (Integer.parseInt(acCols.get(++i).toString())) {
+		case 1:
+			rdbtn_BlebOD1.setSelected(true);
+			break;
+		case 2:
+			rdbtn_BlebOD2.setSelected(true);
+			break;
+		case 3:
+			rdbtn_BlebOD3.setSelected(true);
+			break;
+		case 4:
+			rdbtn_BlebOD4.setSelected(true);
+			break;
+		default:
+			bgODBleb.clearSelection();
+			
+		}
+		
+		if(acCols.get(++i).toString().equals("0"))
+			rdbtn_AvascularOS.setSelected(true);
+		else if (acCols.get(++i).toString().equals("1"))
+			rdbtn_VascularOS.setSelected(true);
+		else
+			bgOSVascular.clearSelection();
+		
+		switch (Integer.parseInt(acCols.get(++i).toString())) {
+		case 1:
+			rdbtn_BlebOS1.setSelected(true);
+			break;
+		case 2:
+			rdbtn_BlebOS2.setSelected(true);
+			break;
+		case 3:
+			rdbtn_BlebOS3.setSelected(true);
+			break;
+		case 4:
+			rdbtn_BlebOS4.setSelected(true);
+			break;
+		default:
+			bgOSBleb.clearSelection();
+			
+		}
+
+		if(acCols.get(++i).toString().equals("0"))
+			rdbtn_N_KSpindleOD.setSelected(true);
+		else if (acCols.get(++i).toString().equals("1"))
+			rdbtn_Y_KSpindleOD.setSelected(true);
+		else
+			bgODKSpin.clearSelection();
+		
+		if(acCols.get(++i).toString().equals("0"))
+			rdbtn_N_KSpindleOS.setSelected(true);
+		else if (acCols.get(++i).toString().equals("1"))
+			rdbtn_Y_KSpindleOS.setSelected(true);
+		else
+			bgOSKSpin.clearSelection();
+
 	}
 }
