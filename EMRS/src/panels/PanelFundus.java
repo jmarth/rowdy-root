@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -26,9 +25,11 @@ import views.Paint;
 
 import javax.swing.border.EtchedBorder;
 
+@SuppressWarnings("serial")
 public class PanelFundus extends JPanel {
 
-	// TODO vvvvvvvvvvvvvvvvvvvvvvv OUT OF ORDER, not in order of db
+	// TODO vvvvvvvvvvvvvvvvvvvvvvv OUT OF ORDER, not in order of db\
+	
 	private JCheckBox chckbxDialated;
 	private JTextField textField_Dial_Notes;
 	private JCheckBox chckbxAbnormal_CD_OD;
@@ -216,10 +217,10 @@ public class PanelFundus extends JPanel {
 			chckbxDialated.isSelected(),
 			textField_Dial_Notes.getText(),
 			chckbxAbnormal_CD_OD.isSelected(),
-			Float.parseFloat(cdOD),
+			cdOD,
 			textField_CD_OD.getText(),
 			chckbxAbnormal_CD_OS.isSelected(),
-			Float.parseFloat(cdOS),
+			cdOS,
 			textField_CD_OS.getText(),
 			checkBox_Retina_OD.isSelected(),
 			textField_Retina_OD.getText(),

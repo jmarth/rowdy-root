@@ -3,36 +3,36 @@ package models;
 public class AnteriorChamber {
 	private long id;
 	private long vid;
-	private boolean ACODNormal;
-	private boolean ACOSNormal;
-	private int ACDepthOD;
-	private int ACDepthOS;
+	private int ACODNormal;
+	private int ACOSNormal;
+	private String ACDepthOD;
+	private String ACDepthOS;
 	private String ACAngleOD;
 	private String ACAngleOS;
 	private String PASOD;
 	private String PASOS;
-	private int ACODKP;
-	private int ACOSKP;
-	private boolean ShuntOD;
-	private boolean ScarringOD;
-	private boolean TraumaOD;
-	private boolean BlebOD;
-	private boolean ShuntOS;
-	private boolean ScarringOS;
-	private boolean TraumaOS;
-	private boolean BlebOS;
-	private boolean VascularOD;
-	private int BlebOD_Num;
-	private boolean VascularOS;
-	private int BlebOS_Num;
-	private boolean KSpindleOD;
-	private boolean KSpindleOS;
+	private String ACODKP;
+	private String ACOSKP;
+	private int ShuntOD;
+	private int ScarringOD;
+	private int TraumaOD;
+	private int BlebOD;
+	private int ShuntOS;
+	private int ScarringOS;
+	private int TraumaOS;
+	private int BlebOS;
+	private int VascularOD;
+	private String BlebOD_Num;
+	private int VascularOS;
+	private String BlebOS_Num;
+	private int KSpindleOD;
+	private int KSpindleOS;
 	
-	public AnteriorChamber(long id, long vid, boolean aCODNormal, boolean aCOSNormal, int aCDepthOD, int aCDepthOS,
-			String aCAngleOD, String aCAngleOS, String pASOD, String pASOS, int aCODKP, int aCOSKP, boolean shuntOD,
-			boolean scarringOD, boolean traumaOD, boolean blebOD, boolean shuntOS, boolean scarringOS, boolean traumaOS,
-			boolean blebOS, boolean vascularOD, int blebOD_Num, boolean vascularOS, int blebOS_Num, boolean kSpindleOD,
-			boolean kSpindleOS) {
+	public AnteriorChamber(long id, long vid, int aCODNormal, int aCOSNormal, String aCDepthOD, String aCDepthOS,
+			String aCAngleOD, String aCAngleOS, String pASOD, String pASOS, String aCODKP, String aCOSKP, int shuntOD,
+			int scarringOD, int traumaOD, int blebOD, int shuntOS, int scarringOS, int traumaOS,
+			int blebOS, int vascularOD, String blebOD_Num, int vascularOS, String blebOS_Num, int kSpindleOD,
+			int kSpindleOS) {
 		super();
 		this.id = id;
 		this.vid = vid;
@@ -61,11 +61,11 @@ public class AnteriorChamber {
 		KSpindleOD = kSpindleOD;
 		KSpindleOS = kSpindleOS;
 	}
-	public AnteriorChamber(boolean aCODNormal, boolean aCOSNormal, int aCDepthOD, int aCDepthOS,
-			String aCAngleOD, String aCAngleOS, String pASOD, String pASOS, int aCODKP, int aCOSKP, boolean shuntOD,
-			boolean scarringOD, boolean traumaOD, boolean blebOD, boolean shuntOS, boolean scarringOS, boolean traumaOS,
-			boolean blebOS, boolean vascularOD, int blebOD_Num, boolean vascularOS, int blebOS_Num, boolean kSpindleOD,
-			boolean kSpindleOS) {
+	public AnteriorChamber(int aCODNormal, int aCOSNormal, String aCDepthOD, String aCDepthOS,
+			String aCAngleOD, String aCAngleOS, String pASOD, String pASOS, String aCODKP, String aCOSKP, int shuntOD,
+			int scarringOD, int traumaOD, int blebOD, int shuntOS, int scarringOS, int traumaOS,
+			int blebOS, int vascularOD, String blebOD_Num, int vascularOS, String blebOS_Num, int kSpindleOD,
+			int kSpindleOS) {
 		super();
 		ACODNormal = aCODNormal;
 		ACOSNormal = aCOSNormal;
@@ -104,28 +104,28 @@ public class AnteriorChamber {
 	public void setVid(long vid) {
 		this.vid = vid;
 	}
-	public boolean isACODNormal() {
+	public int isACODNormal() {
 		return ACODNormal;
 	}
-	public void setACODNormal(boolean aCODNormal) {
+	public void setACODNormal(int aCODNormal) {
 		ACODNormal = aCODNormal;
 	}
-	public boolean isACOSNormal() {
+	public int isACOSNormal() {
 		return ACOSNormal;
 	}
-	public void setACOSNormal(boolean aCOSNormal) {
+	public void setACOSNormal(int aCOSNormal) {
 		ACOSNormal = aCOSNormal;
 	}
-	public int getACDepthOD() {
+	public String getACDepthOD() {
 		return ACDepthOD;
 	}
-	public void setACDepthOD(int aCDepthOD) {
+	public void setACDepthOD(String aCDepthOD) {
 		ACDepthOD = aCDepthOD;
 	}
-	public int getACDepthOS() {
+	public String getACDepthOS() {
 		return ACDepthOS;
 	}
-	public void setACDepthOS(int aCDepthOS) {
+	public void setACDepthOS(String aCDepthOS) {
 		ACDepthOS = aCDepthOS;
 	}
 	public String getACAngleOD() {
@@ -152,100 +152,100 @@ public class AnteriorChamber {
 	public void setPASOS(String pASOS) {
 		PASOS = pASOS;
 	}
-	public int getACODKP() {
+	public String getACODKP() {
 		return ACODKP;
 	}
-	public void setACODKP(int aCODKP) {
+	public void setACODKP(String aCODKP) {
 		ACODKP = aCODKP;
 	}
-	public int getACOSKP() {
+	public String getACOSKP() {
 		return ACOSKP;
 	}
-	public void setACOSKP(int aCOSKP) {
+	public void setACOSKP(String aCOSKP) {
 		ACOSKP = aCOSKP;
 	}
-	public boolean isShuntOD() {
+	public int isShuntOD() {
 		return ShuntOD;
 	}
-	public void setShuntOD(boolean shuntOD) {
+	public void setShuntOD(int shuntOD) {
 		ShuntOD = shuntOD;
 	}
-	public boolean isScarringOD() {
+	public int isScarringOD() {
 		return ScarringOD;
 	}
-	public void setScarringOD(boolean scarringOD) {
+	public void setScarringOD(int scarringOD) {
 		ScarringOD = scarringOD;
 	}
-	public boolean isTraumaOD() {
+	public int isTraumaOD() {
 		return TraumaOD;
 	}
-	public void setTraumaOD(boolean traumaOD) {
+	public void setTraumaOD(int traumaOD) {
 		TraumaOD = traumaOD;
 	}
-	public boolean isBlebOD() {
+	public int isBlebOD() {
 		return BlebOD;
 	}
-	public void setBlebOD(boolean blebOD) {
+	public void setBlebOD(int blebOD) {
 		BlebOD = blebOD;
 	}
-	public boolean isShuntOS() {
+	public int isShuntOS() {
 		return ShuntOS;
 	}
-	public void setShuntOS(boolean shuntOS) {
+	public void setShuntOS(int shuntOS) {
 		ShuntOS = shuntOS;
 	}
-	public boolean isScarringOS() {
+	public int isScarringOS() {
 		return ScarringOS;
 	}
-	public void setScarringOS(boolean scarringOS) {
+	public void setScarringOS(int scarringOS) {
 		ScarringOS = scarringOS;
 	}
-	public boolean isTraumaOS() {
+	public int isTraumaOS() {
 		return TraumaOS;
 	}
-	public void setTraumaOS(boolean traumaOS) {
+	public void setTraumaOS(int traumaOS) {
 		TraumaOS = traumaOS;
 	}
-	public boolean isBlebOS() {
+	public int isBlebOS() {
 		return BlebOS;
 	}
-	public void setBlebOS(boolean blebOS) {
+	public void setBlebOS(int blebOS) {
 		BlebOS = blebOS;
 	}
-	public boolean isVascularOD() {
+	public int isVascularOD() {
 		return VascularOD;
 	}
-	public void setVascularOD(boolean vascularOD) {
+	public void setVascularOD(int vascularOD) {
 		VascularOD = vascularOD;
 	}
-	public int getBlebOD_Num() {
+	public String getBlebOD_Num() {
 		return BlebOD_Num;
 	}
-	public void setBlebOD_Num(int blebOD_Num) {
+	public void setBlebOD_Num(String blebOD_Num) {
 		BlebOD_Num = blebOD_Num;
 	}
-	public boolean isVascularOS() {
+	public int isVascularOS() {
 		return VascularOS;
 	}
-	public void setVascularOS(boolean vascularOS) {
+	public void setVascularOS(int vascularOS) {
 		VascularOS = vascularOS;
 	}
-	public int getBlebOS_Num() {
+	public String getBlebOS_Num() {
 		return BlebOS_Num;
 	}
-	public void setBlebOS_Num(int blebOS_Num) {
+	public void setBlebOS_Num(String blebOS_Num) {
 		BlebOS_Num = blebOS_Num;
 	}
-	public boolean isKSpindleOD() {
+	public int isKSpindleOD() {
 		return KSpindleOD;
 	}
-	public void setKSpindleOD(boolean kSpindleOD) {
+	public void setKSpindleOD(int kSpindleOD) {
 		KSpindleOD = kSpindleOD;
 	}
-	public boolean isKSpindleOS() {
+	public int isKSpindleOS() {
 		return KSpindleOS;
 	}
-	public void setKSpindleOS(boolean kSpindleOS) {
+	public void setKSpindleOS(int kSpindleOS) {
 		KSpindleOS = kSpindleOS;
 	}
 	

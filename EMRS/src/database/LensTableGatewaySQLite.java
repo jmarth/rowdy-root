@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,12 +61,12 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 						rs.getString("NS_OD_Notes"),
 						rs.getString("NS_OS"),
 						rs.getString("NS_OS_Notes"),
-						rs.getBoolean("isStableLensOD"),
-						rs.getBoolean("isStableLensOS"),
-						rs.getBoolean("isPseudophakia_OD"),
-						rs.getBoolean("isPseudophakia_OS"),
-						rs.getBoolean("isPCO_OD"),
-						rs.getBoolean("isPCO_OS"),
+						rs.getInt("isStableLensOD"),
+						rs.getInt("isStableLensOS"),
+						rs.getInt("isPseudophakia_OD"),
+						rs.getInt("isPseudophakia_OS"),
+						rs.getInt("isPCO_OD"),
+						rs.getInt("isPCO_OS"),
 						rs.getString("Coritcal_OD"),
 						rs.getString("Cortical_OD_Notes"),
 						rs.getString("Coritcal_OS"),
@@ -125,12 +126,12 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 						rs.getString("NS_OD_Notes"),
 						rs.getString("NS_OS"),
 						rs.getString("NS_OS_Notes"),
-						rs.getBoolean("isStableLensOD"),
-						rs.getBoolean("isStableLensOS"),
-						rs.getBoolean("isPseudophakia_OD"),
-						rs.getBoolean("isPseudophakia_OS"),
-						rs.getBoolean("isPCO_OD"),
-						rs.getBoolean("isPCO_OS"),
+						rs.getInt("isStableLensOD"),
+						rs.getInt("isStableLensOS"),
+						rs.getInt("isPseudophakia_OD"),
+						rs.getInt("isPseudophakia_OS"),
+						rs.getInt("isPCO_OD"),
+						rs.getInt("isPCO_OS"),
 						rs.getString("Coritcal_OD"),
 						rs.getString("Cortical_OD_Notes"),
 						rs.getString("Coritcal_OS"),
@@ -204,20 +205,20 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 			st.setString(3, p.getNS_OD_Notes());
 			st.setString(4, p.getNS_OS());
 			st.setString(5, p.getNS_OD_Notes());
-			st.setBoolean(6, p.isStableLensOD());
-			st.setBoolean(7, p.isStableLensOS());
-			st.setBoolean(8, p.isPseudophakia_OD());
-			st.setBoolean(9, p.isPseudophakia_OS());
-			st.setBoolean(10, p.isPCO_OD());
-			st.setBoolean(11, p.isPCO_OS());
+			st.setInt(6, p.isStableLensOD());
+			st.setInt(7, p.isStableLensOS());
+			st.setInt(8, p.isPseudophakia_OD());
+			st.setInt(9, p.isPseudophakia_OS());
+			st.setInt(10, p.isPCO_OD());
+			st.setInt(11, p.isPCO_OS());
 			st.setString(12, p.getCoritcal_OD());
 			st.setString(13, p.getCortical_OD_Notes());
 			st.setString(14, p.getCoritcal_OS());
 			st.setString(15, p.getCortical_OS_Notes());
-			st.setString(12, p.getPSC_OD());
-			st.setString(13, p.getPSC_OD_Notes());
-			st.setString(14, p.getPSC_OS());
-			st.setString(15, p.getPSC_OS_Notes());
+			st.setString(16, p.getPSC_OD());
+			st.setString(17, p.getPSC_OD_Notes());
+			st.setString(18, p.getPSC_OS());
+			st.setString(19, p.getPSC_OS_Notes());
 			
 			st.executeUpdate();
 			
@@ -244,7 +245,54 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 		
 		return newId;
 	}
+	
+	public ArrayList<Object> fetchLensColsForVisit(long id) throws GatewayException {
 
+	    ArrayList<Object> row = new ArrayList<Object>();
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			//fetch parts
+			st = conn.prepareStatement("select * from lenses where vid=?");
+			st.setLong(1, id);
+			
+			rs = st.executeQuery();
+			
+			//get metadata
+		    ResultSetMetaData meta = null;
+		    meta = rs.getMetaData();
+		    
+		    int colCount = meta.getColumnCount();
+		    System.out.println("====Lenses======" + colCount);
+			
+			while(rs.next()) {
+				for (int i = 3; i <= colCount; i++) {
+					row.add(rs.getObject(i));
+					System.out.println("column #"+ i + " : " + rs.getObject(i));
+				}
+			}
+			System.out.println("\n****************\n Lenses ROW:"+row.toString());
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(rs != null)
+					rs.close();
+				
+				if(st != null)
+					st.close();
+				
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+		return row;
+	}
 	@Override
 	public void removeLens(Long vid) throws GatewayException {
 		// TODO Auto-generated method stub
@@ -255,6 +303,7 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 
 }

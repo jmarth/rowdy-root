@@ -57,14 +57,14 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 				GlassesRx glsrx = new GlassesRx(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getFloat("OD_Sphere"),
-						rs.getFloat("OD_Cyl"),
-						rs.getFloat("OD_Axis"),
-						rs.getFloat("OD_Add"),
-						rs.getFloat("OS_Sphere"),
-						rs.getFloat("OS_Cyl"),
-						rs.getFloat("OS_Axis"),
-						rs.getFloat("OS_Add"),
+						rs.getString("OD_Sphere"),
+						rs.getString("OD_Cyl"),
+						rs.getString("OD_Axis"),
+						rs.getString("OD_Add"),
+						rs.getString("OS_Sphere"),
+						rs.getString("OS_Cyl"),
+						rs.getString("OS_Axis"),
+						rs.getString("OS_Add"),
 						rs.getString("GlassesRxNotes")
 						);
 				
@@ -114,14 +114,14 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 				GlassesRx glsrx = new GlassesRx(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getFloat("OD_Sphere"),
-						rs.getFloat("OD_Cyl"),
-						rs.getFloat("OD_Axis"),
-						rs.getFloat("OD_Add"),
-						rs.getFloat("OS_Sphere"),
-						rs.getFloat("OS_Cyl"),
-						rs.getFloat("OS_Axis"),
-						rs.getFloat("OS_Add"),
+						rs.getString("OD_Sphere"),
+						rs.getString("OD_Cyl"),
+						rs.getString("OD_Axis"),
+						rs.getString("OD_Add"),
+						rs.getString("OS_Sphere"),
+						rs.getString("OS_Cyl"),
+						rs.getString("OS_Axis"),
+						rs.getString("OS_Add"),
 						rs.getString("GlassesRxNotes")
 						);
 				
@@ -175,15 +175,15 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			st.setLong(1, glsRx.getVid());
-			st.setFloat(2, glsRx.getRx_OD_Sphere());
-			st.setFloat(3, glsRx.getRx_OD_Cyl());
-			st.setFloat(4, glsRx.getRx_OD_Axis());
-			st.setFloat(5, glsRx.getRx_OD_Add());
-			st.setFloat(6, glsRx.getRx_OS_Sphere());
-			st.setFloat(7, glsRx.getRx_OS_Cyl());
-			st.setFloat(8, glsRx.getRx_OS_Axis());
-			st.setFloat(9, glsRx.getRx_OS_Add());
-			st.setFloat(9, glsRx.getRx_OS_Add());
+			st.setString(2, glsRx.getRx_OD_Sphere());
+			st.setString(3, glsRx.getRx_OD_Cyl());
+			st.setString(4, glsRx.getRx_OD_Axis());
+			st.setString(5, glsRx.getRx_OD_Add());
+			st.setString(6, glsRx.getRx_OS_Sphere());
+			st.setString(7, glsRx.getRx_OS_Cyl());
+			st.setString(8, glsRx.getRx_OS_Axis());
+			st.setString(9, glsRx.getRx_OS_Add());
+			st.setString(9, glsRx.getRx_OS_Add());
 			st.setString(10, glsRx.getGlassesRxNotes());
 
 			st.executeUpdate();

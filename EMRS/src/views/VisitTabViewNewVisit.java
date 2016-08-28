@@ -26,7 +26,6 @@ import models.Lens;
 import models.Patient;
 import models.Pupils;
 import models.Refraction;
-import models.SlitLampExam;
 import models.Tabs;
 import models.AnteriorChamber;
 import models.DistanceVision;
@@ -41,30 +40,23 @@ import java.awt.Component;
 import java.awt.Container;
 
 import javax.swing.JTextField;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
-import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.SwingConstants;
 import javax.swing.JButton;
-import javax.swing.Box;
 import java.awt.Dimension;
-import javax.swing.ScrollPaneConstants;
 import java.awt.BorderLayout;
 
+@SuppressWarnings("serial")
 public class VisitTabViewNewVisit extends JPanel {
 
 	private JTextArea textArea_CC;
@@ -155,11 +147,18 @@ public class VisitTabViewNewVisit extends JPanel {
 				ArrayList<Object> refractCols = (ArrayList<Object>) homeModel.getRefractionTG().fetchRefractionsColsForVisit(v.getId());
 				ArrayList<Object> pupilsCols = (ArrayList<Object>) homeModel.getPupilsTG().fetchPupilsColsForVisit(v.getId());
 				ArrayList<Object> acCols = (ArrayList<Object>) homeModel.getaCTG().fetchACColsForVisit(v.getId());
+				ArrayList<Object> lensCols = (ArrayList<Object>) homeModel.getLensTG().fetchLensColsForVisit(v.getId());
+				ArrayList<Object> iopCols = (ArrayList<Object>) homeModel.getIopTG().fetchIOPColsForVisit(v.getId());
+				ArrayList<Object> gonioCols = (ArrayList<Object>) homeModel.getGonioTG().fetchGonioForVisit(v.getId());
+
 				populateDVPanel(dvCols);
 				populateGlassesRxPanel(rxCols);
 				populateRefractionPanel(refractCols);
 				populatePupilsPanel(pupilsCols);
 				panel_SLE_AC.setFields(acCols);
+				panel_SLE_Lens.setFields(lensCols);
+				panel_IOP.setFields(iopCols);
+				panel_Gonio.setFields(gonioCols);
 				
 			} catch (GatewayException e) {
 				e.printStackTrace();
@@ -171,8 +170,6 @@ public class VisitTabViewNewVisit extends JPanel {
 			// keeping boolean for now, maybe useful for sometime?
 			
 		}
-		
-		
 		
 	}
 	/**
@@ -199,8 +196,6 @@ public class VisitTabViewNewVisit extends JPanel {
 			}
 			i++;
 		}
-			
-		
 	}
 	
 	public void populateGlassesRxPanel(ArrayList<Object> rxCols) {
@@ -416,7 +411,7 @@ public class VisitTabViewNewVisit extends JPanel {
 	public void createView() {
 		setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
-		// was for testing
+		// was for testing, wraps everything in a JScrollPane
 		//JScrollPane scrollPane = new JScrollPane();
 		//scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		//add(scrollPane, "cell 0 0,grow");
@@ -428,7 +423,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		
 		
 		//Layout should be in this order
-		// uncomment to add the panel, with all it is about 3000 px tall
 		
 		/*	Panel hierarchy *
 		 
@@ -490,7 +484,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		panel_Vision.add(panel_DV, "cell 0 0,growx");
 		
 		/**/
-		// GLASSES RX		
+		// GLASSES RX
 		panel_GlassesRx = new PanelGlassesRx();
 		panel_Vision.add(panel_GlassesRx, "cell 0 1,growx");
 		

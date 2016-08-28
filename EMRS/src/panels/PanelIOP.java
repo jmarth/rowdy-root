@@ -1,5 +1,7 @@
 package panels;
 
+import java.util.ArrayList;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -8,6 +10,7 @@ import javax.swing.border.TitledBorder;
 import models.IOPMeasurement;
 import net.miginfocom.swing.MigLayout;
 
+@SuppressWarnings("serial")
 public class PanelIOP extends JPanel {
 
 	private JTextField textField_IOP_Value_OD;
@@ -65,15 +68,33 @@ public class PanelIOP extends JPanel {
 	}
 
 	public IOPMeasurement createNewIOP() {
+		
 		IOPMeasurement iop = new IOPMeasurement(
+				
 				textField_IOP_Value_OD.getText(),
 				textField_IOP_Type_OD.getText(),
 				textField_IOP_Notes_OD.getText(),
 				textField_IOP_Value_OS.getText(),
 				textField_IOP_Type_OS.getText(),
 				textField_IOP_Notes_OS.getText()
-				);
-		return iop;
 				
+				);
+		
+		return iop;
 	}
+	
+	public void setFields(ArrayList<Object> iopCols) {
+		
+		int i = -1;
+		
+		
+		textField_IOP_Value_OD.setText(iopCols.get(++i).toString());
+		textField_IOP_Type_OD.setText(iopCols.get(++i).toString());
+		textField_IOP_Notes_OD.setText(iopCols.get(++i).toString());
+		textField_IOP_Value_OS.setText(iopCols.get(++i).toString());
+		textField_IOP_Type_OS.setText(iopCols.get(++i).toString());
+		textField_IOP_Notes_OS.setText(iopCols.get(++i).toString());
+	}
+	
+	
 }

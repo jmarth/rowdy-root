@@ -1,5 +1,7 @@
 package panels;
 
+import java.util.ArrayList;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -13,6 +15,7 @@ import javax.swing.border.TitledBorder;
 import models.Lens;
 import net.miginfocom.swing.MigLayout;
 
+@SuppressWarnings("serial")
 public class PanelLens extends JPanel {
 
 	private JComboBox comboBox_SLE_NS_OD;
@@ -38,6 +41,7 @@ public class PanelLens extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelLens() {
+		
 		setBorder(new TitledBorder(null, "Lens", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		//panel_SLE.add(panel_SLE_Lens, "cell 0 2,grow");
 		setLayout(new MigLayout("", "[][grow][][grow]", "[][][][][][]"));
@@ -137,30 +141,136 @@ public class PanelLens extends JPanel {
 		String NS_OS = (String)comboBox_SLE_NS_OS.getSelectedItem();
 		String Coritcal_OD = (String)comboBox_SLE_Coritcal_OD.getSelectedItem();
 		String Coritcal_OS = (String)comboBox_SLE_Coritcal_OS.getSelectedItem();
-		String PSC_OD = (String)comboBox_SLE_NS_OD.getSelectedItem();
-		String PSC_OS = (String)comboBox_SLE_NS_OD.getSelectedItem();
+		String PSC_OD = (String)comboBox_SLE_PSC_OD.getSelectedItem();
+		String PSC_OS = (String)comboBox_SLE_PSC_OS.getSelectedItem();
 		
 		Lens l = new Lens(
+				
 				NS_OD,
 				textField_SLE_NS_OD.getText(),
+				
 				NS_OS,
 				textField_SLE_NS_OS.getText(),
-				chckbxStableLensOD.isSelected(),
-				chckbxStableLensOS.isSelected(),
-				chckbx_SLE_Pseudophakia_OD.isSelected(),
-				chckbx_SLE_Pseudophakia_OS.isSelected(),
-				chckbx_SLE_PCO_OD.isSelected(),
-				chckbx_SLE_PCO_OS.isSelected(),
+				
+				chckbxStableLensOD.isSelected() ? 1 : 0,
+				chckbxStableLensOS.isSelected() ? 1 : 0,
+				
+				chckbx_SLE_Pseudophakia_OD.isSelected() ? 1 : 0,
+				chckbx_SLE_Pseudophakia_OS.isSelected() ? 1 : 0,
+				
+				chckbx_SLE_PCO_OD.isSelected() ? 1 : 0,
+				chckbx_SLE_PCO_OS.isSelected() ? 1 : 0,
+				
 				Coritcal_OD,
 				textField_SLE_Cortical_OD.getText(),
+				
 				Coritcal_OS,
 				textField_SLE_Cortical_OS.getText(),
+				
 				PSC_OD,
 				textField_SLE_PSC_OD.getText(),
+				
 				PSC_OS,
 				textField_SLE_PSC_OS.getText()
+				
 				);
+		
 		return l;
 	}
 
+	public void setFields(ArrayList<Object> lensCols) {
+		// will be iterating manually through the tuples
+				int i = -1;
+
+				String temp;
+				
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					comboBox_SLE_NS_OD.setSelectedItem(temp);
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					textField_SLE_NS_OD.setText(temp);
+				
+				
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					comboBox_SLE_NS_OS.setSelectedItem(temp);
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					textField_SLE_NS_OS.setText(temp);
+				
+				
+				
+				temp = lensCols.get(++i).toString();
+				if (temp.equals("1"))
+					chckbxStableLensOD.setSelected(true);
+				
+				temp = lensCols.get(++i).toString();
+				if (temp.equals("1"))
+					chckbxStableLensOS.setSelected(true);
+				
+				
+				
+				temp = lensCols.get(++i).toString();
+				if (temp.equals("1"))
+					chckbx_SLE_Pseudophakia_OD.setSelected(true);
+				
+				temp = lensCols.get(++i).toString();
+				if (temp.equals("1"))
+					chckbx_SLE_Pseudophakia_OS.setSelected(true);
+				
+				
+				
+				temp = lensCols.get(++i).toString();
+				if (temp.equals("1"))
+					chckbx_SLE_PCO_OD.setSelected(true);
+				
+				temp = lensCols.get(++i).toString();
+				if (temp.equals("1"))
+					chckbx_SLE_PCO_OS.setSelected(true);
+				
+				
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					comboBox_SLE_Coritcal_OD.setSelectedItem(temp);
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					textField_SLE_Cortical_OD.setText(temp);
+				
+				
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					comboBox_SLE_Coritcal_OS.setSelectedItem(temp);
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					textField_SLE_Cortical_OS.setText(temp);
+				
+				
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					comboBox_SLE_PSC_OD.setSelectedItem(temp);
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					textField_SLE_PSC_OD.setText(temp);
+				
+				
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					comboBox_SLE_PSC_OS.setSelectedItem(temp);
+				
+				temp = lensCols.get(++i).toString();
+				if (temp !=null)
+					textField_SLE_PSC_OS.setText(temp);
+	}
 }

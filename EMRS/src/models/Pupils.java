@@ -4,25 +4,29 @@ public class Pupils {
 	
 	private long id;
 	private long vid;
-	private boolean isBothPupilsNormal;
+	
+	private int isBothPupilsNormal;
 	private String bothShape;
-	private int bothDiameter;
-	private boolean isBothRAPD;
-	private boolean isBothSynechia;
-	private boolean isRightPupilNormal;
+	private String bothDiameter;
+	private int isBothRAPD;
+	private int isBothSynechia;
+	
+	private int isRightPupilNormal;
 	private String rightShape;
-	private int rightDiameter;
-	private boolean isRightRAPD;
-	private boolean isRightSynechia;
-	private boolean isLeftPupilNormal;
+	private String rightDiameter;
+	private int isRightRAPD;
+	private int isRightSynechia;
+	
+	private int isLeftPupilNormal;
 	private String leftShape;
-	private int leftDiameter;
-	private boolean isLeftRAPD;
-	private boolean isLeftSynechia;
-	public Pupils(long id, long vid, boolean isBothPupilsNormal, String bothShape, int bothDiameter, boolean isBothRAPD,
-			boolean isBothSynechia, boolean isRightPupilNormal, String rightShape, int rightDiameter,
-			boolean isRightRAPD, boolean isRightSynechia, boolean isLeftPupilNormal, String leftShape, int leftDiameter,
-			boolean isLeftRAPD, boolean isLeftSynechia) {
+	private String leftDiameter;
+	private int isLeftRAPD;
+	private int isLeftSynechia;
+	
+	public Pupils(long id, long vid, int isBothPupilsNormal, String bothShape, String bothDiameter, int isBothRAPD,
+			int isBothSynechia, int isRightPupilNormal, String rightShape, String rightDiameter,
+			int isRightRAPD, int isRightSynechia, int isLeftPupilNormal, String leftShape, String leftDiameter,
+			int isLeftRAPD, int isLeftSynechia) {
 		super();
 		this.id = id;
 		this.vid = vid;
@@ -42,10 +46,11 @@ public class Pupils {
 		this.isLeftRAPD = isLeftRAPD;
 		this.isLeftSynechia = isLeftSynechia;
 	}
-	public Pupils(boolean isBothPupilsNormal, String bothShape, int bothDiameter, boolean isBothRAPD,
-			boolean isBothSynechia, boolean isRightPupilNormal, String rightShape, int rightDiameter,
-			boolean isRightRAPD, boolean isRightSynechia, boolean isLeftPupilNormal, String leftShape, int leftDiameter,
-			boolean isLeftRAPD, boolean isLeftSynechia) {
+	
+	public Pupils(int isBothPupilsNormal, String bothShape, String bothDiameter, int isBothRAPD,
+			int isBothSynechia, int isRightPupilNormal, String rightShape, String rightDiameter,
+			int isRightRAPD, int isRightSynechia, int isLeftPupilNormal, String leftShape, String leftDiameter,
+			int isLeftRAPD, int isLeftSynechia) {
 		super();
 		this.isBothPupilsNormal = isBothPupilsNormal;
 		this.bothShape = bothShape;
@@ -63,6 +68,7 @@ public class Pupils {
 		this.isLeftRAPD = isLeftRAPD;
 		this.isLeftSynechia = isLeftSynechia;
 	}
+	
 	public long getId() {
 		return id;
 	}
@@ -75,10 +81,10 @@ public class Pupils {
 	public void setVid(long vid) {
 		this.vid = vid;
 	}
-	public boolean isBothPupilsNormal() {
+	public int isBothPupilsNormal() {
 		return isBothPupilsNormal;
 	}
-	public void setBothPupilsNormal(boolean isBothPupilsNormal) {
+	public void setBothPupilsNormal(int isBothPupilsNormal) {
 		this.isBothPupilsNormal = isBothPupilsNormal;
 	}
 	public String getBothShape() {
@@ -87,28 +93,28 @@ public class Pupils {
 	public void setBothShape(String bothShape) {
 		this.bothShape = bothShape;
 	}
-	public int getBothDiameter() {
+	public String getBothDiameter() {
 		return bothDiameter;
 	}
-	public void setBothDiameter(int bothDiameter) {
+	public void setBothDiameter(String bothDiameter) {
 		this.bothDiameter = bothDiameter;
 	}
-	public boolean isBothRAPD() {
+	public int isBothRAPD() {
 		return isBothRAPD;
 	}
-	public void setBothRAPD(boolean isBothRAPD) {
+	public void setBothRAPD(int isBothRAPD) {
 		this.isBothRAPD = isBothRAPD;
 	}
-	public boolean isBothSynechia() {
+	public int isBothSynechia() {
 		return isBothSynechia;
 	}
-	public void setBothSynechia(boolean isBothSynechia) {
+	public void setBothSynechia(int isBothSynechia) {
 		this.isBothSynechia = isBothSynechia;
 	}
-	public boolean isRightPupilNormal() {
+	public int isRightPupilNormal() {
 		return isRightPupilNormal;
 	}
-	public void setRightPupilNormal(boolean isRightPupilNormal) {
+	public void setRightPupilNormal(int isRightPupilNormal) {
 		this.isRightPupilNormal = isRightPupilNormal;
 	}
 	public String getRightShape() {
@@ -117,28 +123,28 @@ public class Pupils {
 	public void setRightShape(String rightShape) {
 		this.rightShape = rightShape;
 	}
-	public int getRightDiameter() {
+	public String getRightDiameter() {
 		return rightDiameter;
 	}
-	public void setRightDiameter(int rightDiameter) {
+	public void setRightDiameter(String rightDiameter) {
 		this.rightDiameter = rightDiameter;
 	}
-	public boolean isRightRAPD() {
+	public int isRightRAPD() {
 		return isRightRAPD;
 	}
-	public void setRightRAPD(boolean isRightRAPD) {
+	public void setRightRAPD(int isRightRAPD) {
 		this.isRightRAPD = isRightRAPD;
 	}
-	public boolean isRightSynechia() {
+	public int isRightSynechia() {
 		return isRightSynechia;
 	}
-	public void setRightSynechia(boolean isRightSynechia) {
+	public void setRightSynechia(int isRightSynechia) {
 		this.isRightSynechia = isRightSynechia;
 	}
-	public boolean isLeftPupilNormal() {
+	public int isLeftPupilNormal() {
 		return isLeftPupilNormal;
 	}
-	public void setLeftPupilNormal(boolean isLeftPupilNormal) {
+	public void setLeftPupilNormal(int isLeftPupilNormal) {
 		this.isLeftPupilNormal = isLeftPupilNormal;
 	}
 	public String getLeftShape() {
@@ -147,23 +153,22 @@ public class Pupils {
 	public void setLeftShape(String leftShape) {
 		this.leftShape = leftShape;
 	}
-	public int getLeftDiameter() {
+	public String getLeftDiameter() {
 		return leftDiameter;
 	}
-	public void setLeftDiameter(int leftDiameter) {
+	public void setLeftDiameter(String leftDiameter) {
 		this.leftDiameter = leftDiameter;
 	}
-	public boolean isLeftRAPD() {
+	public int isLeftRAPD() {
 		return isLeftRAPD;
 	}
-	public void setLeftRAPD(boolean isLeftRAPD) {
+	public void setLeftRAPD(int isLeftRAPD) {
 		this.isLeftRAPD = isLeftRAPD;
 	}
-	public boolean isLeftSynechia() {
+	public int isLeftSynechia() {
 		return isLeftSynechia;
 	}
-	public void setLeftSynechia(boolean isLeftSynechia) {
+	public void setLeftSynechia(int isLeftSynechia) {
 		this.isLeftSynechia = isLeftSynechia;
 	}
-	
 }

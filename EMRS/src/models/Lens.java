@@ -1,9 +1,5 @@
 package models;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
-
 public class Lens {
 	
 	private long id;
@@ -12,12 +8,12 @@ public class Lens {
 	private String NS_OD_Notes;
 	private String NS_OS;
 	private String NS_OS_Notes;
-	private boolean isStableLensOD;
-	private boolean isStableLensOS;
-	private boolean isPseudophakia_OD;
-	private boolean isPseudophakia_OS;
-	private boolean isPCO_OD;
-	private boolean isPCO_OS;
+	private int isStableLensOD;
+	private int isStableLensOS;
+	private int isPseudophakia_OD;
+	private int isPseudophakia_OS;
+	private int isPCO_OD;
+	private int isPCO_OS;
 	private String Coritcal_OD;
 	private String Cortical_OD_Notes;
 	private String Coritcal_OS;
@@ -26,9 +22,10 @@ public class Lens {
 	private String PSC_OD_Notes;
 	private String PSC_OS;
 	private String PSC_OS_Notes;
+	
 	public Lens(long id, long vid, String nS_OD, String nS_OD_Notes, String nS_OS, String nS_OS_Notes,
-			boolean isStableLensOD, boolean isStableLensOS, boolean isPseudophakia_OD, boolean isPseudophakia_OS,
-			boolean isPCO_OD, boolean isPCO_OS, String coritcal_OD, String cortical_OD_Notes, String coritcal_OS,
+			int isStableLensOD, int isStableLensOS, int isPseudophakia_OD, int isPseudophakia_OS,
+			int isPCO_OD, int isPCO_OS, String coritcal_OD, String cortical_OD_Notes, String coritcal_OS,
 			String cortical_OS_Notes, String pSC_OD, String pSC_OD_Notes, String pSC_OS, String pSC_OS_Notes) {
 		super();
 		this.id = id;
@@ -52,9 +49,10 @@ public class Lens {
 		PSC_OS = pSC_OS;
 		PSC_OS_Notes = pSC_OS_Notes;
 	}
-	public Lens(String nS_OD, String nS_OD_Notes, String nS_OS, String nS_OS_Notes, boolean isStableLensOD,
-			boolean isStableLensOS, boolean isPseudophakia_OD, boolean isPseudophakia_OS, boolean isPCO_OD,
-			boolean isPCO_OS, String coritcal_OD, String cortical_OD_Notes, String coritcal_OS,
+	
+	public Lens(String nS_OD, String nS_OD_Notes, String nS_OS, String nS_OS_Notes, int isStableLensOD,
+			int isStableLensOS, int isPseudophakia_OD, int isPseudophakia_OS, int isPCO_OD,
+			int isPCO_OS, String coritcal_OD, String cortical_OD_Notes, String coritcal_OS,
 			String cortical_OS_Notes, String pSC_OD, String pSC_OD_Notes, String pSC_OS, String pSC_OS_Notes) {
 		super();
 		NS_OD = nS_OD;
@@ -76,6 +74,7 @@ public class Lens {
 		PSC_OS = pSC_OS;
 		PSC_OS_Notes = pSC_OS_Notes;
 	}
+	
 	public long getId() {
 		return id;
 	}
@@ -112,40 +111,40 @@ public class Lens {
 	public void setNS_OS_Notes(String nS_OS_Notes) {
 		NS_OS_Notes = nS_OS_Notes;
 	}
-	public boolean isStableLensOD() {
+	public int isStableLensOD() {
 		return isStableLensOD;
 	}
-	public void setStableLensOD(boolean isStableLensOD) {
+	public void setStableLensOD(int isStableLensOD) {
 		this.isStableLensOD = isStableLensOD;
 	}
-	public boolean isStableLensOS() {
+	public int isStableLensOS() {
 		return isStableLensOS;
 	}
-	public void setStableLensOS(boolean isStableLensOS) {
+	public void setStableLensOS(int isStableLensOS) {
 		this.isStableLensOS = isStableLensOS;
 	}
-	public boolean isPseudophakia_OD() {
+	public int isPseudophakia_OD() {
 		return isPseudophakia_OD;
 	}
-	public void setPseudophakia_OD(boolean isPseudophakia_OD) {
+	public void setPseudophakia_OD(int isPseudophakia_OD) {
 		this.isPseudophakia_OD = isPseudophakia_OD;
 	}
-	public boolean isPseudophakia_OS() {
+	public int isPseudophakia_OS() {
 		return isPseudophakia_OS;
 	}
-	public void setPseudophakia_OS(boolean isPseudophakia_OS) {
+	public void setPseudophakia_OS(int isPseudophakia_OS) {
 		this.isPseudophakia_OS = isPseudophakia_OS;
 	}
-	public boolean isPCO_OD() {
+	public int isPCO_OD() {
 		return isPCO_OD;
 	}
-	public void setPCO_OD(boolean isPCO_OD) {
+	public void setPCO_OD(int isPCO_OD) {
 		this.isPCO_OD = isPCO_OD;
 	}
-	public boolean isPCO_OS() {
+	public int isPCO_OS() {
 		return isPCO_OS;
 	}
-	public void setPCO_OS(boolean isPCO_OS) {
+	public void setPCO_OS(int isPCO_OS) {
 		this.isPCO_OS = isPCO_OS;
 	}
 	public String getCoritcal_OD() {

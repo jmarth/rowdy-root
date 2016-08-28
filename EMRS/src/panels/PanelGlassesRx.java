@@ -8,6 +8,7 @@ import javax.swing.border.TitledBorder;
 import models.GlassesRx;
 import net.miginfocom.swing.MigLayout;
 
+@SuppressWarnings("serial")
 public class PanelGlassesRx extends JPanel {
 
 	private JTextField textField_Rx_OD_Sphere;
@@ -87,15 +88,16 @@ public class PanelGlassesRx extends JPanel {
 	}
 
 	public GlassesRx createNewGlassesRx() {
+		
 		GlassesRx glsRx = new GlassesRx(
-				Float.parseFloat((!textField_Rx_OD_Sphere.getText().isEmpty() ? textField_Rx_OD_Sphere.getText() : "-1")),
-				Float.parseFloat((!textField_Rx_OD_Cyl.getText().isEmpty() ? textField_Rx_OD_Cyl.getText() : "-1")),
-				Float.parseFloat((!textField_Rx_OD_Axis.getText().isEmpty() ? textField_Rx_OD_Axis.getText() : "-1")),
-				Float.parseFloat((!textField_Rx_OD_Add.getText().isEmpty() ? textField_Rx_OD_Add.getText() : "-1")),
-				Float.parseFloat((!textField_Rx_OS_Sphere.getText().isEmpty() ? textField_Rx_OS_Sphere.getText() : "-1")),
-				Float.parseFloat((!textField_Rx_OS_Cyl.getText().isEmpty() ? textField_Rx_OS_Cyl.getText() : "-1")),
-				Float.parseFloat((!textField_Rx_OS_Axis.getText().isEmpty() ? textField_Rx_OS_Axis.getText() : "-1")),
-				Float.parseFloat((!textField_Rx_OS_Add.getText().isEmpty() ? textField_Rx_OS_Add.getText() : "-1")),
+				textField_Rx_OD_Sphere.getText(),
+				textField_Rx_OD_Cyl.getText(),
+				textField_Rx_OD_Axis.getText(),
+				textField_Rx_OD_Add.getText(),
+				textField_Rx_OS_Sphere.getText(),
+				textField_Rx_OS_Cyl.getText(),
+				textField_Rx_OS_Axis.getText(),
+				textField_Rx_OS_Add.getText(),
 				textField_GlassesRxNotes.getText()
 				);
 		

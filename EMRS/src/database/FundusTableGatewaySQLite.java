@@ -60,17 +60,16 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 				
 				//System.out.print("\ncreating FundusExam object");
 				
-
 				FundusExam fe = new FundusExam(
 						rs.getLong("id"),
 						rs.getLong("vid"),
 						rs.getBoolean("isDialated"),
 						rs.getString("dialNotes"),
 						rs.getBoolean("isCDODAb"),
-						rs.getFloat("CDOD"),
+						rs.getString("CDOD"),
 						rs.getString("CDODNotes"),
 						rs.getBoolean("isCDOSAb"),
-						rs.getFloat("CDOS"),
+						rs.getString("CDOS"),
 						rs.getString("CDOSNotes"),
 						rs.getBoolean("isMaculaODAb"),
 						rs.getString("MaculaODNotes"),
@@ -135,10 +134,10 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 						rs.getBoolean("isDialated"),
 						rs.getString("dialNotes"),
 						rs.getBoolean("isCDODAb"),
-						rs.getFloat("CDOD"),
+						rs.getString("CDOD"),
 						rs.getString("CDODNotes"),
 						rs.getBoolean("isCDOSAb"),
-						rs.getFloat("CDOS"),
+						rs.getString("CDOS"),
 						rs.getString("CDOSNotes"),
 						rs.getBoolean("isMaculaODAb"),
 						rs.getString("MaculaODNotes"),
@@ -210,11 +209,11 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 			st.setString(3, fe.getDial_Notes());
 			
 			st.setBoolean(4, fe.isCDODAb());
-			st.setFloat(5, fe.getCDOD());
+			st.setString(5, fe.getCDOD());
 			st.setString(6, fe.getCDODNotes());
 			
 			st.setBoolean(7, fe.isCDOSAb());
-			st.setFloat(8, fe.getCDOS());
+			st.setString(8, fe.getCDOS());
 			st.setString(9, fe.getCDOSNotes());
 			
 			st.setBoolean(10, fe.isMaculaODAb());

@@ -10,9 +10,10 @@ import javax.swing.border.TitledBorder;
 import models.DistanceVision;
 import net.miginfocom.swing.MigLayout;
 
+@SuppressWarnings("serial")
 public class PanelDistanceVision extends JPanel {
 
-	private DistanceVision vision;
+	//private DistanceVision vision;
 	
 	private JTextField textField_DVODSC;
 	private JTextField textField_DVOSSC;

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,22 +57,26 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 				Gonio p = new Gonio(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("isHxFHA"),
+						rs.getInt("isHxFHA"),
 						rs.getString("FHASide"),
-						rs.getBoolean("isODNormal"),
+						rs.getInt("isODNormal"),
 						rs.getString("odABCDNon"),
 						rs.getString("odABCDComp"),
+						rs.getString("odDegreeNon"),
+						rs.getString("odDegreeComp"),
 						rs.getString("odRSQNon"),
 						rs.getString("odRSQComp"),
-						rs.getInt("odPigment"),
-						rs.getBoolean("isODAntPigLine"),
-						rs.getBoolean("isOSNormal"),
+						rs.getString("odPigment"),
+						rs.getInt("isODAntPigLine"),
+						rs.getInt("isOSNormal"),
 						rs.getString("osABCDNon"),
 						rs.getString("osABCDComp"),
+						rs.getString("oSDegreeNon"),
+						rs.getString("oSDegreeComp"),
 						rs.getString("osRSQNon"),
 						rs.getString("osRSQComp"),
-						rs.getInt("osPigment"),
-						rs.getBoolean("isOSAntPigLine")
+						rs.getString("osPigment"),
+						rs.getInt("isOSAntPigLine")
 						);
 				
 				pl.add(p);
@@ -119,22 +124,26 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 				Gonio pu = new Gonio(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("isHxFHA"),
+						rs.getInt("isHxFHA"),
 						rs.getString("FHASide"),
-						rs.getBoolean("isODNormal"),
+						rs.getInt("isODNormal"),
 						rs.getString("odABCDNon"),
 						rs.getString("odABCDComp"),
+						rs.getString("odDegreeNon"),
+						rs.getString("odDegreeComp"),
 						rs.getString("odRSQNon"),
 						rs.getString("odRSQComp"),
-						rs.getInt("odPigment"),
-						rs.getBoolean("isODAntPigLine"),
-						rs.getBoolean("isOSNormal"),
+						rs.getString("odPigment"),
+						rs.getInt("isODAntPigLine"),
+						rs.getInt("isOSNormal"),
 						rs.getString("osABCDNon"),
 						rs.getString("osABCDComp"),
+						rs.getString("oSDegreeNon"),
+						rs.getString("oSDegreeComp"),
 						rs.getString("osRSQNon"),
 						rs.getString("osRSQComp"),
-						rs.getInt("osPigment"),
-						rs.getBoolean("isOSAntPigLine")
+						rs.getString("osPigment"),
+						rs.getInt("isOSAntPigLine")
 						);
 				
 				pl.add(pu);
@@ -179,6 +188,8 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 					+ " isODNormal,"
 					+ " odABCDNon,"
 					+ " odABCDComp,"
+					+ " odDegreeNon,"
+					+ " odDegreeComp,"
 					+ " odRSQNon,"
 					+ " odRSQComp,"
 					+ " odPigment,"
@@ -186,30 +197,36 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 					+ " isOSNormal,"
 					+ " osABCDNon,"
 					+ " osABCDComp,"
+					+ " osDegreeNon,"
+					+ " osDegreeComp,"
 					+ " osRSQNon,"
 					+ " osRSQComp,"
 					+ " osPigment,"
 					+ " isOSAntPigLine)"
-					+ " values ( ?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?  ) ",
+					+ " values ( ?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?,?,?,?,?  ) ",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			st.setLong(1, p.getVid());
-			st.setBoolean(2, p.isHxFHA());
+			st.setInt(2, p.isHxFHA());
 			st.setString(3, p.getFHASide());
-			st.setBoolean(4, p.isODNormal());
+			st.setInt(4, p.isODNormal());
 			st.setString(5, p.getOdABCDNon());
 			st.setString(6, p.getOdABCDComp());
-			st.setString(7, p.getOdRSQNon());
-			st.setString(8, p.getOdRSQComp());
-			st.setInt(9, p.getOdPigment());
-			st.setBoolean(10, p.isODAntPigLine());
-			st.setBoolean(11, p.isOSNormal());
-			st.setString(12, p.getOsABCDNon());
-			st.setString(13, p.getOsABCDComp());
-			st.setString(14, p.getOsRSQNon());
-			st.setString(15, p.getOsRSQComp());
-			st.setInt(16, p.getOsPigment());
-			st.setBoolean(17, p.isOSAntPigLine());
+			st.setString(7, p.getOdDegreeNon());
+			st.setString(8, p.getOdDegreeComp());
+			st.setString(9, p.getOdRSQNon());
+			st.setString(10, p.getOdRSQComp());
+			st.setString(11, p.getOdPigment());
+			st.setInt(12, p.isODAntPigLine());
+			st.setInt(13, p.isOSNormal());
+			st.setString(14, p.getOsABCDNon());
+			st.setString(15, p.getOsABCDComp());
+			st.setString(16, p.getOsDegreeNon());
+			st.setString(17, p.getOsDegreeComp());
+			st.setString(18, p.getOsRSQNon());
+			st.setString(19, p.getOsRSQComp());
+			st.setString(20, p.getOsPigment());
+			st.setInt(21, p.isOSAntPigLine());
 			
 			st.executeUpdate();
 			
@@ -246,6 +263,55 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 	public void close() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public ArrayList<Object> fetchGonioForVisit(long id) throws GatewayException {
+
+	    ArrayList<Object> row = new ArrayList<Object>();
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			//fetch parts
+			st = conn.prepareStatement("select * from gonios where vid=?");
+			st.setLong(1, id);
+			
+			rs = st.executeQuery();
+			
+			//get metadata
+		    ResultSetMetaData meta = null;
+		    meta = rs.getMetaData();
+		    
+		    int colCount = meta.getColumnCount();
+		    System.out.println("====goinos======" + colCount);
+			
+			while(rs.next()) {
+				for (int i = 3; i <= colCount; i++) {
+					row.add(rs.getObject(i));
+					System.out.println("column #"+ i + " : " + rs.getObject(i));
+				}
+			}
+			System.out.println("\n****************\n gonio ROW:"+row.toString());
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(rs != null)
+					rs.close();
+				
+				if(st != null)
+					st.close();
+				
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+		return row;
 	}
 
 

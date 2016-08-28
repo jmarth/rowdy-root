@@ -11,11 +11,11 @@ public class FundusExam {
 	private String dialNotes;
 	
 	//cup to disc ratio
-	private float CDOD;
+	private String CDOD;
 	private boolean CDODAb; 
 	private String CDODNotes;
 	
-	private float CDOS;
+	private String CDOS;
 	private boolean CDOSAb; 
 	private String CDOSNotes;
 	
@@ -51,7 +51,7 @@ public class FundusExam {
 	 * @param retinaOSNotes
 	 * @param dateCreated
 	 */
-	public FundusExam(long id, long vid, boolean dialated, String dialNotes, boolean cDODAb, float cDOD, String cDODNotes, boolean cDOSAb, float cDOS,
+	public FundusExam(long id, long vid, boolean dialated, String dialNotes, boolean cDODAb, String cDOD, String cDODNotes, boolean cDOSAb, String cDOS,
 			String cDOSNotes, boolean maculaODAb, String maculaODNotes, boolean maculaOSAb, String maculaOSNotes,
 			boolean retinaODAb, String retinaODNotes, boolean retinaOSAb, String retinaOSNotes) {
 		super();
@@ -95,7 +95,7 @@ public class FundusExam {
 	 * @param retinaOSAb
 	 * @param retinaOSNotes
 	 */
-	public FundusExam(boolean dialated, String dialNotes, boolean cDODAb, float cDOD, String cDODNotes, boolean cDOSAb, float cDOS,
+	public FundusExam(boolean dialated, String dialNotes, boolean cDODAb, String cDOD, String cDODNotes, boolean cDOSAb, String cDOS,
 			String cDOSNotes, boolean maculaODAb, String maculaODNotes, boolean maculaOSAb, String maculaOSNotes,
 			boolean retinaODAb, String retinaODNotes, boolean retinaOSAb, String retinaOSNotes) {
 		super();
@@ -149,11 +149,11 @@ public class FundusExam {
 		this.dialNotes = dial_Notes;
 	}
 	
-	public float getCDOD() {
+	public String getCDOD() {
 		return CDOD;
 	}
 
-	public void setCDOD(float cDOD) {
+	public void setCDOD(String cDOD) {
 		CDOD = cDOD;
 	}
 
@@ -173,11 +173,11 @@ public class FundusExam {
 		CDODNotes = cDODNotes;
 	}
 
-	public float getCDOS() {
+	public String getCDOS() {
 		return CDOS;
 	}
 
-	public void setCDOS(float cDOS) {
+	public void setCDOS(String cDOS) {
 		CDOS = cDOS;
 	}
 

@@ -82,6 +82,7 @@ public class VisitsTabView extends JPanel {
 
 		
 		JScrollPane leftPane = new JScrollPane(mainTaskPane);
+		leftPane.getVerticalScrollBar().setUnitIncrement(16);
 		
 		splitPane.setLeftComponent(leftPane);
 		splitPane.setRightComponent(btnNewVisit);
@@ -94,6 +95,8 @@ public class VisitsTabView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				VisitTabViewNewVisit vtvnv = new VisitTabViewNewVisit(patient, tabbedPane, homeModel);
 				JScrollPane rightPane = new JScrollPane(vtvnv);
+				rightPane.getVerticalScrollBar().setUnitIncrement(16);
+
 				splitPane.setRightComponent(rightPane);
 			}
 		});

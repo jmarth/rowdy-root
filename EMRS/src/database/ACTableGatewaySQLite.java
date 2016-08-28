@@ -57,30 +57,30 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 				AnteriorChamber p = new AnteriorChamber(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("isACODNormal"),
-						rs.getBoolean("isACOSNormal"),
-						rs.getInt("ACDepthOD"),
-						rs.getInt("ACDepthOS"),
+						rs.getInt("isACODNormal"),
+						rs.getInt("isACOSNormal"),
+						rs.getString("ACDepthOD"),
+						rs.getString("ACDepthOS"),
 						rs.getString("ACAngleOD"),
 						rs.getString("ACAngleOS"),
 						rs.getString("PASOD"),
 						rs.getString("PASOS"),
-						rs.getInt("ACODKP"),
-						rs.getInt("ACOSKP"),
-						rs.getBoolean("isShuntOD"),
-						rs.getBoolean("isScarringOD"),
-						rs.getBoolean("isTraumaOD"),
-						rs.getBoolean("isBlebOD"),
-						rs.getBoolean("isShuntOS"),
-						rs.getBoolean("isScarringOS"),
-						rs.getBoolean("isTraumaOS"),
-						rs.getBoolean("isBlebOS"),
-						rs.getBoolean("isVascularOD"),
-						rs.getInt("BlebOD_Num"),
-						rs.getBoolean("isVascularOS"),
-						rs.getInt("BlebOS_Num"),
-						rs.getBoolean("isKSpindleOD"),
-						rs.getBoolean("isKSpindleOS")
+						rs.getString("ACODKP"),
+						rs.getString("ACOSKP"),
+						rs.getInt("isShuntOD"),
+						rs.getInt("isScarringOD"),
+						rs.getInt("isTraumaOD"),
+						rs.getInt("isBlebOD"),
+						rs.getInt("isShuntOS"),
+						rs.getInt("isScarringOS"),
+						rs.getInt("isTraumaOS"),
+						rs.getInt("isBlebOS"),
+						rs.getInt("isVascularOD"),
+						rs.getString("BlebOD_Num"),
+						rs.getInt("isVascularOS"),
+						rs.getString("BlebOS_Num"),
+						rs.getInt("isKSpindleOD"),
+						rs.getInt("isKSpindleOS")
 						);
 				
 				pl.add(p);
@@ -128,30 +128,30 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 				AnteriorChamber pu = new AnteriorChamber(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("isACODNormal"),
-						rs.getBoolean("isACOSNormal"),
-						rs.getInt("ACDepthOD"),
-						rs.getInt("ACDepthOS"),
+						rs.getInt("isACODNormal"),
+						rs.getInt("isACOSNormal"),
+						rs.getString("ACDepthOD"),
+						rs.getString("ACDepthOS"),
 						rs.getString("ACAngleOD"),
 						rs.getString("ACAngleOS"),
 						rs.getString("PASOD"),
 						rs.getString("PASOS"),
-						rs.getInt("ACODKP"),
-						rs.getInt("ACOSKP"),
-						rs.getBoolean("isShuntOD"),
-						rs.getBoolean("isScarringOD"),
-						rs.getBoolean("isTraumaOD"),
-						rs.getBoolean("isBlebOD"),
-						rs.getBoolean("isShuntOS"),
-						rs.getBoolean("isScarringOS"),
-						rs.getBoolean("isTraumaOS"),
-						rs.getBoolean("isBlebOS"),
-						rs.getBoolean("isVascularOD"),
-						rs.getInt("BlebOD_Num"),
-						rs.getBoolean("isVascularOS"),
-						rs.getInt("BlebOS_Num"),
-						rs.getBoolean("isKSpindleOD"),
-						rs.getBoolean("isKSpindleOS")
+						rs.getString("ACODKP"),
+						rs.getString("ACOSKP"),
+						rs.getInt("isShuntOD"),
+						rs.getInt("isScarringOD"),
+						rs.getInt("isTraumaOD"),
+						rs.getInt("isBlebOD"),
+						rs.getInt("isShuntOS"),
+						rs.getInt("isScarringOS"),
+						rs.getInt("isTraumaOS"),
+						rs.getInt("isBlebOS"),
+						rs.getInt("isVascularOD"),
+						rs.getString("BlebOD_Num"),
+						rs.getInt("isVascularOS"),
+						rs.getString("BlebOS_Num"),
+						rs.getInt("isKSpindleOD"),
+						rs.getInt("isKSpindleOS")
 						);
 				
 				pl.add(pu);
@@ -219,30 +219,30 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			st.setLong(1, p.getVid());
-			st.setBoolean(2, p.isACODNormal());
-			st.setBoolean(3, p.isACOSNormal());
-			st.setInt(4, p.getACDepthOD());
-			st.setInt(5, p.getACDepthOS());
+			st.setInt(2, p.isACODNormal());
+			st.setInt(3, p.isACOSNormal());
+			st.setString(4, p.getACDepthOD());
+			st.setString(5, p.getACDepthOS());
 			st.setString(6, p.getACAngleOD());
 			st.setString(7, p.getACAngleOS());
 			st.setString(8, p.getPASOD());
 			st.setString(9, p.getPASOS());
-			st.setInt(10, p.getACODKP());
-			st.setInt(11, p.getACOSKP());
-			st.setBoolean(12, p.isShuntOD());
-			st.setBoolean(13, p.isScarringOD());
-			st.setBoolean(14, p.isTraumaOD());
-			st.setBoolean(15, p.isBlebOD());
-			st.setBoolean(16, p.isShuntOS());
-			st.setBoolean(17, p.isScarringOS());
-			st.setBoolean(18, p.isTraumaOS());
-			st.setBoolean(19, p.isBlebOS());
-			st.setBoolean(20, p.isVascularOD());
-			st.setInt(21, p.getBlebOD_Num());
-			st.setBoolean(22, p.isVascularOS());
-			st.setInt(23, p.getBlebOS_Num());
-			st.setBoolean(24, p.isKSpindleOD());
-			st.setBoolean(25, p.isKSpindleOS());
+			st.setString(10, p.getACODKP());
+			st.setString(11, p.getACOSKP());
+			st.setInt(12, p.isShuntOD());
+			st.setInt(13, p.isScarringOD());
+			st.setInt(14, p.isTraumaOD());
+			st.setInt(15, p.isBlebOD());
+			st.setInt(16, p.isShuntOS());
+			st.setInt(17, p.isScarringOS());
+			st.setInt(18, p.isTraumaOS());
+			st.setInt(19, p.isBlebOS());
+			st.setInt(20, p.isVascularOD());
+			st.setString(21, p.getBlebOD_Num());
+			st.setInt(22, p.isVascularOS());
+			st.setString(23, p.getBlebOS_Num());
+			st.setInt(24, p.isKSpindleOD());
+			st.setInt(25, p.isKSpindleOS());
 			
 			
 			st.executeUpdate();

@@ -57,19 +57,19 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 				Refraction r = new Refraction(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("isManifest"),
-						rs.getFloat("SC_OD_Sphere"),
-						rs.getFloat("SC_OD_Cyl"),
-						rs.getFloat("SC_OD_Axis"),
-						rs.getFloat("SC_OS_Sphere"),
-						rs.getFloat("SC_OS_Cyl"),
-						rs.getFloat("SC_OS_Axis"),
-						rs.getFloat("CC_OD_Sphere"),
-						rs.getFloat("CC_OD_Cyl"),
-						rs.getFloat("CC_OD_Axis"),
-						rs.getFloat("CC_OS_Sphere"),
-						rs.getFloat("CC_OS_Cyl"),
-						rs.getFloat("CC_OS_Axis")
+						rs.getInt("isManifest"),
+						rs.getString("SC_OD_Sphere"),
+						rs.getString("SC_OD_Cyl"),
+						rs.getString("SC_OD_Axis"),
+						rs.getString("SC_OS_Sphere"),
+						rs.getString("SC_OS_Cyl"),
+						rs.getString("SC_OS_Axis"),
+						rs.getString("CC_OD_Sphere"),
+						rs.getString("CC_OD_Cyl"),
+						rs.getString("CC_OD_Axis"),
+						rs.getString("CC_OS_Sphere"),
+						rs.getString("CC_OS_Cyl"),
+						rs.getString("CC_OS_Axis")
 						);
 				
 				rl.add(r);
@@ -118,19 +118,19 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 				Refraction glsrx = new Refraction(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("isManifest"),
-						rs.getFloat("SC_OD_Sphere"),
-						rs.getFloat("SC_OD_Cyl"),
-						rs.getFloat("SC_OD_Axis"),
-						rs.getFloat("SC_OS_Sphere"),
-						rs.getFloat("SC_OS_Cyl"),
-						rs.getFloat("SC_OS_Axis"),
-						rs.getFloat("CC_OD_Sphere"),
-						rs.getFloat("CC_OD_Cyl"),
-						rs.getFloat("CC_OD_Axis"),
-						rs.getFloat("CC_OS_Sphere"),
-						rs.getFloat("CC_OS_Cyl"),
-						rs.getFloat("CC_OS_Axis")
+						rs.getInt("isManifest"),
+						rs.getString("SC_OD_Sphere"),
+						rs.getString("SC_OD_Cyl"),
+						rs.getString("SC_OD_Axis"),
+						rs.getString("SC_OS_Sphere"),
+						rs.getString("SC_OS_Cyl"),
+						rs.getString("SC_OS_Axis"),
+						rs.getString("CC_OD_Sphere"),
+						rs.getString("CC_OD_Cyl"),
+						rs.getString("CC_OD_Axis"),
+						rs.getString("CC_OS_Sphere"),
+						rs.getString("CC_OS_Cyl"),
+						rs.getString("CC_OS_Axis")
 						);
 				
 				rl.add(glsrx);
@@ -188,23 +188,23 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 			
 			st.setLong(1, glsRx.getVid());
 			
-			st.setBoolean(2, glsRx.isManifest());
+			st.setInt(2, glsRx.isManifest());
 			
-			st.setFloat(3, glsRx.getSC_OD_Sphere());
-			st.setFloat(4, glsRx.getSC_OD_Cyl());
-			st.setFloat(5, glsRx.getSC_OD_Axis());
+			st.setString(3, glsRx.getSC_OD_Sphere());
+			st.setString(4, glsRx.getSC_OD_Cyl());
+			st.setString(5, glsRx.getSC_OD_Axis());
 			
-			st.setFloat(6, glsRx.getSC_OS_Sphere());
-			st.setFloat(7, glsRx.getSC_OS_Cyl());
-			st.setFloat(8, glsRx.getSC_OS_Axis());
+			st.setString(6, glsRx.getSC_OS_Sphere());
+			st.setString(7, glsRx.getSC_OS_Cyl());
+			st.setString(8, glsRx.getSC_OS_Axis());
 			
-			st.setFloat(9, glsRx.getCC_OD_Sphere());
-			st.setFloat(10, glsRx.getCC_OD_Cyl());
-			st.setFloat(11, glsRx.getCC_OD_Axis());
+			st.setString(9, glsRx.getCC_OD_Sphere());
+			st.setString(10, glsRx.getCC_OD_Cyl());
+			st.setString(11, glsRx.getCC_OD_Axis());
 			
-			st.setFloat(12, glsRx.getCC_OS_Sphere());
-			st.setFloat(13, glsRx.getCC_OS_Cyl());
-			st.setFloat(14, glsRx.getCC_OS_Axis());
+			st.setString(12, glsRx.getCC_OS_Sphere());
+			st.setString(13, glsRx.getCC_OS_Cyl());
+			st.setString(14, glsRx.getCC_OS_Axis());
 			
 			st.executeUpdate();
 			

@@ -57,21 +57,21 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 				Pupils p = new Pupils(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("areBothPupilsNormal"),
+						rs.getInt("areBothPupilsNormal"),
 						rs.getString("bothShape"),
-						rs.getInt("bothDiameter"),
-						rs.getBoolean("isBothRAPD"),
-						rs.getBoolean("isBothSynechia"),
-						rs.getBoolean("isRightPupilNormal"),
+						rs.getString("bothDiameter"),
+						rs.getInt("isBothRAPD"),
+						rs.getInt("isBothSynechia"),
+						rs.getInt("isRightPupilNormal"),
 						rs.getString("rightShape"),
-						rs.getInt("rightDiameter"),
-						rs.getBoolean("isRightRAPD"),
-						rs.getBoolean("isRightSynechia"),
-						rs.getBoolean("isLeftPupilNormal"),
+						rs.getString("rightDiameter"),
+						rs.getInt("isRightRAPD"),
+						rs.getInt("isRightSynechia"),
+						rs.getInt("isLeftPupilNormal"),
 						rs.getString("leftShape"),
-						rs.getInt("leftDiameter"),
-						rs.getBoolean("isLeftRAPD"),
-						rs.getBoolean("isLeftSynechia")
+						rs.getString("leftDiameter"),
+						rs.getInt("isLeftRAPD"),
+						rs.getInt("isLeftSynechia")
 						);
 				
 				pl.add(p);
@@ -119,21 +119,21 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 				Pupils pu = new Pupils(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("areBothPupilsNormal"),
+						rs.getInt("areBothPupilsNormal"),
 						rs.getString("bothShape"),
-						rs.getInt("bothDiameter"),
-						rs.getBoolean("isBothRAPD"),
-						rs.getBoolean("isBothSynechia"),
-						rs.getBoolean("isRightPupilNormal"),
+						rs.getString("bothDiameter"),
+						rs.getInt("isBothRAPD"),
+						rs.getInt("isBothSynechia"),
+						rs.getInt("isRightPupilNormal"),
 						rs.getString("rightShape"),
-						rs.getInt("rightDiameter"),
-						rs.getBoolean("isRightRAPD"),
-						rs.getBoolean("isRightSynechia"),
-						rs.getBoolean("isLeftPupilNormal"),
+						rs.getString("rightDiameter"),
+						rs.getInt("isRightRAPD"),
+						rs.getInt("isRightSynechia"),
+						rs.getInt("isLeftPupilNormal"),
 						rs.getString("leftShape"),
-						rs.getInt("leftDiameter"),
-						rs.getBoolean("isLeftRAPD"),
-						rs.getBoolean("isLeftSynechia")
+						rs.getString("leftDiameter"),
+						rs.getInt("isLeftRAPD"),
+						rs.getInt("isLeftSynechia")
 						);
 				
 				pl.add(pu);
@@ -193,23 +193,23 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 			
 			st.setLong(1, p.getVid());
 			
-			st.setBoolean(2, p.isBothPupilsNormal());
+			st.setInt(2, p.isBothPupilsNormal());
 			st.setString(3, p.getBothShape());
-			st.setInt(4, p.getBothDiameter());
-			st.setBoolean(5, p.isBothRAPD());
-			st.setBoolean(6, p.isBothSynechia());
+			st.setString(4, p.getBothDiameter());
+			st.setInt(5, p.isBothRAPD());
+			st.setInt(6, p.isBothSynechia());
 			
-			st.setBoolean(7, p.isRightPupilNormal());
+			st.setInt(7, p.isRightPupilNormal());
 			st.setString(8, p.getRightShape());
-			st.setInt(9, p.getRightDiameter());
-			st.setBoolean(10, p.isRightRAPD());
-			st.setBoolean(11, p.isRightSynechia());
+			st.setString(9, p.getRightDiameter());
+			st.setInt(10, p.isRightRAPD());
+			st.setInt(11, p.isRightSynechia());
 			
-			st.setBoolean(12, p.isLeftPupilNormal());
+			st.setInt(12, p.isLeftPupilNormal());
 			st.setString(13, p.getLeftShape());
-			st.setInt(14, p.getLeftDiameter());
-			st.setBoolean(15, p.isLeftRAPD());
-			st.setBoolean(16, p.isLeftSynechia());
+			st.setString(14, p.getLeftDiameter());
+			st.setInt(15, p.isLeftRAPD());
+			st.setInt(16, p.isLeftSynechia());
 			
 			st.executeUpdate();
 			
