@@ -267,7 +267,7 @@ public class DocumentsTabView extends JPanel {
 				label.setAlignmentX(Component.CENTER_ALIGNMENT);
 				docPane.add(label);
 				label = null;
-				docPane.add(new JSeparator(SwingConstants.HORIZONTAL));
+				//docPane.add(new JSeparator(SwingConstants.HORIZONTAL));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -58,7 +58,7 @@ public class PatientRecordView extends JTabbedPane {
 		lab2.setPreferredSize(new Dimension(145, 30));
 		lab2.setHorizontalAlignment(JLabel.CENTER);
 		
-		JPanel hxView = new hxView(patient, this, homeModel.getAtg(), homeModel.getMtg());
+		JPanel hxView = new hxView(patient, this, homeModel.getAtg(), homeModel.getMtg(), homeModel.getRtg(), homeModel.getHtg());
 		this.addTab(Tabs.hx, null, hxView, null);
 		this.setTabComponentAt(1, lab2);
 		
@@ -81,14 +81,15 @@ public class PatientRecordView extends JTabbedPane {
 		this.addTab(Tabs.vitals, null, VitalsTabView, null);
 		this.setTabComponentAt(3, lab4);
 		
-		// create testing tab
+		/** create testing tab
 		JLabel lab5 = new JLabel(Tabs.testing);
 		lab5.setPreferredSize(new Dimension(145, 30));
 		lab5.setHorizontalAlignment(JLabel.CENTER);
 		
 		JPanel panel_2 = new JPanel();
-		this.addTab(Tabs.testing, null, new hxView(patient, this, homeModel.getAtg(), homeModel.getMtg()));
+		this.addTab(Tabs.testing, null, panel_2);
 		this.setTabComponentAt(4, lab5);
+		**/
 		
 		// create labs tab
 		JLabel lab6 = new JLabel(Tabs.labs);
@@ -97,7 +98,7 @@ public class PatientRecordView extends JTabbedPane {
 		
 		LabsAndProceduresTabView labs  = new LabsAndProceduresTabView(patient, this, homeModel.getSrg(), homeModel.getSttg());
 		this.addTab(Tabs.labs, null, labs, null);
-		this.setTabComponentAt(5, lab6);
+		this.setTabComponentAt(4, lab6);
 		
 		// create documents tab
 		JLabel lab7 = new JLabel(Tabs.docs);
@@ -106,7 +107,7 @@ public class PatientRecordView extends JTabbedPane {
 		
 		DocumentsTabView docsView = new DocumentsTabView(homeModel.getDtg(), patient);
 		this.addTab(Tabs.docs, null, docsView, null);
-		this.setTabComponentAt(6, lab7);
+		this.setTabComponentAt(5, lab7);
 		
 		this.setBackground(CL.porcelian);
 		

@@ -284,3 +284,103 @@
 2016-07-20 19:08:02,983 - User pressed 'Find Patient'
 2016-07-20 19:08:03,947 - User selected patient: 67
 2016-07-20 19:08:05,026 - User selected 'Physical Exam Detail' tab
+2016-08-11 19:52:07,549 - Launching Application
+2016-08-11 19:52:10,736 - User pressed 'Login'
+2016-08-11 19:52:17,764 - User pressed 'Find Patient'
+2016-08-11 19:52:19,377 - User pressed 'Find Patient'
+2016-08-11 19:52:20,654 - User selected patient: 66
+2016-08-11 19:52:24,939 - User selected 'Physical Exam Detail' tab
+2016-08-11 19:52:35,846 - User selected 'Vitals' tab
+2016-08-11 19:52:36,859 - User selected 'Special Testing' tab
+2016-08-11 19:52:37,373 - User selected 'Labs & Procedures' tab
+2016-08-11 19:52:46,875 - User selected 'Special Testing' tab
+2016-08-11 19:52:47,297 - User selected 'Vitals' tab
+2016-08-11 19:52:47,726 - User selected 'Physical Exam Detail' tab
+2016-08-11 19:53:00,906 - User selected 'Physical Exam Detail' tab
+2016-08-11 19:53:06,307 - User pressed 'Add Patient'
+2016-08-11 19:53:08,460 - User pressed 'Add Patient'
+2016-08-11 19:53:08,860 - User pressed 'Find Patient'
+2016-08-11 19:53:09,707 - User selected patient: 58
+2016-08-11 19:53:20,897 - User selected 'Vitals' tab
+2016-08-11 19:53:21,464 - User selected 'Special Testing' tab
+2016-08-11 19:53:22,389 - User selected 'Vitals' tab
+2016-08-11 19:53:42,060 - User pressed 'Add Patient'
+2016-08-11 19:53:42,599 - User pressed 'Find Patient'
+2016-08-11 19:53:43,634 - User selected patient: 58
+2016-08-11 19:53:45,523 - User pressed 'Add Patient'
+2016-08-11 19:53:47,378 - User pressed 'Find Patient'
+2016-08-11 19:53:53,819 - User selected patient: 54
+2016-08-11 19:54:04,331 - User selected 'Physical Exam Detail' tab
+2016-08-11 19:54:04,819 - User selected 'Vitals' tab
+2016-08-11 19:54:05,441 - User selected 'Physical Exam Detail' tab
+2016-08-11 19:54:12,033 - User selected 'Vitals' tab
+2016-08-11 19:54:20,723 - User selected 'Special Testing' tab
+2016-08-11 19:54:23,165 - User selected 'Labs & Procedures' tab
+2016-08-11 19:54:28,596 - User selected 'Vitals' tab
+2016-08-11 19:54:34,722 - User selected 'Physical Exam Detail' tab
+2016-08-11 19:55:22,068 - User selected 'Labs & Procedures' tab
+2016-08-11 20:01:39,881 - Launching Application
+2016-08-11 20:01:41,736 - User pressed 'Login'
+2016-08-11 20:01:54,527 - User pressed 'Add Patient'
+2016-08-11 20:01:55,362 - User pressed 'Find Patient'
+2016-08-11 20:01:57,910 - User selected patient: 53
+2016-08-11 20:02:05,217 - User selected 'Physical Exam Detail' tab
+2016-08-11 20:02:08,339 - User selected 'Vitals' tab
+2016-08-11 20:02:09,060 - User selected 'Special Testing' tab
+2016-08-11 20:02:12,650 - User selected 'Labs & Procedures' tab
+2016-08-11 20:02:13,672 - User selected 'Labs & Procedures' tab
+2016-08-12 14:41:25,553 - Launching Application
+2016-08-12 14:41:27,562 - User pressed 'Login'
+2016-08-12 14:41:29,829 - User pressed 'Find Patient'
+2016-08-12 14:41:31,893 - User selected patient: 50
+2016-08-12 14:41:35,443 - User selected 'Physical Exam Detail' tab
+2016-08-12 14:45:59,075 - Launching Application
+2016-08-12 14:46:01,443 - User pressed 'Login'
+2016-08-12 14:46:04,074 - User pressed 'Find Patient'
+2016-08-12 14:46:05,191 - User selected patient: 58
+2016-08-12 14:46:08,294 - User selected 'Physical Exam Detail' tab
+2016-08-12 14:47:22,332 - Launching Application
+2016-08-12 14:47:25,879 - User pressed 'Login'
+2016-08-12 14:47:27,607 - User pressed 'Find Patient'
+2016-08-12 14:47:28,631 - User selected patient: 59
+2016-08-12 14:47:29,933 - User selected 'Physical Exam Detail' tab
+2016-08-12 14:48:06,474 - Launching Application
+2016-08-12 14:48:08,207 - User pressed 'Login'
+2016-08-12 14:48:10,494 - User pressed 'Find Patient'
+2016-08-12 14:48:11,629 - User selected patient: 68
+2016-08-12 14:48:12,683 - User selected 'Physical Exam Detail' tab
+2016-08-12 14:48:50,222 - Launching Application
+2016-08-12 14:48:53,824 - User pressed 'Login'
+2016-08-12 14:48:55,276 - User pressed 'Find Patient'
+2016-08-12 14:48:56,367 - User selected patient: 59
+2016-08-12 14:48:59,196 - User selected 'Physical Exam Detail' tab
+2016-08-12 14:49:53,665 - Launching Application
+2016-08-12 14:49:55,113 - User pressed 'Login'
+2016-08-12 14:49:56,481 - User pressed 'Find Patient'
+2016-08-12 14:49:57,447 - User selected patient: 67
+2016-08-12 14:49:58,458 - User selected 'Physical Exam Detail' tab
+2016-08-12 14:50:13,077 - Launching Application
+2016-08-12 14:50:15,527 - User pressed 'Login'
+2016-08-12 14:50:16,883 - User pressed 'Find Patient'
+2016-08-12 14:50:17,776 - User selected patient: 58
+2016-08-12 14:50:18,821 - User selected 'Physical Exam Detail' tab
+2016-08-12 14:55:02,997 - Launching Application
+2016-08-12 14:55:04,919 - User pressed 'Login'
+2016-08-12 14:55:06,465 - User pressed 'Find Patient'
+2016-08-12 14:55:07,534 - User selected patient: 58
+2016-08-12 14:55:08,880 - User selected 'Physical Exam Detail' tab
+2016-08-12 14:56:55,139 - Launching Application
+2016-08-12 14:56:57,118 - User pressed 'Login'
+2016-08-12 14:56:58,480 - User pressed 'Find Patient'
+2016-08-12 14:56:58,689 - User pressed 'Find Patient'
+2016-08-12 14:56:59,603 - User selected patient: 68
+2016-08-12 14:57:00,575 - User selected 'Physical Exam Detail' tab
+2016-08-12 14:57:03,183 - User selected 'Physical Exam Detail' tab
+2016-08-12 15:18:28,819 - Launching Application
+2016-08-12 15:18:30,967 - User pressed 'Login'
+2016-08-12 15:18:34,242 - User pressed 'Find Patient'
+2016-08-12 15:18:35,570 - User selected patient: 68
+2016-08-12 15:18:36,986 - User pressed 'Add Patient'
+2016-08-12 15:18:40,623 - User pressed 'Find Patient'
+2016-08-12 15:18:41,346 - User selected patient: 58
+2016-08-12 15:18:42,571 - User selected 'Physical Exam Detail' tab

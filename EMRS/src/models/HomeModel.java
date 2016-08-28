@@ -16,6 +16,8 @@ import database.DocumentTableGateway;
 import database.DocumentTableGatewaySQLite;
 import database.FundusTableGateway;
 import database.FundusTableGatewaySQLite;
+import database.DrugTableGateway;
+import database.DrugTableGatewaySQLite;
 import database.GatewayException;
 import database.GlassesRxTableGateway;
 import database.GlassesRxTableGatewaySQLite;
@@ -25,6 +27,8 @@ import database.IOPTableGateway;
 import database.IOPTableGatewaySQLite;
 import database.LensTableGateway;
 import database.LensTableGatewaySQLite;
+import database.HxTableGateway;
+import database.HxTableGatewaySQLite;
 import database.MedicationsTableGateway;
 import database.MedicationsTableGatewaySQLite;
 import database.PatientTableGateway;
@@ -65,6 +69,8 @@ public class HomeModel {
 	private SurgeryTableGateway srg = null;
 	private CommentTableGateway ctg =null;
 	private MedicationsTableGateway mtg = null;
+	private DrugTableGateway rtg = null;
+	private HxTableGateway htg = null;
 	
 	private DistanceVisionTableGateway dvtg;
 	private GlassesRxTableGateway glsRxTG;
@@ -98,7 +104,11 @@ public class HomeModel {
 			dtg = new DocumentTableGatewaySQLite();
 			ctg = new CommentTableGatewaySQLite();
 			mtg = new MedicationsTableGatewaySQLite();
-			
+			rtg = new DrugTableGatewaySQLite();
+        	sttg = new SurgeryTemplatesTableGatewaySQLite();
+        	srg = new SurgeryTableGatewaySQLite();
+        	htg = new HxTableGatewaySQLite();
+        	
 			setDvtg(new DistanceVisionTableGatewaySQLite());
 			setGlsRxT(new GlassesRxTableGatewaySQLite());
 			setRefractionTG(new RefractionTableGatewaySQLite());
@@ -112,8 +122,9 @@ public class HomeModel {
 			vl.setGateway(vtg);
         	vl.loadFromGateway();
         	
-        	sttg = new SurgeryTemplatesTableGatewaySQLite();
-        	setSrg(new SurgeryTableGatewaySQLite());
+        	//wut was during merge...
+        	//sttg = new SurgeryTemplatesTableGatewaySQLite();
+        	//setSrg(new SurgeryTableGatewaySQLite());
         	        	
 		} catch (GatewayException e) {
 			JOptionPane.showMessageDialog(null, "Database is not responding.", "Database Offline!", JOptionPane.ERROR_MESSAGE);
@@ -304,5 +315,21 @@ public class HomeModel {
 
 	public void setFundusTG(FundusTableGateway fundusTG) {
 		this.fundusTG = fundusTG;
+	}
+
+	public DrugTableGateway getRtg() {
+		return rtg;
+	}
+
+	public void setRtg(DrugTableGateway rtg) {
+		this.rtg = rtg;
+	}
+
+	public HxTableGateway getHtg() {
+		return htg;
+	}
+
+	public void setHtg(HxTableGateway htg) {
+		this.htg = htg;
 	}
 }

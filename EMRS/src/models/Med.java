@@ -3,16 +3,15 @@ package models;
 public class Med {
 	private Long id;
 	private Long pid;
-	private String name;
-	private String date;
-	private String reason;
+	private String tradeName;
+	private String genericName;
+
 	
-	public Med(Long param_id, Long param_pid, String param_name, String param_date, String param_reason) {
+	public Med(Long param_id, Long param_pid, String param_trade, String param_generic) {
 		this.setId(param_id);
 		this.setPid(param_pid);
-		this.setName(param_name);
-		this.setDate(param_date);
-		this.setReason(param_reason);
+		this.setTradeName(param_trade);
+		this.setGenericName(param_generic);
 	}
 
 	public Long getId() {
@@ -31,28 +30,21 @@ public class Med {
 		this.pid = pid;
 	}
 
-	public String getName() {
-		return name;
+	public String getTradeName() {
+		return tradeName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTradeName(String tradeName) {
+		this.tradeName = tradeName;
 	}
 
-	public String getDate() {
-		return date;
+	public String getGenericName() {
+		return genericName;
 	}
 
-	public void setDate(String date) {
-		this.date = date;
+	public void setGenericName(String genericName) {
+		this.genericName = genericName;
 	}
 
-	public String getReason() {
-		return reason;
-	}
-
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
 
 }
