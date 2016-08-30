@@ -16,6 +16,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,7 +70,7 @@ public class AddPatientView extends JFrame {
 	private PatientList pl;
 	//Regex
 	//private final String NAME_PATTERN = "^[a-z ,.'-]+$";//the old code
-	private final String NAME_PATTERN = "^[a-z ]+$";// the new code
+	private final String NAME_PATTERN = "^[a-z]+$";// the new code (^\\d{4}$)?
 	//private final String NAME_PATTERN_2 = "^$|(^[a-z ,.'-]+$)";//the old code
 	private final String NAME_PATTERN_2 = "^$|(^[a-z]+$)";// the new ode
 	//Balloon tips for each textfield
@@ -321,7 +322,7 @@ public class AddPatientView extends JFrame {
 		// BIRTH DATE
 		
 		JPanel panel_8 = new JPanel();
-		TitledBorder tb_3 = new TitledBorder(null, "Patient's birth date", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
+		TitledBorder tb_3 = new TitledBorder(null, "Patient's birth date(required)", TitledBorder.LEADING, TitledBorder.TOP,  null, null);
 		tb_3.setTitleJustification(TitledBorder.CENTER);
 		tb_3.setTitleFont(new Font("Tahoma", Font.BOLD, 14));
 		tb_3.setTitleColor(new Color(2,108,143));
@@ -410,8 +411,9 @@ public class AddPatientView extends JFrame {
 		panel_4.add(birthMonthComboBox, gbc_birthMonthComboBox);
 		
 		birthYearTextField = new JTextField();
+		birthYearTextField.setName("yeartext");
 		dateYearBalloon = createBalloonTip(birthYearTextField, "Invalid year");
-		addBalloonTip(birthYearTextField, dateYearBalloon, "(^\\d{4}$)?");
+		addBalloonTip(birthYearTextField, dateYearBalloon, "(^\\d{4}$)?");//(^\\d{4}$)?
 		GridBagConstraints gbc_birthYearTextField = new GridBagConstraints();
 		gbc_birthYearTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_birthYearTextField.insets = new Insets(0, 0, 5, 0);
@@ -771,13 +773,28 @@ public class AddPatientView extends JFrame {
 			public void focusLost(FocusEvent arg0) {
 				Pattern pattern = Pattern.compile(regex);
 				Matcher matcher = pattern.matcher(textField.getText().toLowerCase());
-				if(matcher.matches()) {
-					balloonTip.setVisible(false);
+				if(matcher.matches()){
+					JTextField tf =(JTextField)arg0.getSource();
+					if(regex.compareTo("(^\\d{4}$)?")==0){
+						int year = Calendar.getInstance().get(Calendar.YEAR);
+						try{
+							year = year - Integer.parseInt(((JTextField)arg0.getSource()).getText().trim());
+							if(year>0&&year<150){
+								dateYearBalloon.setVisible(false);
+							}else{
+								dateYearBalloon.setVisible(true);
+							}
+						}catch(Exception ex){
+							dateYearBalloon.setVisible(false);
+						}
+					}else{
+						balloonTip.setVisible(false);
+					}
+					//balloonTip.setVisible(false);
 				}
 				else {
 					balloonTip.setVisible(true);
 				}
-
 			}
 		});
 	}
