@@ -97,8 +97,8 @@ public class HomeView extends JFrame {
 		panel_1.setLayout(new BorderLayout(0, 0));
 		
 		// setup slide show in center panel_1
-		SlideShowPanel ssp = new SlideShowPanel();		
-		panel_1.add(ssp);
+		//SlideShowPanel ssp = new SlideShowPanel();		
+		//panel_1.add(ssp);
 				
 		
 		
