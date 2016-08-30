@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 
 import javax.swing.ButtonGroup;
+import javax.swing.border.MatteBorder;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class PanelAC extends JPanel {
@@ -104,12 +106,12 @@ public class PanelAC extends JPanel {
 	 */
 	public PanelAC() {
 
-		setBorder(new TitledBorder(null, "Anterior Chamber", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Anterior Chamber", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 
 		setLayout(new MigLayout("", "[grow]", "[][]"));
 
 		JPanel panel = new JPanel();
-		panel.setBorder(new TitledBorder(null, "OD", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), "OD", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		add(panel, "cell 0 0,grow");
 		panel.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][]"));
 
@@ -253,7 +255,7 @@ public class PanelAC extends JPanel {
 		panel_8.add(rdbtn_N_KSpindleOD);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "OS", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBorder(new TitledBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), "OS", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		add(panel_1, "cell 0 1,grow");
 		panel_1.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[grow][grow]"));
 

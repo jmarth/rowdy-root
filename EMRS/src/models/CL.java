@@ -37,6 +37,10 @@ public final class CL {
 	
 	public static final Color antiqueWhite = new Color(255, 239, 213);
 	
+	public static final Color softBlue = new Color(207, 237, 250);
+	
+	public static final Color turq = new Color(90, 174, 185);
+	
 	public static final Color coal = Color.decode("#181818");
 	
 	public static final Color storm = Color.decode("#383838");

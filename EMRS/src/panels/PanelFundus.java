@@ -2,6 +2,7 @@ package panels;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -24,6 +25,7 @@ import net.miginfocom.swing.MigLayout;
 import views.Paint;
 
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class PanelFundus extends JPanel {
@@ -64,7 +66,7 @@ public class PanelFundus extends JPanel {
 		this.hm = hm;
 		this.p = p;
 		
-		setBorder(new TitledBorder(null, "Fundus Exam", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Fundus Exam", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[grow]", "[][][grow]"));
 		
 		JPanel panel_Fundus_Dialated = new JPanel();
@@ -183,7 +185,7 @@ public class PanelFundus extends JPanel {
 		
 		// FUNDUS SKETCH
 		JPanel panel_FundusImage = new JPanel();
-		panel_FundusImage.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Fundus Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_FundusImage.setBorder(new TitledBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)), "Fundus Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		add(panel_FundusImage, "cell 0 2,grow");
 		panel_FundusImage.setLayout(new BoxLayout(panel_FundusImage, BoxLayout.Y_AXIS));
 		

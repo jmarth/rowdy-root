@@ -2,6 +2,7 @@ package panels;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -28,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class PanelGonio extends JPanel {
@@ -145,11 +147,11 @@ public class PanelGonio extends JPanel {
 		this.hm = hm;
 		this.p = p;
 		
-		setBorder(new TitledBorder(null, "Gonioscopy", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Gonio", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[grow]", "[][][][33px,grow]"));
 		
 		JPanel panel_HxFHA = new JPanel();
-		panel_HxFHA.setBorder(new TitledBorder(null, "Hx of Frontal Headaches", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_HxFHA.setBorder(new TitledBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)), "Hx of Frontal Headaches", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		add(panel_HxFHA, "cell 0 0");
 		panel_HxFHA.setLayout(new MigLayout("", "[31px][33px][22px]", "[32px]"));
 		
@@ -178,7 +180,7 @@ public class PanelGonio extends JPanel {
 		panel_HxFHDSide.add(rdbtn_FHD_Both);
 		
 		JPanel panel_GonioOD = new JPanel();
-		panel_GonioOD.setBorder(new TitledBorder(null, "OD", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_GonioOD.setBorder(new TitledBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)), "OD", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		add(panel_GonioOD, "cell 0 1,growx");
 		panel_GonioOD.setLayout(new MigLayout("", "[grow][][]", "[][]"));
 		
@@ -316,7 +318,7 @@ public class PanelGonio extends JPanel {
 		panel_14.add(rdbtn_N_AntPigLineOD);
 		
 		JPanel panel_GonioOS = new JPanel();
-		panel_GonioOS.setBorder(new TitledBorder(null, "OS", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_GonioOS.setBorder(new TitledBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)), "OS", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		add(panel_GonioOS, "cell 0 2,growx");
 		panel_GonioOS.setLayout(new MigLayout("", "[grow][][]", "[][]"));
 		
@@ -454,7 +456,7 @@ public class PanelGonio extends JPanel {
 		panel_16.add(rdbtn_N_AntPigLineOS);
 		
 		JPanel panel_GonioSketch = new JPanel();
-		panel_GonioSketch.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Gonioscopy Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_GonioSketch.setBorder(new TitledBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)), "Gonioscopy Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		add(panel_GonioSketch, "cell 0 3,growx,aligny top");
 		panel_GonioSketch.setLayout(new BoxLayout(panel_GonioSketch, BoxLayout.Y_AXIS));
 		

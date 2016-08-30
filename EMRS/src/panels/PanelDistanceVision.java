@@ -1,14 +1,21 @@
 package panels;
 
 import java.awt.Component;
+import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import models.CL;
 import models.DistanceVision;
 import net.miginfocom.swing.MigLayout;
+import javax.swing.border.MatteBorder;
+import java.awt.Color;
+import javax.swing.border.EtchedBorder;
+import java.awt.SystemColor;
+import javax.swing.UIManager;
 
 @SuppressWarnings("serial")
 public class PanelDistanceVision extends JPanel {
@@ -25,12 +32,14 @@ public class PanelDistanceVision extends JPanel {
 	 */
 	public PanelDistanceVision() {
 
-				setBorder(new TitledBorder(null, "Distance Vision", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Distance Vision", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 				setLayout(new MigLayout("", "[grow]", "[][]"));
+				setBackground(CL.turq);
 				
 				JPanel panel_DVSC = new JPanel();
+				panel_DVSC.setBackground(new Color(238, 238, 238));
 				add(panel_DVSC, "cell 0 0,growx");
-				panel_DVSC.setBorder(new TitledBorder(null, "Without Glasses", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				panel_DVSC.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(64, 64, 64)), "Without Glasses", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 				panel_DVSC.setLayout(new MigLayout("", "[][][grow]", "[][]"));
 				
 				JLabel lblRightEye = new JLabel("Right Eye");
@@ -55,8 +64,9 @@ public class PanelDistanceVision extends JPanel {
 				
 				JPanel panel_DVCC = new JPanel();
 				add(panel_DVCC, "cell 0 1,growx");
-				panel_DVCC.setBorder(new TitledBorder(null, "With Glasses", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				panel_DVCC.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(64, 64, 64)), "With Glasses", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 				panel_DVCC.setLayout(new MigLayout("", "[][][grow]", "[][]"));
+				panel_DVCC.setBackground(new Color(238, 238, 238));
 				
 				JLabel lblRightEye_1 = new JLabel("Right Eye");
 				panel_DVCC.add(lblRightEye_1, "cell 0 0");
