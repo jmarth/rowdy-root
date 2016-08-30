@@ -68,14 +68,16 @@ public class AddPatientView extends JFrame {
 	private JTextField phoneNumberTextField;
 	private PatientList pl;
 	//Regex
-	private final String NAME_PATTERN = "^[a-z ,.'-]+$";
-	private final String NAME_PATTERN_2 = "^$|(^[a-z ,.'-]+$)";
+	//private final String NAME_PATTERN = "^[a-z ,.'-]+$";//the old code
+	private final String NAME_PATTERN = "^[a-z ]+$";// the new code
+	//private final String NAME_PATTERN_2 = "^$|(^[a-z ,.'-]+$)";//the old code
+	private final String NAME_PATTERN_2 = "^$|(^[a-z]+$)";// the new ode
 	//Balloon tips for each textfield
 	private static BalloonTip firstNameBalloon;
 	private static BalloonTip middleNameBalloon;
 	private static BalloonTip lastNameBalloon;
 	private static BalloonTip dateDayBalloon;
-	private static BalloonTip dateYearBalloon ;
+	private static BalloonTip dateYearBalloon;
 	private static BalloonTip estYearBalloon;
 	private static BalloonTip estMonthBalloon;
 	private static BalloonTip cityBalloon;
