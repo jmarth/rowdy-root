@@ -105,7 +105,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		this.patient = patient;
 		this.tabbedPane = tabbedPane;
 		this.homeModel = homeModel;
-				
+		System.out.println("Visit id = " + v.getId() + " pid " + patient.getId());
 		createView();
 		
 		panel_Buttons.setVisible(false);
@@ -140,6 +140,7 @@ public class VisitTabViewNewVisit extends JPanel {
 					panel_Fundus.getSketchLabel().setIcon(icon);
 				}
 				//get db rows in object list for panels from database to populate
+				ArrayList<Object> visitCols = (ArrayList<Object>) homeModel.getVtg().fetchVisitsCols(v.getId());
 				ArrayList<Object> dvCols = (ArrayList<Object>) homeModel.getDvtg().fetchDistanceVisionColsForVisit(v.getId());
 				ArrayList<Object> rxCols = (ArrayList<Object>) homeModel.getGlsRxTG().fetchGlassesRxColsForVisit(v.getId());
 				ArrayList<Object> refractCols = (ArrayList<Object>) homeModel.getRefractionTG().fetchRefractionsColsForVisit(v.getId());
@@ -151,6 +152,7 @@ public class VisitTabViewNewVisit extends JPanel {
 				ArrayList<Object> fundusCols = (ArrayList<Object>) homeModel.getFundusTG().fetchFundusExamsForVisit(v.getId());
 				System.out.println("VISIT ID = " + v.getId());
 
+				populateVisitPanel(visitCols); // this panel
 				populateDVPanel(dvCols);
 				populateGlassesRxPanel(rxCols);
 				populateRefractionPanel(refractCols);
@@ -227,7 +229,7 @@ public class VisitTabViewNewVisit extends JPanel {
 				panel_Refraction.setFields(refractCols);
 				iter.next();//skip
 			}
-			System.out.println("xxx"+c.getClass());
+//			System.out.println("xxx"+c.getClass());
 			if (c instanceof JTextField) {
 //				System.out.println("HELLO??"+refractCols.get(i).getClass());
 				((JTextField)c).setText(refractCols.get(i).toString());
@@ -237,11 +239,17 @@ public class VisitTabViewNewVisit extends JPanel {
 			
 		
 	}
-	public void populatePupilsPanel(ArrayList<Object> pupilsCols) {
+
+	
+	public void populateVisitPanel(ArrayList<Object> visitCols) {
+		String temp; int i = -1;
 		
-		
-			
-		
+		temp = visitCols.get(++i).toString();
+		textArea_CC.setText(temp);
+		temp = visitCols.get(++i).toString();
+		textArea_Assessment.setText(temp);
+		temp = visitCols.get(++i).toString();
+		textArea_Plan.setText(temp);
 	}
 	
 	void setFields(Container container, ArrayList<Component> cl) {

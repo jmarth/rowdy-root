@@ -244,7 +244,7 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 					+ " isKSpindleOD,"
 					+ " isKSpindleOS)"
 					
-					+ " values ( ?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?, ? ) ",
+					+ " values ( ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?,  ?, ?, ?, ?, ? ) ",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			st.setLong(1, p.getVid());
@@ -346,7 +346,7 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 			while(rs.next()) {
 				for (int i = 3; i <= colCount; i++) {
 					row.add(rs.getObject(i));
-					System.out.println("column #"+ i + " : " + rs.getObject(i));
+//					System.out.println("column #"+ i + " : " + rs.getObject(i));
 				}
 			}
 			//System.out.println("\n****************\n AC ROW:"+row.toString());

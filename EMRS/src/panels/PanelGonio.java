@@ -572,9 +572,9 @@ public class PanelGonio extends JPanel {
 		temp = gonioCols.get(++i).toString();
 		if (temp.equals("Both")) {
 			rdbtn_FHD_Both.setSelected(true);
-		} else if (temp.equals("Left")) {
-			rdbtn_FHD_Right.setSelected(true);
 		} else if (temp.equals("Right")) {
+			rdbtn_FHD_Right.setSelected(true);
+		} else if (temp.equals("Left")) {
 			rdbtn_FHD_Left.setSelected(true);
 		}
 
@@ -635,13 +635,13 @@ public class PanelGonio extends JPanel {
 		}
 		
 		temp = gonioCols.get(++i).toString();
-		if (temp.equals("1")) {
+		if (temp.equals("+1")) {
 			rdbtn_PigmentOD_1.setSelected(true);
-		} else if (temp.equals("2")) {
+		} else if (temp.equals("+2")) {
 			rdbtn_PigmentOD_2.setSelected(true);
-		} else if (temp.equals("3")) {
+		} else if (temp.equals("+3")) {
 			rdbtn_PigmentOD_3.setSelected(true);
-		} else if (temp.equals("4")) {
+		} else if (temp.equals("+4")) {
 			rdbtn_PigmentOD_4.setSelected(true);
 		}
 
@@ -709,13 +709,13 @@ public class PanelGonio extends JPanel {
 		}
 		
 		temp = gonioCols.get(++i).toString();
-		if (temp.equals("1")) {
+		if (temp.equals("+1")) {
 			rdbtn_PigmentOS_1.setSelected(true);
-		} else if (temp.equals("2")) {
+		} else if (temp.equals("+2")) {
 			rdbtn_PigmentOS_2.setSelected(true);
-		} else if (temp.equals("3")) {
+		} else if (temp.equals("+3")) {
 			rdbtn_PigmentOS_3.setSelected(true);
-		} else if (temp.equals("4")) {
+		} else if (temp.equals("+4")) {
 			rdbtn_PigmentOS_4.setSelected(true);
 		}
 

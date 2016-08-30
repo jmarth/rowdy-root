@@ -256,22 +256,21 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 			st.setLong(1, id);
 			
 			rs = st.executeQuery();
-			System.out.println("PUPIL COL FOR VISIT  =  " + id);
 			//get metadata
 		    ResultSetMetaData meta = null;
 		    meta = rs.getMetaData();
 		    
 		    int colCount = meta.getColumnCount();
-		    System.out.println("====PUPILS======" + colCount);
-		    System.out.println("META: " + colCount);
+//		    System.out.println("====PUPILS======" + colCount);
+//		    System.out.println("META: " + colCount);
 			
 			while(rs.next()) {
 				for (int i = 3; i <= colCount; i++) {
 					row.add(rs.getObject(i));
-					System.out.println("column #"+ i + " : " + rs.getObject(i));
+//					System.out.println("column #"+ i + " : " + rs.getObject(i));
 				}
 			}
-			System.out.println("\n****************\n PUPILS ROW:"+row.toString());
+//			System.out.println("\n****************\n PUPILS ROW:"+row.toString());
 			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());

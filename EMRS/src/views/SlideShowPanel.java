@@ -45,7 +45,7 @@ public class SlideShowPanel extends JPanel {
         
 
        //set a timer
-        tm = new Timer(5500,new ActionListener() {
+        tm = new Timer(550000,new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {

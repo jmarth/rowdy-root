@@ -265,6 +265,7 @@ public class PanelPupils extends JPanel {
 				comboBox_PupilsDiameterBoth.setSelectedIndex(2);
 				rdbtn_N_RAPDBoth.setSelected(true);
 				rdbtn_N_SynechiaBoth.setSelected(true);
+				System.out.println("LOL");
 			}
 
 		}
@@ -295,6 +296,7 @@ public class PanelPupils extends JPanel {
 				comboBox_PupilDiameterLeft.setSelectedIndex(2);
 				rdbtn_N_RAPDLeft.setSelected(true);
 				rdbtn_N_SynechiaLeft.setSelected(true);
+				
 			}
 		}
 
@@ -309,19 +311,19 @@ public class PanelPupils extends JPanel {
 		Pupils p = new Pupils(
 
 				chckbx_NormalPupilsBoth.isSelected() ? 1 : 0,
-				getSelectedButtonText(bgBothShape),
+				getSelectedButtonText(bgBothShape) == null ? "" : getSelectedButtonText(bgBothShape),
 				pDiaBoth,
 				(rdbtn_Y_RAPDBoth.isSelected() ? 1 : rdbtn_N_RAPDBoth.isSelected() ? 0 : -1),
 				(rdbtn_Y_SynechiaBoth.isSelected() ? 1 : rdbtn_N_SynechiaBoth.isSelected() ? 0 : -1),
 				
 				chckBx_NormalPupilsRight.isSelected() ? 1 : 0,
-				getSelectedButtonText(bgRightShape),
+				getSelectedButtonText(bgRightShape)== null ? "" : getSelectedButtonText(bgRightShape),
 				pDiaRight,
 				(rdbtn_Y_RAPDRight.isSelected() ? 1 : rdbtn_N_RAPDRight.isSelected() ? 0 : -1),
 				(rdbtn_Y_SynechiaRight.isSelected() ? 1 : rdbtn_N_SynechiaRight.isSelected() ? 0 : -1),
 				
 				chkbx_NormalPupilLeft.isSelected() ? 1 : 0,
-				getSelectedButtonText(bgLeftShape),
+				getSelectedButtonText(bgLeftShape)== null ? "" : getSelectedButtonText(bgLeftShape),
 				pDiaLeft,
 				(rdbtn_Y_RAPDLeft.isSelected() ? 1 : rdbtn_N_RAPDLeft.isSelected() ? 0 : -1),
 				(rdbtn_Y_SynechiaLeft.isSelected() ? 1 : rdbtn_N_SynechiaLeft.isSelected() ? 0 : -1)
@@ -353,28 +355,32 @@ public class PanelPupils extends JPanel {
 	public void setFields(ArrayList<Object> pupilsCols) {
 
 		int i = -1;
-		System.out.println("OKOKOKOKOKO"+pupilsCols.toString());
-		if (pupilsCols.get(i + 1).toString().equals("1")) {
+//		System.out.println("OKOKOKOKOKO"+pupilsCols.toString());
+		
+		String temp = pupilsCols.get(++i).toString();
+		if (temp.equals("1")) {
 			chckbx_NormalPupilsBoth.setSelected(true);
 		}
 
-		String temp = pupilsCols.get(i + 1).toString();
-		if (temp.equals("Round"))
+		temp = pupilsCols.get(++i).toString();
+		if (temp.equals("Round")) {
 			rdbtn_RoundPupilsBoth.setSelected(true);
-		else if (temp.equals("Irregular"))
+		}
+		else if (temp.equals("Irregular")) {
 			rdbtn_IrregularPupilsBoth.setSelected(true);
+		}
 		
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 		if (temp != null)
 			comboBox_PupilsDiameterBoth.setSelectedItem(temp);
 
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 		if (temp.equals("1"))
 			rdbtn_Y_RAPDBoth.setSelected(true);
 		else if (temp.equals("0"))
 			rdbtn_N_RAPDBoth.setSelected(true);
 
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 		if (temp.equals("1"))
 			rdbtn_Y_SynechiaBoth.setSelected(true);
 		else if (temp.equals("0"))
@@ -382,26 +388,26 @@ public class PanelPupils extends JPanel {
 
 		
 		
-		if (pupilsCols.get(i + 1).toString().equals("1"))
+		if (pupilsCols.get(++i).toString().equals("1"))
 			chckBx_NormalPupilsRight.setSelected(true);
 
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 		if (temp.equals("Round"))
 			rdbtn_RoundPupilRight.setSelected(true);
 		else if (temp.equals("Irregular"))
 			rdbtn_IrregularPupilsRight.setSelected(true);
 
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 		if (temp != null)
 			comboBox_PupilDiameterRight.setSelectedItem(temp);
 
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 		if (temp.equals("1"))
 			rdbtn_Y_RAPDRight.setSelected(true);
 		else if (temp.equals("0"))
 			rdbtn_N_RAPDRight.setSelected(true);
 
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 		if (temp.equals("1"))
 			rdbtn_Y_SynechiaRight.setSelected(true);
 		else if (temp.equals("0"))
@@ -409,25 +415,25 @@ public class PanelPupils extends JPanel {
 
 		
 		
-		if (pupilsCols.get(i + 1).toString().equals("1"))
+		if (pupilsCols.get(++i).toString().equals("1"))
 			chkbx_NormalPupilLeft.setSelected(true);
 
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 		if (temp.equals("Round"))
 			rdbtn_RoundPupilLeft.setSelected(true);
 		else if (temp.equals("Irregular"))
 			rdbtn_IrregularPupilLeft.setSelected(true);
 
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 		if (temp != null)
 			comboBox_PupilDiameterLeft.setSelectedItem(temp);
 
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 		if (temp.equals("1"))
 			rdbtn_Y_RAPDLeft.setSelected(true);
 		else if (temp.equals("0"))
 			rdbtn_N_RAPDLeft.setSelected(true);
-		temp = pupilsCols.get(i + 1).toString();
+		temp = pupilsCols.get(++i).toString();
 
 		if (temp.equals("1"))
 			rdbtn_Y_SynechiaLeft.setSelected(true);

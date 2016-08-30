@@ -3,28 +3,40 @@ package models;
 public class AnteriorChamber {
 	private long id;
 	private long vid;
+	
 	private int ACODNormal;
 	private int ACOSNormal;
+	
 	private String ACDepthOD;
 	private String ACDepthOS;
+	
 	private String ACAngleOD;
 	private String ACAngleOS;
+	
 	private String PASOD;
 	private String PASOS;
+	
 	private String ACODKP;
 	private String ACOSKP;
+	
 	private int ShuntOD;
 	private int ScarringOD;
+	
 	private int TraumaOD;
 	private int BlebOD;
+	
 	private int ShuntOS;
 	private int ScarringOS;
+	
 	private int TraumaOS;
 	private int BlebOS;
+	
 	private int VascularOD;
 	private String BlebOD_Num;
+	
 	private int VascularOS;
 	private String BlebOS_Num;
+	
 	private int KSpindleOD;
 	private int KSpindleOS;
 	
