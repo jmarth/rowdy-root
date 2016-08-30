@@ -112,7 +112,7 @@ public class ProfileTabView extends JPanel {
 		MatteBorder border = new MatteBorder(1, 0, 0, 0, Color.GRAY);
 		
 		JSeparator separator_2 = new JSeparator();
-		separator_2.setBorder(border);
+		separator_2.setBorder(null);
 		GridBagConstraints gbc_separator_2 = new GridBagConstraints();
 		gbc_separator_2.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_2.insets = new Insets(0, 0, 5, 5);
@@ -121,7 +121,7 @@ public class ProfileTabView extends JPanel {
 		panel_6.add(separator_2, gbc_separator_2);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBorder(border);
+		separator.setBorder(null);
 		GridBagConstraints gbc_separator = new GridBagConstraints();
 		gbc_separator.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator.insets = new Insets(0, 0, 5, 5);
@@ -130,7 +130,7 @@ public class ProfileTabView extends JPanel {
 		panel_6.add(separator, gbc_separator);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBorder(border);
+		separator_1.setBorder(null);
 		GridBagConstraints gbc_separator_1 = new GridBagConstraints();
 		gbc_separator_1.insets = new Insets(0, 0, 5, 0);
 		gbc_separator_1.fill = GridBagConstraints.HORIZONTAL;
@@ -195,7 +195,7 @@ public class ProfileTabView extends JPanel {
 		lblBirthdate.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
 		JSeparator separator_5 = new JSeparator();
-		separator_5.setBorder(border);
+		separator_5.setBorder(null);
 		GridBagConstraints gbc_separator_5 = new GridBagConstraints();
 		gbc_separator_5.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_5.insets = new Insets(0, 0, 5, 0);
@@ -204,7 +204,7 @@ public class ProfileTabView extends JPanel {
 		panel_6.add(separator_5, gbc_separator_5);
 		
 		JSeparator separator_4 = new JSeparator();
-		separator_4.setBorder(border);
+		separator_4.setBorder(null);
 		GridBagConstraints gbc_separator_4 = new GridBagConstraints();
 		gbc_separator_4.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_4.insets = new Insets(0, 0, 5, 5);
@@ -213,7 +213,7 @@ public class ProfileTabView extends JPanel {
 		panel_6.add(separator_4, gbc_separator_4);
 		
 		JSeparator separator_3 = new JSeparator();
-		separator_3.setBorder(border);
+		separator_3.setBorder(null);
 		GridBagConstraints gbc_separator_3 = new GridBagConstraints();
 		gbc_separator_3.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_3.insets = new Insets(0, 0, 5, 5);
@@ -322,7 +322,7 @@ public class ProfileTabView extends JPanel {
 		panel_7.add(lblPhone, gbc_lblPhone);
 		
 		JSeparator separator_11 = new JSeparator();
-		separator_11.setBorder(border);
+		separator_11.setBorder(null);
 		GridBagConstraints gbc_separator_11 = new GridBagConstraints();
 		gbc_separator_11.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_11.insets = new Insets(0, 0, 5, 5);
@@ -331,7 +331,7 @@ public class ProfileTabView extends JPanel {
 		panel_7.add(separator_11, gbc_separator_11);
 		
 		JSeparator separator_13 = new JSeparator();
-		separator_13.setBorder(border);
+		separator_13.setBorder(null);
 		GridBagConstraints gbc_separator_13 = new GridBagConstraints();
 		gbc_separator_13.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_13.insets = new Insets(0, 0, 5, 5);
@@ -340,7 +340,7 @@ public class ProfileTabView extends JPanel {
 		panel_7.add(separator_13, gbc_separator_13);
 		
 		JSeparator separator_12 = new JSeparator();
-		separator_12.setBorder(border);
+		separator_12.setBorder(null);
 		GridBagConstraints gbc_separator_12 = new GridBagConstraints();
 		gbc_separator_12.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_12.insets = new Insets(0, 0, 5, 5);
@@ -349,7 +349,7 @@ public class ProfileTabView extends JPanel {
 		panel_7.add(separator_12, gbc_separator_12);
 		
 		JSeparator separator_10 = new JSeparator();
-		separator_10.setBorder(border);
+		separator_10.setBorder(null);
 		GridBagConstraints gbc_separator_10 = new GridBagConstraints();
 		gbc_separator_10.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_10.insets = new Insets(0, 0, 5, 5);
@@ -421,7 +421,7 @@ public class ProfileTabView extends JPanel {
 		panel_7.add(lblTelephoneNumber, gbc_lblTelephoneNumber);
 		
 		JSeparator separator_9 = new JSeparator();
-		separator_9.setBorder(border);
+		separator_9.setBorder(null);
 		GridBagConstraints gbc_separator_9 = new GridBagConstraints();
 		gbc_separator_9.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_9.insets = new Insets(0, 0, 5, 5);
@@ -430,7 +430,7 @@ public class ProfileTabView extends JPanel {
 		panel_7.add(separator_9, gbc_separator_9);
 		
 		JSeparator separator_8 = new JSeparator();
-		separator_8.setBorder(border);
+		separator_8.setBorder(null);
 		GridBagConstraints gbc_separator_8 = new GridBagConstraints();
 		gbc_separator_8.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_8.insets = new Insets(0, 0, 5, 5);
@@ -439,7 +439,7 @@ public class ProfileTabView extends JPanel {
 		panel_7.add(separator_8, gbc_separator_8);
 		
 		JSeparator separator_7 = new JSeparator();
-		separator_7.setBorder(border);
+		separator_7.setBorder(null);
 		GridBagConstraints gbc_separator_7 = new GridBagConstraints();
 		gbc_separator_7.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_7.insets = new Insets(0, 0, 5, 0);
@@ -448,7 +448,7 @@ public class ProfileTabView extends JPanel {
 		panel_7.add(separator_7, gbc_separator_7);
 		
 		JSeparator separator_6 = new JSeparator();
-		separator_6.setBorder(border);
+		separator_6.setBorder(null);
 		GridBagConstraints gbc_separator_6 = new GridBagConstraints();
 		gbc_separator_6.fill = GridBagConstraints.HORIZONTAL;
 		gbc_separator_6.insets = new Insets(0, 0, 5, 5);
