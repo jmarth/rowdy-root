@@ -62,7 +62,8 @@ public class MedicationsTableGatewaySQLite implements MedicationsTableGateway {
 						rs.getLong("id"),
 						rs.getLong("pid"),
 						rs.getString("trade"),
-						rs.getString("generic")
+						rs.getString("generic"),
+						rs.getString("directions")
 						);
 				meds.add(tmpMed);
 			}
@@ -108,7 +109,8 @@ public class MedicationsTableGatewaySQLite implements MedicationsTableGateway {
 						rs.getLong("id"),
 						rs.getLong("pid"),
 						rs.getString("trade"),
-						rs.getString("generic")
+						rs.getString("generic"),
+						rs.getString("directions")
 						);
 				meds.add(tmpMed);
 			}
@@ -142,12 +144,14 @@ public class MedicationsTableGatewaySQLite implements MedicationsTableGateway {
 		try {
 			st = conn.prepareStatement("insert INTO medications (pid,"
 					+ " trade,"
-					+ " generic) "
-					+ " values ( ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
+					+ " generic, "
+					+ " directions) "
+					+ " values ( ?, ?, ?, ? ) ", PreparedStatement.RETURN_GENERATED_KEYS);
 
 			st.setLong(1, m.getPid());
 			st.setString(2, m.getTradeName());
 			st.setString(3, m.getGenericName());
+			st.setString(4, m.getDirections());
 
 			st.executeUpdate();
 
