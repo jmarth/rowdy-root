@@ -37,7 +37,7 @@ public class NewProcedureView extends JPanel {
 	// Buttons -----------------------------------------
 	private JButton saveButton;
 	private JButton cancelButton;
-	private JComboBox<String> comboBox;
+	private JComboBox comboBox;
 	
 	
 	// Labels ------------------------------------------
@@ -166,14 +166,14 @@ public class NewProcedureView extends JPanel {
 		}
 		
 		
-		comboBox = new JComboBox<String>(array);
+		comboBox = new JComboBox(array);
 		comboBox.setSelectedItem(null);
 		
 		comboBox.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JComboBox<String> tmp = (JComboBox<String>) e.getSource();
+				JComboBox tmp = (JComboBox) e.getSource();
 				String title = (String) tmp.getSelectedItem();
 				SurgeryTemplate template = list.findTemplate(title);
 				//textArea.setText(template.getDescription());

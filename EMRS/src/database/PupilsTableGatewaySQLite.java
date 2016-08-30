@@ -57,7 +57,7 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 				Pupils p = new Pupils(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getInt("areBothPupilsNormal"),
+						rs.getInt("isBothPupilsNormal"),
 						rs.getString("bothShape"),
 						rs.getString("bothDiameter"),
 						rs.getInt("isBothRAPD"),
@@ -119,16 +119,19 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 				Pupils pu = new Pupils(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getInt("areBothPupilsNormal"),
+						
+						rs.getInt("isBothPupilsNormal"),
 						rs.getString("bothShape"),
 						rs.getString("bothDiameter"),
 						rs.getInt("isBothRAPD"),
 						rs.getInt("isBothSynechia"),
+						
 						rs.getInt("isRightPupilNormal"),
 						rs.getString("rightShape"),
 						rs.getString("rightDiameter"),
 						rs.getInt("isRightRAPD"),
 						rs.getInt("isRightSynechia"),
+						
 						rs.getInt("isLeftPupilNormal"),
 						rs.getString("leftShape"),
 						rs.getString("leftDiameter"),
@@ -173,16 +176,19 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 			st = conn.prepareStatement(
 					"insert INTO pupils "
 					+ "(vid,"
+							
 					+ " isBothPupilsNormal,"
 					+ " bothShape,"
 					+ " bothDiameter,"
 					+ " isBothRAPD,"
 					+ " isBothSynechia,"
+					
 					+ " isRightPupilNormal,"
 					+ " rightShape,"
 					+ " rightDiameter,"
 					+ " isRightRAPD,"
 					+ " isRightSynechia,"
+					
 					+ " isLeftPupilNormal,"
 					+ " leftShape,"
 					+ " leftDiameter,"
@@ -215,6 +221,7 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 			
 			//get the generated key
 			rs = st.getGeneratedKeys();
+//			System.out.println("GeneratedKeys: " + rs.getCl);
 			
 			if(rs != null && rs.next()) {
 			    newId = rs.getLong(1);
@@ -249,7 +256,7 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 			st.setLong(1, id);
 			
 			rs = st.executeQuery();
-			
+			System.out.println("PUPIL COL FOR VISIT  =  " + id);
 			//get metadata
 		    ResultSetMetaData meta = null;
 		    meta = rs.getMetaData();

@@ -28,12 +28,15 @@ public class PanelRefraction extends JPanel {
 	private JTextField textField_ARSC_OD_Sphere;
 	private JTextField textField_ARSC_OD_Cyl;
 	private JTextField textField_ARSC_OD_Axis;
+	
 	private JTextField textField_ARSC_OS_Sphere;
 	private JTextField textField_ARSC_OS_Cyl;
 	private JTextField textField_ARSC_OS_Axis;
+	
 	private JTextField textField_ARCC_OD_Sphere;
 	private JTextField textField_ARCC_OD_Cyl;
 	private JTextField textField_ARCC_OD_Axis;
+	
 	private JTextField textField_ARCC_OS_Sphere;
 	private JTextField textField_ARCC_OS_Cyl;
 	private JTextField textField_ARCC_OS_Axis;

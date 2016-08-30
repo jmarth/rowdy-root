@@ -457,7 +457,7 @@ public class PanelAC extends JPanel {
 				getSelectedButtonText(bgOSAngle) == null ? " " : getSelectedButtonText(bgOSAngle),
 
 				getSelectedButtonText(bgODPAS) == null ? " " : getSelectedButtonText(bgODPAS),
-				getSelectedButtonText(bgOSPAS) == null ? " " : getSelectedButtonText(bgODPAS),
+				getSelectedButtonText(bgOSPAS) == null ? " " : getSelectedButtonText(bgOSPAS),
 
 				getSelectedButtonText(bgODKP) == null ? " " : getSelectedButtonText(bgODKP),
 				getSelectedButtonText(bgOSKP) == null ? " " : getSelectedButtonText(bgOSKP),
@@ -513,11 +513,14 @@ public class PanelAC extends JPanel {
 		if (acCols.get(++i).toString().equals("1"))
 			chkbx_ACODNormal.setSelected(true);
 
+		
+		
 		if (acCols.get(++i).toString().equals("1"))
 			chkbx_ACOSNormal.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_ACDepthOD1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -527,9 +530,10 @@ public class PanelAC extends JPanel {
 		} else if (temp.equals("+4")) {
 			rdbtn_ACDepthOD4.setSelected(true);
 		}
-
+		
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_ACDepthOS1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -540,36 +544,41 @@ public class PanelAC extends JPanel {
 			rdbtn_ACDepthOS4.setSelected(true);
 		}
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("Open"))
 			rdbtn_ACAngleODOpen.setSelected(true);
 		else if (temp.equals("Closed"))
 			rdbtn_ACAngleODClosed.setSelected(true);
-
+		
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("Open"))
 			rdbtn_ACAngleOSOpen.setSelected(true);
 		else if (temp.equals("Closed"))
 			rdbtn_ACAngleOSClosed.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("Absent"))
 			rdbtn_N_PASOD.setSelected(true);
 		else if (temp.equals("Present"))
 			rdbtn_Y_PASOD.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("Absent"))
 			rdbtn_N_PASOS.setSelected(true);
 		else if (temp.equals("Present"))
 			rdbtn_Y_PASOS.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_ACODKP1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -580,8 +589,9 @@ public class PanelAC extends JPanel {
 			rdbtn_ACODKP4.setSelected(true);
 		}
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_ACOSKP1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -592,6 +602,8 @@ public class PanelAC extends JPanel {
 			rdbtn_ACOSKP4.setSelected(true);
 		}
 
+		
+		
 		if (acCols.get(++i).toString().equals("1"))
 			rdbtn_ShuntOD.setSelected(true);
 		if (acCols.get(++i).toString().equals("1"))
@@ -601,6 +613,8 @@ public class PanelAC extends JPanel {
 		if (acCols.get(++i).toString().equals("1"))
 			rdbtn_BlebOD.setSelected(true);
 
+		
+		
 		if (acCols.get(++i).toString().equals("1"))
 			rdbtn_ShuntOS.setSelected(true);
 		if (acCols.get(++i).toString().equals("1"))
@@ -610,15 +624,17 @@ public class PanelAC extends JPanel {
 		if (acCols.get(++i).toString().equals("1"))
 			rdbtn_BlebOS.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("0"))
 			rdbtn_AvascularOD.setSelected(true);
 		else if (temp.equals("1"))
 			rdbtn_VascularOD.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_BlebOD1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -629,15 +645,17 @@ public class PanelAC extends JPanel {
 			rdbtn_BlebOD4.setSelected(true);
 		}
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("0"))
 			rdbtn_AvascularOS.setSelected(true);
 		else if (temp.equals("1"))
 			rdbtn_VascularOS.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_BlebOS1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -648,15 +666,17 @@ public class PanelAC extends JPanel {
 			rdbtn_BlebOS4.setSelected(true);
 		}
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("0"))
 			rdbtn_N_KSpindleOD.setSelected(true);
 		else if (temp.equals("1"))
 			rdbtn_Y_KSpindleOD.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("0"))
 			rdbtn_N_KSpindleOS.setSelected(true);
 		else if (temp.equals("1"))

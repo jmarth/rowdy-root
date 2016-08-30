@@ -28,11 +28,18 @@ public class AnteriorChamber {
 	private int KSpindleOD;
 	private int KSpindleOS;
 	
-	public AnteriorChamber(long id, long vid, int aCODNormal, int aCOSNormal, String aCDepthOD, String aCDepthOS,
-			String aCAngleOD, String aCAngleOS, String pASOD, String pASOS, String aCODKP, String aCOSKP, int shuntOD,
-			int scarringOD, int traumaOD, int blebOD, int shuntOS, int scarringOS, int traumaOS,
-			int blebOS, int vascularOD, String blebOD_Num, int vascularOS, String blebOS_Num, int kSpindleOD,
-			int kSpindleOS) {
+	public AnteriorChamber(long id, long vid,
+			int aCODNormal, int aCOSNormal, 
+			String aCDepthOD, String aCDepthOS,
+			String aCAngleOD, String aCAngleOS, 
+			String pASOD, String pASOS, 
+			String aCODKP, String aCOSKP, 
+			int shuntOD, int scarringOD, int traumaOD, int blebOD,
+			int shuntOS, int scarringOS, int traumaOS, int blebOS,
+			int vascularOD, String blebOD_Num, 
+			int vascularOS, String blebOS_Num, 
+			int kSpindleOD,	int kSpindleOS
+			) {
 		super();
 		this.id = id;
 		this.vid = vid;
@@ -61,10 +68,17 @@ public class AnteriorChamber {
 		KSpindleOD = kSpindleOD;
 		KSpindleOS = kSpindleOS;
 	}
-	public AnteriorChamber(int aCODNormal, int aCOSNormal, String aCDepthOD, String aCDepthOS,
-			String aCAngleOD, String aCAngleOS, String pASOD, String pASOS, String aCODKP, String aCOSKP, int shuntOD,
-			int scarringOD, int traumaOD, int blebOD, int shuntOS, int scarringOS, int traumaOS,
-			int blebOS, int vascularOD, String blebOD_Num, int vascularOS, String blebOS_Num, int kSpindleOD,
+	public AnteriorChamber(
+			int aCODNormal, int aCOSNormal,
+			String aCDepthOD, String aCDepthOS,
+			String aCAngleOD, String aCAngleOS,
+			String pASOD, String pASOS,
+			String aCODKP, String aCOSKP, 
+			int shuntOD, int scarringOD, int traumaOD, int blebOD,
+			int shuntOS, int scarringOS, int traumaOS, int blebOS, 
+			int vascularOD, String blebOD_Num, 
+			int vascularOS, String blebOS_Num, 
+			int kSpindleOD,
 			int kSpindleOS) {
 		super();
 		ACODNormal = aCODNormal;

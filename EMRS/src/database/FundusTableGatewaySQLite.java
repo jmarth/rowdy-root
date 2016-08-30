@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,21 +64,27 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 				FundusExam fe = new FundusExam(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("isDialated"),
+						rs.getInt("isDialated"),
 						rs.getString("dialNotes"),
-						rs.getBoolean("isCDODAb"),
+						
+						rs.getInt("isCDODAb"),
 						rs.getString("CDOD"),
 						rs.getString("CDODNotes"),
-						rs.getBoolean("isCDOSAb"),
+						
+						rs.getInt("isCDOSAb"),
 						rs.getString("CDOS"),
 						rs.getString("CDOSNotes"),
-						rs.getBoolean("isMaculaODAb"),
+						
+						rs.getInt("isMaculaODAb"),
 						rs.getString("MaculaODNotes"),
-						rs.getBoolean("isMaculaOSAb"),
+						
+						rs.getInt("isMaculaOSAb"),
 						rs.getString("MaculaOSNotes"),
-						rs.getBoolean("isRetinaODAb"),
+						
+						rs.getInt("isRetinaODAb"),
 						rs.getString("RetinaODNotes"),
-						rs.getBoolean("isRetinaOSAb"),
+						
+						rs.getInt("isRetinaOSAb"),
 						rs.getString("RetinaOSNotes")
 						);
 				
@@ -131,21 +138,28 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 				FundusExam fe = new FundusExam(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getBoolean("isDialated"),
+						
+						rs.getInt("isDialated"),
 						rs.getString("dialNotes"),
-						rs.getBoolean("isCDODAb"),
+						
+						rs.getInt("isCDODAb"),
 						rs.getString("CDOD"),
 						rs.getString("CDODNotes"),
-						rs.getBoolean("isCDOSAb"),
+						
+						rs.getInt("isCDOSAb"),
 						rs.getString("CDOS"),
 						rs.getString("CDOSNotes"),
-						rs.getBoolean("isMaculaODAb"),
+						
+						rs.getInt("isMaculaODAb"),
 						rs.getString("MaculaODNotes"),
-						rs.getBoolean("isMaculaOSAb"),
+						
+						rs.getInt("isMaculaOSAb"),
 						rs.getString("MaculaOSNotes"),
-						rs.getBoolean("isRetinaODAb"),
+						
+						rs.getInt("isRetinaODAb"),
 						rs.getString("RetinaODNotes"),
-						rs.getBoolean("isRetinaOSAb"),
+						
+						rs.getInt("isRetinaOSAb"),
 						rs.getString("RetinaOSNotes")
 						);
 				
@@ -187,43 +201,53 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 					+ " (vid,"
 					+ " isDialated,"
 					+ " dialNotes,"
+					
 					+ " isCDODAb,"
 					+ " CDOD,"
 					+ " CDODNotes,"
+					
 					+ " isCDOSAb,"
 					+ " CDOS,"
 					+ " CDOSNotes,"
+					
 					+ " isMaculaODAb,"
 					+ " MaculaODNotes,"
+					
 					+ " isMaculaOSAb,"
 					+ " MaculaOSNotes,"
+					
 					+ " isRetinaODAb,"
 					+ " RetinaODNotes,"
+					
 					+ " isRetinaOSAb,"
 					+ " RetinaOSNotes)"
+					
 					+ " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 	
 			st.setLong(1, fe.getVid());
-			st.setBoolean(2, fe.isDialated());
-			st.setString(3, fe.getDial_Notes());
 			
-			st.setBoolean(4, fe.isCDODAb());
+			st.setInt(2, fe.getDialated());
+			st.setString(3, fe.getDialNotes());
+			
+			st.setInt(4, fe.getCDODAb());
 			st.setString(5, fe.getCDOD());
 			st.setString(6, fe.getCDODNotes());
 			
-			st.setBoolean(7, fe.isCDOSAb());
+			st.setInt(7, fe.getCDOSAb());
 			st.setString(8, fe.getCDOS());
 			st.setString(9, fe.getCDOSNotes());
 			
-			st.setBoolean(10, fe.isMaculaODAb());
+			st.setInt(10, fe.getMaculaODAb());
 			st.setString(11, fe.getMaculaODNotes());
-			st.setBoolean(12, fe.isMaculaOSAb());
+			
+			st.setInt(12, fe.getMaculaOSAb());
 			st.setString(13, fe.getMaculaOSNotes());
 			
-			st.setBoolean(14, fe.isRetinaODAb());
+			st.setInt(14, fe.getRetinaODAb());
 			st.setString(15, fe.getRetinaODNotes());
-			st.setBoolean(16, fe.isRetinaOSAb());
+			
+			st.setInt(16, fe.getRetinaOSAb());
 			st.setString(17, fe.getRetinaOSNotes());
 	
 			st.executeUpdate();
@@ -251,6 +275,8 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 		
 		return newId;
 	}
+
+	
 	
 	@Override
 	public void removeFundusExam(Long vid) throws GatewayException {
@@ -261,5 +287,53 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 	public void close() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public ArrayList<Object> fetchFundusExamsForVisit(long id) throws GatewayException {
+ArrayList<Object> row = new ArrayList<Object>();
+		
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			//fetch parts
+			st = conn.prepareStatement("select * from fundus_exams where vid=?");
+			st.setLong(1, id);
+			
+			rs = st.executeQuery();
+			
+			//get metadata
+		    ResultSetMetaData meta = null;
+		    meta = rs.getMetaData();
+		    
+		    int colCount = meta.getColumnCount();
+		    //System.out.println("====fundus======" + colCount);
+			
+			while(rs.next()) {
+				for (int i = 3; i <= colCount; i++) {
+					row.add(rs.getObject(i));
+//					System.out.println("column #"+ i + " : " + rs.getObject(i));
+				}
+			}
+			//System.out.println("\n****************\n fundus ROW:"+row.toString());
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(rs != null)
+					rs.close();
+				
+				if(st != null)
+					st.close();
+				
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+		return row;
 	}
 }

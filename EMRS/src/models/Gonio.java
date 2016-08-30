@@ -6,6 +6,7 @@ public class Gonio {
 	
 	private int isHxFHA;
 	private String FHASide;
+	
 	private int isODNormal;
 	private String odABCDNon;
 	private String odABCDComp;
@@ -15,6 +16,7 @@ public class Gonio {
 	private String odRSQComp;
 	private String odPigment;
 	private int isODAntPigLine;
+	
 	private int isOSNormal;
 	private String osABCDNon;
 	private String osABCDComp;

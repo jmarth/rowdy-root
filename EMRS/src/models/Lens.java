@@ -50,9 +50,9 @@ public class Lens {
 		PSC_OS_Notes = pSC_OS_Notes;
 	}
 	
-	public Lens(String nS_OD, String nS_OD_Notes, String nS_OS, String nS_OS_Notes, int isStableLensOD,
-			int isStableLensOS, int isPseudophakia_OD, int isPseudophakia_OS, int isPCO_OD,
-			int isPCO_OS, String coritcal_OD, String cortical_OD_Notes, String coritcal_OS,
+	public Lens(String nS_OD, String nS_OD_Notes, String nS_OS, String nS_OS_Notes,
+			int isStableLensOD, int isStableLensOS, int isPseudophakia_OD, int isPseudophakia_OS,
+			int isPCO_OD, int isPCO_OS, String coritcal_OD, String cortical_OD_Notes, String coritcal_OS,
 			String cortical_OS_Notes, String pSC_OD, String pSC_OD_Notes, String pSC_OS, String pSC_OS_Notes) {
 		super();
 		NS_OD = nS_OD;

@@ -57,13 +57,16 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 				Refraction r = new Refraction(
 						rs.getLong("id"),
 						rs.getLong("vid"),
+						
 						rs.getInt("isManifest"),
+						
 						rs.getString("SC_OD_Sphere"),
 						rs.getString("SC_OD_Cyl"),
 						rs.getString("SC_OD_Axis"),
 						rs.getString("SC_OS_Sphere"),
 						rs.getString("SC_OS_Cyl"),
 						rs.getString("SC_OS_Axis"),
+						
 						rs.getString("CC_OD_Sphere"),
 						rs.getString("CC_OD_Cyl"),
 						rs.getString("CC_OD_Axis"),
@@ -118,13 +121,16 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 				Refraction glsrx = new Refraction(
 						rs.getLong("id"),
 						rs.getLong("vid"),
+						
 						rs.getInt("isManifest"),
+						
 						rs.getString("SC_OD_Sphere"),
 						rs.getString("SC_OD_Cyl"),
 						rs.getString("SC_OD_Axis"),
 						rs.getString("SC_OS_Sphere"),
 						rs.getString("SC_OS_Cyl"),
 						rs.getString("SC_OS_Axis"),
+						
 						rs.getString("CC_OD_Sphere"),
 						rs.getString("CC_OD_Cyl"),
 						rs.getString("CC_OD_Axis"),
@@ -170,6 +176,7 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 			st = conn.prepareStatement(
 					"insert INTO refractions "
 					+ "(vid,"
+							
 					+ " isManifest,"
 					+ " SC_OD_Sphere,"
 					+ " SC_OD_Cyl,"
@@ -177,6 +184,7 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 					+ " SC_OS_Sphere,"
 					+ " SC_OS_Cyl,"
 					+ " SC_OS_Axis,"
+					
 					+ " CC_OD_Sphere,"
 					+ " CC_OD_Cyl,"
 					+ " CC_OD_Axis,"
@@ -251,16 +259,16 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 		    meta = rs.getMetaData();
 		    
 		    int colCount = meta.getColumnCount();
-		    System.out.println("====REFRACTIONS======" + colCount);
-		    System.out.println("META: " + colCount);
+//		    System.out.println("====REFRACTIONS======" + colCount);
+//		    System.out.println("META: " + colCount);
 			
 			while(rs.next()) {
 				for (int i = 3; i <= colCount; i++) {
 					row.add(rs.getObject(i));
-					System.out.println("column #"+ i + " : " + rs.getObject(i));
+//					System.out.println("column #"+ i + " : " + rs.getObject(i));
 				}
 			}
-			System.out.println("\n****************\n REFRAC ROW:"+row.toString());
+//			System.out.println("\n****************\n REFRAC ROW:"+row.toString());
 			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
