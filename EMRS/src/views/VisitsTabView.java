@@ -24,6 +24,7 @@ import org.jdesktop.swingx.JXTaskPaneContainer;
 import models.CL;
 import models.HomeModel;
 import models.Patient;
+import models.Tabs;
 import models.Visit;
 
 public class VisitsTabView extends JPanel {
@@ -40,15 +41,6 @@ public class VisitsTabView extends JPanel {
 	
 	private boolean painted = false;
 
-	@Override
-	public void paint(Graphics g) {
-	    super.paint(g);
-
-	    if (!painted) {
-	        painted = true;
-	        splitPane.setDividerLocation(0.5d);
-	    }
-	}
 	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
 		this.patient = patient;
 		this.homeModel = homeModel;
@@ -67,10 +59,12 @@ public class VisitsTabView extends JPanel {
 		
 		populatePanes();
 		
+		/*
 		splitPane = new JSplitPane();
 		splitPane.setEnabled(false);
 		splitPane.setResizeWeight(0.5d);
 		splitPane.setDividerSize(3);
+		*/
 		
 		
 		JButton btnNewVisit = new JButton("Add A New Visit");
@@ -79,27 +73,32 @@ public class VisitsTabView extends JPanel {
 		btnNewVisit.setBorderPainted(false);
 		btnNewVisit.setForeground(CL.colorBlue);
 		btnNewVisit.setFont(new Font("Tahoma", Font.BOLD, 16));
-
+		
 		
 		JScrollPane leftPane = new JScrollPane(mainTaskPane);
 		leftPane.getVerticalScrollBar().setUnitIncrement(16);
-		
+		/*
 		splitPane.setLeftComponent(leftPane);
 		splitPane.setRightComponent(btnNewVisit);
 		
 		splitPane.setDividerLocation(0.5d);
+		*/
+		add(leftPane, BorderLayout.CENTER);
 		
-		add(splitPane, BorderLayout.CENTER);
-	
+		add(btnNewVisit, BorderLayout.SOUTH);
+		
 		btnNewVisit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VisitTabViewNewVisit vtvnv = new VisitTabViewNewVisit(patient, tabbedPane, homeModel);
 				JScrollPane rightPane = new JScrollPane(vtvnv);
 				rightPane.getVerticalScrollBar().setUnitIncrement(16);
-
-				splitPane.setRightComponent(rightPane);
+				int index = tabbedPane.indexOfTab(Tabs.ped);
+				tabbedPane.setComponentAt(index, null);
+				tabbedPane.setComponentAt(index, rightPane);
+				//splitPane.setRightComponent(rightPane);
 			}
 		});
+		
 	}
 	
 	public void populatePanes() {
