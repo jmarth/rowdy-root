@@ -183,7 +183,7 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 			st.setString(3, iop.getODType());
 			st.setString(4, iop.getODNotes());
 			st.setString(5, iop.getOSValue());
-			st.setString(6, iop.getOSValue());
+			st.setString(6, iop.getOSType());
 			st.setString(7, iop.getOSNotes());
 	
 			st.executeUpdate();
@@ -243,15 +243,15 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 		    meta = rs.getMetaData();
 		    
 		    int colCount = meta.getColumnCount();
-		    System.out.println("====iop======" + colCount);
+//		    System.out.println("====iop======" + colCount);
 			
 			while(rs.next()) {
 				for (int i = 3; i <= colCount; i++) {
 					row.add(rs.getObject(i));
-					System.out.println("column #"+ i + " : " + rs.getObject(i));
+//					System.out.println("column #"+ i + " : " + rs.getObject(i));
 				}
 			}
-			System.out.println("\n****************\n iop ROW:"+row.toString());
+//			System.out.println("\n****************\n iop ROW:"+row.toString());
 			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());

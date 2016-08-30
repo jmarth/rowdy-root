@@ -61,6 +61,7 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 						rs.getString("OD_Cyl"),
 						rs.getString("OD_Axis"),
 						rs.getString("OD_Add"),
+						
 						rs.getString("OS_Sphere"),
 						rs.getString("OS_Cyl"),
 						rs.getString("OS_Axis"),
@@ -118,6 +119,7 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 						rs.getString("OD_Cyl"),
 						rs.getString("OD_Axis"),
 						rs.getString("OD_Add"),
+						
 						rs.getString("OS_Sphere"),
 						rs.getString("OS_Cyl"),
 						rs.getString("OS_Axis"),
@@ -166,6 +168,7 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 					+ " OD_Cyl,"
 					+ " OD_Axis,"
 					+ " OD_Add,"
+					
 					+ " OS_Sphere,"
 					+ " OS_Cyl,"
 					+ " OS_Axis,"
@@ -179,11 +182,12 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 			st.setString(3, glsRx.getRx_OD_Cyl());
 			st.setString(4, glsRx.getRx_OD_Axis());
 			st.setString(5, glsRx.getRx_OD_Add());
+			
 			st.setString(6, glsRx.getRx_OS_Sphere());
 			st.setString(7, glsRx.getRx_OS_Cyl());
 			st.setString(8, glsRx.getRx_OS_Axis());
 			st.setString(9, glsRx.getRx_OS_Add());
-			st.setString(9, glsRx.getRx_OS_Add());
+			
 			st.setString(10, glsRx.getGlassesRxNotes());
 
 			st.executeUpdate();
@@ -231,14 +235,14 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 		    meta = rs.getMetaData();
 		   
 		    int colCount = meta.getColumnCount();
-		    System.out.println("==== RX ======" + colCount);
+//		    System.out.println("==== RX ======" + colCount);
 			while(rs.next()) {
 				for (int i = 3; i <= colCount; i++) {
 					row.add(rs.getObject(i));
 					//System.out.println(i + " : " + rs.getObject(i));
 				}
 			}
-			System.out.println("\n****************\nGLS RX ROW:"+row.toString());
+//			System.out.println("\n****************\nGLS RX ROW:"+row.toString());
 			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());

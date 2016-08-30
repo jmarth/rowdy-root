@@ -22,20 +22,28 @@ public class PanelLens extends JPanel {
 
 	private JComboBox comboBox_SLE_NS_OD;
 	private JTextField textField_SLE_NS_OD;
+	
 	private JComboBox comboBox_SLE_NS_OS;
 	private JTextField textField_SLE_NS_OS;
+	
 	private JCheckBox chckbxStableLensOD;
 	private JCheckBox chckbxStableLensOS;
+	
 	private JCheckBox chckbx_SLE_Pseudophakia_OD;
 	private JCheckBox chckbx_SLE_Pseudophakia_OS;
+	
 	private JCheckBox chckbx_SLE_PCO_OD;
 	private JCheckBox chckbx_SLE_PCO_OS;
+	
 	private JComboBox comboBox_SLE_Coritcal_OD;
 	private JTextField textField_SLE_Cortical_OD;
+	
 	private JComboBox comboBox_SLE_Coritcal_OS;
 	private JTextField textField_SLE_Cortical_OS;
+	
 	private JComboBox comboBox_SLE_PSC_OD;
 	private JTextField textField_SLE_PSC_OD;
+	
 	private JComboBox comboBox_SLE_PSC_OS;
 	private JTextField textField_SLE_PSC_OS;
 

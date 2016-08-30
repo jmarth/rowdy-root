@@ -86,20 +86,21 @@ public class PanelAC extends JPanel {
 
 	private JRadioButton rdbtn_Y_KSpindleOS;
 	private JRadioButton rdbtn_N_KSpindleOS;
-	private final ButtonGroup bgODDepth = new ButtonGroup();
-	private final ButtonGroup bgODAngle = new ButtonGroup();
-	private final ButtonGroup bgODPAS = new ButtonGroup();
-	private final ButtonGroup bgODKP = new ButtonGroup();
-	private final ButtonGroup bgODVascular = new ButtonGroup();
-	private final ButtonGroup bgODBleb = new ButtonGroup();
-	private final ButtonGroup bgODKSpin = new ButtonGroup();
-	private final ButtonGroup bgOSDepth = new ButtonGroup();
-	private final ButtonGroup bgOSAngle = new ButtonGroup();
-	private final ButtonGroup bgOSPAS = new ButtonGroup();
-	private final ButtonGroup bgOSKP = new ButtonGroup();
-	private final ButtonGroup bgOSVascular = new ButtonGroup();
-	private final ButtonGroup bgOSBleb = new ButtonGroup();
-	private final ButtonGroup bgOSKSpin = new ButtonGroup();
+	
+	private final NoneSelectedButtonGroup bgODDepth = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgODAngle = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgODPAS = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgODKP = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgODVascular = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgODBleb = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgODKSpin = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgOSDepth = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgOSAngle = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgOSPAS = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgOSKP = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgOSVascular = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgOSBleb = new NoneSelectedButtonGroup();
+	private final NoneSelectedButtonGroup bgOSKSpin = new NoneSelectedButtonGroup();
 
 	/**
 	 * Create the panel.
@@ -459,7 +460,7 @@ public class PanelAC extends JPanel {
 				getSelectedButtonText(bgOSAngle) == null ? " " : getSelectedButtonText(bgOSAngle),
 
 				getSelectedButtonText(bgODPAS) == null ? " " : getSelectedButtonText(bgODPAS),
-				getSelectedButtonText(bgOSPAS) == null ? " " : getSelectedButtonText(bgODPAS),
+				getSelectedButtonText(bgOSPAS) == null ? " " : getSelectedButtonText(bgOSPAS),
 
 				getSelectedButtonText(bgODKP) == null ? " " : getSelectedButtonText(bgODKP),
 				getSelectedButtonText(bgOSKP) == null ? " " : getSelectedButtonText(bgOSKP),
@@ -481,7 +482,8 @@ public class PanelAC extends JPanel {
 				getSelectedButtonText(bgOSBleb) == null ? " " : getSelectedButtonText(bgOSBleb),
 
 				(rdbtn_Y_KSpindleOD.isSelected() ? 1 : rdbtn_N_KSpindleOD.isSelected() ? 0 : -1),
-				(rdbtn_N_KSpindleOS.isSelected() ? 1 : rdbtn_N_KSpindleOS.isSelected() ? 0 : -1));
+				(rdbtn_Y_KSpindleOS.isSelected() ? 1 : rdbtn_N_KSpindleOS.isSelected() ? 0 : -1)
+				);
 
 		return ac;
 	}
@@ -489,12 +491,12 @@ public class PanelAC extends JPanel {
 	/**
 	 * Gets the selected button's name from a button group.
 	 * 
-	 * @param buttonGroup
+	 * @param NoneSelectedButtonGroup
 	 * @return The string of the name of the selected radio button of the
-	 *         buttonGroup
+	 *         NoneSelectedButtonGroup
 	 */
-	public String getSelectedButtonText(ButtonGroup buttonGroup) {
-		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+	public String getSelectedButtonText(NoneSelectedButtonGroup NoneSelectedButtonGroup) {
+		for (Enumeration<AbstractButton> buttons = NoneSelectedButtonGroup.getElements(); buttons.hasMoreElements();) {
 			AbstractButton button = buttons.nextElement();
 
 			if (button.isSelected()) {
@@ -510,16 +512,20 @@ public class PanelAC extends JPanel {
 		// will be iterating manually through the tuples
 		int i = -1;
 
+//		System.out.println("AC cols: " + acCols.toString());
 		String temp;
-
+		
 		if (acCols.get(++i).toString().equals("1"))
 			chkbx_ACODNormal.setSelected(true);
 
+		
+		
 		if (acCols.get(++i).toString().equals("1"))
 			chkbx_ACOSNormal.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_ACDepthOD1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -529,9 +535,10 @@ public class PanelAC extends JPanel {
 		} else if (temp.equals("+4")) {
 			rdbtn_ACDepthOD4.setSelected(true);
 		}
-
+		
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_ACDepthOS1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -542,36 +549,41 @@ public class PanelAC extends JPanel {
 			rdbtn_ACDepthOS4.setSelected(true);
 		}
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("Open"))
 			rdbtn_ACAngleODOpen.setSelected(true);
 		else if (temp.equals("Closed"))
 			rdbtn_ACAngleODClosed.setSelected(true);
-
+		
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("Open"))
 			rdbtn_ACAngleOSOpen.setSelected(true);
 		else if (temp.equals("Closed"))
 			rdbtn_ACAngleOSClosed.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("Absent"))
 			rdbtn_N_PASOD.setSelected(true);
 		else if (temp.equals("Present"))
 			rdbtn_Y_PASOD.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("Absent"))
 			rdbtn_N_PASOS.setSelected(true);
 		else if (temp.equals("Present"))
 			rdbtn_Y_PASOS.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_ACODKP1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -582,8 +594,9 @@ public class PanelAC extends JPanel {
 			rdbtn_ACODKP4.setSelected(true);
 		}
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_ACOSKP1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -594,6 +607,8 @@ public class PanelAC extends JPanel {
 			rdbtn_ACOSKP4.setSelected(true);
 		}
 
+		
+		
 		if (acCols.get(++i).toString().equals("1"))
 			rdbtn_ShuntOD.setSelected(true);
 		if (acCols.get(++i).toString().equals("1"))
@@ -603,6 +618,8 @@ public class PanelAC extends JPanel {
 		if (acCols.get(++i).toString().equals("1"))
 			rdbtn_BlebOD.setSelected(true);
 
+		
+		
 		if (acCols.get(++i).toString().equals("1"))
 			rdbtn_ShuntOS.setSelected(true);
 		if (acCols.get(++i).toString().equals("1"))
@@ -612,15 +629,17 @@ public class PanelAC extends JPanel {
 		if (acCols.get(++i).toString().equals("1"))
 			rdbtn_BlebOS.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("0"))
 			rdbtn_AvascularOD.setSelected(true);
 		else if (temp.equals("1"))
 			rdbtn_VascularOD.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_BlebOD1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -631,15 +650,17 @@ public class PanelAC extends JPanel {
 			rdbtn_BlebOD4.setSelected(true);
 		}
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("0"))
 			rdbtn_AvascularOS.setSelected(true);
 		else if (temp.equals("1"))
 			rdbtn_VascularOS.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("+1")) {
 			rdbtn_BlebOS1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -650,15 +671,17 @@ public class PanelAC extends JPanel {
 			rdbtn_BlebOS4.setSelected(true);
 		}
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("0"))
 			rdbtn_N_KSpindleOD.setSelected(true);
 		else if (temp.equals("1"))
 			rdbtn_Y_KSpindleOD.setSelected(true);
 
+		
+		
 		temp = acCols.get(++i).toString();
-
 		if (temp.equals("0"))
 			rdbtn_N_KSpindleOS.setSelected(true);
 		else if (temp.equals("1"))

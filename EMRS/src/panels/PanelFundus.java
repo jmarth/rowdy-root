@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -30,8 +31,6 @@ import javax.swing.border.MatteBorder;
 @SuppressWarnings("serial")
 public class PanelFundus extends JPanel {
 
-	// TODO vvvvvvvvvvvvvvvvvvvvvvv OUT OF ORDER, not in order of db\
-	
 	private JCheckBox chckbxDialated;
 	private JTextField textField_Dial_Notes;
 	private JCheckBox chckbxAbnormal_CD_OD;
@@ -50,8 +49,6 @@ public class PanelFundus extends JPanel {
 	private JTextField textField_Macula_Notes_OS;
 	private JButton btnFundusSketch;
 	private JLabel lblFundusSketch;
-	
-	// ^^^^^^^^^^^^^^^^^^^^^^^^^^ OUT OF ORDER, not in order of db
 	
 	HomeModel hm;
 	Patient p;
@@ -115,14 +112,14 @@ public class PanelFundus extends JPanel {
 		
 		comboBox_CD_OD = new JComboBox();
 		panel_Fundus_Misc.add(comboBox_CD_OD, "cell 1 2,alignx center");
-		comboBox_CD_OD.setModel(new DefaultComboBoxModel(new String[] {"0.0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0"}));
+		comboBox_CD_OD.setModel(new DefaultComboBoxModel(new String[] {"0.0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0", " "}));
 		
 		chckbxAbnormal_CD_OS = new JCheckBox("Abnormal?");
 		panel_Fundus_Misc.add(chckbxAbnormal_CD_OS, "flowx,cell 3 2,alignx center");
 		
 		comboBox_CD_OS = new JComboBox();
 		panel_Fundus_Misc.add(comboBox_CD_OS, "cell 3 2,alignx center");
-		comboBox_CD_OS.setModel(new DefaultComboBoxModel(new String[] {"0.0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0"}));
+		comboBox_CD_OS.setModel(new DefaultComboBoxModel(new String[] {"0.0", "0.1", "0.2", "0.3", "0.4", "0.5", "0.6", "0.7", "0.8", "0.9", "1.0", " "}));
 		
 		JLabel lblNotes_CD = new JLabel("Notes");
 		panel_Fundus_Misc.add(lblNotes_CD, "cell 0 3,alignx trailing");
@@ -216,21 +213,27 @@ public class PanelFundus extends JPanel {
 		String cdOS = (String)comboBox_CD_OS.getSelectedItem();
  		
 		FundusExam fe = new FundusExam(
-			chckbxDialated.isSelected(),
+			chckbxDialated.isSelected() ? 1:0,
 			textField_Dial_Notes.getText(),
-			chckbxAbnormal_CD_OD.isSelected(),
+			
+			chckbxAbnormal_CD_OD.isSelected() ? 1:0,
 			cdOD,
 			textField_CD_OD.getText(),
-			chckbxAbnormal_CD_OS.isSelected(),
+			
+			chckbxAbnormal_CD_OS.isSelected() ? 1:0,
 			cdOS,
 			textField_CD_OS.getText(),
-			checkBox_Retina_OD.isSelected(),
+			
+			checkBox_Retina_OD.isSelected() ? 1:0,
 			textField_Retina_OD.getText(),
-			checkBox_Retina_OS.isSelected(),
+			
+			checkBox_Retina_OS.isSelected() ? 1:0,
 			textField_Retina_OS.getText(),
-			checkBox_Macula_OD.isSelected(),
+			
+			checkBox_Macula_OD.isSelected() ? 1:0,
 			textField_Macula_Notes_OD.getText(),
-			checkBox_Macula_OS.isSelected(),
+			
+			checkBox_Macula_OS.isSelected() ? 1:0,
 			textField_Macula_Notes_OS.getText()
 			);
 		
@@ -238,6 +241,54 @@ public class PanelFundus extends JPanel {
 	}
 	public JLabel getSketchLabel() {
 		return lblFundusSketch;
+	}
+	public void setFields(ArrayList<Object> fundusCols) {
+		// will be iterating manually through the tuples
+				int i = -1;
+
+				String temp;
+				
+				if (fundusCols.get(++i).toString().equals("1"))
+					chckbxDialated.setSelected(true);
+
+				textField_Dial_Notes.setText(fundusCols.get(++i).toString());
+				
+				
+				
+				if (fundusCols.get(++i).toString().equals("1"))
+					chckbxAbnormal_CD_OD.setSelected(true);
+
+				temp = fundusCols.get(++i).toString();
+				comboBox_CD_OD.setSelectedItem(temp);
+				temp = fundusCols.get(++i).toString();
+				textField_CD_OD.setText(temp);
+				
+				if (fundusCols.get(++i).toString().equals("1"))
+					chckbxAbnormal_CD_OS.setSelected(true);
+				
+				temp = fundusCols.get(++i).toString();
+				comboBox_CD_OS.setSelectedItem(temp);
+				temp = fundusCols.get(++i).toString();
+				textField_CD_OS.setText(temp);
+				
+				if (fundusCols.get(++i).toString().equals("1"))
+					checkBox_Retina_OD.setSelected(true);
+				temp = fundusCols.get(++i).toString();
+				textField_Retina_OD.setText(temp);
+				if (fundusCols.get(++i).toString().equals("1"))
+					checkBox_Retina_OS.setSelected(true);
+				temp = fundusCols.get(++i).toString();
+				textField_Retina_OS.setText(temp);
+				
+				if (fundusCols.get(++i).toString().equals("1"))
+					checkBox_Macula_OD.setSelected(true);
+				temp = fundusCols.get(++i).toString();
+				textField_Macula_Notes_OD.setText(temp);
+				if (fundusCols.get(++i).toString().equals("1"))
+					checkBox_Macula_OS.setSelected(true);
+				temp = fundusCols.get(++i).toString();
+				textField_Macula_Notes_OS.setText(temp);
+
 	}
 
 }

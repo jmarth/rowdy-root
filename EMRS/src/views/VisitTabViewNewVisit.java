@@ -35,7 +35,6 @@ import models.Visit;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.border.EtchedBorder;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
@@ -109,7 +108,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		this.patient = patient;
 		this.tabbedPane = tabbedPane;
 		this.homeModel = homeModel;
-				
+		System.out.println("Visit id = " + v.getId() + " pid " + patient.getId());
 		createView();
 		
 		panel_Buttons.setVisible(false);
@@ -143,9 +142,8 @@ public class VisitTabViewNewVisit extends JPanel {
 					ImageIcon icon = new ImageIcon(img);
 					panel_Fundus.getSketchLabel().setIcon(icon);
 				}
-				
-				//get objects for panels from database to populate
-				// TODO get all the other panels if want to display, hope they are in order : - )
+				//get db rows in object list for panels from database to populate
+				ArrayList<Object> visitCols = (ArrayList<Object>) homeModel.getVtg().fetchVisitsCols(v.getId());
 				ArrayList<Object> dvCols = (ArrayList<Object>) homeModel.getDvtg().fetchDistanceVisionColsForVisit(v.getId());
 				ArrayList<Object> rxCols = (ArrayList<Object>) homeModel.getGlsRxTG().fetchGlassesRxColsForVisit(v.getId());
 				ArrayList<Object> refractCols = (ArrayList<Object>) homeModel.getRefractionTG().fetchRefractionsColsForVisit(v.getId());
@@ -154,15 +152,19 @@ public class VisitTabViewNewVisit extends JPanel {
 				ArrayList<Object> lensCols = (ArrayList<Object>) homeModel.getLensTG().fetchLensColsForVisit(v.getId());
 				ArrayList<Object> iopCols = (ArrayList<Object>) homeModel.getIopTG().fetchIOPColsForVisit(v.getId());
 				ArrayList<Object> gonioCols = (ArrayList<Object>) homeModel.getGonioTG().fetchGonioForVisit(v.getId());
+				ArrayList<Object> fundusCols = (ArrayList<Object>) homeModel.getFundusTG().fetchFundusExamsForVisit(v.getId());
+//				System.out.println("VISIT ID = " + v.getId());
 
+				populateVisitPanel(visitCols); // this panel
 				populateDVPanel(dvCols);
 				populateGlassesRxPanel(rxCols);
 				populateRefractionPanel(refractCols);
-				populatePupilsPanel(pupilsCols);
+				panel_SLE_Pupils.setFields(pupilsCols);
 				panel_SLE_AC.setFields(acCols);
 				panel_SLE_Lens.setFields(lensCols);
 				panel_IOP.setFields(iopCols);
 				panel_Gonio.setFields(gonioCols);
+				panel_Fundus.setFields(fundusCols);
 				
 			} catch (GatewayException e) {
 				e.printStackTrace();
@@ -225,14 +227,14 @@ public class VisitTabViewNewVisit extends JPanel {
 		int i = 0;
 		for (Iterator<Component> iter = clist.iterator(); iter.hasNext(); ) {
 			Component c = iter.next();
-			System.out.println("\t i = " +i+": c ="+c.getClass()+" and refractCols = "+refractCols.get(i).toString());
+//			System.out.println("\t i = " +i+": c ="+c.getClass()+" and refractCols = "+refractCols.get(i).toString());
 			if (i == 0) {
 				panel_Refraction.setFields(refractCols);
 				iter.next();//skip
 			}
-			System.out.println("xxx"+c.getClass());
+//			System.out.println("xxx"+c.getClass());
 			if (c instanceof JTextField) {
-				System.out.println("HELLO??"+refractCols.get(i).getClass());
+//				System.out.println("HELLO??"+refractCols.get(i).getClass());
 				((JTextField)c).setText(refractCols.get(i).toString());
 			}
 			i++;
@@ -240,11 +242,17 @@ public class VisitTabViewNewVisit extends JPanel {
 			
 		
 	}
-	public void populatePupilsPanel(ArrayList<Object> pupilsCols) {
+
+	
+	public void populateVisitPanel(ArrayList<Object> visitCols) {
+		String temp; int i = -1;
 		
-		panel_SLE_Pupils.setFields(pupilsCols);
-			
-		
+		temp = visitCols.get(++i).toString();
+		textArea_CC.setText(temp);
+		temp = visitCols.get(++i).toString();
+		textArea_Assessment.setText(temp);
+		temp = visitCols.get(++i).toString();
+		textArea_Plan.setText(temp);
 	}
 	
 	void setFields(Container container, ArrayList<Component> cl) {
@@ -534,7 +542,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		
 		// SLE SKETCH
 		JPanel panel_SLE_Diagram = new JPanel();
-		panel_SLE.add(panel_SLE_Diagram, "cell 0 3");
+		panel_SLE.add(panel_SLE_Diagram, "cell 0 3,growx");
 		panel_SLE_Diagram.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_SLE_Diagram.setLayout(new BoxLayout(panel_SLE_Diagram, BoxLayout.Y_AXIS));
 	

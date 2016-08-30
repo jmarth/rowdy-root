@@ -223,15 +223,15 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 		    
 		    int colCount = meta.getColumnCount();
 
-		    System.out.println("====DV ======= " + colCount);
+//		    System.out.println("====DV ======= " + colCount);
 			
 			while(rs.next()) {
 				for (int i = 3; i <= colCount; i++) {
 					row.add(rs.getObject(i));
-					System.out.println("column #"+ i + " : " + rs.getObject(i));
+//					System.out.println("column #"+ i + " : " + rs.getObject(i));
 				}
 			}
-			System.out.println("\n****************\n DV ROW:"+row.toString());
+//			System.out.println("\n****************\n DV ROW:"+row.toString());
 			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());

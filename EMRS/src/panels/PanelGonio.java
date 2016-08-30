@@ -33,17 +33,15 @@ import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class PanelGonio extends JPanel {
-	
-	// THESE ARE NOT IN ORDER WITH THE DB *****************
-	
+		
 	private JRadioButton rdbtnYHFHA;
 	private JRadioButton rdbtnNHFHA;
+	
 	private JRadioButton rdbtn_FHD_Both;
 	private JRadioButton rdbtn_FHD_Right;
 	private JRadioButton rdbtn_FHD_Left;
 
 	private JCheckBox chckbxNormalGonioOD;
-	private JCheckBox chckbxNormalGonioOS;
 	private JRadioButton rdbtnAODN;
 	private JRadioButton rdbtnBODN;
 	private JRadioButton rdbtnCODN;
@@ -52,12 +50,22 @@ public class PanelGonio extends JPanel {
 	private JRadioButton rdbtnBODC;
 	private JRadioButton rdbtnCODC;
 	private JRadioButton rdbtnDODC;
+	private JComboBox comboBox_GonioODN;
+	private JComboBox comboBox_GonioODC;
+	private JRadioButton rdbtnRODN;
+	private JRadioButton rdbtnSODN;
+	private JRadioButton rdbtnQODN;
+	private JRadioButton rdbtnRODC;
+	private JRadioButton rdbtnSODC;
+	private JRadioButton rdbtnQODC;
 	private JRadioButton rdbtn_PigmentOD_1;
 	private JRadioButton rdbtn_PigmentOD_2;
 	private JRadioButton rdbtn_PigmentOD_3;
 	private JRadioButton rdbtn_PigmentOD_4;
 	private JRadioButton rdbtn_Y_AntPigLineOD;
 	private JRadioButton rdbtn_N_AntPigLineOD;
+
+	private JCheckBox chckbxNormalGonioOS;
 	private JRadioButton rdbtnAOSN;
 	private JRadioButton rdbtnBOSN;
 	private JRadioButton rdbtnCOSN;
@@ -66,14 +74,24 @@ public class PanelGonio extends JPanel {
 	private JRadioButton rdbtnBOSC;
 	private JRadioButton rdbtnCOSC;
 	private JRadioButton rdbtnDOSC;
+	private JComboBox comboBox_GonioOSN;
+	private JComboBox comboBox_GonioOSC;
+	private JRadioButton rdbtnROSN;
+	private JRadioButton rdbtnSOSN;
+	private JRadioButton rdbtnQOSN;
+	private JRadioButton rdbtnROSC;
+	private JRadioButton rdbtnSOSC;
+	private JRadioButton rdbtnQOSC;
 	private JRadioButton rdbtn_PigmentOS_1;
 	private JRadioButton rdbtn_PigmentOS_2;
 	private JRadioButton rdbtn_PigmentOS_3;
 	private JRadioButton rdbtn_PigmentOS_4;
 	private JRadioButton rdbtn_Y_AntPigLineOS;
 	private JRadioButton rdbtn_N_AntPigLineOS;
+	
 	private JButton btnGonioSketch;
 	private JLabel lblGonioSketch;
+	
 	private final NoneSelectedButtonGroup bgHxFHA = new NoneSelectedButtonGroup();
 	private final NoneSelectedButtonGroup bgSide = new NoneSelectedButtonGroup();
 	private final NoneSelectedButtonGroup bgODNonABCD = new NoneSelectedButtonGroup();
@@ -89,30 +107,12 @@ public class PanelGonio extends JPanel {
 	private final NoneSelectedButtonGroup bgOSPig = new NoneSelectedButtonGroup();
 	private final NoneSelectedButtonGroup bgOSAntPig = new NoneSelectedButtonGroup();
 	
-	// THESE ARE NOT IN ORDER WITH THE DB *****************
-	
-	private JRadioButton rdbtnRODN;
-	private JRadioButton rdbtnSODN;
-	private JRadioButton rdbtnQODN;
-	private JRadioButton rdbtnROSN;
-	private JRadioButton rdbtnSOSN;
-	private JRadioButton rdbtnQOSN;
-	private JRadioButton rdbtnRODC;
-	private JRadioButton rdbtnSODC;
-	private JRadioButton rdbtnROSC;
-	private JRadioButton rdbtnQODC;
-	private JRadioButton rdbtnSOSC;
-	private JRadioButton rdbtnQOSC;
-	private JComboBox comboBox_GonioODN;
-	private JComboBox comboBox_GonioODC;
-	private JComboBox comboBox_GonioOSN;
-	private JComboBox comboBox_GonioOSC;
+
 	
 	private HomeModel hm;
 	private Patient p;
 	
 	private JPanel panel_1 = new JPanel();
-	// THESE ARE NOT IN ORDER WITH THE DB *****************
 	
 	/*
 	public void clearSelections(Container container) {
@@ -529,27 +529,27 @@ public class PanelGonio extends JPanel {
 		Gonio g = new Gonio(
 				
 				rdbtnYHFHA.isSelected() ? 1 : rdbtnNHFHA.isSelected() ? 0 : -1,
-				getSelectedButtonText(bgSide) == null ? " " : getSelectedButtonText(bgSide),
+				getSelectedButtonText(bgSide) == null ? "" : getSelectedButtonText(bgSide),
 				
 				chckbxNormalGonioOD.isSelected() ? 1 : 0,
-				getSelectedButtonText(bgODNonABCD) == null ? " " : getSelectedButtonText(bgODNonABCD),
-				getSelectedButtonText(bgODCompABCD) == null ? " " : getSelectedButtonText(bgODCompABCD),
+				getSelectedButtonText(bgODNonABCD) == null ? "" : getSelectedButtonText(bgODNonABCD),
+				getSelectedButtonText(bgODCompABCD) == null ? "" : getSelectedButtonText(bgODCompABCD),
 				ODDegreeN,
 				ODDegreeC,
-				getSelectedButtonText(bgODNonRSQ) == null ? " " : getSelectedButtonText(bgODNonRSQ),
-				getSelectedButtonText(bgODCompRSQ) == null ? " " : getSelectedButtonText(bgODCompRSQ),
-				getSelectedButtonText(bgODPig) == null ? " " : getSelectedButtonText(bgODPig),
+				getSelectedButtonText(bgODNonRSQ) == null ? "" : getSelectedButtonText(bgODNonRSQ),
+				getSelectedButtonText(bgODCompRSQ) == null ? "" : getSelectedButtonText(bgODCompRSQ),
+				getSelectedButtonText(bgODPig) == null ? "" : getSelectedButtonText(bgODPig),
 				rdbtn_Y_AntPigLineOD.isSelected() ? 1 : rdbtn_N_AntPigLineOD.isSelected() ? 0 : -1,
 
 				
 				chckbxNormalGonioOS.isSelected() ? 1 : 0,
-				getSelectedButtonText(bgOSNonABCD) == null ? " " : getSelectedButtonText(bgOSNonABCD),
-				getSelectedButtonText(bgOSCompABCD) == null ? " " : getSelectedButtonText(bgOSCompABCD),
+				getSelectedButtonText(bgOSNonABCD) == null ? "" : getSelectedButtonText(bgOSNonABCD),
+				getSelectedButtonText(bgOSCompABCD) == null ? "" : getSelectedButtonText(bgOSCompABCD),
 				OSDegreeN,
 				OSDegreeC,
-				getSelectedButtonText(bgOSNonRSQ) == null ? " " : getSelectedButtonText(bgOSNonRSQ),
-				getSelectedButtonText(bgOSCompRSQ) == null ? " " : getSelectedButtonText(bgOSCompRSQ),
-				getSelectedButtonText(bgOSPig) == null ? " " : getSelectedButtonText(bgOSPig),
+				getSelectedButtonText(bgOSNonRSQ) == null ? "" : getSelectedButtonText(bgOSNonRSQ),
+				getSelectedButtonText(bgOSCompRSQ) == null ? "" : getSelectedButtonText(bgOSCompRSQ),
+				getSelectedButtonText(bgOSPig) == null ? "" : getSelectedButtonText(bgOSPig),
 				rdbtn_Y_AntPigLineOS.isSelected() ? 1 : rdbtn_N_AntPigLineOS.isSelected() ? 0 : -1
 				
 				);
@@ -574,9 +574,9 @@ public class PanelGonio extends JPanel {
 		temp = gonioCols.get(++i).toString();
 		if (temp.equals("Both")) {
 			rdbtn_FHD_Both.setSelected(true);
-		} else if (temp.equals("Left")) {
-			rdbtn_FHD_Right.setSelected(true);
 		} else if (temp.equals("Right")) {
+			rdbtn_FHD_Right.setSelected(true);
+		} else if (temp.equals("Left")) {
 			rdbtn_FHD_Left.setSelected(true);
 		}
 
@@ -608,15 +608,15 @@ public class PanelGonio extends JPanel {
 		} else if (temp.equals("D")) {
 			rdbtnDODC.setSelected(true);
 		}
-		//TODO
-		//temp = gonioCols.get(++i).toString();
-		//if (temp !=null) {
-		//	comboBox_GonioODN.setSelectedItem(temp);
-		//}
-		//temp = gonioCols.get(++i).toString();
-		//if (temp !=null) {
-		//	comboBox_GonioODC.setSelectedItem(temp);
-		//}
+		
+		temp = gonioCols.get(++i).toString();
+		if (temp !=null) {
+			comboBox_GonioODN.setSelectedItem(temp);
+		}
+		temp = gonioCols.get(++i).toString();
+		if (temp !=null) {
+			comboBox_GonioODC.setSelectedItem(temp);
+		}
 		
 		temp = gonioCols.get(++i).toString();
 		if (temp.equals("R")) {
@@ -637,13 +637,13 @@ public class PanelGonio extends JPanel {
 		}
 		
 		temp = gonioCols.get(++i).toString();
-		if (temp.equals("1")) {
+		if (temp.equals("+1")) {
 			rdbtn_PigmentOD_1.setSelected(true);
-		} else if (temp.equals("2")) {
+		} else if (temp.equals("+2")) {
 			rdbtn_PigmentOD_2.setSelected(true);
-		} else if (temp.equals("3")) {
+		} else if (temp.equals("+3")) {
 			rdbtn_PigmentOD_3.setSelected(true);
-		} else if (temp.equals("4")) {
+		} else if (temp.equals("+4")) {
 			rdbtn_PigmentOD_4.setSelected(true);
 		}
 
@@ -654,24 +654,6 @@ public class PanelGonio extends JPanel {
 			rdbtn_N_AntPigLineOD.setSelected(true);
 		}
 		
-		
-		
-		temp = gonioCols.get(++i).toString();
-		if (temp.equals("1")) {
-			rdbtnYHFHA.setSelected(true);
-		} else if (temp.equals("0")) {
-			rdbtnNHFHA.setSelected(true);
-		}
-		
-		temp = gonioCols.get(++i).toString();
-		if (temp.equals("Both")) {
-			rdbtn_FHD_Both.setSelected(true);
-		} else if (temp.equals("Left")) {
-			rdbtn_FHD_Right.setSelected(true);
-		} else if (temp.equals("Right")) {
-			rdbtn_FHD_Left.setSelected(true);
-		}
-
 		
 		
 		temp = gonioCols.get(++i).toString();
@@ -700,15 +682,15 @@ public class PanelGonio extends JPanel {
 		} else if (temp.equals("D")) {
 			rdbtnDOSC.setSelected(true);
 		}
-		//TODO
-//		temp = gonioCols.get(++i).toString();
-//		if (temp !=null) {
-//			comboBox_GonioOSN.setSelectedItem(temp);
-//		}
-//		temp = gonioCols.get(++i).toString();
-//		if (temp !=null) {
-//			comboBox_GonioOSC.setSelectedItem(temp);
-//		}
+		
+		temp = gonioCols.get(++i).toString();
+		if (temp !=null) {
+			comboBox_GonioOSN.setSelectedItem(temp);
+		}
+		temp = gonioCols.get(++i).toString();
+		if (temp !=null) {
+			comboBox_GonioOSC.setSelectedItem(temp);
+		}
 		
 		temp = gonioCols.get(++i).toString();
 		if (temp.equals("R")) {
@@ -729,13 +711,13 @@ public class PanelGonio extends JPanel {
 		}
 		
 		temp = gonioCols.get(++i).toString();
-		if (temp.equals("1")) {
+		if (temp.equals("+1")) {
 			rdbtn_PigmentOS_1.setSelected(true);
-		} else if (temp.equals("2")) {
+		} else if (temp.equals("+2")) {
 			rdbtn_PigmentOS_2.setSelected(true);
-		} else if (temp.equals("3")) {
+		} else if (temp.equals("+3")) {
 			rdbtn_PigmentOS_3.setSelected(true);
-		} else if (temp.equals("4")) {
+		} else if (temp.equals("+4")) {
 			rdbtn_PigmentOS_4.setSelected(true);
 		}
 

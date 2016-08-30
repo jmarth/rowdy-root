@@ -5,6 +5,8 @@ public class IOPMeasurement {
 	private long id;
 	private long vid; // foreign key of visit it belongs to
 	
+	private String type;
+	
 	private String ODValue; 
 	private String ODType;
 	private String ODNotes;

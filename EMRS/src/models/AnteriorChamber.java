@@ -3,36 +3,55 @@ package models;
 public class AnteriorChamber {
 	private long id;
 	private long vid;
+	
 	private int ACODNormal;
 	private int ACOSNormal;
+	
 	private String ACDepthOD;
 	private String ACDepthOS;
+	
 	private String ACAngleOD;
 	private String ACAngleOS;
+	
 	private String PASOD;
 	private String PASOS;
+	
 	private String ACODKP;
 	private String ACOSKP;
+	
 	private int ShuntOD;
 	private int ScarringOD;
+	
 	private int TraumaOD;
 	private int BlebOD;
+	
 	private int ShuntOS;
 	private int ScarringOS;
+	
 	private int TraumaOS;
 	private int BlebOS;
+	
 	private int VascularOD;
 	private String BlebOD_Num;
+	
 	private int VascularOS;
 	private String BlebOS_Num;
+	
 	private int KSpindleOD;
 	private int KSpindleOS;
 	
-	public AnteriorChamber(long id, long vid, int aCODNormal, int aCOSNormal, String aCDepthOD, String aCDepthOS,
-			String aCAngleOD, String aCAngleOS, String pASOD, String pASOS, String aCODKP, String aCOSKP, int shuntOD,
-			int scarringOD, int traumaOD, int blebOD, int shuntOS, int scarringOS, int traumaOS,
-			int blebOS, int vascularOD, String blebOD_Num, int vascularOS, String blebOS_Num, int kSpindleOD,
-			int kSpindleOS) {
+	public AnteriorChamber(long id, long vid,
+			int aCODNormal, int aCOSNormal, 
+			String aCDepthOD, String aCDepthOS,
+			String aCAngleOD, String aCAngleOS, 
+			String pASOD, String pASOS, 
+			String aCODKP, String aCOSKP, 
+			int shuntOD, int scarringOD, int traumaOD, int blebOD,
+			int shuntOS, int scarringOS, int traumaOS, int blebOS,
+			int vascularOD, String blebOD_Num, 
+			int vascularOS, String blebOS_Num, 
+			int kSpindleOD,	int kSpindleOS
+			) {
 		super();
 		this.id = id;
 		this.vid = vid;
@@ -61,10 +80,17 @@ public class AnteriorChamber {
 		KSpindleOD = kSpindleOD;
 		KSpindleOS = kSpindleOS;
 	}
-	public AnteriorChamber(int aCODNormal, int aCOSNormal, String aCDepthOD, String aCDepthOS,
-			String aCAngleOD, String aCAngleOS, String pASOD, String pASOS, String aCODKP, String aCOSKP, int shuntOD,
-			int scarringOD, int traumaOD, int blebOD, int shuntOS, int scarringOS, int traumaOS,
-			int blebOS, int vascularOD, String blebOD_Num, int vascularOS, String blebOS_Num, int kSpindleOD,
+	public AnteriorChamber(
+			int aCODNormal, int aCOSNormal,
+			String aCDepthOD, String aCDepthOS,
+			String aCAngleOD, String aCAngleOS,
+			String pASOD, String pASOS,
+			String aCODKP, String aCOSKP, 
+			int shuntOD, int scarringOD, int traumaOD, int blebOD,
+			int shuntOS, int scarringOS, int traumaOS, int blebOS, 
+			int vascularOD, String blebOD_Num, 
+			int vascularOS, String blebOS_Num, 
+			int kSpindleOD,
 			int kSpindleOS) {
 		super();
 		ACODNormal = aCODNormal;
