@@ -12,7 +12,7 @@ public final class Tabs {
 	
 	public static final String testing = "Special Testing";
 	
-	public static final String labs = "Labs & Procedures";
+	public static final String labs = "Surgical Procedures";
 
 	public static String docs = "Documents";
 	
