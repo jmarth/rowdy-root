@@ -28,6 +28,7 @@ import models.Pupils;
 import models.Refraction;
 import models.Tabs;
 import models.AnteriorChamber;
+import models.CL;
 import models.DistanceVision;
 import models.Visit;
 
@@ -54,7 +55,9 @@ import java.util.Iterator;
 
 import javax.swing.JButton;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.BorderLayout;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class VisitTabViewNewVisit extends JPanel {
@@ -101,6 +104,7 @@ public class VisitTabViewNewVisit extends JPanel {
 	 * @wbp.parser.constructor
 	 */
 	public VisitTabViewNewVisit(Visit v, Patient patient, final JTabbedPane tabbedPane, HomeModel homeModel, boolean forJXTaskPane) {
+		setBackground(CL.turq);
 		
 		this.patient = patient;
 		this.tabbedPane = tabbedPane;
@@ -410,6 +414,7 @@ public class VisitTabViewNewVisit extends JPanel {
 	
 	public void createView() {
 		setLayout(new MigLayout("", "[grow]", "[grow]"));
+		setBackground(CL.turq);
 		
 		// was for testing, wraps everything in a JScrollPane
 		//JScrollPane scrollPane = new JScrollPane();
@@ -417,6 +422,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		//add(scrollPane, "cell 0 0,grow");
 		
 		JPanel panel_Everything = new JPanel();
+		panel_Everything.setBackground(CL.turq);
 		//scrollPane.setViewportView(panel_Everything);
 		panel_Everything.setLayout(new MigLayout("", "[grow]", "[grow][grow][grow][grow][]"));
 		add(panel_Everything, "cell 0 0,grow");
@@ -451,8 +457,9 @@ public class VisitTabViewNewVisit extends JPanel {
 		
 		// CC
 		JPanel panel_CC = new JPanel();
+		panel_CC.setBackground(CL.turq);
 		panel_Everything.add(panel_CC, "cell 0 0,grow");
-		panel_CC.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Chief Complaint", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_CC.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Chief Complaint", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_CC.setLayout(new BorderLayout(0, 0));
 		
 		JScrollPane scrollPane_CC = new JScrollPane();
@@ -466,14 +473,16 @@ public class VisitTabViewNewVisit extends JPanel {
 		
 		// PED ===
 		JPanel panel_PED = new JPanel();
+		panel_PED.setBackground(CL.turq);
 		panel_Everything.add(panel_PED, "cell 0 1,grow");
-		panel_PED.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Physical Exam Detail", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_PED.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Physical Exam Detail", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_PED.setLayout(new MigLayout("", "[grow]", "[grow]"));
 				
 		
 		
 		// VISION ===
 		JPanel panel_Vision = new JPanel();
+		panel_Vision.setBackground(CL.turq);
 		panel_PED.add(panel_Vision, "cell 0 0,grow");
 		panel_Vision.setLayout(new MigLayout("", "[grow]", "[][][][grow][][grow][grow]"));
 		
@@ -486,10 +495,12 @@ public class VisitTabViewNewVisit extends JPanel {
 		/**/
 		// GLASSES RX
 		panel_GlassesRx = new PanelGlassesRx();
+		panel_GlassesRx.setBackground(CL.turq);
 		panel_Vision.add(panel_GlassesRx, "cell 0 1,growx");
 		
 		// Refraction
 		panel_Refraction = new PanelRefraction();
+		panel_Refraction.setBackground(CL.turq);
 		panel_Vision.add(panel_Refraction, "cell 0 2,growx");
 		
 		
@@ -498,9 +509,10 @@ public class VisitTabViewNewVisit extends JPanel {
 		// SLE ==
 		// TODO Make SLE panel contain all the others...maybe need separate objects for SLE?
 		JPanel panel_SLE = new JPanel();
-		panel_SLE.setBorder(new TitledBorder(null, "Slit Lamp Exam", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_SLE.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Slit Lamp Exam", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		panel_Vision.add(panel_SLE, "cell 0 3,grow");
 		panel_SLE.setLayout(new MigLayout("", "[grow]", "[grow][][grow]"));
+		panel_SLE.setBackground(CL.turq);
 				
 		
 		
@@ -523,7 +535,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		// SLE SKETCH
 		JPanel panel_SLE_Diagram = new JPanel();
 		panel_SLE.add(panel_SLE_Diagram, "cell 0 3");
-		panel_SLE_Diagram.setBorder(new TitledBorder(null, "Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_SLE_Diagram.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_SLE_Diagram.setLayout(new BoxLayout(panel_SLE_Diagram, BoxLayout.Y_AXIS));
 	
 		JButton btnSLESketch = new JButton("Sketch");
@@ -550,21 +562,25 @@ public class VisitTabViewNewVisit extends JPanel {
 		
 		//IOP
 		panel_IOP = new PanelIOP();
+		panel_IOP.setBackground(CL.turq);
 		panel_Vision.add(panel_IOP, "cell 0 4,grow");
 		
 		//GONIO
 		panel_Gonio = new PanelGonio(homeModel, patient);
+		panel_Gonio.setBackground(CL.turq);
 		panel_Vision.add(panel_Gonio, "cell 0 5,grow");
 		
 		//FUNDUS
 		panel_Fundus = new PanelFundus(homeModel, patient);
+		panel_Fundus.setBackground(CL.turq);
 		panel_Vision.add(panel_Fundus, "cell 0 6,grow");
 		/*
 		*/
 		
 		// Assessment
 		JPanel panel_Assessment = new JPanel();
-		panel_Assessment.setBorder(new TitledBorder(null, "Assesment", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_Assessment.setBackground(CL.turq);
+		panel_Assessment.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Assesment", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_Everything.add(panel_Assessment, "cell 0 2,grow");
 		panel_Assessment.setLayout(new BorderLayout(0, 0));
 				
@@ -577,7 +593,8 @@ public class VisitTabViewNewVisit extends JPanel {
 		scrollPane_Assessment.setViewportView(textArea_Assessment);
 		
 		JPanel panel_Plan = new JPanel();
-		panel_Plan.setBorder(new TitledBorder(null, "Plan", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_Plan.setBackground(CL.turq);
+		panel_Plan.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Plan", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_Everything.add(panel_Plan, "cell 0 3,grow");
 		panel_Plan.setLayout(new BorderLayout(0, 0));
 		

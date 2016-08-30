@@ -10,6 +10,7 @@ import models.Refraction;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Enumeration;
 
@@ -18,6 +19,7 @@ import java.awt.Color;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class PanelRefraction extends JPanel {
@@ -46,14 +48,15 @@ public class PanelRefraction extends JPanel {
 	 */
 	public PanelRefraction() {
 				
-		setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Refraction", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Refraction", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 				
 		setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][][][][][][][][][]"));
+		
 		
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
-		panel.setBorder(new TitledBorder(null, "Type", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(64, 64, 64)), "Type", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		add(panel, "cell 0 0 4 1,grow");
 		
 		rdbtn_ManifestRefraction = new JRadioButton("Manifest Refraction");

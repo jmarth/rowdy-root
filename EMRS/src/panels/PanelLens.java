@@ -14,6 +14,8 @@ import javax.swing.border.TitledBorder;
 
 import models.Lens;
 import net.miginfocom.swing.MigLayout;
+import javax.swing.border.MatteBorder;
+import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class PanelLens extends JPanel {
@@ -42,7 +44,7 @@ public class PanelLens extends JPanel {
 	 */
 	public PanelLens() {
 		
-		setBorder(new TitledBorder(null, "Lens", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Lens", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		//panel_SLE.add(panel_SLE_Lens, "cell 0 2,grow");
 		setLayout(new MigLayout("", "[][grow][][grow]", "[][][][][][]"));
 		

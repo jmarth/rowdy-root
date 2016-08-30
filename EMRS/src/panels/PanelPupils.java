@@ -21,6 +21,7 @@ import javax.swing.border.TitledBorder;
 import models.Pupils;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Component;
+import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class PanelPupils extends JPanel {
@@ -65,11 +66,11 @@ public class PanelPupils extends JPanel {
 	 */
 	public PanelPupils() {
 
-		setBorder(new TitledBorder(null, "Pupils", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Pupils", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[grow]", "[][][]"));
 
 		JPanel panel_PupilsBoth = new JPanel();
-		panel_PupilsBoth.setBorder(new TitledBorder(null, "Both", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_PupilsBoth.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(64, 64, 64)), "Both", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		add(panel_PupilsBoth, "cell 0 0,grow");
 
 		chckbx_NormalPupilsBoth = new JCheckBox("Normal");
@@ -78,7 +79,7 @@ public class PanelPupils extends JPanel {
 		chckbx_NormalPupilsBoth.addActionListener(new NormalBothListener());
 
 		JPanel panel_ShapeB = new JPanel();
-		panel_ShapeB.setBorder(new TitledBorder(null, "Shape", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_ShapeB.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "Shape", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 
 		rdbtn_RoundPupilsBoth = new JRadioButton("Round");
 		bgBothShape.add(rdbtn_RoundPupilsBoth);
@@ -94,7 +95,7 @@ public class PanelPupils extends JPanel {
 
 		JPanel panel_DiameterB = new JPanel();
 		panel_DiameterB
-				.setBorder(new TitledBorder(null, "Diameter", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "Diameter", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsBoth.add(panel_DiameterB);
 
 		comboBox_PupilsDiameterBoth = new JComboBox();
@@ -106,7 +107,7 @@ public class PanelPupils extends JPanel {
 		panel_DiameterB.add(lblMmBoth);
 
 		JPanel panel_RAPDB = new JPanel();
-		panel_RAPDB.setBorder(new TitledBorder(null, "RAPD", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_RAPDB.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "RAPD", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsBoth.add(panel_RAPDB);
 		panel_RAPDB.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
@@ -119,8 +120,7 @@ public class PanelPupils extends JPanel {
 		panel_RAPDB.add(rdbtn_N_RAPDBoth);
 
 		JPanel panel_SynechiaB = new JPanel();
-		panel_SynechiaB.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Synechia",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_SynechiaB.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "Synechia", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsBoth.add(panel_SynechiaB);
 		panel_SynechiaB.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
@@ -134,7 +134,7 @@ public class PanelPupils extends JPanel {
 
 		JPanel panel_PupilsRight = new JPanel();
 		panel_PupilsRight
-				.setBorder(new TitledBorder(null, "Right", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+				.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(64, 64, 64)), "Right", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		add(panel_PupilsRight, "cell 0 1,grow");
 		panel_PupilsRight.setLayout(new BoxLayout(panel_PupilsRight, BoxLayout.X_AXIS));
 
@@ -144,7 +144,7 @@ public class PanelPupils extends JPanel {
 		panel_PupilsRight.add(chckBx_NormalPupilsRight);
 
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Shape", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "Shape", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsRight.add(panel_1);
 		panel_1.setLayout(new BoxLayout(panel_1, BoxLayout.Y_AXIS));
 
@@ -157,7 +157,7 @@ public class PanelPupils extends JPanel {
 		panel_1.add(rdbtn_IrregularPupilsRight);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(null, "Diameter", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "Diameter", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsRight.add(panel_2);
 
 		comboBox_PupilDiameterRight = new JComboBox();
@@ -169,7 +169,7 @@ public class PanelPupils extends JPanel {
 		panel_2.add(lbl_MmRight);
 
 		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(null, "RAPD", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_3.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "RAPD", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsRight.add(panel_3);
 
 		rdbtn_Y_RAPDRight = new JRadioButton("Y");
@@ -181,8 +181,7 @@ public class PanelPupils extends JPanel {
 		panel_3.add(rdbtn_N_RAPDRight);
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Synechia",
-				TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_4.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "Synechia", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsRight.add(panel_4);
 
 		rdbtn_Y_SynechiaRight = new JRadioButton("Y");
@@ -194,7 +193,7 @@ public class PanelPupils extends JPanel {
 		panel_4.add(rdbtn_N_SynechiaRight);
 
 		JPanel panel_PupilsLeft = new JPanel();
-		panel_PupilsLeft.setBorder(new TitledBorder(null, "Left", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_PupilsLeft.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(64, 64, 64)), "Left", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		add(panel_PupilsLeft, "cell 0 2,grow");
 		panel_PupilsLeft.setLayout(new BoxLayout(panel_PupilsLeft, BoxLayout.X_AXIS));
 
@@ -204,7 +203,7 @@ public class PanelPupils extends JPanel {
 		panel_PupilsLeft.add(chkbx_NormalPupilLeft);
 
 		JPanel panel_5 = new JPanel();
-		panel_5.setBorder(new TitledBorder(null, "Shape", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_5.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "Shape", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsLeft.add(panel_5);
 		panel_5.setLayout(new BoxLayout(panel_5, BoxLayout.Y_AXIS));
 
@@ -217,7 +216,7 @@ public class PanelPupils extends JPanel {
 		panel_5.add(rdbtn_IrregularPupilLeft);
 
 		JPanel panel_6 = new JPanel();
-		panel_6.setBorder(new TitledBorder(null, "Diameter", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_6.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "Diameter", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsLeft.add(panel_6);
 
 		comboBox_PupilDiameterLeft = new JComboBox();
@@ -229,7 +228,7 @@ public class PanelPupils extends JPanel {
 		panel_6.add(label_1);
 
 		JPanel panel_7 = new JPanel();
-		panel_7.setBorder(new TitledBorder(null, "RAPD", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_7.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "RAPD", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsLeft.add(panel_7);
 
 		rdbtn_Y_RAPDLeft = new JRadioButton("Y");
@@ -241,7 +240,7 @@ public class PanelPupils extends JPanel {
 		panel_7.add(rdbtn_N_RAPDLeft);
 
 		JPanel panel_8 = new JPanel();
-		panel_8.setBorder(new TitledBorder(null, "Synichia", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_8.setBorder(new TitledBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(192, 192, 192)), "Synichia", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_PupilsLeft.add(panel_8);
 
 		rdbtn_Y_SynechiaLeft = new JRadioButton("Y");

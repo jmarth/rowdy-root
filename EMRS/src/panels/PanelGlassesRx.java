@@ -7,6 +7,9 @@ import javax.swing.border.TitledBorder;
 
 import models.GlassesRx;
 import net.miginfocom.swing.MigLayout;
+import javax.swing.border.MatteBorder;
+import java.awt.Color;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class PanelGlassesRx extends JPanel {
@@ -26,7 +29,7 @@ public class PanelGlassesRx extends JPanel {
 	 */
 	public PanelGlassesRx() {
 		
-		setBorder(new TitledBorder(null, "Glasses Rx", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Glasses Rx", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[][grow][grow][grow][grow]", "[][][][]"));
 		
 		JLabel lblSphereRx = new JLabel("Sphere");

@@ -9,6 +9,9 @@ import javax.swing.border.TitledBorder;
 
 import models.IOPMeasurement;
 import net.miginfocom.swing.MigLayout;
+import javax.swing.border.MatteBorder;
+import java.awt.Color;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class PanelIOP extends JPanel {
@@ -24,7 +27,7 @@ public class PanelIOP extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelIOP() {
-		setBorder(new TitledBorder(null, "Intraocular Pressure", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Intraocular Pressure", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[][grow][grow][grow]", "[][][]"));
 		
 		JLabel lblValue = new JLabel("Value");
