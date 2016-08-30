@@ -111,20 +111,20 @@ public class hxView extends JPanel {
 		setBackground(CL.colorBlue);
 		
 		allergyMasterPanel = new JPanel();
-		allergyMasterPanel.setBackground(CL.colorBlue);
+		allergyMasterPanel.setBackground(new Color(250, 250, 250));
 		allergyMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "Allergies", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		
 		medMasterPanel = new JPanel();
-		medMasterPanel.setBackground(CL.colorBlue);
+		medMasterPanel.setBackground(new Color(250, 250, 250));
 		medMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "Medications", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
 		
 		hxMasterPanel = new JPanel();
 		hxMasterPanel.setBackground(CL.colorBlue);
-		hxMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "Health History", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		hxMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "Health History", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.BOLD, 20), Color.WHITE));
 		
 		presentConditionPanel = new JPanel();
 		presentConditionPanel.setBackground(new Color(255, 250, 250));
-		presentConditionPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "History of Present Condition", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
+		presentConditionPanel.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "History of Present Condition", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -194,7 +194,7 @@ public class hxView extends JPanel {
 		medPanel.setLayout(new BorderLayout(0, 0));
 		
 		JPanel medButtonPanel = new JPanel();
-		medButtonPanel.setBackground(CL.colorBlue);
+		medButtonPanel.setBackground(CL.cararra);
 		medPanel.add(medButtonPanel, BorderLayout.NORTH);
 
 		
@@ -249,7 +249,7 @@ public class hxView extends JPanel {
 		
 		JPanel allergyButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		allergyPanel.add(allergyButtonPanel, BorderLayout.NORTH);
-		allergyButtonPanel.setBackground(CL.colorBlue);
+		allergyButtonPanel.setBackground(CL.cararra);
 		
 		JButton btnAddAllergy = new JButton("ADD");
 		btnAddAllergy.setFont(new Font("Tahoma", Font.PLAIN, 10));
