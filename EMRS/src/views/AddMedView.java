@@ -36,6 +36,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JCheckBox;
 import java.awt.Font;
 import javax.swing.SwingConstants;
+import javax.swing.BoxLayout;
+import javax.swing.ListSelectionModel;
 
 public class AddMedView extends JPanel {
 	private JTextField textField;
@@ -51,6 +53,7 @@ public class AddMedView extends JPanel {
 	private hxView hxView;
 	
 	private Patient patient;
+	private JTextField directionsField;
 
 	/**
 	 * Create the panel.
@@ -167,7 +170,19 @@ public class AddMedView extends JPanel {
 		panel.add(scrollPane, BorderLayout.CENTER);
 		
 		list = new JList();
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(list);
+		
+		JPanel panel_2 = new JPanel();
+		panel.add(panel_2, BorderLayout.SOUTH);
+		panel_2.setLayout(new BoxLayout(panel_2, BoxLayout.X_AXIS));
+		
+		JLabel lblDirections = new JLabel("Directions:");
+		panel_2.add(lblDirections);
+		
+		directionsField = new JTextField();
+		panel_2.add(directionsField);
+		directionsField.setColumns(10);
 		
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
@@ -177,7 +192,8 @@ public class AddMedView extends JPanel {
 				Object[] selectedValues = list.getSelectedValues();
 				for (Object s : selectedValues) {
 					String[] pieces = ((String) s).split("\\|");
-					Med tmp = new Med((long) 0, patient.getId(), pieces[0].trim(), pieces[1].trim());
+					String directions = directionsField.getText();
+					Med tmp = new Med((long) 0, patient.getId(), pieces[0].trim(), pieces[1].trim(), directions);
 					try {
 						AddMedView.this.mtg.insertMed(tmp);
 					} catch (GatewayException e1) {

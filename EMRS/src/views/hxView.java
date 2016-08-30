@@ -222,7 +222,7 @@ public class hxView extends JPanel {
 				new Object[][] {
 				},
 				new String[] {
-					"Trade Name", "Generic Name"
+					"Trade Name", "Generic Name", "Directions"
 				}
 		));
 		
@@ -438,7 +438,8 @@ public class hxView extends JPanel {
 		for(Med med : tmpList) {
 			model.addRow(new Object[]{
 					med.getTradeName(), 
-					med.getGenericName(), 
+					med.getGenericName(),
+					med.getDirections(),
 			});
 		}
 	}
