@@ -226,4 +226,70 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 		
 	}
 
+
+
+	@Override
+	public void updatepation(Patient p) throws GatewayException {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("update patients set "
+							+ "unidentified_patient = ?,"
+							+ " first_name = ?,"
+							+ " middle = ?,"
+							+ " last_name = ?,"
+							+ " gender = ?,"
+							+ " birth_day = ?,"
+							+ " birth_month = ?,"
+							+ " birth_year = ?,"
+							+ " estimated_birth_years = ?,"
+							+ " estimated_birth_months = ?,"
+							+ " address = ?,"
+							+ " address_2 = ?,"
+							+ " city_village = ?,"
+							+ " state_province = ?,"
+							+ " country = ?,"
+							+ " postal_code = ?,"
+							+ " phone_number = ?, "
+							+ " pic_path = ?)"
+							+ " where id = ? ");
+			st.setInt(1, p.getHasPatientName() ? 1 : 0);
+			st.setString(2, p.getFirstName());
+			st.setString(3,  p.getMiddleName());
+			st.setString(4,  p.getLastName());
+			st.setString(5, p.getGender());
+			st.setInt(6, p.getBirthDay());
+			st.setString(7, p.getBirthMonth());	
+			st.setInt(8, p.getBirthYear());
+			st.setInt(9, p.getEstBirthYears());
+			st.setInt(10, p.getEstBirthMonths());
+			st.setString(11, p.getAddress());
+			st.setString(12, p.getAddress2());
+			st.setString(13, p.getCity());
+			st.setString(14, p.getState());
+			st.setString(15, p.getCountry());
+			st.setString(16, p.getPostalCode());
+			st.setString(17, p.getPhoneNumber());
+			st.setString(18, p.getPicPath());
+			st.executeUpdate();
+			conn.commit();
+		} catch (SQLException e) {
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+				conn.setAutoCommit(true);
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}	
+	}
+
 }
