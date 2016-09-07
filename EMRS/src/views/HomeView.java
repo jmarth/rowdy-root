@@ -195,7 +195,8 @@ public class HomeView extends JFrame {
 				 logger.info("User pressed 'Add Patient'");
 				 
 				 homeModel.setAddPatientView(new AddPatientView(home));
-				 setCenterPanel(homeModel.getAddPatientView().getContentPane());
+				 homeModel.getAddPatientView().clearinput();
+				  setCenterPanel(homeModel.getAddPatientView().getContentPane());
 			}
 		});
 		btnLogout.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -257,7 +258,7 @@ public class HomeView extends JFrame {
 		btnAllergyAlert = new JButton("ALLERGY ALERT");
 		btnAllergyAlert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 PatientRecordView prv = new PatientRecordView(homeModel, p);
+				 PatientRecordView prv = new PatientRecordView(HomeView.this, p);
 			     home.setPatient(p);
 			     
 			     AllergyTabView atv = new AllergyTabView(p, prv, homeModel.getAtg());

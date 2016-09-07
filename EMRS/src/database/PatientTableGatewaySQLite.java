@@ -180,9 +180,10 @@ public class PatientTableGatewaySQLite implements PatientTableGateway{
 	}
 
 	@Override
-	public void updatepation(Patient p) throws GatewayException {
+	public void updatepatient(Patient p) throws GatewayException {
 		PreparedStatement st = null;
 		try {
+			conn.setAutoCommit(false);
 			st = conn.prepareStatement("update patients set "
 							+ "unidentified_patient = ?,"
 							+ " first_name = ?,"
@@ -201,7 +202,7 @@ public class PatientTableGatewaySQLite implements PatientTableGateway{
 							+ " country = ?,"
 							+ " postal_code = ?,"
 							+ " phone_number = ?, "
-							+ " pic_path = ?)"
+							+ " pic_path = ?"
 							+ " where id = ? ");
 			st.setInt(1, p.getHasPatientName() ? 1 : 0);
 			st.setString(2, p.getFirstName());
@@ -221,6 +222,7 @@ public class PatientTableGatewaySQLite implements PatientTableGateway{
 			st.setString(16, p.getPostalCode());
 			st.setString(17, p.getPhoneNumber());
 			st.setString(18, p.getPicPath());
+			st.setLong(19,p.getId());
 			st.executeUpdate();
 			conn.commit();
 		} catch (SQLException e) {
