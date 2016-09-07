@@ -232,6 +232,7 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 	public void updatepatient(Patient p) throws GatewayException {
 		PreparedStatement st = null;
 		try {
+			conn.setAutoCommit(false);
 			st = conn.prepareStatement("update patients set "
 							+ "unidentified_patient = ?,"
 							+ " first_name = ?,"
@@ -250,7 +251,7 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 							+ " country = ?,"
 							+ " postal_code = ?,"
 							+ " phone_number = ?, "
-							+ " pic_path = ?)"
+							+ " pic_path = ?"
 							+ " where id = ? ");
 			st.setInt(1, p.getHasPatientName() ? 1 : 0);
 			st.setString(2, p.getFirstName());
