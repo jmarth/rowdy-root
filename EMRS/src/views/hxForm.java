@@ -22,29 +22,17 @@ import javax.swing.JCheckBox;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 
-import java.awt.SystemColor;
 import javax.swing.JRadioButton;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
 
 import database.GatewayException;
 import database.HxTableGateway;
 
-import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JTextField;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.GridLayout;
 import javax.swing.SwingConstants;
 import java.awt.Font;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.event.ActionListener;
@@ -52,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 
+@SuppressWarnings("serial")
 public class hxForm extends JPanel {
 	private JTextField pcTextField;
 	private JTextField hasDATextField;
@@ -99,11 +88,13 @@ public class hxForm extends JPanel {
 	private List<JCheckBox> peGroup;
 	private JPanel prevPanel;
 	private JTabbedPane tabbedPane;
+	private boolean isEditView = false;
 
 	/**
 	 * Create the panel.
 	 * @param prevPanel 
 	 * @param tabbedPane 
+	 * @wbp.parser.constructor
 	 */
 	public hxForm(Patient p, HxTableGateway hxTableGateway, final hxView prevPanel, final JTabbedPane tabbedPane) {
 		
@@ -111,7 +102,145 @@ public class hxForm extends JPanel {
 		this.patient = p;
 		this.prevPanel = prevPanel;
 		this.tabbedPane = tabbedPane;
+		createView();
+	}
+	
+	/*
+	 * Constructor for editing
+	 */
+	public hxForm(Patient p, HxTableGateway hxTableGateway, final hxView prevPanel, final JTabbedPane tabbedPane, boolean editView) {
 		
+		this.htg = hxTableGateway;
+		this.patient = p;
+		this.prevPanel = prevPanel;
+		this.tabbedPane = tabbedPane;
+		this.isEditView = editView;
+		
+		if (editView) {
+			createView();
+			populateView();
+		}
+	}
+	//TODO
+	private void populateView() {
+		
+		//presentConditionPanel.removeAll();
+		
+		
+		List<Hx> healthHistory = new ArrayList<Hx>();
+		
+		// TODO convert to reading from list
+		try {
+			healthHistory = htg.fetchHxForPatient(patient);
+		} catch (GatewayException e) {
+			e.printStackTrace();
+		}
+		Hx hx = null;
+		
+		if (healthHistory.size() > 0)
+			hx = healthHistory.get(0);
+		else
+			return;
+		
+		
+		//presentConditionPanel.add(new JLabel(hx.getPc()));
+		pcTextField.setText(hx.getPc());
+		
+		//drugAllergyPanel.add(new JLabel(hx.getDa(), JLabel.CENTER));
+		
+		if (hx.getDa().equals("NKDA")) {
+			nkda.setSelected(true);
+			hasDATextField.setText("");
+		} else {
+			hasDA.setSelected(true);
+			hasDATextField.setText(hx.getDa());
+		}
+		
+		
+		
+		String bleeds = hx.getBt();
+		//System.out.println("BLEEDS: " + bleeds);
+		//String[] bleedingTendencies = {"Aspirin", "Plavix", "Bleeding Disorder"};
+//		//for (int i = 0; i < bleeds.length() - 1; i++) {
+//			Character c = bleeds.charAt(i);
+//			//JCheckBox ck = new JCheckBox(bleedingTendencies[i]);
+//			//ck.setEnabled(false);
+//			
+//			if (c == '1')
+//				ck.setSelected(true);
+//			btPanel.add(ck);
+//		}
+		
+		if (bleeds.charAt(3) == '1')
+			sickleYes.setSelected(true);
+		else if (bleeds.charAt(3) == '0')
+			sickleNo.setSelected(true);
+		
+		if (bleeds.charAt(0) == '1')
+			aspirinCk.setSelected(true);
+		if (bleeds.charAt(1) == '1')
+			plavixCk.setSelected(true);
+		if (bleeds.charAt(2) == '1')
+			bleedingdisorderCk.setSelected(true);
+		
+		
+		
+//		Character sickle = bleeds.charAt(3);
+//		JRadioButton sickleYes = new JRadioButton("Yes");
+//		sickleYes.setEnabled(false);
+//		JRadioButton sickleNo = new JRadioButton("No");
+//		sickleNo.setEnabled(false);
+//		if (sickle == '1') {
+//			sickleYes.setSelected(true);
+//		} else {
+//			sickleNo.setSelected(true);
+//		}
+//		
+//		sctPanel.add(new JLabel("Sickle Cell Trait?"));
+//		sctPanel.add(sickleYes);
+//		sctPanel.add(sickleNo);
+//		
+//		String[] pastMedicalHistory = {
+//				"Hypertension (HTN)", 
+//				"Diabetes", 
+//				"Coronary Artery Disease (CAD)", 
+//				"COPD", 
+//				"Peripheral Vascular Disease (PVD)", 
+//				"Congestive Heart Failure (CHF)",
+//				"Hypotension"
+//		};
+		
+		String pmh = hx.getPmh();
+		for (int i = 0; i < pmh.length(); i++) {
+			Character c = pmh.charAt(i);
+			//pmhGroup.get(i).setEnabled(true);
+			if (c == '1')
+				pmhGroup.get(i).setSelected(true);			
+		}
+		
+		pshTextField.setText(hx.getPsh());
+		fhTextField.setText(hx.getFh());
+//		pshPanel.add(new JLabel(hx.getPsh()));
+//		
+//		fhPanel.add(new JLabel(hx.getFh()));
+		
+//		lawPanel.add(new JLabel(hx.getLaw()));
+		/** TODO we doing away with law...*/
+		
+		String physicalExam = hx.getPe();
+		int i = 0;
+		for (JCheckBox ck : peGroup) {
+			//ck.setEnabled(false);
+			Character c = physicalExam.charAt(i);
+			if (c == '1')
+				ck.setSelected(true);
+			i++;
+		}
+	}
+
+	
+	private void createView() {
+
 		setBackground(CL.cararra);
 		
 		JPanel panel = new JPanel();
@@ -547,42 +676,77 @@ public class hxForm extends JPanel {
 		lawBtnGroup.add(lawNo);
 		lawBtnGroup.add(lawNotYet);
 		
-		JButton btnSave = new JButton("Save");
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				Hx tmpHx = hxForm.this.getAllFields();
-				try {
-					htg.insertHx(tmpHx);
-				} catch (GatewayException e1) {
-					e1.printStackTrace();
-				}
-				prevPanel.populateHealthHistory();
-				int index = tabbedPane.indexOfTab(Tabs.hx);
-				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, prevPanel);
-				
-			}
-			
-		});
-		panel_2.add(btnSave);
+		
+		
+		
+		if (isEditView) {
+			JButton btnUpdate = new JButton("Update");
+			btnUpdate.addActionListener(new UpdateListener());
+			panel_2.add(btnUpdate);
+		} else {
+			JButton btnSave = new JButton("Save");
+			btnSave.addActionListener(new SaveListener());
+			panel_2.add(btnSave);
+		}
+		
 		
 		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int index = tabbedPane.indexOfTab(Tabs.hx);
-				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, prevPanel);
-			}
-			
-		});
+		btnCancel.addActionListener(new CancelListener());
 		panel_2.add(btnCancel);
 		setLayout(groupLayout);
 
 	}
+	
+	private class CancelListener implements ActionListener {
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int index = tabbedPane.indexOfTab(Tabs.hx);
+			tabbedPane.setComponentAt(index, null);
+			tabbedPane.setComponentAt(index, prevPanel);
+		}
+		
+	}
+	
+	private class SaveListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Hx tmpHx = hxForm.this.getAllFields();
+			try {
+				htg.insertHx(tmpHx);
+			} catch (GatewayException e1) {
+				e1.printStackTrace();
+			}
+			((hxView) prevPanel).populateHealthHistory();
+			int index = tabbedPane.indexOfTab(Tabs.hx);
+			tabbedPane.setComponentAt(index, null);
+			tabbedPane.setComponentAt(index, prevPanel);
+			
+		}
+		
+	}
+	
+	private class UpdateListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Hx tmpHx = hxForm.this.getAllFields();
+			
+			try {
+				htg.updateHx(tmpHx);
+			} catch (GatewayException e1) {
+				e1.printStackTrace();
+			}
+			((hxView) prevPanel).populateHealthHistory();
+			int index = tabbedPane.indexOfTab(Tabs.hx);
+			tabbedPane.setComponentAt(index, null);
+			tabbedPane.setComponentAt(index, prevPanel);
+			
+		}
+		
+	}
+	
 	protected Hx getAllFields() {
 		String drugAllergy = "";
 		drugAllergy += (nkda.isSelected()) ? "NKDA" : hasDATextField.getText();
@@ -630,3 +794,7 @@ public class hxForm extends JPanel {
 		return tmpHx;
 	}
 }
+
+
+
+

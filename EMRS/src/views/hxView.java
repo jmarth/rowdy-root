@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -46,6 +45,7 @@ import javax.swing.JCheckBox;
 import javax.swing.border.MatteBorder;
 import javax.swing.BoxLayout;
 
+@SuppressWarnings("serial")
 public class hxView extends JPanel {
 	private AllergyList al = new AllergyList();
 	private List<Allergy> allergyList;
@@ -90,9 +90,11 @@ public class hxView extends JPanel {
 	private JCheckBox ck13;
 	private JPanel presentConditionPanel;
 	private JButton btnNewForm;
-	private JScrollPane hxScroller;
+	private JButton btnEditForm;
+	//private JScrollPane hxScroller; TODO what is this doing here
 	
 	private List<JCheckBox> peList;
+	private JTabbedPane tabbedPane;
 
 	/**
 	 * Create the panel.
@@ -106,6 +108,7 @@ public class hxView extends JPanel {
 		this.rtg = drugTableGateway;
 		this.htg = hxTableGateway;
 		this.patient = patient;
+		this.tabbedPane = tabbedPane;
 		
 		
 		setBackground(CL.colorBlue);
@@ -161,17 +164,10 @@ public class hxView extends JPanel {
 
 		
 		btnNewForm = new JButton("Fill out Health History");
-		btnNewForm.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				hxView prevPanel = hxView.this;
-				int index = tabbedPane.indexOfTab(Tabs.hx);
-				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, new hxForm(patient, htg, prevPanel, tabbedPane));
-			}
-			
-		});
+		btnNewForm.addActionListener(new NewFormListener());
+		
+		btnEditForm = new JButton("Edit Form TEST");
+		btnEditForm.addActionListener(new EditFormListener());
 		
 		try {
 			healthHistory = htg.fetchHxForPatient(this.patient);
@@ -181,6 +177,7 @@ public class hxView extends JPanel {
 		
 		if (!(healthHistory.isEmpty())) {
 			populateHealthHistory();
+			presentConditionPanel.add(btnEditForm);
 		}
 		else {
 			presentConditionPanel.add(btnNewForm);
@@ -204,7 +201,7 @@ public class hxView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JPanel prevPanel = hxView.this;
+				//JPanel prevPanel = hxView.this; TODO why this here
 				int index = tabbedPane.indexOfTab("Health History");
 				tabbedPane.setComponentAt(index, new AddMedView(rtg, hxView.this.mtg, tabbedPane, hxView.this, hxView.this.patient));
 				revalidate();
@@ -295,13 +292,40 @@ public class hxView extends JPanel {
 
 	}
 	
+	
+	
+	private class NewFormListener implements ActionListener {
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			hxView prevPanel = hxView.this;
+			int index = tabbedPane.indexOfTab(Tabs.hx);
+			tabbedPane.setComponentAt(index, null);
+			tabbedPane.setComponentAt(index, new hxForm(patient, htg, prevPanel, tabbedPane));
+		}
+		
+	}
+	
+	private class EditFormListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			hxView prevPanel = hxView.this;
+			int index = tabbedPane.indexOfTab(Tabs.hx);
+			tabbedPane.setComponentAt(index, null);
+			tabbedPane.setComponentAt(index, new hxForm(patient, htg, prevPanel, tabbedPane, true));
+		}
+		
+	}
+	
 	public void populateHealthHistory() {
 		presentConditionPanel.removeAll();
 		healthHistory = new ArrayList<Hx>();
 		
 		try {
 			healthHistory = htg.fetchHxForPatient(patient);
+			System.out.println("SIZESIZESIZESIZESIZESIZE\n: " + healthHistory.size());
+
 		} catch (GatewayException e) {
 			e.printStackTrace();
 		}
