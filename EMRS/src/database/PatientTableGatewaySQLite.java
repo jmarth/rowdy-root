@@ -224,7 +224,8 @@ public class PatientTableGatewaySQLite implements PatientTableGateway{
 			st.setString(18, p.getPicPath());
 			st.setLong(19,p.getId());
 			st.executeUpdate();
-			conn.commit();
+			conn.commit();;
+			System.out.println("update patient success fsadf fas fasd fsafas dfsda fasdfasd fasd fasdfsad "+p.getId());
 		} catch (SQLException e) {
 			try {
 				conn.rollback();

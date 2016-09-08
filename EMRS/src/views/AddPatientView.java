@@ -732,7 +732,7 @@ public class AddPatientView extends JFrame {
 						estYear = Integer.parseInt(estYearsTextField.getText());
 					if(!estMonthsTextField.getText().equals("")) 
 						estMonth = Integer.parseInt(estMonthsTextField.getText());
-					AddPatientView.this.patient = new Patient(hasNameCheckBox.isSelected(),
+					Patient patient = new Patient(hasNameCheckBox.isSelected(),
 					firstNameTextField.getText(),
 					middleNameTextField.getText(),
 					lastNameTextField.getText(),
@@ -755,13 +755,16 @@ public class AddPatientView extends JFrame {
 								middleNameTextField.getText()+" "+
 								lastNameTextField.getText();
 						if(AddPatientView.this.updateorinsert==AddPatientView.INSERTPATIENT){
-							long newId = home.getHomeModel().getPtg().insertPatient(patient);
-							patient.setId(newId);
+							long newId = home.getHomeModel().getPtg().insertPatient(AddPatientView.this.patient);
+							AddPatientView.this.patient=patient;
+							AddPatientView.this.patient.setId(newId);
 						}else{
+							patient.setId(AddPatientView.this.patient.getId());
 							home.getHomeModel().getPtg().updatepatient(patient);
+							AddPatientView.this.patient=patient;
 						}
 							
-						PatientRecordView pr = new PatientRecordView(home, patient);
+						PatientRecordView pr = new PatientRecordView(home, AddPatientView.this.patient);
 						home.setCenterPanel(pr);
 						
 					} catch (GatewayException e1) {
@@ -788,6 +791,7 @@ public class AddPatientView extends JFrame {
 	 */
 	public void loadpatient(Patient p){
 		this.hideBalloonTips();
+		this.patient=p;
 		this.updateorinsert=this.UPDATEPATIENT;
 		this.hasNameCheckBox.setSelected(p.getHasPatientName());
 		this.firstNameTextField.setText(p.getFirstName());
