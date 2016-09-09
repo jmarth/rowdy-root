@@ -40,7 +40,8 @@ public class PatientRecordView extends JTabbedPane {
 	/**
 	 * Create the frame.
 	 */
-	public PatientRecordView(final HomeModel homeModel, Patient patient) {
+	//public PatientRecordView(final HomeModel homeModel, Patient patient) {
+	public PatientRecordView(HomeView homeview, Patient patient) {
 		this.patient = patient;
 		setBounds(100, 100, 987, 1105);
 		
@@ -48,8 +49,7 @@ public class PatientRecordView extends JTabbedPane {
 		JLabel lab1 = new JLabel(Tabs.demographics);
 		lab1.setPreferredSize(new Dimension(145, 30));
 		lab1.setHorizontalAlignment(JLabel.CENTER);
-			
-		JPanel patientProfileTabView = new ProfileTabView(patient);
+		JPanel patientProfileTabView = new ProfileTabView(homeview, patient);
 		this.addTab("", null, patientProfileTabView, null);
 		this.setTabComponentAt(0, lab1);
 		
@@ -57,8 +57,7 @@ public class PatientRecordView extends JTabbedPane {
 		JLabel lab2 = new JLabel(Tabs.hx);
 		lab2.setPreferredSize(new Dimension(145, 30));
 		lab2.setHorizontalAlignment(JLabel.CENTER);
-		
-		JPanel hxView = new hxView(patient, this, homeModel.getAtg(), homeModel.getMtg(), homeModel.getRtg(), homeModel.getHtg());
+		JPanel hxView = new hxView(patient, this, homeview.getHomeModel().getAtg(), homeview.getHomeModel().getMtg(), homeview.getHomeModel().getRtg(), homeview.getHomeModel().getHtg());
 		this.addTab(Tabs.hx, null, hxView, null);
 		this.setTabComponentAt(1, lab2);
 		
@@ -67,7 +66,7 @@ public class PatientRecordView extends JTabbedPane {
 		lab3.setPreferredSize(new Dimension(145, 30));
 		lab3.setHorizontalAlignment(JLabel.CENTER);
 		
-		final VisitsTabView visitsTabView = new VisitsTabView(patient, this, homeModel);
+		final VisitsTabView visitsTabView = new VisitsTabView(patient, this, homeview.getHomeModel());
 		this.addTab(Tabs.ped, null, visitsTabView, null);
 		this.setTabComponentAt(2, lab3);
 		System.out.print("visits done");
@@ -77,7 +76,7 @@ public class PatientRecordView extends JTabbedPane {
 		lab4.setPreferredSize(new Dimension(145, 30));
 		lab4.setHorizontalAlignment(JLabel.CENTER);
 				
-		JPanel VitalsTabView = new VitalsTabView(patient, this, homeModel);
+		JPanel VitalsTabView = new VitalsTabView(patient, this, homeview.getHomeModel());
 		this.addTab(Tabs.vitals, null, VitalsTabView, null);
 		this.setTabComponentAt(3, lab4);
 		
@@ -96,7 +95,7 @@ public class PatientRecordView extends JTabbedPane {
 		lab6.setPreferredSize(new Dimension(145, 30));
 		lab6.setHorizontalAlignment(JLabel.CENTER);
 		
-		LabsAndProceduresTabView labs  = new LabsAndProceduresTabView(patient, this, homeModel.getSrg(), homeModel.getSttg());
+		LabsAndProceduresTabView labs  = new LabsAndProceduresTabView(patient, this, homeview.getHomeModel().getSrg(), homeview.getHomeModel().getSttg());
 		this.addTab(Tabs.labs, null, labs, null);
 		this.setTabComponentAt(4, lab6);
 		
@@ -105,7 +104,7 @@ public class PatientRecordView extends JTabbedPane {
 		lab7.setPreferredSize(new Dimension(145, 30));
 		lab7.setHorizontalAlignment(JLabel.CENTER);
 		
-		DocumentsTabView docsView = new DocumentsTabView(homeModel.getDtg(), patient);
+		DocumentsTabView docsView = new DocumentsTabView(homeview.getHomeModel().getDtg(), patient);
 		this.addTab(Tabs.docs, null, docsView, null);
 		this.setTabComponentAt(5, lab7);
 		

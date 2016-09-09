@@ -50,8 +50,18 @@ import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.RoundedBalloonStyle;
 
 public class AddPatientView extends JFrame {
+	public final static int UPDATEPATIENT =1;
+	public final static int INSERTPATIENT =2;
+	public enum emonth{
+		January,February,March,April,May,June,July,August,September,October,November,December
+		
+	}
+	public enum egender{
+		male,female
+	}
 	private HomeView home;
 	private JPanel contentPane;
+	private int updateorinsert;
 	//Text fields
 	private JTextField firstNameTextField;
 	private JTextField middleNameTextField;
@@ -68,6 +78,12 @@ public class AddPatientView extends JFrame {
 	private JTextField stateTextField;
 	private JTextField phoneNumberTextField;
 	private PatientList pl;
+	//combobox
+	private JComboBox genderComboBox;
+	private JComboBox birthMonthComboBox;
+	final String[] month = new String[] {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	//image Jlabel
+	private JLabel imglabel;
 	//Regex
 	//private final String NAME_PATTERN = "^[a-z ,.'-]+$";//the old code
 	private final String NAME_PATTERN = "^[a-z]+$";// the new code (^\\d{4}$)?
@@ -89,15 +105,14 @@ public class AddPatientView extends JFrame {
 	private String imagePath;
 	
 	private static JXDatePicker datePicker;
-	
+	private Patient patient;
 	/**
 	 * Create the frame.
 	 */
 	public AddPatientView(final HomeView home) {
 		this.home = home;
-		
 		imagePath = "";
-		
+		this.updateorinsert=this.INSERTPATIENT;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 710, 1118);
 		contentPane = new JPanel();
@@ -110,18 +125,17 @@ public class AddPatientView extends JFrame {
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		contentPane.setLayout(gbl_contentPane);
 		
-		final JLabel label = new JLabel("");
+		imglabel = new JLabel("");
 		ImageIcon imageIcon = new ImageIcon("user.png");
         Image image = imageIcon.getImage(); // transform it 
         Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         imageIcon = new ImageIcon(newimg);  // transform it back
-        label.setIcon(imageIcon);
+        imglabel.setIcon(imageIcon);
 		GridBagConstraints gbc_label = new GridBagConstraints();
 		gbc_label.insets = new Insets(0, 0, 5, 0);
 		gbc_label.gridx = 0;
 		gbc_label.gridy = 1;
-		contentPane.add(label, gbc_label);
-		
+		contentPane.add(imglabel, gbc_label);
 		JButton btnUploadPatientPic = new JButton("Upload Picture");
 		btnUploadPatientPic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -135,11 +149,16 @@ public class AddPatientView extends JFrame {
 		        if(result == JFileChooser.APPROVE_OPTION){
 		        	File selectedFile = file.getSelectedFile();
 		        	imagePath = selectedFile.getAbsolutePath();
-		            ImageIcon imageIcon = new ImageIcon(imagePath);
+		            /*ImageIcon imageIcon = new ImageIcon(imagePath);
 		            Image image = imageIcon.getImage(); // transform it 
 		            Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 		            imageIcon = new ImageIcon(newimg);  // transform it back
-		            label.setIcon(imageIcon);
+*/		            try {
+						AddPatientView.this.imglabel.setIcon(AddPatientView.this.loaduserimageicon(imagePath));
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 		         }
 			}
 		});
@@ -244,13 +263,13 @@ public class AddPatientView extends JFrame {
 		gbc_lblNewLabel_3.gridy = 0;
 		panel_15.add(lblNewLabel_3, gbc_lblNewLabel_3);
 		
-		final JComboBox genderComboBox = new JComboBox();
+		genderComboBox = new JComboBox(egender.values());
 		GridBagConstraints gbc_genderComboBox = new GridBagConstraints();
 		gbc_genderComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_genderComboBox.gridx = 0;
 		gbc_genderComboBox.gridy = 1;
 		panel_15.add(genderComboBox, gbc_genderComboBox);
-		genderComboBox.setModel(new DefaultComboBoxModel(new String[] {"male", "female"}));
+		//genderComboBox.setModel(new DefaultComboBoxModel(new String[] {"male", "female"}));
 		
 		JLabel lblNewLabel = new JLabel("Given (required)");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
@@ -401,8 +420,7 @@ public class AddPatientView extends JFrame {
 		panel_4.add(birthDayTextField, gbc_birthDayTextField);
 		birthDayTextField.setColumns(15);
 		
-		final JComboBox birthMonthComboBox = new JComboBox();
-		birthMonthComboBox.setModel(new DefaultComboBoxModel(new String[] {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}));
+		birthMonthComboBox = new JComboBox(emonth.values());
 		GridBagConstraints gbc_birthMonthComboBox = new GridBagConstraints();
 		gbc_birthMonthComboBox.fill = GridBagConstraints.HORIZONTAL;
 		gbc_birthMonthComboBox.insets = new Insets(0, 0, 5, 5);
@@ -715,31 +733,38 @@ public class AddPatientView extends JFrame {
 					if(!estMonthsTextField.getText().equals("")) 
 						estMonth = Integer.parseInt(estMonthsTextField.getText());
 					Patient patient = new Patient(hasNameCheckBox.isSelected(),
-							firstNameTextField.getText(),
-							middleNameTextField.getText(),
-							lastNameTextField.getText(),
-							genderComboBox.getSelectedItem().toString(),
-							birthDay,
-							birthMonthComboBox.getSelectedItem().toString(),
-							birthYear,
-							estYear,
-							estMonth,
-							addressTextField.getText(),
-							address2TextField.getText(),
-							cityTextField.getText(),
-							stateTextField.getText(),
-							countryTextField.getText(),
-							postalCodeTextField.getText(),
-							phoneNumberTextField.getText(),
-							imagePath);
+					firstNameTextField.getText(),
+					middleNameTextField.getText(),
+					lastNameTextField.getText(),
+					genderComboBox.getSelectedItem().toString(),
+					birthDay,
+					AddPatientView.this.birthMonthComboBox.getSelectedItem().toString(),
+					birthYear,
+					estYear,
+					estMonth,
+					addressTextField.getText(),
+					address2TextField.getText(),
+					cityTextField.getText(),
+					stateTextField.getText(),
+					countryTextField.getText(),
+					postalCodeTextField.getText(),
+					phoneNumberTextField.getText(),
+					imagePath);
 					try {
 						String fullName =  firstNameTextField.getText()+" "+
 								middleNameTextField.getText()+" "+
 								lastNameTextField.getText();
-						
-						long newId = home.getHomeModel().getPtg().insertPatient(patient);
-						patient.setId(newId);
-						PatientRecordView pr = new PatientRecordView(home.getHomeModel(), patient);
+						if(AddPatientView.this.updateorinsert==AddPatientView.INSERTPATIENT){
+							long newId = home.getHomeModel().getPtg().insertPatient(AddPatientView.this.patient);
+							AddPatientView.this.patient=patient;
+							AddPatientView.this.patient.setId(newId);
+						}else{
+							patient.setId(AddPatientView.this.patient.getId());
+							home.getHomeModel().getPtg().updatepatient(patient);
+							AddPatientView.this.patient=patient;
+						}
+							
+						PatientRecordView pr = new PatientRecordView(home, AddPatientView.this.patient);
 						home.setCenterPanel(pr);
 						
 					} catch (GatewayException e1) {
@@ -751,8 +776,95 @@ public class AddPatientView extends JFrame {
 			  }
 		});
 	}
-	
 	/**
+	 * load user image to 
+	 */
+	public ImageIcon loaduserimageicon(String path) throws Exception{
+		ImageIcon imageIcon = new ImageIcon(imagePath);
+        Image image = imageIcon.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        return new ImageIcon(newimg);  // transform it back
+        //AddPatientView.this.imglabel.setIcon(imageIcon);
+	}
+	/**
+	 * load patient into input field
+	 */
+	public void loadpatient(Patient p){
+		this.hideBalloonTips();
+		this.patient=p;
+		this.updateorinsert=this.UPDATEPATIENT;
+		this.hasNameCheckBox.setSelected(p.getHasPatientName());
+		this.firstNameTextField.setText(p.getFirstName());
+		this.middleNameTextField.setText(p.getMiddleName());
+		this.lastNameTextField.setText(p.getLastName());
+		/*if(p.getGender().compareTo("male")==0){
+			this.genderComboBox.setSelectedIndex(0);
+		}else{
+			this.genderComboBox.setSelectedIndex(1);
+		}*/
+		this.genderComboBox.setSelectedIndex(egender.valueOf(p.getGender()).ordinal());
+		this.birthDayTextField.setText(""+p.getBirthDay());
+		this.birthMonthComboBox.setSelectedIndex(emonth.valueOf(p.getBirthMonth()).ordinal());
+		this.birthYearTextField.setText(""+p.getBirthYear());
+		if(p.getEstBirthMonths()!=-1)
+			this.estMonthsTextField.setText(""+p.getEstBirthMonths());
+		else
+			this.estMonthsTextField.setText("");
+		if(p.getEstBirthYears()!=-1)
+			this.estYearsTextField.setText(""+p.getEstBirthYears());
+		else
+			this.estYearsTextField.setText("");
+		this.addressTextField.setText(p.getAddress());
+		this.address2TextField.setText(p.getAddress2());
+		this.cityTextField.setText(p.getCity());
+		this.stateTextField.setText(p.getState());
+		this.countryTextField.setText(p.getCountry());
+		this.postalCodeTextField.setText(p.getPostalCode());
+		this.phoneNumberTextField.setText(p.getPhoneNumber());
+		this.imagePath=p.getPicPath();
+		try {
+			this.imglabel.setIcon(this.loaduserimageicon(imagePath));
+		} catch (Exception e) {
+			try {
+				this.imglabel.setIcon(this.loaduserimageicon("user.png"));
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+	}
+	/**
+	 * clear all imput field
+	 */
+	public void clearinput(){
+		this.hideBalloonTips();
+		this.updateorinsert=this.INSERTPATIENT;
+		this.hasNameCheckBox.setSelected(false);
+		this.firstNameTextField.setText("");
+		this.middleNameTextField.setText("");
+		this.lastNameTextField.setText("");
+		this.genderComboBox.setSelectedIndex(0);
+		this.birthDayTextField.setText("");
+		this.birthMonthComboBox.setSelectedIndex(-1);
+		this.birthYearTextField.setText("");
+		this.estMonthsTextField.setText("");
+		this.estYearsTextField.setText("");
+		this.addressTextField.setText("");
+		this.address2TextField.setText("");
+		this.cityTextField.setText("");
+		this.stateTextField.setText("");
+		this.countryTextField.setText("");
+		this.postalCodeTextField.setText("");
+		this.phoneNumberTextField.setText("");
+		try {
+			this.imglabel.setIcon(this.loaduserimageicon("user.png"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+	/**
+	 *
 	 * @return (contentPane)
 	 */
 	public Container getContentPane() {
