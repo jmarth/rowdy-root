@@ -28,10 +28,13 @@ public class PatientRecordView extends JTabbedPane {
 	private static final Logger logger = LogManager.getLogger(FindPatientsView.class);
 
 	private Patient patient;
+	// panels up here TODO
+	
+	// all views should go here
 	
 	// Variables for Allergy tab
-	JPanel allergiesPanel;
-	private JTable allergyTable;
+	//JPanel allergiesPanel;
+	//private JTable allergyTable;
 	
 	// Vars for Visit Tab
 	private VisitList vl = new VisitList();

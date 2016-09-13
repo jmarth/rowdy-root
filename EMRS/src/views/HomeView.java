@@ -62,7 +62,7 @@ public class HomeView extends JFrame {
 	
 	JButton btnLogout = new JButton("Logout");
 	
-	Patient p;
+	Patient p; // TODO Why have patient?
 	JButton btnAllergyAlert;
 	
 	private final JPanel panel_1 = new JPanel();
@@ -368,7 +368,7 @@ public class HomeView extends JFrame {
 		contentPane.repaint();
 		contentPane.revalidate();
 	}
-	
+	//TODO 
 	/**
 	 * Gets the homeModel, which HomeView inits and holds a reference for.
 	 * @return HomeModel
@@ -415,7 +415,6 @@ public class HomeView extends JFrame {
 		try {
 			tmpAl = homeModel.getAtg().fetchAllergiesForPatient(p);
 		} catch (GatewayException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		// if patient has allergies

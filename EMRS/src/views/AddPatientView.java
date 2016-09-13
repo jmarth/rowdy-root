@@ -77,7 +77,7 @@ public class AddPatientView extends JFrame {
 	private JTextField postalCodeTextField;
 	private JTextField stateTextField;
 	private JTextField phoneNumberTextField;
-	private PatientList pl;
+	//private PatientList pl; TODO why
 	//combobox
 	private JComboBox genderComboBox;
 	private JComboBox birthMonthComboBox;
@@ -764,7 +764,7 @@ public class AddPatientView extends JFrame {
 							AddPatientView.this.patient=patient;
 						}
 							
-						PatientRecordView pr = new PatientRecordView(home, AddPatientView.this.patient);
+						PatientRecordView pr = new PatientRecordView(home, AddPatientView.this.patient); // TODO inconsistent data
 						home.setCenterPanel(pr);
 						
 					} catch (GatewayException e1) {

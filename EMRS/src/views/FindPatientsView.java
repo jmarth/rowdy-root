@@ -43,7 +43,7 @@ public class FindPatientsView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public FindPatientsView(HomeView home) {
+	public FindPatientsView(final HomeView home) {
 		this.home=home;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);

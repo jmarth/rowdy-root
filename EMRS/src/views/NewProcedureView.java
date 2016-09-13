@@ -51,7 +51,7 @@ public class NewProcedureView extends JPanel {
 	
 	// Other -------------------------------------------
 	private SurgeryTemplatesList list; 
-	private SurgeryTemplatesTableGateway gateway;
+	private SurgeryTemplatesTableGateway gateway; // gateway goes in list or model TODO
 	
 	private JScrollPane scroller;
 	

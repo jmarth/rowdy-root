@@ -31,7 +31,7 @@ public class ClosedProcedureView extends JPanel {
 		setLayout(new BorderLayout());
 		
 		mainPanel = new JPanel(new BorderLayout());
-		mainPanel.setBorder(new LineBorder(CL.blueGrey, 3));
+		mainPanel.setBorder(new LineBorder(CL.red, 3));
 		
 		titleLabel = new JLabel(tmp.getTitle());
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
