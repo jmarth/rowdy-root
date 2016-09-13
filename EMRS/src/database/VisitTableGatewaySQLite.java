@@ -100,7 +100,7 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 	 * @return list of visits for patient
 	 * @throws GatewayException
 	 */
-	public List<Visit> fetchVisitsForPatinet(Patient p) throws GatewayException {
+	public List<Visit> fetchVisitsForPatient(Patient p) throws GatewayException {
 		
 		ArrayList<Visit> visits = new ArrayList<Visit>();
 		

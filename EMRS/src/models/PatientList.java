@@ -1,6 +1,5 @@
 package models;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -8,12 +7,11 @@ import database.GatewayException;
 import database.PatientTableGateway;
 
 public class PatientList {
-	private List<Patient> myList;
+	
 	private PatientTableGateway gateway;
 	private HashMap<Long, Patient> myIdMap;
 	
 	public PatientList() {
-		myList = new ArrayList<Patient>();
 		myIdMap = new HashMap<Long, Patient>();
 	}
 	
@@ -22,7 +20,6 @@ public class PatientList {
 		try {
 			List<Patient> patients = gateway.fetchPatients();
 			for(Patient patient: patients){
-				this.addPartToList(patient);
 				patient.setBirthDayDate();
 				myIdMap.put(patient.getId(), patient);
 			}
@@ -32,22 +29,29 @@ public class PatientList {
 		}
 	}
 	
-	public void addPartToList(Patient p) {
-		myList.add(p);
-	}
-	
-	public void setGateway(PatientTableGateway gateway) {
-		this.gateway = gateway;
+	//if fail to add, then it no add to list
+	public void addPatient(Patient p) {
+		try {
+			
+			gateway.insertPatient(p);
+			myIdMap.put(p.getId(), p);
+
+		} catch (GatewayException e) {
+			
+			System.err.println("From PatientList, failed to insert Patient to DB");
+		}
 	}
 	
 	public List<Patient> getPatientList() {
-		return myList;
+		return (List<Patient>)myIdMap.values();
 	}
 	
 	public Patient findById(long id) {
+		
 		//check the identity map
 		if(myIdMap.containsKey(new Long(id)))
 			return myIdMap.get(new Long(id));
+		
 		return null;
 	}
 }

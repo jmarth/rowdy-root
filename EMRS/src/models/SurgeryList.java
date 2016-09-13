@@ -1,64 +1,72 @@
 package models;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import database.GatewayException;
 import database.SurgeryTableGateway;
+import database.SurgeryTableGatewaySQLite;
+import database.GatewayException;
 
 public class SurgeryList {
+
+	private SurgeryTableGateway myGateway;
 	private List<Surgery> myList;
-	private SurgeryTableGateway gateway;
-	private HashMap<Long, Surgery> myIdMap;
-	
+
 	/**
 	 * Construct a new SurgeryList
 	 */
-	public SurgeryList(){
+	public SurgeryList() {
+
 		myList = new ArrayList<Surgery>();
-		myIdMap = new HashMap<Long, Surgery>();
+
+		try {
+			myGateway = new SurgeryTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From SurgeryList, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From SurgeryList, IO Exception");
+			// e.printStackTrace();
+		}
 	}
-	
+
 	/**
 	 * Load records from DB into SurgeryList
 	 */
 	public void loadFromGateway() {
-		//fetch list of objects from the database
+
+		// fetch list of objects from the database
+
 		try {
-			List<Surgery> surgeries = gateway.fetchSurgeries();
-			for(Surgery tmpSurgery : surgeries){
-				myIdMap.put(tmpSurgery.getId(), tmpSurgery);
+			// name fetchSurgeries to fetchSurgeriesList to list
+			for (Surgery tmpSurgery : myGateway.fetchSurgeries()) {
 				myList.add(tmpSurgery);
 			}
+
 		} catch (GatewayException e) {
-			//TODO: handle exception here
+			System.err.println("Could not Connect to DB, in SurgeryList");
 			return;
 		}
 	}
-	
+
 	/**
 	 * Returns ArrayList of Surgeries in the SurgeryList
+	 * 
 	 * @return All Surgeries in list
 	 */
 	public List<Surgery> getSurgeryList() {
 		return myList;
 	}
-	
-	public List<Surgery> getSurgeryListForPatient(Patient p){
-		List<Surgery> tmpList = new ArrayList<Surgery>();
-		
+
+	public void loadSurgeryListForPatient(Patient p) {
+
 		try {
-			tmpList = gateway.fetchSurgeriesForPatient(p);
+			myList = myGateway.fetchSurgeriesForPatient(p);
+
 		} catch (GatewayException e) {
-			// TODO Auto-generated catch block
+			System.err.println("SurgeryList failed to load from its gateway. In SurgeryList Model");
 			e.printStackTrace();
 		}
-		
-		return tmpList;
-	}
-
-	public void setGateway(SurgeryTableGateway gateway) {
-		this.gateway = gateway;
 	}
 }

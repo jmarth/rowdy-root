@@ -1,28 +1,34 @@
 package models;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import database.GatewayException;
 import database.VitalsTableGateway;
+import database.VitalsTableGatewaySQLite;
+import database.GatewayException;
 
 public class VitalsList {
 
+	private VitalsTableGateway myGateway;
 	private List<Vitals> myList;
-	private VitalsTableGateway gateway;
-	private HashMap<Long, Vitals> myIdMap;
-	
-	private List<Vitals> myPatientVitals;
 
 	/**
 	 * Construct a new VitalsList
 	 */
 	public VitalsList() {
+
 		myList = new ArrayList<Vitals>();
-		myIdMap = new HashMap<Long, Vitals>();
-		
-		myPatientVitals = new ArrayList<Vitals>();
+
+		try {
+			myGateway = new VitalsTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From VitalsList, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From VitalsList, IO Exception");
+			// e.printStackTrace();
+		}
 	}
 
 	/**
@@ -33,17 +39,13 @@ public class VitalsList {
 		// fetch list of objects from the database
 
 		try {
-
-			List<Vitals> vitals = gateway.fetchVitals();
-
-			for (Vitals tmpVitals : vitals) {
-
-				myIdMap.put(tmpVitals.getId(), tmpVitals);
+			// name fetchVitals to fetchVitalsList to list
+			for (Vitals tmpVitals : myGateway.fetchVitals()) {
 				myList.add(tmpVitals);
 			}
 
 		} catch (GatewayException e) {
-
+			System.err.println("Could not Connect to DB, in VitalsList");
 			return;
 		}
 	}
@@ -57,32 +59,14 @@ public class VitalsList {
 		return myList;
 	}
 
-	public List<Vitals> getVitalsListForPatient(Patient p) {
-
-		List<Vitals> tmpList = new ArrayList<Vitals>();
+	public void loadVitalsListForPatient(Patient p) {
 
 		try {
-
-			tmpList = gateway.fetchVitalsForPatient(p);
+			myList = myGateway.fetchVitalsForPatient(p);
 
 		} catch (GatewayException e) {
-
+			System.err.println("VitalsList failed to load from its gateway. In VitalsList Model");
 			e.printStackTrace();
 		}
-
-		return tmpList;
 	}
-
-	public void setGateway(VitalsTableGateway gateway) {
-		this.gateway = gateway;
-	}
-
-	public void loadFromGatewayForPatient(Patient patient) {
-		
-		loadFromGateway();
-		
-	}
-	
-	
-
 }

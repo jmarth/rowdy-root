@@ -567,3 +567,10 @@
 09-03-2016 09:18:01 - User pressed 'Login'
 09-03-2016 09:19:10 - Launching Application
 09-03-2016 09:19:12 - User pressed 'Login'
+2016-09-13 11:06:15,155 - Launching Application
+2016-09-13 11:06:18,124 - User pressed 'Login'
+2016-09-13 11:06:24,740 - User pressed 'Find Patient'
+2016-09-13 11:06:26,148 - User pressed 'Add Patient'
+2016-09-13 11:06:26,684 - User pressed 'Find Patient'
+2016-09-13 11:06:29,332 - User pressed 'Find Patient'
+2016-09-13 11:06:31,677 - User selected patient: 43

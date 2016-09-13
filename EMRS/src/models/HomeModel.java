@@ -60,6 +60,7 @@ public class HomeModel {
 	private VisitList vl = new VisitList();
 	
 	private PatientTableGateway ptg = null;
+	
 	private AllergyTableGateway atg = null;
 	private VisitTableGateway vtg = null;
 	private SketchTableGateway stg = null;

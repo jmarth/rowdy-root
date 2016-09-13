@@ -1,79 +1,72 @@
 package models;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.collections4.map.MultiValueMap;
-
-import database.GatewayException;
 import database.VisitTableGateway;
+import database.VisitTableGatewaySQLite;
+import database.GatewayException;
 
 public class VisitList {
+
+	private VisitTableGateway myGateway;
 	private List<Visit> myList;
-	private VisitTableGateway gateway;
-	private HashMap<Long, Visit> myIdMap;
-	MultiValueMap myPidMap;
-	
+
 	/**
 	 * Construct a new VisitList
 	 */
-	public VisitList(){
+	public VisitList() {
+
 		myList = new ArrayList<Visit>();
-		myIdMap = new HashMap<Long, Visit>();
+
+		try {
+			myGateway = new VisitTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From VisitList, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From VisitList, IO Exception");
+			// e.printStackTrace();
+		}
 	}
-	
+
 	/**
 	 * Load records from DB into VisitList
 	 */
 	public void loadFromGateway() {
-		//fetch list of objects from the database
+
+		// fetch list of objects from the database
+
 		try {
-			myPidMap = new MultiValueMap();
-			System.out.println("loading now");
-			List<Visit> visitsTmp = gateway.fetchVisits();
-			System.out.println("\n done loading now");
-			for(Visit tmpVisit: visitsTmp){
-				myIdMap.put(tmpVisit.getId(), tmpVisit);
-				myPidMap.put(tmpVisit.getPid(), tmpVisit);
+			// name fetchVisits to fetchVisitsList to list
+			for (Visit tmpVisit : myGateway.fetchVisits()) {
 				myList.add(tmpVisit);
 			}
+
 		} catch (GatewayException e) {
-			//TODO: handle exception here
+			System.err.println("Could not Connect to DB, in VisitList");
 			return;
 		}
 	}
-	
-	public MultiValueMap<Long, Visit> getMyPidMap() {
-		return myPidMap;
-	}
-
-	public void setMyPidMap(MultiValueMap<Long, Visit> myPidMap) {
-		this.myPidMap = myPidMap;
-	}
 
 	/**
-	 * Returns ArrayList of Allergies in the VisitList
-	 * @return All Allergies in list
+	 * Returns ArrayList of Visits in the VisitList
+	 * 
+	 * @return All Visits in list
 	 */
 	public List<Visit> getVisitList() {
 		return myList;
 	}
-	
-	public List<Visit> getVisitListForPatient(Patient p){
-		List<Visit> tmpList = new ArrayList<Visit>();
-		
+
+	public void loadVisitListForPatient(Patient p) {
+
 		try {
-			tmpList = gateway.fetchVisitsForPatinet(p);
+			myList = myGateway.fetchVisitsForPatient(p);
+
 		} catch (GatewayException e) {
-			// TODO Auto-generated catch block
+			System.err.println("VisitList failed to load from its gateway. In VisitList Model");
 			e.printStackTrace();
 		}
-		
-		return tmpList;
-	}
-
-	public void setGateway(VisitTableGateway gateway) {
-		this.gateway = gateway;
 	}
 }

@@ -1,68 +1,72 @@
 package models;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import database.AllergyTableGateway;
+import database.AllergyTableGatewaySQLite;
 import database.GatewayException;
 
 public class AllergyList {
-	
+
+	private AllergyTableGateway myGateway;
 	private List<Allergy> myList;
-	private AllergyTableGateway gateway;
-	private HashMap<Long, Allergy> myIdMap;
-	
+
 	/**
 	 * Construct a new AllergyList
 	 */
-	public AllergyList(){
+	public AllergyList() {
+
 		myList = new ArrayList<Allergy>();
-		myIdMap = new HashMap<Long, Allergy>();
+
+		try {
+			myGateway = new AllergyTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AllergyList, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AllergyList, IO Exception");
+			// e.printStackTrace();
+		}
 	}
-	
+
 	/**
 	 * Load records from DB into AllergyList
 	 */
 	public void loadFromGateway() {
-		//fetch list of objects from the database
+
+		// fetch list of objects from the database
+
 		try {
-			List<Allergy> allergies = gateway.fetchAllergies();
-			for(Allergy tmpAllergy: allergies){
-				myIdMap.put(tmpAllergy.getId(), tmpAllergy);
+			// name fetchAllergies to fetchAllergiesList to list
+			for (Allergy tmpAllergy : myGateway.fetchAllergies()) {
 				myList.add(tmpAllergy);
 			}
+
 		} catch (GatewayException e) {
-			//TODO: handle exception here
+			System.err.println("Could not Connect to DB, in AllergyList");
 			return;
 		}
 	}
-	
+
 	/**
 	 * Returns ArrayList of Allergies in the AllergyList
+	 * 
 	 * @return All Allergies in list
 	 */
 	public List<Allergy> getAllergyList() {
 		return myList;
 	}
-	
-	public List<Allergy> getAllergyListForPatient(Patient p){
-		List<Allergy> tmpList = new ArrayList<Allergy>();
-		
+
+	public void loadAllergyListForPatient(Patient p) {
+
 		try {
-			tmpList = gateway.fetchAllergiesForPatient(p);
+			myList = myGateway.fetchAllergiesForPatient(p);
+
 		} catch (GatewayException e) {
-			// TODO Auto-generated catch block
+			System.err.println("AllergyList failed to load from its gateway. In AllergyList Model");
 			e.printStackTrace();
 		}
-		
-		return tmpList;
 	}
-
-	public void setGateway(AllergyTableGateway gateway) {
-		this.gateway = gateway;
-	}
-	
-	
-
 }

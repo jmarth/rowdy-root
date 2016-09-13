@@ -39,7 +39,7 @@ public class DocumentTableGatewaySQLite implements DocumentTableGateway {
 	 * 
 	 * @throws GatewayException 
 	 */
-	public List<Document> fetchPatientDocuments(Patient p) throws GatewayException{
+	public List<Document> fetchDocumentsForPatient(Patient p) throws GatewayException{
 		
 		ArrayList<Document> documents = new ArrayList<Document>();
 		
