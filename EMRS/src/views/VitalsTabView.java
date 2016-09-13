@@ -37,10 +37,10 @@ public class VitalsTabView extends JPanel {
 	*/
 	
 	private VitalsList vl = new VitalsList();
-	private List<Vitals> myVitalsList;
-	private VitalsTableGateway vtg;
+	private List<Vitals> myVitalsList;//no need
+	private VitalsTableGateway vtg;// goes in vital list, or model
 	private JTable vitalsTable = new JTable();
-	private Patient patient;
+	private Patient patient;//current Active patient
 	private int selectedRow;
 	
 	@SuppressWarnings("unused")

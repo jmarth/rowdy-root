@@ -6,8 +6,11 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -17,8 +20,14 @@ import javax.swing.border.TitledBorder;
 import models.Patient;
 
 public class ProfileTabView extends JPanel {
+	
 	//tabbedPane.addTab("Profile", null, panel, null);
-	public ProfileTabView(Patient patient) {
+	private Patient patient;
+	private HomeView homeview;
+	
+	public ProfileTabView(HomeView homeview,Patient patient) {
+		this.patient=patient;
+		this.homeview=homeview;
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{63, 293, 0};
 		gbl_panel.rowHeights = new int[]{77, 0};
@@ -455,5 +464,38 @@ public class ProfileTabView extends JPanel {
 		gbc_separator_6.gridx = 0;
 		gbc_separator_6.gridy = 1;
 		panel_7.add(separator_6, gbc_separator_6);
+		//add "edit" button
+		JButton editbutton = new JButton("Edit");
+		GridBagConstraints gbc_button = new GridBagConstraints();
+		gbc_button.gridx=0;
+		gbc_button.gridy=1;
+		gbc_button.gridwidth=2;
+		gbc_button.anchor=GridBagConstraints.PAGE_START;
+		this.add(editbutton, gbc_button);
+		editbutton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				HomeView homev = ProfileTabView.this.homeview;
+				homev.getHomeModel().getAddPatientView().loadpatient(ProfileTabView.this.patient);
+				homev.setCenterPanel(homev.getHomeModel().getAddPatientView().getContentPane());
+			}
+		});
 	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
+	}
+
+	public HomeView getHomeview() {
+		return homeview;
+	}
+
+	public void setHomeview(HomeView homeview) {
+		this.homeview = homeview;
+	}
+	
 }

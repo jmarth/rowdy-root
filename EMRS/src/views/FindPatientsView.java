@@ -38,11 +38,13 @@ public class FindPatientsView extends JFrame {
 	private JTable table;
 	private PatientTableGateway ptg;
 	private List<Patient> patientList;
+	private HomeView home;
 
 	/**
 	 * Create the frame.
 	 */
 	public FindPatientsView(final HomeView home) {
+		this.home=home;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -105,9 +107,9 @@ public class FindPatientsView extends JFrame {
 					int row = table.rowAtPoint(evt.getPoint());
 			        Long patientId = (Long) table.getValueAt(row, 0);
 			        Patient patient = pl.findById(patientId);
-			        PatientRecordView prv = new PatientRecordView(home.getHomeModel(), patient);
-			        home.setPatient(patient);
-			        home.setCenterPanel(prv);
+			        PatientRecordView prv = new PatientRecordView(FindPatientsView.this.home, patient);
+			        FindPatientsView.this.home.setPatient(patient);
+			        FindPatientsView.this.home.setCenterPanel(prv);
 			        logger.info("User selected patient: " + patientId);
 				}
 			});

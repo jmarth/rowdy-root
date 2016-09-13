@@ -47,12 +47,20 @@ import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
 public class hxView extends JPanel {
-	private AllergyList al = new AllergyList();
+	private AllergyList al = new AllergyList(); // no make here, in constructor
 	private List<Allergy> allergyList;
-	private AllergyTableGateway atg;
-	private MedicationsTableGateway mtg;
-	private DrugTableGateway rtg;
-	private HxTableGateway htg;
+	// Do not need this List<Allergy>, we have an AllergyList and Allergy, AllergyList.getList() instead
+	
+	private AllergyTableGateway atg; // Gateways should be in the Model, not the view, view holds model.
+	
+	private MedicationsTableGateway mtg; // Med Model
+	
+	private DrugTableGateway rtg; // Drug Model
+	
+	private HxTableGateway htg; //
+	
+	
+	
 	private Patient patient;
 	private JTable allergyTable = new JTable();
 	
