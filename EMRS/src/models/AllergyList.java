@@ -8,7 +8,7 @@ import database.AllergyTableGateway;
 import database.AllergyTableGatewaySQLite;
 import database.GatewayException;
 
-public class AllergyList {
+public class AllergyList implements SCRUDWithPatientList {
 
 	private AllergyTableGateway myGateway;
 	private List<Allergy> myList;
@@ -32,25 +32,6 @@ public class AllergyList {
 	}
 
 	/**
-	 * Load records from DB into AllergyList
-	 */
-	public void loadFromGateway() {
-
-		// fetch list of objects from the database
-
-		try {
-			// name fetchAllergies to fetchAllergiesList to list
-			for (Allergy tmpAllergy : myGateway.fetchAllergies()) {
-				myList.add(tmpAllergy);
-			}
-
-		} catch (GatewayException e) {
-			System.err.println("Could not Connect to DB, in AllergyList");
-			return;
-		}
-	}
-
-	/**
 	 * Returns ArrayList of Allergies in the AllergyList
 	 * 
 	 * @return All Allergies in list
@@ -69,4 +50,35 @@ public class AllergyList {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public Object find(Patient p) throws GatewayException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long insert(Object o) throws GatewayException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Object get(Patient p) throws GatewayException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(Patient p) throws GatewayException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void delete(long id) throws GatewayException {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
