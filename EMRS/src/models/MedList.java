@@ -1,56 +1,73 @@
 package models;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import database.AllergyTableGateway;
 import database.GatewayException;
 import database.MedicationsTableGateway;
+import database.MedicationsTableGatewaySQLite;
 
 public class MedList {
 
-	private List<Med> list;
-	private MedicationsTableGateway gateway;
-	private HashMap<Long, Med> myIdMap;
-	
+	private MedicationsTableGateway myGateway;
+	private List<Med> myList;
+
+	/**
+	 * Construct a new MedsList
+	 */
 	public MedList() {
-		list = new ArrayList<Med>();
-		myIdMap = new HashMap<Long, Med>();
-	}
-	
-	public void loadFromGateway() {
-		//fetch list of objects from the database
+
+		myList = new ArrayList<Med>();
+
 		try {
-			List<Med> meds = gateway.fetchMeds();
-			for(Med tmpMed: meds){
-				myIdMap.put(tmpMed.getId(), tmpMed);
-				list.add(tmpMed);
-			}
+			myGateway = new MedicationsTableGatewaySQLite();
 		} catch (GatewayException e) {
-			//TODO: handle exception here
+			System.err.println("From MedsList, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From MedsList, IO Exception");
+			// e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Load records from DB into MedsList
+	 */
+	public void loadFromGateway() {
+
+		// fetch list of objects from the database
+
+		try {
+			// name fetchMeds to fetchMedsList to list
+			for (Med tmpMed : myGateway.fetchMeds()) {
+				myList.add(tmpMed);
+			}
+
+		} catch (GatewayException e) {
+			
+			System.err.println("Could not Connect to DB, in MedList");
 			return;
 		}
 	}
-	
+
+	/**
+	 * Returns ArrayList of Medications in the MedsList
+	 * 
+	 * @return All Medications in list
+	 */
 	public List<Med> getMedList() {
-		return list;
-	}
-	
-	public List<Med> getMedListForPatient(Patient p){
-		List<Med> tmpList = new ArrayList<Med>();
-		
-		try {
-			tmpList = gateway.fetchMedsForPatient(p);
-		} catch (GatewayException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return tmpList;
+		return myList;
 	}
 
-	public void setGateway(MedicationsTableGateway gateway) {
-		this.gateway = gateway;
+	public void loadMedicationsListForPatient(Patient p) {
+
+		try {
+			myList = myGateway.fetchMedsForPatient(p);
+
+		} catch (GatewayException e) {
+			System.err.println("MedList failed to load from its gateway. In MedList Model");
+			//e.printStackTrace();
+		}
 	}
 }

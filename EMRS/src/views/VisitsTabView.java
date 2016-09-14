@@ -101,6 +101,7 @@ public class VisitsTabView extends JPanel {
 		
 	}
 	
+	//extend JXTaskPane, the mainJX panes will, the list will have the list
 	public void populatePanes() {
 		mainTaskPane.removeAll();
 
@@ -113,6 +114,7 @@ public class VisitsTabView extends JPanel {
 		mainTaskPane.add(iconLabel, BorderLayout.NORTH);
 		mainTaskPane.setBackground(CL.blueGrey);
 
+		
 				
 		int i;
 		for (i = patientVisitList.size() - 1; i >= 0; i--) {

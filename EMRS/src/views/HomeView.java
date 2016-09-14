@@ -40,19 +40,20 @@ import database.GatewayException;
 import models.Allergy;
 import models.CL;
 import models.HomeModel;
+import models.MasterModel;
 import models.Patient;
 
+@SuppressWarnings("serial")
 public class HomeView extends JFrame {
 	
 	private static final Logger logger = LogManager.getLogger(HomeView.class);
 
-	private JPanel contentPane;
+	//private JPanel contentPane;
 	
 	private HomeModel homeModel;
 	
-	//@why final vvv
 	
-	private final JButton btnHome = new JButton("");	
+	private final JButton btnHome = new JButton("");
 	
 	final JButton btnAddPatient = new JButton("Add Patient");
 	final JButton btnFindPatient = new JButton("Find Patient");
@@ -60,21 +61,25 @@ public class HomeView extends JFrame {
 	final JLabel lblPatientSearch= new JLabel("Patient Search");
 	final JTextField textFieldSearch = new JTextField();
 	
-	JButton btnLogout = new JButton("Logout");
+	final JButton btnLogout = new JButton("Logout");
 	
 	Patient p; // TODO Why have patient?
 	JButton btnAllergyAlert;
 	
-	private final JPanel panel_1 = new JPanel();
+	private final JPanel centerPanel = new JPanel();
 	
 
+	private MasterModel model;
+	
 	/**
 	 * Home constructor.
 	 * 
 	 * Inits the "HomeModel" which has all the gateways, lists, and some actual views.
 	 * 
 	 */
-	public HomeView() {
+	public HomeView(MasterModel model) {
+		
+		this.model = model;
 		
 		// Models should be independent; a view should grab from a model.
 		homeModel = new HomeModel(this);
@@ -87,14 +92,15 @@ public class HomeView extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(200, 100, 1139, 1124); // set size of Home View
 		
-		//set up main panel, holds everything
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(0, 0));
+		// set up contentPane panel
+		this.getContentPane().setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		contentPane.setBackground(CL.cararra);
-		panel_1.setLayout(new BorderLayout(0, 0));
+		this.getContentPane().setBackground(CL.cararra);
+		
+		centerPanel.setLayout(new BorderLayout(0, 0));
+		
+		
 		
 		// setup slide show in center panel_1
 		//SlideShowPanel ssp = new SlideShowPanel();		
@@ -104,9 +110,10 @@ public class HomeView extends JFrame {
 		
 		//set up top bar panel
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(0, 153, 204));
-		contentPane.add(panel, BorderLayout.NORTH);
+		JPanel northPanel = new JPanel();
+		northPanel.setBackground(new Color(0, 153, 204));
+		this.getContentPane().add(northPanel, BorderLayout.NORTH);
+		
 		textFieldSearch.setHorizontalAlignment(SwingConstants.RIGHT);
 		textFieldSearch.addFocusListener(new FocusAdapter() {
 			@Override
@@ -158,6 +165,8 @@ public class HomeView extends JFrame {
 			}
 		});
 		
+		
+		
 		btnHome.setIcon(new ImageIcon("logo1.png"));
 		btnHome.setOpaque(true);
 		btnHome.setContentAreaFilled(false);
@@ -174,6 +183,10 @@ public class HomeView extends JFrame {
 				showHomeView();
 			}
 		});
+		
+		
+		
+		
 		
 		btnAddPatient.addMouseListener(ml);
 		btnAddPatient.setToolTipText("Add Patient");
@@ -233,6 +246,8 @@ public class HomeView extends JFrame {
 				}
 			}
 		});
+		
+		
 		btnFindPatient.addMouseListener(ml);
 		btnFindPatient.setForeground(new Color(255, 255, 255));
 		btnFindPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -255,6 +270,8 @@ public class HomeView extends JFrame {
 			}
 		});
 		
+		
+		
 		btnAllergyAlert = new JButton("ALLERGY ALERT");
 		btnAllergyAlert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -269,6 +286,7 @@ public class HomeView extends JFrame {
 			     
 			}
 		});
+		
 		btnAllergyAlert.setForeground(CL.lightOrange);
 		btnAllergyAlert.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnAllergyAlert.setOpaque(true);
@@ -276,8 +294,11 @@ public class HomeView extends JFrame {
 		btnAllergyAlert.setBorderPainted(false);
 		btnAllergyAlert.setVisible(false);
 		
+		
+		
+		
 		//set up top bar panel layout
-		GroupLayout gl_panel = new GroupLayout(panel);
+		GroupLayout gl_panel = new GroupLayout(northPanel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
@@ -311,17 +332,10 @@ public class HomeView extends JFrame {
 		);
 		lblPatientSearch.setForeground(new Color(255, 255, 255));
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		panel.setLayout(gl_panel);
+		northPanel.setLayout(gl_panel);
 		
-		contentPane.add(panel_1, BorderLayout.CENTER);
+		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
 		
-	}
-	
-	/**
-	 * Returns JPanel
-	 */
-	public JPanel getContentPane() {
-		return contentPane;
 	}
 	
 	/**
@@ -330,20 +344,21 @@ public class HomeView extends JFrame {
 	 */
 	public void setCenterPanel(Container container) {
 		
-		LayoutManager layout = contentPane.getLayout();
+		LayoutManager layout = this.getContentPane().getLayout();
 		
 		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
 		
 		if(centerComponent != null ) {
-			contentPane.remove(centerComponent);
+			this.getContentPane().remove(centerComponent);
 		}
 		
 		if(homeModel.getAddPatientView() != null)
 			homeModel.getAddPatientView().hideBalloonTips();
 		
-		contentPane.add(container, BorderLayout.CENTER);
-		contentPane.repaint();
-		contentPane.revalidate();
+		this.getContentPane().add(container, BorderLayout.CENTER);
+		this.getContentPane().repaint();
+		this.getContentPane().validate();
+		
 	}
 	
 	/**

@@ -1,20 +1,34 @@
 package models;
 
 import java.io.File;
+import java.util.List;
 // 812w 9n
 public class Visit {
 	
 	private long id;
 	private long pid;
+	
 	private String chiefComplaint;
 	private String dateCreated;
 	private String assessment;
 	private String plan;
 	
-	private File sketch1;	
+	private AnteriorChamber ac;
+	private DistanceVision dv;
+	private FundusExam fe;
+	private GlassesRx glsRx;
+	private Gonio gonio;
+	private IOPList iopList;
+	private Lens l;
+	private Pupils p;
+	private Refraction r;
+	//TODO private AScan a;
+	//TODO private Keratometry k;
+	
+	private File sketchTemp;
+	
+	
 
-	
-	
 	public Visit(Long id, Long pid, String chiefComplaint, String assessment, String plan, String dateCreated) {
 		super();
 		this.id = id;
@@ -114,11 +128,11 @@ public class Visit {
 	}
 	
 	public File getSketch1() {
-		return sketch1;
+		return sketchTemp;
 	}
 
 	public void setSketch1(File sketch1) {
-		this.sketch1 = sketch1;
+		this.sketchTemp = sketch1;
 	}
 
 	public String getPlan() {
