@@ -36,15 +36,18 @@ public class IOPList {
 		return myList;
 	}
 
-	public void loadMyListForPatient(Patient p) throws GatewayException {
+	public void loadMyListForVisit(long vid) throws GatewayException {
+		
+		myList = null;
 
 		try {
-			myList = myGateway.fetchIOPMeasurementsForPatient(p);
-
+			myList = myGateway.fetchIOPMeasurementsForVisit(vid);
+			
 		} catch (GatewayException e) {
 			System.err.println("IOPList failed to load from its gateway. In IOPList Model");
 //			e.printStackTrace();
 		}
+
 	}
 
 	public long insert(IOPMeasurement a) throws GatewayException {

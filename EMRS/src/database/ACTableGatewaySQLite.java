@@ -41,17 +41,15 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 	 * @return list of visits for patient
 	 * @throws GatewayException
 	 */
-	public List<AnteriorChamber> fetchAnteriorChambersForPatient(Patient p) throws GatewayException {
-		
-		ArrayList<AnteriorChamber> pl = new ArrayList<AnteriorChamber>();
-		
+	public AnteriorChamber fetchAnteriorChamberForVisit(long vid) throws GatewayException {
+				
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from anterior_chambers where vid=?");
-			st.setLong(1, p.getId());
+			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
@@ -97,7 +95,7 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 						rs.getInt("isKSpindleOS")
 						);
 				
-				pl.add(ac);
+				return ac;
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -115,7 +113,7 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 			}
 		}
 		
-		return pl;
+		return null;
 	}
 	
 	/**

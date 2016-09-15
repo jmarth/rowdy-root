@@ -40,10 +40,14 @@ public class VisitList {
 
 		try {
 			myList = myGateway.fetchVisitsForPatient(p);
+			for(Visit e:myList){
+				e.loadVisitFromPatient();
+			}
+			
 
 		} catch (GatewayException e) {
 			System.err.println("VisitList failed to load from its gateway. In VisitList Model");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 

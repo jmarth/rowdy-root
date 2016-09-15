@@ -3,6 +3,7 @@ package database;
 import java.util.ArrayList;
 import java.util.List;
 
+import models.IOPList;
 import models.IOPMeasurement;
 import models.Patient;
 
@@ -13,4 +14,5 @@ public interface IOPTableGateway {
 	//public long updateIOPMeasurements(IOPMeasurement v) throws GatewayException;
 	public void removeIOPMeasurements(Long vid) throws GatewayException;
 	public abstract ArrayList<Object> fetchIOPColsForVisit(long id)throws GatewayException;
+	public abstract List<IOPMeasurement> fetchIOPMeasurementsForVisit(long vid)throws GatewayException;
 }
