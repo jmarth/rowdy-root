@@ -100,9 +100,8 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 	 * @return list of visits for patient
 	 * @throws GatewayException
 	 */
-	public List<Pupils> fetchPupilsForPatient(Patient p) throws GatewayException {
+	public Pupils fetchPupilsForVisit(long vid) throws GatewayException {
 		
-		ArrayList<Pupils> pl = new ArrayList<Pupils>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -110,11 +109,11 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from pupils where vid=?");
-			st.setLong(1, p.getId());
+			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				
 				Pupils pu = new Pupils(
 						rs.getLong("id"),
@@ -138,8 +137,7 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 						rs.getInt("isLeftRAPD"),
 						rs.getInt("isLeftSynechia")
 						);
-				
-				pl.add(pu);
+			return pu;
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -157,7 +155,7 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 			}
 		}
 		
-		return pl;
+		return null;
 	}
 	
 	/**

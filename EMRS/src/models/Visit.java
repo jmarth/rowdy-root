@@ -216,18 +216,21 @@ public class Visit {
 		
 		this.myAC = myAC.loadAC();
 		this.myDV = myDV.loadDV();
-//		this.myFE
-//		myGlsRx
-//		myGonio TODO
+		this.myFE = myFE.loadFE();
+		this.myGlsRx = myGlsRx.loadGlsRx();
+		this.myGonio = myGonio.loadGonio();
+		this.myLens = myLens.loadLens();
+		this.myPupils = myPupils.loadPupils();
+		this.myRefraction = myRefraction.loadRefraction();
 		try {
 			this.myIOPList.loadMyListForVisit(id);
 		} catch (GatewayException e) {
 			System.err.println("From Visit, load a model fail");
 		}
 		
-//		myLens
-//		myPupils
-//		myRefraction
+//		
+//		
+//		
 	}
 
 }

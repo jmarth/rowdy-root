@@ -112,23 +112,21 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 	 * @return list of visits for patient
 	 * @throws GatewayException
 	 */
-	public List<Lens> fetchLensForPatient(Patient p) throws GatewayException {
-		
-		ArrayList<Lens> pl = new ArrayList<Lens>();
-		
+	public Lens fetchLensForVisit(long vid) throws GatewayException {
+				
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from lenses where vid=?");
-			st.setLong(1, p.getId());
+			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				
-				Lens pu = new Lens(
+				Lens l = new Lens(
 						rs.getLong("id"),
 						rs.getLong("vid"),
 						
@@ -157,7 +155,7 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 						rs.getString("PSC_OS_Notes")
 						);
 				
-				pl.add(pu);
+				return l;
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -175,7 +173,7 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 			}
 		}
 		
-		return pl;
+		return null;
 	}
 	
 	/**
@@ -323,7 +321,6 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 	}
 	@Override
 	public void removeLens(Long vid) throws GatewayException {
-		// TODO Auto-generated method stub
 		
 	}
 	

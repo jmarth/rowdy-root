@@ -102,9 +102,8 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 	 * @return list of visits for patient
 	 * @throws GatewayException
 	 */
-	public List<Refraction> fetchRefractionsForPatient(Patient p) throws GatewayException {
+	public Refraction fetchRefractionsForVisit(long vid) throws GatewayException {
 		
-		ArrayList<Refraction> rl = new ArrayList<Refraction>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -112,13 +111,13 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from refractions where vid=?");
-			st.setLong(1, p.getId());
+			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				
-				Refraction glsrx = new Refraction(
+				Refraction r = new Refraction(
 						rs.getLong("id"),
 						rs.getLong("vid"),
 						
@@ -139,7 +138,7 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 						rs.getString("CC_OS_Axis")
 						);
 				
-				rl.add(glsrx);
+				return r;
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -157,7 +156,7 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 			}
 		}
 		
-		return rl;
+		return null;
 	}
 	
 	/**

@@ -1,5 +1,12 @@
 package models;
 
+import java.io.IOException;
+
+import database.ACTableGatewaySQLite;
+import database.GatewayException;
+import database.GonioTableGateway;
+import database.GonioTableGatewaySQLite;
+
 public class Gonio {
 	
 	private long id, vid;
@@ -26,6 +33,8 @@ public class Gonio {
 	private String osRSQComp;
 	private String osPigment;
 	private int isOSAntPigLine;
+	
+	private GonioTableGateway myGateway;
 	
 	
 	public Gonio(long id, long vid, int isHxFHA, String fHASide, int isODNormal, String odABCDNon,
@@ -62,7 +71,15 @@ public class Gonio {
 			String odABCDComp, String odDegreeNon, String odDegreeComp, String odRSQNon, String odRSQComp, String odPigment, int isODAntPigLine,
 			int isOSNormal, String osABCDNon, String osABCDComp, String osDegreeNon, String osDegreeComp, String osRSQNon, String osRSQComp, String osPigment,
 			int isOSAntPigLine) {
-		super();
+		try {
+			myGateway = new GonioTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+			// e.printStackTrace();
+		}
 		this.isHxFHA = isHxFHA;
 		FHASide = fHASide;
 		this.isODNormal = isODNormal;
@@ -224,6 +241,17 @@ public class Gonio {
 
 	public void setOsDegreeComp(String osDegreeComp) {
 		this.osDegreeComp = osDegreeComp;
+	}
+
+
+	public Gonio loadGonio() {
+		try {
+			return myGateway.fetchGonioForVisit(vid);
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, could not fetch from DB");
+//			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	

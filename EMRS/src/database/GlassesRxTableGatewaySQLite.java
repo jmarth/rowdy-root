@@ -96,9 +96,8 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 	 * @return list of visits for patient
 	 * @throws GatewayException
 	 */
-	public List<GlassesRx> fetchGlassesRxsForPatient(Patient p) throws GatewayException {
+	public GlassesRx fetchGlassesRxsForVisit(long vid) throws GatewayException {
 		
-		ArrayList<GlassesRx> glsrxl = new ArrayList<GlassesRx>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -106,11 +105,11 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from glasses_rxs where vid=?");
-			st.setLong(1, p.getId());
+			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
-			while(rs.next()) {
+			if (rs.next()) {
 				
 				GlassesRx glsrx = new GlassesRx(
 						rs.getLong("id"),
@@ -127,7 +126,7 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 						rs.getString("GlassesRxNotes")
 						);
 				
-				glsrxl.add(glsrx);
+				return glsrx;
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -145,7 +144,7 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 			}
 		}
 		
-		return glsrxl;
+		return null;
 	}
 	
 	/**

@@ -278,9 +278,7 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 	}
 
 	@Override
-	public ArrayList<Object> fetchGonioForVisit(long id) throws GatewayException {
-
-	    ArrayList<Object> row = new ArrayList<Object>();
+	public Gonio fetchGonioForVisit(long id) throws GatewayException {
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -292,20 +290,38 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 			
 			rs = st.executeQuery();
 			
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		    
-		    int colCount = meta.getColumnCount();
-//		    System.out.println("====goinos======" + colCount);
 			
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-//					System.out.println("column #"+ i + " : " + rs.getObject(i));
-				}
+			if (rs.next()) {
+				Gonio g = new Gonio(
+						rs.getLong("id"),
+						rs.getLong("vid"),
+						
+						rs.getInt("isHxFHA"),
+						rs.getString("FHASide"),
+						
+						rs.getInt("isODNormal"),
+						rs.getString("odABCDNon"),
+						rs.getString("odABCDComp"),
+						rs.getString("odDegreeNon"),
+						rs.getString("odDegreeComp"),
+						rs.getString("odRSQNon"),
+						rs.getString("odRSQComp"),
+						rs.getString("odPigment"),
+						rs.getInt("isODAntPigLine"),
+						
+						rs.getInt("isOSNormal"),
+						rs.getString("osABCDNon"),
+						rs.getString("osABCDComp"),
+						rs.getString("osDegreeNon"),
+						rs.getString("osDegreeComp"),
+						rs.getString("osRSQNon"),
+						rs.getString("osRSQComp"),
+						rs.getString("osPigment"),
+						rs.getInt("isOSAntPigLine")
+						);
+				return g;
 			}
-//			System.out.println("\n****************\n gonio ROW:"+row.toString());
+			
 			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -323,7 +339,7 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 			}
 		}
 		
-		return row;
+		return null;
 	}
 
 

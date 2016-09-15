@@ -119,22 +119,21 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 	 * @return list of Fundus Exams for patient
 	 * @throws GatewayException
 	 */
-	public List<FundusExam> fetchFundusExamsForPatient(Patient p) throws GatewayException {
-		
-		ArrayList<FundusExam> fundusExams = new ArrayList<FundusExam>();
-		
+	public FundusExam fetchFundusExamForVisit(long vid) throws GatewayException {
+				
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from fundus_exams where pid=?");
-			st.setLong(1, p.getId());
+			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
 			//add each to list of parts to return
-			while(rs.next()) {
+			if (rs.next() )
+			{
 				FundusExam fe = new FundusExam(
 						rs.getLong("id"),
 						rs.getLong("vid"),
@@ -163,7 +162,7 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 						rs.getString("RetinaOSNotes")
 						);
 				
-				fundusExams.add(fe);
+				return fe;
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -181,7 +180,7 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 			}
 		}
 		
-		return fundusExams;
+		return null;
 	}
 	
 	/**

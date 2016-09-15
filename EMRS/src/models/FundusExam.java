@@ -1,5 +1,12 @@
 package models;
 
+import java.io.IOException;
+
+import database.ACTableGatewaySQLite;
+import database.FundusTableGateway;
+import database.FundusTableGatewaySQLite;
+import database.GatewayException;
+
 public class FundusExam {
 
 	
@@ -30,10 +37,13 @@ public class FundusExam {
 	
 	private int maculaOSAb; 
 	private String maculaOSNotes;
+	
+	private FundusTableGateway myGateway;
+	
 	public FundusExam(long id, long vid, int dialated, String dialNotes, int cDODAb, String cDOD, String cDODNotes,
 			int cDOSAb, String cDOS, String cDOSNotes, int retinaODAb, String retinaODNotes, int retinaOSAb,
 			String retinaOSNotes, int maculaODAb, String maculaODNotes, int maculaOSAb, String maculaOSNotes) {
-		super();
+		
 		this.id = id;
 		this.vid = vid;
 		this.dialated = dialated;
@@ -56,7 +66,15 @@ public class FundusExam {
 	public FundusExam(int dialated, String dialNotes, int cDODAb, String cDOD, String cDODNotes,
 			int cDOSAb, String cDOS, String cDOSNotes, int retinaODAb, String retinaODNotes, int retinaOSAb,
 			String retinaOSNotes, int maculaODAb, String maculaODNotes, int maculaOSAb, String maculaOSNotes) {
-		super();
+		try {
+			myGateway = new FundusTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+			// e.printStackTrace();
+		}
 		this.dialated = dialated;
 		this.dialNotes = dialNotes;
 		CDODAb = cDODAb;
@@ -181,6 +199,15 @@ public class FundusExam {
 	}
 	public void setMaculaOSNotes(String maculaOSNotes) {
 		this.maculaOSNotes = maculaOSNotes;
+	}
+	public FundusExam loadFE(){
+		try {
+			return myGateway.fetchFundusExamForVisit(vid);
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, could not fetch from DB");
+//			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }
