@@ -348,8 +348,14 @@ public class AnteriorChamber {
 		KSpindleOS = kSpindleOS;
 	}
 
-	public AnteriorChamber loadAC() throws GatewayException {
-		return myGateway.fetchAnteriorChamberForVisit(vid);
+	public AnteriorChamber loadAC(){
+		try {
+			return myGateway.fetchAnteriorChamberForVisit(vid);
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, could not fetch from DB");
+//			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

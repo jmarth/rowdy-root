@@ -94,7 +94,13 @@ public class DistanceVision {
 	}
 
 	public DistanceVision loadDV() {
-		return myGateway.fetchDistanceVisionForVisit(vid);
+		try {
+			return myGateway.fetchDistanceVisionForVisit(vid);
+		} catch (GatewayException e) {
+			System.err.println("From DistanceVision, could not fetch from DB");
+//			e.printStackTrace();
+		}
+		return null;
 	}
 	
 

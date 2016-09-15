@@ -214,12 +214,12 @@ public class Visit {
 	public void loadVisitFromPatient() {
 		//TODO load all the stuff
 		
+		this.myAC = myAC.loadAC();
 		this.myDV = myDV.loadDV();
 //		this.myFE
 //		myGlsRx
 //		myGonio TODO
 		try {
-			this.myAC = myAC.loadAC();
 			this.myIOPList.loadMyListForVisit(id);
 		} catch (GatewayException e) {
 			System.err.println("From Visit, load a model fail");
