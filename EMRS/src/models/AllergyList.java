@@ -32,7 +32,6 @@ public class AllergyList {
 	}
 
 	public List<Allergy> getMyList() {
-
 		return myList;
 	}
 
@@ -43,7 +42,7 @@ public class AllergyList {
 
 		} catch (GatewayException e) {
 			System.err.println("AllergyList failed to load from its gateway. In AllergyList Model");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 

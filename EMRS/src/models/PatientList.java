@@ -42,15 +42,15 @@ public class PatientList {
 		}
 	}
 
-	// if fail to add, then it no add to list
+	// if fail to add, then it do not add to list
 	public void addPatient(Patient p) {
 		try {
 
 			myGateway.insertPatient(p);
+			
 			myIdMap.put(p.getId(), p);
 
 		} catch (GatewayException e) {
-
 			System.err.println("From PatientList, failed to insert Patient to DB");
 		}
 	}
@@ -62,8 +62,8 @@ public class PatientList {
 	public Patient findById(long id) {
 
 		// check the identity map
-		if (myIdMap.containsKey(new Long(id)))
-			return myIdMap.get(new Long(id));
+		if (myIdMap.containsKey(id))
+			return myIdMap.get(id);
 
 		return null;
 	}

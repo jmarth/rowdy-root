@@ -39,11 +39,12 @@ public class DocumentList {
 	public void loadMyListForPatient(Patient p) throws GatewayException {
 
 		try {
+			
 			myList = myGateway.fetchDocumentsForPatient(p);
 
 		} catch (GatewayException e) {
 			System.err.println("DocumentList failed to load from its gateway. In DocumentList Model");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 

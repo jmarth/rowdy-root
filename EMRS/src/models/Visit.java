@@ -13,17 +13,17 @@ public class Visit {
 	private String assessment;
 	private String plan;
 	
-	private AnteriorChamber ac;
-	private DistanceVision dv;
-	private FundusExam fe;
-	private GlassesRx glsRx;
-	private Gonio gonio;
-	private IOPList iopList;
-	private Lens l;
-	private Pupils p;
-	private Refraction r;
-	//TODO private AScan a;
-	//TODO private Keratometry k;
+	private AnteriorChamber myAC;
+	private DistanceVision myDV;
+	private FundusExam myFE;
+	private GlassesRx myGlsRx;
+	private Gonio myGonio;
+	private IOPList myIOPList;
+	private Lens myLens;
+	private Pupils myPupils;
+	private Refraction myRefraction;
+	//TODO private AScan myAScan;
+	//TODO private Keratometry myK;
 	
 	private File sketchTemp;
 	
@@ -47,95 +47,5 @@ public class Visit {
 		this.plan = plan;
 		this.assessment = assessment;
 	}
-	
-	/**
-	 * getter for id;
-	 * @return id
-	 */
-	public long getId() {
-		return id;
-	}
 
-	/**
-	 * setter for id
-	 * @param id
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	/**
-	 * getter for pid
-	 * @return pid
-	 */
-	public long getPid() {
-		return pid;
-	}
-
-	/**
-	 * setter for pid
-	 * @param pid
-	 */
-	public void setPid(long pid) {
-		this.pid = pid;
-	}
-
-	/**
-	 * chiefComplaint getter
-	 * @return chiefComplaint
-	 */
-	public String getChiefComplaint() {
-		return chiefComplaint;
-	}
-
-	/**
-	 * setter for chiefComplaint
-	 * @param chiefComplaint
-	 */
-	public void setChiefComplaint(String chiefComplaint) {
-		this.chiefComplaint = chiefComplaint;
-	}
-
-	/**
-	 * getter for assessment
-	 * @return assessment
-	 */
-	public String getAssessment() {
-		return assessment;
-	}
-
-	/**
-	 * setter for assessment
-	 * @param assessment
-	 */
-	public void setAssessment(String assessment) {
-		this.assessment = assessment;
-	}
-	/**
-	 * getter for dateCreated
-	 * @return dateCreated
-	 */
-	public String getDateCreated() {
-		return dateCreated;
-	}
-
-	/**
-	 * setter for dateCreated
-	 * @param dateCreated
-	 */
-	public void setDateCreated(String dateCreated) {
-		this.dateCreated = dateCreated;
-	}
-	
-	public File getSketch1() {
-		return sketchTemp;
-	}
-
-	public void setSketch1(File sketch1) {
-		this.sketchTemp = sketch1;
-	}
-
-	public String getPlan() {
-		return plan;
-	}
 }

@@ -31,85 +31,9 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println("From ACTG, cannot connect to DB");
+//			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Fetch all visits from DB
-	 * @return list of visits
-	 * @throws GatewayException
-	 */
-	public List<AnteriorChamber> fetchAnteriorChambers() throws GatewayException {
-		
-		ArrayList<AnteriorChamber> pl = new ArrayList<AnteriorChamber>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			
-			st = conn.prepareStatement("select * from anterior_chambers");
-			rs = st.executeQuery();
-			
-			while(rs.next()) {
-				
-				AnteriorChamber p = new AnteriorChamber(
-						rs.getLong("id"),
-						rs.getLong("vid"),
-						
-						rs.getInt("isACODNormal"),
-						rs.getInt("isACOSNormal"),
-						
-						rs.getString("ACDepthOD"),
-						rs.getString("ACDepthOS"),
-						rs.getString("ACAngleOD"),
-						rs.getString("ACAngleOS"),
-						
-						rs.getString("PASOD"),
-						rs.getString("PASOS"),
-						rs.getString("ACODKP"),
-						rs.getString("ACOSKP"),
-						
-						rs.getInt("isShuntOD"),
-						rs.getInt("isScarringOD"),
-						rs.getInt("isTraumaOD"),
-						rs.getInt("isBlebOD"),
-						
-						rs.getInt("isShuntOS"),
-						rs.getInt("isScarringOS"),
-						rs.getInt("isTraumaOS"),
-						rs.getInt("isBlebOS"),
-						
-						rs.getInt("isVascularOD"),
-						rs.getString("BlebOD_Num"),
-						
-						rs.getInt("isVascularOS"),
-						rs.getString("BlebOS_Num"),
-						
-						rs.getInt("isKSpindleOD"),
-						rs.getInt("isKSpindleOS")
-						);
-				
-				pl.add(p);
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return pl;
 	}
 	
 	/**
@@ -133,7 +57,8 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 			
 			while(rs.next()) {
 				
-				AnteriorChamber pu = new AnteriorChamber(
+				// Should not have a gateway
+				AnteriorChamber ac = new AnteriorChamber(
 						rs.getLong("id"),
 						rs.getLong("vid"),
 						
@@ -172,7 +97,7 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 						rs.getInt("isKSpindleOS")
 						);
 				
-				pl.add(pu);
+				pl.add(ac);
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -196,11 +121,10 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 	/**
 	 * Inserts visit into visits table
 	 */
-	public void insertAnteriorChamber(AnteriorChamber p) throws GatewayException {
+	public long insertAnteriorChamber(AnteriorChamber p) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;
-		this=p;
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;

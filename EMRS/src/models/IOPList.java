@@ -23,10 +23,10 @@ public class IOPList {
 		try {
 			myGateway = new IOPTableGatewaySQLite();
 		} catch (GatewayException e) {
-			System.err.println("From IOPMeasurementList, cannot connect to DB");
+			System.err.println("From IOPList, cannot connect to DB");
 			// e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("From IOPMeasurementList, IO Exception");
+			System.err.println("From IOPList, IO Exception");
 			// e.printStackTrace();
 		}
 	}
@@ -42,8 +42,8 @@ public class IOPList {
 			myList = myGateway.fetchIOPMeasurementsForPatient(p);
 
 		} catch (GatewayException e) {
-			System.err.println("IOPMeasurementList failed to load from its gateway. In IOPMeasurementList Model");
-			e.printStackTrace();
+			System.err.println("IOPList failed to load from its gateway. In IOPList Model");
+//			e.printStackTrace();
 		}
 	}
 

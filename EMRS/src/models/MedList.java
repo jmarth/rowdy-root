@@ -43,7 +43,7 @@ public class MedList {
 
 		} catch (GatewayException e) {
 			System.err.println("MedList failed to load from its gateway. In MedList Model");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 

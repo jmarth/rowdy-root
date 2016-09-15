@@ -44,7 +44,7 @@ public class SurgeryList {
 
 		} catch (GatewayException e) {
 			System.err.println("SurgeryList failed to load from its gateway. In SurgeryList Model");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 

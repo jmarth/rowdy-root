@@ -43,7 +43,7 @@ public class SurgeryTemplatesList {
 
 		} catch (GatewayException e) {
 			System.err.println("SurgeryTemplateList failed to load from its gateway. In SurgeryTemplateList Model");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 
