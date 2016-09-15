@@ -229,7 +229,7 @@ public class PatientTableGatewayMySQL implements PatientTableGateway{
 
 
 	@Override
-	public void updatepatient(Patient p) throws GatewayException {
+	public void updatePatient(Patient p) throws GatewayException {
 		PreparedStatement st = null;
 		try {
 			conn.setAutoCommit(false);

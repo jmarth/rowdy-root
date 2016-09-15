@@ -31,35 +31,12 @@ public class VisitList {
 		}
 	}
 
-	/**
-	 * Load records from DB into VisitList
-	 */
-	public void loadFromGateway() {
+	public List<Visit> getMyList() {
 
-		// fetch list of objects from the database
-
-		try {
-			// name fetchVisits to fetchVisitsList to list
-			for (Visit tmpVisit : myGateway.fetchVisits()) {
-				myList.add(tmpVisit);
-			}
-
-		} catch (GatewayException e) {
-			System.err.println("Could not Connect to DB, in VisitList");
-			return;
-		}
-	}
-
-	/**
-	 * Returns ArrayList of Visits in the VisitList
-	 * 
-	 * @return All Visits in list
-	 */
-	public List<Visit> getVisitList() {
 		return myList;
 	}
 
-	public void loadVisitListForPatient(Patient p) {
+	public void loadMyListForPatient(Patient p) throws GatewayException {
 
 		try {
 			myList = myGateway.fetchVisitsForPatient(p);
@@ -69,4 +46,21 @@ public class VisitList {
 			e.printStackTrace();
 		}
 	}
+
+	public long insert(Visit a) throws GatewayException {
+
+		a.setId(myGateway.insertVisit(a));
+		this.myList.add(a);
+
+		return a.getId();
+	}
+
+	public void update(Visit a) throws GatewayException {
+		myGateway.updateVisit(a);
+	}
+
+	public void delete(long id) throws GatewayException {
+		myGateway.removeVisit(id);
+	}
+
 }

@@ -14,7 +14,7 @@ import javax.sql.DataSource;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
-import models.Vitals;
+import models.Vital;
 import models.Patient;
 
 public class VitalsTableGatewayMySQL implements VitalsTableGateway {
@@ -46,9 +46,9 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 	}
 
 	@Override
-	public List<Vitals> fetchVitals() throws GatewayException {
+	public List<Vital> fetchVitals() throws GatewayException {
 		
-		ArrayList<Vitals> vitals = new ArrayList<Vitals>();
+		ArrayList<Vital> vitals = new ArrayList<Vital>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -63,7 +63,7 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 			
 			while(rs.next()) {
 				
-				Vitals tmpVitals = new Vitals(
+				Vital tmpVitals = new Vital(
 						rs.getLong("id"),
 						rs.getLong("pid"),
 						rs.getFloat("bps"),
@@ -110,15 +110,15 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 			}
 		}
 			System.out.println("from vitalstg, what was resultset:");
-			for (Vitals v: vitals )
+			for (Vital v: vitals )
 				System.out.println(v.getId());
 			return vitals;
 	}
 
 	@Override
-	public List<Vitals> fetchVitalsForPatient(Patient p) throws GatewayException {
+	public List<Vital> fetchVitalsForPatient(Patient p) throws GatewayException {
 		
-		ArrayList<Vitals> vitals = new ArrayList<Vitals>();
+		ArrayList<Vital> vitals = new ArrayList<Vital>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -136,7 +136,7 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 			
 			while(rs.next()) {
 				
-				Vitals tmpVitals = new Vitals(
+				Vital tmpVitals = new Vital(
 						rs.getLong("id"),
 						rs.getLong("pid"),
 						rs.getFloat("bps"),
@@ -183,7 +183,7 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 	}
 
 	@Override
-	public long insertVitals(Vitals v) throws GatewayException {
+	public long insertVitals(Vital v) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;
@@ -249,7 +249,7 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 		return newId;
 	}
 	@Deprecated
-	public long updateVitals(Vitals v) throws GatewayException{
+	public long updateVitals(Vital v) throws GatewayException{
 		
 		PreparedStatement st = null;
 		//ResultSet rs = null;

@@ -22,8 +22,8 @@ import database.VitalsTableGateway;
 import models.HomeModel;
 import models.Patient;
 import models.Tabs;
-import models.Vitals;
-import models.VitalsList;
+import models.Vital;
+import models.Vital;
 
 @SuppressWarnings("serial")
 public class VitalsTabView extends JPanel {
@@ -37,7 +37,7 @@ public class VitalsTabView extends JPanel {
 	*/
 	
 	private VitalsList vl = new VitalsList();
-	private List<Vitals> myVitalsList;//no need
+	private List<Vital> myVitalsList;//no need
 	private VitalsTableGateway vtg;// goes in vital list, or model
 	private JTable vitalsTable = new JTable();
 	private Patient patient;//current Active patient
@@ -96,7 +96,7 @@ public class VitalsTabView extends JPanel {
 		panelButtons.add(btnRemoveVital, BorderLayout.EAST);
 		btnRemoveVital.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Vitals vtr = myVitalsList.get(selectedRow);
+				Vital vtr = myVitalsList.get(selectedRow);
 				try {
 					vtg.removeVitals(vtr.getId());
 				} catch (GatewayException e1) {
@@ -155,7 +155,7 @@ public class VitalsTabView extends JPanel {
 				myVitalsList = vl.getVitalsListForPatient(patient);
 				//Vitals tmp = vitalsList.get(selectedRow);
 				
-				Vitals tmp = myVitalsList.get(selectedRow);
+				Vital tmp = myVitalsList.get(selectedRow);
 				
 				//System.out.println();
 				//System.out.println("patient id = "+patient.getId());
@@ -235,7 +235,7 @@ public class VitalsTabView extends JPanel {
 		 * If it is a height, must be displayed depending on ft/inches or inches or cm
 		 */		
 		
-		for(Vitals vitals : myVitalsList) {
+		for(Vital vitals : myVitalsList) {
 			
 			// read somewhere sb should get a size in bytes of
 			// roughly how big of a string you are going to build
@@ -249,7 +249,7 @@ public class VitalsTabView extends JPanel {
 	       
 	        if (vitals.getHUnit() == null) {
 	           
-	        } else if (vitals.getHUnit().equals(Vitals.FTIN)) {
+	        } else if (vitals.getHUnit().equals(Vital.FTIN)) {
 	           
 	            sb.append(vitals.getHFeet());
 	            sb.append('\'');
@@ -260,7 +260,7 @@ public class VitalsTabView extends JPanel {
 	           
 	        } else if (vitals.getHUnit().equals("null")) {
 	            heightInt = -100;
-	        } else if (vitals.getHUnit().equals(Vitals.IN)) {
+	        } else if (vitals.getHUnit().equals(Vital.IN)) {
 	            heightInt = vitals.getHInches();
 	        } else {
 	            heightInt = vitals.getHCm();
@@ -271,7 +271,7 @@ public class VitalsTabView extends JPanel {
 					vitals.getBps() + "/" + vitals.getBps() + " " + vitals.getBpUnit(),
 					vitals.getBg() + " " + vitals.getBgUnit(),
 					vitals.getO2sat() + "%",
-					vitals.getHb() + " " + Vitals.gdL,
+					vitals.getHb() + " " + Vital.gdL,
 					(isString ? height_ftin_String : heightInt + " " + vitals.getHUnit()),
 					vitals.getWeight() + " " + vitals.getWUnit(),
 					vitals.getNotes()	

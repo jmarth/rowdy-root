@@ -23,8 +23,8 @@ import models.Comment;
 import models.HomeModel;
 import models.Patient;
 import models.Tabs;
-import models.Vitals;
-import models.VitalsList;
+import models.Vital;
+import models.Vital;
 
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
@@ -95,9 +95,9 @@ public class VitalsTabNewVitalsView extends JPanel {
 	private List<Comment> commentsList;
 	public String heightUnit;
 	private JTable vitalsTable;
-	private List<Vitals> vitalsList;
+	private List<Vital> vitalsList;
 	private JPanel panel_CommentForm;
-	private Vitals vitals;
+	private Vital vitals;
 	private JPanel panel_VitalsForm;
 	private JCheckBox chckbxFasting;
 	private JLabel lblBGLevelUnit;
@@ -110,7 +110,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 	 * Create the panel.
 	 */
 	public VitalsTabNewVitalsView(final JTabbedPane tabbedPane, Patient patient, final JPanel vitalsPanel,
-			final HomeModel homeModel, JTable vitalsTable, List<Vitals> vitalsList, VitalsList vl, Vitals vitals,
+			final HomeModel homeModel, JTable vitalsTable, List<Vital> vitalsList, VitalsList vl, Vital vitals,
 			Boolean detailedView) {
 
 		this.patient = patient;
@@ -153,7 +153,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 		textField_BPS.setText(String.valueOf(vitals.getBps()));
 		textField_BPD.setText(String.valueOf(vitals.getBpd()));
 		
-		if (vitals.getBpUnit().equals(Vitals.MMHG)) {
+		if (vitals.getBpUnit().equals(Vital.MMHG)) {
 			
 			rdbtnMmhg.setSelected(true);
 			
@@ -168,7 +168,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 		
 		textField_BGLevel.setText(String.valueOf(vitals.getBg()));;
 		
-		if (vitals.getBgUnit().equals(Vitals.mmolL)) {
+		if (vitals.getBgUnit().equals(Vital.mmolL)) {
 			
 			rdbtnMmoll.setSelected(true);
 			
@@ -180,13 +180,13 @@ public class VitalsTabNewVitalsView extends JPanel {
 		textField_O2Sat.setText(String.valueOf(vitals.getO2sat()));
 		textField_Hb.setText(String.valueOf(vitals.getHb()));
 		
-		if (vitals.getHUnit().equals(Vitals.FTIN)) {
+		if (vitals.getHUnit().equals(Vital.FTIN)) {
 			
 			textField_Ft.setText(String.valueOf(vitals.getHFeet()));
 			textField_In.setText(String.valueOf(vitals.getHInches()));
 			rdbtnFtin.setSelected(true);
 			
-		} else if (vitals.getHUnit().equals(Vitals.IN)) {
+		} else if (vitals.getHUnit().equals(Vital.IN)) {
 			
 			textField_In.setText(String.valueOf(vitals.getHInches()));
 			rdbtnIn.setSelected(true);
@@ -199,7 +199,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 		
 		textField_Weight.setText(String.valueOf(vitals.getWeight()));
 		
-		if (vitals.getWUnit().equals(Vitals.LBS)) {
+		if (vitals.getWUnit().equals(Vital.LBS)) {
 			
 			rdbtnLbs.setSelected(true);
 			
@@ -354,10 +354,10 @@ public class VitalsTabNewVitalsView extends JPanel {
 	private class BPListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals(Vitals.MMHG)) {
-				lblBP.setText(Vitals.MMHG);
+			if (e.getActionCommand().equals(Vital.MMHG)) {
+				lblBP.setText(Vital.MMHG);
 			} else {
-				lblBP.setText(Vitals.PA);
+				lblBP.setText(Vital.PA);
 			}
 		}
 	}
@@ -365,10 +365,10 @@ public class VitalsTabNewVitalsView extends JPanel {
 	private class BGListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
-			if (e.getActionCommand().equals(Vitals.mmolL)) {
-				lblBGLevelUnit.setText(Vitals.mmolL);
+			if (e.getActionCommand().equals(Vital.mmolL)) {
+				lblBGLevelUnit.setText(Vital.mmolL);
 			} else {
-				lblBGLevelUnit.setText(Vitals.mgdL);
+				lblBGLevelUnit.setText(Vital.mgdL);
 			}
 		}
 	}
@@ -377,7 +377,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 
 		public void actionPerformed(ActionEvent e) {
 
-			if (e.getActionCommand().equals(Vitals.FTIN)) {
+			if (e.getActionCommand().equals(Vital.FTIN)) {
 
 				textField_Ft.setEnabled(true);
 				textField_In.setEnabled(true);
@@ -386,9 +386,9 @@ public class VitalsTabNewVitalsView extends JPanel {
 				textField_Cm.setEnabled(false);
 				textField_Cm.setText("");
 
-				heightUnit = Vitals.FTIN;
+				heightUnit = Vital.FTIN;
 
-			} else if (e.getActionCommand().equals(Vitals.IN)) {
+			} else if (e.getActionCommand().equals(Vital.IN)) {
 
 				textField_Ft.setEnabled(false);
 				textField_Ft.setText("");
@@ -398,7 +398,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 				textField_Cm.setEnabled(false);
 				textField_Cm.setText("");
 
-				heightUnit = Vitals.IN;
+				heightUnit = Vital.IN;
 
 			} else {
 
@@ -410,7 +410,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 
 				textField_Cm.setEnabled(true);
 
-				heightUnit = Vitals.CM;
+				heightUnit = Vital.CM;
 			}
 		}
 	}
@@ -419,13 +419,13 @@ public class VitalsTabNewVitalsView extends JPanel {
 
 		public void actionPerformed(ActionEvent e) {
 
-			if (e.getActionCommand().equals(Vitals.LBS)) {
+			if (e.getActionCommand().equals(Vital.LBS)) {
 
-				lblWeightUnit.setText(Vitals.LBS);
+				lblWeightUnit.setText(Vital.LBS);
 
 			} else {
 
-				lblWeightUnit.setText(Vitals.KG);
+				lblWeightUnit.setText(Vital.KG);
 			}
 		}
 	}
@@ -462,7 +462,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 		 */
 
 		//getSelectedButtonText(buttonGroupHeight) to get unit for DB
-		Vitals vitals = new Vitals(
+		Vital vitals = new Vital(
 				0,
 				patient.getId(),
 				Float.parseFloat(textField_BPS.getText()),
@@ -501,7 +501,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 
 		if (vitals.getHUnit() == null) {
 
-		} else if (vitals.getHUnit().equals(Vitals.FTIN)) {
+		} else if (vitals.getHUnit().equals(Vital.FTIN)) {
 
 			sb.append(vitals.getHFeet());
 			sb.append('\'');
@@ -514,7 +514,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 
 			heightInt = -100;
 
-		} else if (vitals.getHUnit().equals(Vitals.IN)) {
+		} else if (vitals.getHUnit().equals(Vital.IN)) {
 
 			heightInt = vitals.getHInches();
 
@@ -535,7 +535,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 				vitals.getBps() + "/" + vitals.getBps() + " " + vitals.getBpUnit(),
 				vitals.getBg() + " " + vitals.getBgUnit(),
 				vitals.getO2sat() + "%",
-				vitals.getHb() + " " + Vitals.gdL,
+				vitals.getHb() + " " + Vital.gdL,
 				(isString ? height_ftin_String : heightInt + " " + vitals.getHUnit()),
 				vitals.getWeight() + " " + vitals.getWUnit(),
 				vitals.getNotes()				
@@ -613,7 +613,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 																panel_BloodPressure.add(textField_BPD, "cell 3 0,alignx left");
 																textField_BPD.setColumns(5);
 																
-																		lblBP = new JLabel(Vitals.MMHG);
+																		lblBP = new JLabel(Vital.MMHG);
 																		panel_BloodPressure.add(lblBP, "cell 4 0,alignx left");
 																		
 																		// BP radio buttons
@@ -737,7 +737,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 																																																												panel_Height.add(textField_In, "flowx,cell 1 1,alignx left");
 																																																												textField_In.setColumns(5);
 																																																												
-																																																														lblIn = new JLabel(Vitals.IN);
+																																																														lblIn = new JLabel(Vital.IN);
 																																																														panel_Height.add(lblIn, "cell 1 1");
 																																																														
 																																																																textField_Cm = new JTextField();
@@ -745,7 +745,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 																																																																panel_Height.add(textField_Cm, "flowx,cell 1 2,alignx left");
 																																																																textField_Cm.setColumns(5);
 																																																																
-																																																																		lblCm = new JLabel(Vitals.CM);
+																																																																		lblCm = new JLabel(Vital.CM);
 																																																																		panel_Height.add(lblCm, "cell 1 2");
 																																																																		
 																																																																				// Height radio buttons
@@ -755,15 +755,15 @@ public class VitalsTabNewVitalsView extends JPanel {
 																																																																						.setBorder(new TitledBorder(null, "Height Unit", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 																																																																				panel_Height.add(panel_HeightUnit, "cell 2 0 1 3,alignx center,aligny center");
 																																																																				
-																																																																						rdbtnFtin = new JRadioButton(Vitals.FTIN);
+																																																																						rdbtnFtin = new JRadioButton(Vital.FTIN);
 																																																																						buttonGroupHeight.add(rdbtnFtin);
 																																																																						panel_HeightUnit.add(rdbtnFtin);
 																																																																						
-																																																																								rdbtnIn = new JRadioButton(Vitals.IN);
+																																																																								rdbtnIn = new JRadioButton(Vital.IN);
 																																																																								buttonGroupHeight.add(rdbtnIn);
 																																																																								panel_HeightUnit.add(rdbtnIn);
 																																																																								
-																																																																										rdbtnCm = new JRadioButton(Vitals.CM);
+																																																																										rdbtnCm = new JRadioButton(Vital.CM);
 																																																																										buttonGroupHeight.add(rdbtnCm);
 																																																																										panel_HeightUnit.add(rdbtnCm);
 																																																																										

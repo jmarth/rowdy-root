@@ -31,35 +31,12 @@ public class IOPList {
 		}
 	}
 
-	/**
-	 * Load records from DB into IOPMeasurementList
-	 */
-	public void loadFromGateway() {
+	public List<IOPMeasurement> getMyList() {
 
-		// fetch list of objects from the database
-
-		try {
-			// name fetchIOPMeasurements to fetchIOPMeasurementsList to list
-			for (IOPMeasurement tmpIOPMeasurement : myGateway.fetchIOPMeasurements()) {
-				myList.add(tmpIOPMeasurement);
-			}
-
-		} catch (GatewayException e) {
-			System.err.println("Could not Connect to DB, in IOPMeasurementList");
-			return;
-		}
-	}
-
-	/**
-	 * Returns ArrayList of IOPMeasurements in the IOPMeasurementList
-	 * 
-	 * @return All IOPMeasurements in list
-	 */
-	public List<IOPMeasurement> getIOPMeasurementList() {
 		return myList;
 	}
 
-	public void loadIOPMeasurementListForPatient(Patient p) {
+	public void loadMyListForPatient(Patient p) throws GatewayException {
 
 		try {
 			myList = myGateway.fetchIOPMeasurementsForPatient(p);
@@ -69,4 +46,21 @@ public class IOPList {
 			e.printStackTrace();
 		}
 	}
+
+	public long insert(IOPMeasurement a) throws GatewayException {
+
+		a.setId(myGateway.insertIOPMeasurement(a));
+		this.myList.add(a);
+
+		return a.getId();
+	}
+// TODO
+//	public void update(IOPMeasurement a) throws GatewayException {
+//		myGateway.updateIOPMeasurement(a);
+//	}
+//
+//	public void delete(long id) throws GatewayException {
+//		myGateway.removeIOPMeasurement(id);
+//	}
+
 }

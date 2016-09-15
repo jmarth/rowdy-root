@@ -6,5 +6,7 @@ import models.SurgeryTemplate;
 
 public interface SurgeryTemplatesTableGateway {
 	public abstract List<SurgeryTemplate> fetchAllSurgeries() throws GatewayException;
-	public long insertSurgery(SurgeryTemplate s) throws GatewayException;
+	public long insertSurgeryTemplate(SurgeryTemplate s) throws GatewayException;
+	public abstract void updateSurgeryTemplate(SurgeryTemplate a);
+	public abstract void removeSurgeryTemplate(long id);
 }

@@ -11,62 +11,56 @@ import database.GatewayException;
 public class VitalsList {
 
 	private VitalsTableGateway myGateway;
-	private List<Vitals> myList;
+	private List<Vital> myList;
 
 	/**
-	 * Construct a new VitalsList
+	 * Construct a new VitalList
 	 */
 	public VitalsList() {
 
-		myList = new ArrayList<Vitals>();
+		myList = new ArrayList<Vital>();
 
 		try {
 			myGateway = new VitalsTableGatewaySQLite();
 		} catch (GatewayException e) {
-			System.err.println("From VitalsList, cannot connect to DB");
+			System.err.println("From VitalList, cannot connect to DB");
 			// e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("From VitalsList, IO Exception");
+			System.err.println("From VitalList, IO Exception");
 			// e.printStackTrace();
 		}
 	}
 
-	/**
-	 * Load records from DB into VitalsList
-	 */
-	public void loadFromGateway() {
+	public List<Vital> getMyList() {
 
-		// fetch list of objects from the database
-
-		try {
-			// name fetchVitals to fetchVitalsList to list
-			for (Vitals tmpVitals : myGateway.fetchVitals()) {
-				myList.add(tmpVitals);
-			}
-
-		} catch (GatewayException e) {
-			System.err.println("Could not Connect to DB, in VitalsList");
-			return;
-		}
-	}
-
-	/**
-	 * Returns ArrayList of Vitals in the VitalsList
-	 * 
-	 * @return All Vitals in list
-	 */
-	public List<Vitals> getVitalsList() {
 		return myList;
 	}
 
-	public void loadVitalsListForPatient(Patient p) {
+	public void loadMyListForPatient(Patient p) throws GatewayException {
 
 		try {
 			myList = myGateway.fetchVitalsForPatient(p);
 
 		} catch (GatewayException e) {
-			System.err.println("VitalsList failed to load from its gateway. In VitalsList Model");
-			e.printStackTrace();
+			System.err.println("VitalList failed to load from its gateway. In VitalList Model");
+			//e.printStackTrace();
 		}
 	}
+
+	public long insert(Vital a) throws GatewayException {
+
+		a.setId(myGateway.insertVitals(a));
+		this.myList.add(a);
+
+		return a.getId();
+	}
+
+	public void update(Vital a) throws GatewayException {
+		myGateway.updateVitals(a);
+	}
+
+	public void delete(long id) throws GatewayException {
+		myGateway.removeVitals(id);
+	}
+
 }

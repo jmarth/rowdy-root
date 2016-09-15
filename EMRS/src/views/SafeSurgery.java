@@ -143,7 +143,7 @@ public class SafeSurgery extends JPanel {
 					e1.printStackTrace();
 				}
 				
-				surgery.setID(newID);
+				surgery.setId(newID);
 				
 				
 				int index = parent.prv.indexOfTab(Tabs.labs);

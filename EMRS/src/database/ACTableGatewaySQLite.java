@@ -196,10 +196,11 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 	/**
 	 * Inserts visit into visits table
 	 */
-	public long insertAnteriorChamber(AnteriorChamber p) throws GatewayException {
+	public void insertAnteriorChamber(AnteriorChamber p) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;
+		this=p;
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;

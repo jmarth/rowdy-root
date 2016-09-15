@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import models.Vitals;
+import models.Vital;
 import models.Patient;
 
 public class VitalsTableGatewaySQLite implements VitalsTableGateway {
@@ -28,9 +28,9 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 	}
 
 	@Override
-	public List<Vitals> fetchVitals() throws GatewayException {
+	public List<Vital> fetchVitals() throws GatewayException {
 		
-		ArrayList<Vitals> vitals = new ArrayList<Vitals>();
+		ArrayList<Vital> vitals = new ArrayList<Vital>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -45,7 +45,7 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 			
 			while(rs.next()) {
 				
-				Vitals tmpVitals = new Vitals(
+				Vital tmpVitals = new Vital(
 						rs.getLong("id"),
 						rs.getLong("pid"),
 						rs.getFloat("bps"),
@@ -98,9 +98,9 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 	}
 
 	@Override
-	public List<Vitals> fetchVitalsForPatient(Patient p) throws GatewayException {
+	public List<Vital> fetchVitalsForPatient(Patient p) throws GatewayException {
 		
-		ArrayList<Vitals> vitals = new ArrayList<Vitals>();
+		ArrayList<Vital> vitals = new ArrayList<Vital>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -118,7 +118,7 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 			
 			while(rs.next()) {
 				
-				Vitals tmpVitals = new Vitals(
+				Vital tmpVitals = new Vital(
 						rs.getLong("id"),
 						rs.getLong("pid"),
 						rs.getFloat("bps"),
@@ -165,7 +165,7 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 	}
 
 	@Override
-	public long insertVitals(Vitals v) throws GatewayException {
+	public long insertVitals(Vital v) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;
@@ -231,7 +231,7 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 	}
 	
 	@Deprecated
-	public long updateVitals(Vitals v) throws GatewayException{
+	public long updateVitals(Vital v) throws GatewayException{
 		
 		PreparedStatement st = null;
 		//ResultSet rs = null;

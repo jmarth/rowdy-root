@@ -33,7 +33,7 @@ public class Surgery {
 		return body;
 	}
 
-	public void setID(long newID) {
+	public void setId(long newID) {
 		this.id = newID;
 		
 	}

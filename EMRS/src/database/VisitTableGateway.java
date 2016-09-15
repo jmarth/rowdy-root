@@ -10,4 +10,6 @@ public interface VisitTableGateway {
 	public List<Visit> fetchVisitsForPatient(Patient p) throws GatewayException;
 	//public abstract void close();
 	public abstract ArrayList<Object> fetchVisitsCols(long id)throws GatewayException;
+	public abstract void updateVisit(Visit a);
+	public abstract void removeVisit(long id);
 }

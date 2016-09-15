@@ -8,7 +8,7 @@ import database.AllergyTableGateway;
 import database.AllergyTableGatewaySQLite;
 import database.GatewayException;
 
-public class AllergyList implements SCRUDWithPatientList {
+public class AllergyList {
 
 	private AllergyTableGateway myGateway;
 	private List<Allergy> myList;
@@ -31,16 +31,12 @@ public class AllergyList implements SCRUDWithPatientList {
 		}
 	}
 
-	/**
-	 * Returns ArrayList of Allergies in the AllergyList
-	 * 
-	 * @return All Allergies in list
-	 */
-	public List<Allergy> getAllergyList() {
+	public List<Allergy> getMyList() {
+
 		return myList;
 	}
 
-	public void loadAllergyListForPatient(Patient p) {
+	public void loadMyListForPatient(Patient p) throws GatewayException {
 
 		try {
 			myList = myGateway.fetchAllergiesForPatient(p);
@@ -51,34 +47,20 @@ public class AllergyList implements SCRUDWithPatientList {
 		}
 	}
 
-	@Override
-	public Object find(Patient p) throws GatewayException {
-		// TODO Auto-generated method stub
-		return null;
+	public long insert(Allergy a) throws GatewayException {
+
+		a.setId(myGateway.insertAllergy(a));
+		this.myList.add(a);
+
+		return a.getId();
 	}
 
-	@Override
-	public long insert(Object o) throws GatewayException {
-		// TODO Auto-generated method stub
-		return 0;
+	public void update(Allergy a) throws GatewayException {
+		myGateway.updateAllergy(a);
 	}
 
-	@Override
-	public Object get(Patient p) throws GatewayException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void update(Patient p) throws GatewayException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void delete(long id) throws GatewayException {
-		// TODO Auto-generated method stub
-		
+		myGateway.removeAllergy(id);
 	}
-	
+
 }

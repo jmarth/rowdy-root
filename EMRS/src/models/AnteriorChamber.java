@@ -1,5 +1,11 @@
 package models;
 
+import java.io.IOException;
+
+import database.ACTableGateway;
+import database.ACTableGatewaySQLite;
+import database.GatewayException;
+
 public class AnteriorChamber {
 	private long id;
 	private long vid;
@@ -40,6 +46,9 @@ public class AnteriorChamber {
 	private int KSpindleOD;
 	private int KSpindleOS;
 	
+	private ACTableGateway myGateway;
+	private AnteriorChamber currentAnteriorChamber;
+	
 	public AnteriorChamber(long id, long vid,
 			int aCODNormal, int aCOSNormal, 
 			String aCDepthOD, String aCDepthOS,
@@ -52,7 +61,17 @@ public class AnteriorChamber {
 			int vascularOS, String blebOS_Num, 
 			int kSpindleOD,	int kSpindleOS
 			) {
-		super();
+		
+		try {
+			myGateway = new ACTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+//			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+//			e.printStackTrace();
+		}
+		
 		this.id = id;
 		this.vid = vid;
 		ACODNormal = aCODNormal;
@@ -92,7 +111,16 @@ public class AnteriorChamber {
 			int vascularOS, String blebOS_Num, 
 			int kSpindleOD,
 			int kSpindleOS) {
-		super();
+
+		try {
+			myGateway = new ACTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+//			e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+//			e.printStackTrace();
+		}
 		ACODNormal = aCODNormal;
 		ACOSNormal = aCOSNormal;
 		ACDepthOD = aCDepthOD;
@@ -118,6 +146,21 @@ public class AnteriorChamber {
 		KSpindleOD = kSpindleOD;
 		KSpindleOS = kSpindleOS;
 	}
+	
+	public long insertAC (AnteriorChamber ac) {
+		
+		try {
+			long id =myGateway.insertAnteriorChamber(ac);
+			ac.setId(id);
+			currentAnteriorChamber = ac;
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot insert to DB");
+			e.printStackTrace();
+		}
+		return id;
+	}
+	
+	
 	public long getId() {
 		return id;
 	}

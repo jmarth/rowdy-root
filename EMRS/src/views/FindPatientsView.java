@@ -84,7 +84,7 @@ public class FindPatientsView extends JFrame {
 		final PatientList pl = new PatientList();
 		pl.setGateway(ptg);
 		pl.loadFromGateway();
-		patientList = pl.getPatientList();
+		patientList = pl.getMyList();
 		populatePatientTable();
 		
 		table.addMouseMotionListener(new MouseMotionAdapter() {

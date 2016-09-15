@@ -31,16 +31,12 @@ public class DocumentList {
 		}
 	}
 
-	/**
-	 * Returns ArrayList of Documents in the DocumentList
-	 * 
-	 * @return All Documents in list
-	 */
-	public List<Document> getDocumentList() {
+	public List<Document> getMyList() {
+
 		return myList;
 	}
 
-	public void loadDocumentListForPatient(Patient p) {
+	public void loadMyListForPatient(Patient p) throws GatewayException {
 
 		try {
 			myList = myGateway.fetchDocumentsForPatient(p);
@@ -50,4 +46,22 @@ public class DocumentList {
 			e.printStackTrace();
 		}
 	}
+
+	public long insert(Document a) throws GatewayException {
+
+		a.setId(myGateway.insertDocument(a));
+		this.myList.add(a);
+
+		return a.getId();
+	}
+
+	
+//	public void update(Document a) throws GatewayException {
+//		myGateway.updateDocument(a);
+//	}
+
+	public void delete(long id) throws GatewayException {
+		myGateway.removeDocument(id);
+	}
+
 }

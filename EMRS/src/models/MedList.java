@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import database.GatewayException;
 import database.MedicationsTableGateway;
 import database.MedicationsTableGatewaySQLite;
+import database.GatewayException;
 
 public class MedList {
 
@@ -14,7 +14,7 @@ public class MedList {
 	private List<Med> myList;
 
 	/**
-	 * Construct a new MedsList
+	 * Construct a new MedList
 	 */
 	public MedList() {
 
@@ -23,51 +23,44 @@ public class MedList {
 		try {
 			myGateway = new MedicationsTableGatewaySQLite();
 		} catch (GatewayException e) {
-			System.err.println("From MedsList, cannot connect to DB");
+			System.err.println("From MedList, cannot connect to DB");
 			// e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("From MedsList, IO Exception");
+			System.err.println("From MedList, IO Exception");
 			// e.printStackTrace();
 		}
 	}
 
-	/**
-	 * Load records from DB into MedsList
-	 */
-	public void loadFromGateway() {
+	public List<Med> getMyList() {
 
-		// fetch list of objects from the database
-
-		try {
-			// name fetchMeds to fetchMedsList to list
-			for (Med tmpMed : myGateway.fetchMeds()) {
-				myList.add(tmpMed);
-			}
-
-		} catch (GatewayException e) {
-			
-			System.err.println("Could not Connect to DB, in MedList");
-			return;
-		}
-	}
-
-	/**
-	 * Returns ArrayList of Medications in the MedsList
-	 * 
-	 * @return All Medications in list
-	 */
-	public List<Med> getMedList() {
 		return myList;
 	}
 
-	public void loadMedicationsListForPatient(Patient p) {
+	public void loadMyListForPatient(Patient p) throws GatewayException {
 
 		try {
 			myList = myGateway.fetchMedsForPatient(p);
 
 		} catch (GatewayException e) {
 			System.err.println("MedList failed to load from its gateway. In MedList Model");
-			//e.printStackTrace();
+			e.printStackTrace();
 		}
 	}
+
+	public long insert(Med a) throws GatewayException {
+
+		a.setId(myGateway.insertMed(a));
+		this.myList.add(a);
+
+		return a.getId();
+	}
+
+	public void update(Med a) throws GatewayException {
+		myGateway.updateMed(a);
+	}
+
+	public void delete(long id) throws GatewayException {
+		myGateway.removeMed(id);
+	}
+
 }

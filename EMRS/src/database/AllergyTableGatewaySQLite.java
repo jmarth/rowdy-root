@@ -192,10 +192,14 @@ public class AllergyTableGatewaySQLite implements AllergyTableGateway {
 	 */
 	public void updateAllergy(Allergy a) throws GatewayException{
 		
+		
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
+			
+			conn.setAutoCommit(false);
+
 			st = conn.prepareStatement("UPDATE allergies SET"
 					+ " allergy = ?,"
 					+ " severity = ?,"
@@ -208,6 +212,8 @@ public class AllergyTableGatewaySQLite implements AllergyTableGateway {
 			st.setLong(4, a.getId());
 
 			st.executeUpdate();
+			
+			conn.commit();
 			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());

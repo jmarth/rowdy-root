@@ -31,37 +31,15 @@ public class SurgeryList {
 		}
 	}
 
-	/**
-	 * Load records from DB into SurgeryList
-	 */
-	public void loadFromGateway() {
+	public List<Surgery> getMyList() {
 
-		// fetch list of objects from the database
-
-		try {
-			// name fetchSurgeries to fetchSurgeriesList to list
-			for (Surgery tmpSurgery : myGateway.fetchSurgeries()) {
-				myList.add(tmpSurgery);
-			}
-
-		} catch (GatewayException e) {
-			System.err.println("Could not Connect to DB, in SurgeryList");
-			return;
-		}
-	}
-
-	/**
-	 * Returns ArrayList of Surgeries in the SurgeryList
-	 * 
-	 * @return All Surgeries in list
-	 */
-	public List<Surgery> getSurgeryList() {
 		return myList;
 	}
 
-	public void loadSurgeryListForPatient(Patient p) {
-
+	public void loadMyListForPatient(Patient p) throws GatewayException {
+		
 		try {
+			
 			myList = myGateway.fetchSurgeriesForPatient(p);
 
 		} catch (GatewayException e) {
@@ -69,4 +47,21 @@ public class SurgeryList {
 			e.printStackTrace();
 		}
 	}
+
+	public long insert(Surgery s) throws GatewayException {
+
+		s.setId(myGateway.insertSurgery(s));
+		this.myList.add(s);
+
+		return s.getId();
+	}
+
+	public void update(Surgery s) throws GatewayException {
+		myGateway.updateSurgery(s);
+	}
+
+	public void delete(long id) throws GatewayException {
+		myGateway.removeSurgery(id);
+	}
+
 }

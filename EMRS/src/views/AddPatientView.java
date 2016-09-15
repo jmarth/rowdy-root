@@ -760,7 +760,7 @@ public class AddPatientView extends JFrame {
 							AddPatientView.this.patient.setId(newId);
 						}else{
 							patient.setId(AddPatientView.this.patient.getId());
-							home.getHomeModel().getPtg().updatepatient(patient);
+							home.getHomeModel().getPtg().updatePatient(patient);
 							AddPatientView.this.patient=patient;
 						}
 							

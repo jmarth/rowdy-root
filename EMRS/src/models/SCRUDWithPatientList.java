@@ -13,5 +13,5 @@ public interface SCRUDWithPatientList {
 	abstract public Object get(Patient p) throws GatewayException;
 	abstract public void update(Patient p) throws GatewayException;
 	abstract public void delete(long id) throws GatewayException;
-	////
+	
 }

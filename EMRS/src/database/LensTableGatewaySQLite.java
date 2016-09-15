@@ -96,6 +96,9 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 				if(st != null)
 					st.close();
 				
+				if(conn != null)
+					conn.close();
+				
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}

@@ -85,7 +85,7 @@ public class SurgeryTemplatesTableGatewayMySQL implements SurgeryTemplatesTableG
 	}
 
 	@Override
-	public long insertSurgery(SurgeryTemplate s) throws GatewayException {
+	public long insertSurgeryTemplate(SurgeryTemplate s) throws GatewayException {
 		long newID = 0;
 		
 		PreparedStatement statement = null;
