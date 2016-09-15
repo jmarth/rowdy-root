@@ -25,6 +25,7 @@ public class HxTableGatewaySQLite implements HxTableGateway {
 		}
 	}
 
+	//TODO Do not need vvv
 	@Override
 	public List<Hx> fetchHx() throws GatewayException {
 		ArrayList<Hx> hxList = new ArrayList<Hx>();

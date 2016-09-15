@@ -39,7 +39,7 @@ public class SurgeryTemplatesList {
 	public void loadMyListForPatient(Patient p) throws GatewayException {
 
 		try {
-			myList = myGateway.fetchAllSurgeries(); //patient does not have specific templates, so all surgeries
+			myList = myGateway.fetchAllSurgeryTemplates(); //patient does not have specific templates, so all surgeries
 
 		} catch (GatewayException e) {
 			System.err.println("SurgeryTemplateList failed to load from its gateway. In SurgeryTemplateList Model");

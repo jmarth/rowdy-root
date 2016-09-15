@@ -13,7 +13,7 @@ import java.util.List;
 import models.AnteriorChamber;
 import models.Patient;
 
-public class ACTableGatewaySQLite implements ACTableGateway {
+public  class ACTableGatewaySQLite implements ACTableGateway {
 	
 	/**
 	 * external DB connection
@@ -238,12 +238,13 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void close() {
+
+
+	@Override
+	public void updateAnteriorChamber(AnteriorChamber ac) {
 		// TODO Auto-generated method stub
 		
 	}
-
 	@Override
 	public ArrayList<Object> fetchACColsForVisit(long id) throws GatewayException {
 
@@ -293,5 +294,9 @@ public class ACTableGatewaySQLite implements ACTableGateway {
 		return row;
 	}
 
+	public void close() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

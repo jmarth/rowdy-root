@@ -39,68 +39,6 @@ public class SketchTableGatewaySQLite implements SketchTableGateway {
 	}
 	
 	/**
-	 * Fetch all visits from db
-	 * @return list of visits
-	 * @throws GatewayException
-	 */
-	/*
-	public List<Visit> fetchVisits() throws GatewayException {
-		
-		ArrayList<Visit> visits = new ArrayList<Visit>();
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		try {
-			//fetch parts
-			System.out.print("getting info");
-			st = conn.prepareStatement("select * from visits");
-			rs = st.executeQuery();
-			System.out.print("\ninfo loaded");
-			//add each to list of parts to return
-			while(rs.next()) {
-				System.out.print("\ncreating visit object");
-				Visit v = new Visit(rs.getLong("id"),
-						rs.getLong("pid"),
-						rs.getString("chiefComplaint"),
-						rs.getDouble("autorefractionOdSphere"),
-						rs.getDouble("autorefractionOdCylinder"),
-						rs.getDouble("autorefractionOdAxis"),
-						rs.getDouble("autorefractionOsSphere"),
-						rs.getDouble("autorefractionOsCylinder"),
-						rs.getDouble("autorefractionOsdAxis"),
-						rs.getDouble("arcOdSphere"),
-						rs.getDouble("arcOdCylinder"),
-						rs.getDouble("arcOdAxis"),
-						rs.getDouble("arcOsSphere"),
-						rs.getDouble("arcOsCylinder"),
-						rs.getDouble("arcOsAxis"),
-						rs.getDouble("feRow1Col1"),
-						rs.getDouble("feRow1Col2"),
-						rs.getDouble("feRow2Col1"),
-						rs.getDouble("feRow2Col2"),
-						rs.getString("assessment"),
-						rs.getString("dateCreated"));
-				System.out.print("\nvisit object created");
-				visits.add(v);
-				System.out.print("\nvisit object added");
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				if(st != null)
-					st.close();
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		return visits;
-	}
-	*/
-	
-	/**
 	 * Fetch visits from db for patient
 	 * @return list of visits for patient
 	 * @throws GatewayException
@@ -281,7 +219,9 @@ public class SketchTableGatewaySQLite implements SketchTableGateway {
 
 	@Override
 	public List<Image> fetchSketchesForVisitByTable(long vid, String table) throws GatewayException {
-ArrayList<Image> sketches = new ArrayList<Image>();
+
+		//TODO No list, just a single class, Sketch
+		ArrayList<Image> sketches = new ArrayList<Image>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;

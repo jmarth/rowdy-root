@@ -34,51 +34,6 @@ public class SurgeryTableGatewaySQLite implements SurgeryTableGateway {
 	}
 	
 	/**
-	 * Fetch all Surgeries in the DB
-	 * @throws GatewayException 
-	 */
-	public List<Surgery> fetchSurgeries() throws GatewayException{
-		
-		ArrayList<Surgery> surgeries = new ArrayList<Surgery>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch Surgeries
-			st = conn.prepareStatement("select * from surgeries");
-			rs = st.executeQuery();
-			
-			//add each to list of surgeries to return
-			while(rs.next()) {
-				Surgery tmpSurgery = new Surgery(
-						rs.getLong("id"),
-						rs.getLong("pid"),
-						rs.getString("title"),
-						rs.getString("body")
-					);
-				surgeries.add(tmpSurgery);
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return surgeries;
-	}
-	
-	/**
 	 * Fetch all Surgeries for a Patient in the DB
 	 * @throws GatewayException 
 	 */
@@ -169,5 +124,17 @@ public class SurgeryTableGatewaySQLite implements SurgeryTableGateway {
 		}
 		
 		return newId;
+	}
+
+	@Override
+	public void updateSurgery(Surgery s) throws GatewayException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeSurgery(long id) {
+		// TODO Auto-generated method stub
+		
 	}
 }

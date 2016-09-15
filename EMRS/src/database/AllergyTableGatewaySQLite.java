@@ -33,56 +33,7 @@ public class AllergyTableGatewaySQLite implements AllergyTableGateway {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Fetch all Allergies in the DB
-	 * @throws GatewayException 
-	 */
-	public List<Allergy> fetchAllergies() throws GatewayException{
-		
-		ArrayList<Allergy> allergies = new ArrayList<Allergy>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch Allergies
-			st = conn.prepareStatement("select * from allergies");
-			
-			rs = st.executeQuery();
-			
-			//add each to list of allergies to return
-			
-			while(rs.next()) {
-				Allergy tmpAllergy = new Allergy(
-						rs.getLong("id"),
-						rs.getLong("pid"),
-						rs.getString("allergy"),
-						rs.getString("severity"),
-						rs.getString("adverse_reaction")
-						);
-				allergies.add(tmpAllergy);
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-			
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return allergies;
-	}
-	
+
 	/**
 	 * Fetch all Allergies for a Patient in the DB
 	 * 
@@ -192,9 +143,8 @@ public class AllergyTableGatewaySQLite implements AllergyTableGateway {
 	 */
 	public void updateAllergy(Allergy a) throws GatewayException{
 		
-		
 		PreparedStatement st = null;
-		ResultSet rs = null;
+//		ResultSet rs = null;
 		
 		try {
 			

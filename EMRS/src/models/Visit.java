@@ -1,7 +1,6 @@
 package models;
 
 import java.io.File;
-import java.util.List;
 
 import database.GatewayException;
 // 812w 9n
@@ -209,7 +208,6 @@ public class Visit {
 	public void setSketchTemp(File sketchTemp) {
 		this.sketchTemp = sketchTemp;
 	}
-
 
 	public void loadVisitFromPatient() {
 		//TODO load all the stuff

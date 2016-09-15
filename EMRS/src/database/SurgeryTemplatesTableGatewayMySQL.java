@@ -46,7 +46,7 @@ public class SurgeryTemplatesTableGatewayMySQL implements SurgeryTemplatesTableG
 	
 	
 	@Override
-	public List<SurgeryTemplate> fetchAllSurgeries() throws GatewayException {
+	public List<SurgeryTemplate> fetchAllSurgeryTemplates() throws GatewayException {
 		ArrayList<SurgeryTemplate> surgeries = new ArrayList<SurgeryTemplate>();
 		
 		PreparedStatement statement = null;

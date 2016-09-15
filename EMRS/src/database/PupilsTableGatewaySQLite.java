@@ -8,10 +8,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-
 import models.Pupils;
-import models.Patient;
 
 public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 	
@@ -33,66 +30,6 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Fetch all visits from DB
-	 * @return list of visits
-	 * @throws GatewayException
-	 */
-	public List<Pupils> fetchPupils() throws GatewayException {
-		
-		ArrayList<Pupils> pl = new ArrayList<Pupils>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			
-			st = conn.prepareStatement("select * from pupils");
-			rs = st.executeQuery();
-			
-			while(rs.next()) {
-				
-				Pupils p = new Pupils(
-						rs.getLong("id"),
-						rs.getLong("vid"),
-						rs.getInt("isBothPupilsNormal"),
-						rs.getString("bothShape"),
-						rs.getString("bothDiameter"),
-						rs.getInt("isBothRAPD"),
-						rs.getInt("isBothSynechia"),
-						rs.getInt("isRightPupilNormal"),
-						rs.getString("rightShape"),
-						rs.getString("rightDiameter"),
-						rs.getInt("isRightRAPD"),
-						rs.getInt("isRightSynechia"),
-						rs.getInt("isLeftPupilNormal"),
-						rs.getString("leftShape"),
-						rs.getString("leftDiameter"),
-						rs.getInt("isLeftRAPD"),
-						rs.getInt("isLeftSynechia")
-						);
-				
-				pl.add(p);
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return pl;
 	}
 	
 	/**
