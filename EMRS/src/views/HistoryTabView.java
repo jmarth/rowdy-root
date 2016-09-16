@@ -19,7 +19,7 @@ import models.HomeModel;
 import models.Patient;
 import models.Visit;
 
-public class HistoryTabView extends JPanel {
+public class HistoryTabView implements viewinterface extends JPanel {
 	
 	/**
 	 * 

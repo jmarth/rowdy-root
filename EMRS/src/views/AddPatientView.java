@@ -49,7 +49,7 @@ import net.java.balloontip.BalloonTip.Orientation;
 import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.RoundedBalloonStyle;
 
-public class AddPatientView extends JFrame {
+public class AddPatientView extends JFrame implements viewinterface  {
 	public final static int UPDATEPATIENT =1;
 	public final static int INSERTPATIENT =2;
 	public enum emonth{
@@ -1006,5 +1006,10 @@ public class AddPatientView extends JFrame {
 		cityBalloon.setVisible(false);
 		stateBalloon.setVisible(false);
 		countryBalloon.setVisible(false);
+	}
+	@Override
+	public void showview() {
+		// TODO Auto-generated method stub
+		
 	}
 }

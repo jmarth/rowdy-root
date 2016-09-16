@@ -43,7 +43,7 @@ import models.DocumentList;
 import models.Patient;
 import net.coobird.thumbnailator.Thumbnails;
 
-public class DocumentsTabView extends JPanel {
+public class DocumentsTabView implements viewinterface extends JPanel {
 	
 	private DocumentTableGateway dtg;
 	

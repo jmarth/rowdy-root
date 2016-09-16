@@ -27,7 +27,7 @@ import models.Tabs;
  * This is the JPanel that is shown in the 
  * 'Allergies' tab in the PatientRecordView
  */
-public class AllergyTabView extends JPanel {
+public class AllergyTabView extends JPanel implements viewinterface  {
 	private AllergyList al = new AllergyList();
 	private List<Allergy> allergyList;
 	private AllergyTableGateway atg;
@@ -201,5 +201,11 @@ public class AllergyTabView extends JPanel {
 					allergy.getAdverseReaction()
 				});
 		}
+	}
+
+	@Override
+	public void showview() {
+		// TODO Auto-generated method stub
+		
 	}
 }

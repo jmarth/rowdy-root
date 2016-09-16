@@ -24,7 +24,7 @@ import models.CL;
 import models.Patient;
 import models.Surgery;
 
-public class LabsAndProceduresTabView extends JPanel {
+public class LabsAndProceduresTabView implements viewinterface extends JPanel {
 	
 	// Containers --------------------------------------
 	private JSplitPane splitPane;
@@ -170,6 +170,12 @@ public class LabsAndProceduresTabView extends JPanel {
 		proceduresParentPanel.add(proceduresContentPanel, BorderLayout.CENTER);
 		validate();
 		repaint();
+	}
+
+	@Override
+	public void showview() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

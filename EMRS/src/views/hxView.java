@@ -46,7 +46,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
-public class hxView extends JPanel {
+public class hxView implements viewinterface extends JPanel {
 	private AllergyList al = new AllergyList(); // no make here, in constructor
 	private List<Allergy> allergyList;
 	// Do not need this List<Allergy>, we have an AllergyList and Allergy, AllergyList.getList() instead
@@ -793,5 +793,12 @@ public class hxView extends JPanel {
 		pmhPanel.setLayout(new BoxLayout(pmhPanel, BoxLayout.Y_AXIS));
 		drugAllergyPanel.setLayout(new BoxLayout(drugAllergyPanel, BoxLayout.Y_AXIS));
 		hxMasterPanel.setLayout(gl_hxMasterPanel);
+	}
+
+
+	@Override
+	public void showview() {
+		// TODO Auto-generated method stub
+		
 	}
 }

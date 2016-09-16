@@ -41,7 +41,7 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
-public class hxForm extends JPanel {
+public class hxForm implements viewinterface extends JPanel {
 	private JTextField pcTextField;
 	private JTextField hasDATextField;
 	private JTextField pshTextField;
@@ -792,6 +792,12 @@ public class hxForm extends JPanel {
 				
 		
 		return tmpHx;
+	}
+
+	@Override
+	public void showview() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

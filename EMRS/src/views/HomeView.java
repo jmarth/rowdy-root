@@ -51,6 +51,10 @@ public class HomeView extends JFrame {
 	//private JPanel contentPane;
 	
 	private HomeModel homeModel;
+	private AddPatientView pview;
+	private FindPatientsView fpview;
+	private PatientRecordView prview;
+	private SlideShowPanel ssview;
 	
 	
 	private final JButton btnHome = new JButton("");
@@ -77,31 +81,25 @@ public class HomeView extends JFrame {
 	 * Inits the "HomeModel" which has all the gateways, lists, and some actual views.
 	 * 
 	 */
-	public HomeView(MasterModel model) {
-		
-		this.model = model;
-		
+	public HomeView() {
 		// Models should be independent; a view should grab from a model.
-		homeModel = new HomeModel(this);
+		this.model = new MasterModel();
+		pview = new AddPatientView(model);
+		fpview = new FindPatentsView(model);
+		prview = new PatientRecordView(model);
+		ssview = new SlideShowPanel();
 		
 		setTitle("EMRS");
-				
-		// @why final
-		final HomeView home = this;
-	
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(200, 100, 1139, 1124); // set size of Home View
 		
 		// set up contentPane panel
-		this.getContentPane().setBorder(new EmptyBorder(5, 5, 5, 5));
-		this.getContentPane().setLayout(new BorderLayout(0, 0));
-		
-		this.getContentPane().setBackground(CL.cararra);
-		
-		centerPanel.setLayout(new BorderLayout(0, 0));
-		
-		
-		
+		this.setLayout(new BorderLayout());
+		this.setBackground(CL.cararra);
+		this.add(pview, BorderLayout.CENTER);
+		this.add(fpview, BorderLayout.CENTER);
+		this.add(prview, BorderLayout.CENTER);
+		this.add(ssview, BorderLayout.CENTER);
 		// setup slide show in center panel_1
 		//SlideShowPanel ssp = new SlideShowPanel();		
 		//panel_1.add(ssp);
@@ -119,8 +117,8 @@ public class HomeView extends JFrame {
 			@Override
 			public void focusGained(FocusEvent arg0) {
 				
-				homeModel.setFindPatientsView(new FindPatientsView(home));
-				
+				//homeModel.setFindPatientsView(new FindPatientsView(home));
+				HomeView.this.fpview.who
 				setCenterPanel(homeModel.getPatientsView().getContentPane());
 				
 			}

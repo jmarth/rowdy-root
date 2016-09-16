@@ -31,7 +31,7 @@ import models.AllergyList;
 import models.Patient;
 import models.Tabs;
 
-public class AllergyTabViewNewAllergy extends JPanel {
+public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 	
 	private final ButtonGroup severityButtonGroup = new ButtonGroup();
 	
@@ -983,6 +983,12 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		gbc_btnCancel.gridx = 4;
 		gbc_btnCancel.gridy = 16;
 		add(btnCancel, gbc_btnCancel);
+	}
+
+	@Override
+	public void showview() {
+		// TODO Auto-generated method stub
+		
 	}
 
 
