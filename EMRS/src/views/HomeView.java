@@ -44,30 +44,28 @@ import models.MasterModel;
 import models.Patient;
 
 @SuppressWarnings("serial")
-public class HomeView extends JFrame {
+public class HomeView extends JFrame implements viewinterface{
 	
 	private static final Logger logger = LogManager.getLogger(HomeView.class);
 
 	//private JPanel contentPane;
 	
-	private HomeModel homeModel;
+	private MasterModel model;
 	private AddPatientView pview;
 	private FindPatientsView fpview;
 	private PatientRecordView prview;
 	private SlideShowPanel ssview;
 	
 	
-	private final JButton btnHome = new JButton("");
+	private final JButton btnHome;
 	
-	final JButton btnAddPatient = new JButton("Add Patient");
-	final JButton btnFindPatient = new JButton("Find Patient");
-
-	final JLabel lblPatientSearch= new JLabel("Patient Search");
-	final JTextField textFieldSearch = new JTextField();
+	private JButton btnAddPatient;
+	private JButton btnFindPatient;
+	private JLabel lblPatientSearch;
+	private JTextField textFieldSearch;
+	private JButton btnLogout;
 	
-	final JButton btnLogout = new JButton("Logout");
 	
-	Patient p; // TODO Why have patient?
 	JButton btnAllergyAlert;
 	
 	private final JPanel centerPanel = new JPanel();
@@ -103,8 +101,12 @@ public class HomeView extends JFrame {
 		// setup slide show in center panel_1
 		//SlideShowPanel ssp = new SlideShowPanel();		
 		//panel_1.add(ssp);
-				
-		
+		JButton btnHome = new JButton("");		
+		btnAddPatient = new JButton("Add Patient");
+		btnFindPatient = new JButton("Find Patient");
+		lblPatientSearch= new JLabel("Patient Search");
+		textFieldSearch = new JTextField();
+		btnLogout = new JButton("Logout");
 		
 		//set up top bar panel
 		
@@ -116,11 +118,8 @@ public class HomeView extends JFrame {
 		textFieldSearch.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				
-				//homeModel.setFindPatientsView(new FindPatientsView(home));
-				HomeView.this.fpview.who
-				setCenterPanel(homeModel.getPatientsView().getContentPane());
-				
+				HomeView.this.HideallView();
+				HomeView.this.fpview.setVisible(true);
 			}
 		});
 		
@@ -446,4 +445,29 @@ public class HomeView extends JFrame {
 		p = null;
 		btnAllergyAlert.setVisible(false);
 	}
+
+	@Override
+	public void showview() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public AddPatientView getPview() {
+		return pview;
+	}
+
+	public PatientRecordView getPrview() {
+		return prview;
+	}
+
+	public SlideShowPanel getSsview() {
+		return ssview;
+	}
+	
 }

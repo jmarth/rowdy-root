@@ -13,7 +13,7 @@ import javax.swing.border.LineBorder;
 import models.CL;
 import models.Surgery;
 
-public class ClosedProcedureView extends JPanel {
+public class ClosedProcedureView extends JPanel implements viewinterface {
 	
 	// Containers --------------------------------------
 		JPanel titlePanel;
@@ -51,6 +51,12 @@ public class ClosedProcedureView extends JPanel {
 		mainPanel.add(titlePanel, BorderLayout.NORTH);
 		mainPanel.add(textArea, BorderLayout.CENTER);
 		add(mainPanel, BorderLayout.CENTER);
+	}
+
+	@Override
+	public void showview() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

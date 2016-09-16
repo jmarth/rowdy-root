@@ -39,7 +39,7 @@ import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
 
-public class AddMedView implements viewinterface extends JPanel {
+public class AddMedView extends JPanel implements viewinterface  {
 	private JTextField textField;
 	
 	private JList list;
@@ -231,6 +231,12 @@ public class AddMedView implements viewinterface extends JPanel {
 
 	@Override
 	public void showview() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void HideallView() {
 		// TODO Auto-generated method stub
 		
 	}

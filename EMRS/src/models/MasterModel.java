@@ -1,5 +1,7 @@
 package models;
 
+import database.GatewayException;
+
 public class MasterModel {
 	
 	private Patient currPatient;
@@ -25,7 +27,20 @@ public class MasterModel {
 		vL = new VisitList();
 		vitalsL = new VitalsList();
 	}
-
+	public void loadmaster(Patient patient){
+		try {
+			this.currPatient=patient;
+			aL.loadMyListForPatient(currPatient);
+			mL.loadMyListForPatient(currPatient);
+			dL.loadMyListForPatient(currPatient);
+			sL.loadMyListForPatient(currPatient);
+			vL.loadMyListForPatient(currPatient);
+			vitalsL.loadMyListForPatient(currPatient);
+		} catch (GatewayException e) {
+			System.err.println("from MasterModel, can not fetch from database");
+		}
+			
+	}
 	public Patient getCurrPatient() {
 		return currPatient;
 	}

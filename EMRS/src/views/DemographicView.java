@@ -19,13 +19,13 @@ import javax.swing.border.TitledBorder;
 
 import models.Patient;
 
-public class ProfileTabView extends JPanel {
+public class DemographicView extends JPanel {
 	
 	//tabbedPane.addTab("Profile", null, panel, null);
 	private Patient patient;
 	private HomeView homeview;
 	
-	public ProfileTabView(HomeView homeview,Patient patient) {
+	public DemographicView(HomeView homeview,Patient patient) {
 		this.patient=patient;
 		this.homeview=homeview;
 		GridBagLayout gbl_panel = new GridBagLayout();
@@ -475,8 +475,8 @@ public class ProfileTabView extends JPanel {
 		editbutton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				HomeView homev = ProfileTabView.this.homeview;
-				homev.getHomeModel().getAddPatientView().loadpatient(ProfileTabView.this.patient);
+				HomeView homev = DemographicView.this.homeview;
+				homev.getHomeModel().getAddPatientView().loadpatient(DemographicView.this.patient);
 				homev.setCenterPanel(homev.getHomeModel().getAddPatientView().getContentPane());
 			}
 		});
