@@ -51,6 +51,7 @@ public class HomeView extends JFrame implements viewinterface{
 	//private JPanel contentPane;
 	
 	private MasterModel model;
+	
 	private AddPatientView pview;
 	private FindPatientsView fpview;
 	private PatientRecordView prview;
@@ -66,12 +67,7 @@ public class HomeView extends JFrame implements viewinterface{
 	private JButton btnLogout;
 	
 	
-	JButton btnAllergyAlert;
-	
-	private final JPanel centerPanel = new JPanel();
-	
-
-	private MasterModel model;
+	private JButton btnAllergyAlert;
 	
 	/**
 	 * Home constructor.
@@ -83,7 +79,7 @@ public class HomeView extends JFrame implements viewinterface{
 		// Models should be independent; a view should grab from a model.
 		this.model = new MasterModel();
 		pview = new AddPatientView(model);
-		fpview = new FindPatentsView(model);
+		fpview = new FindPatientsView(model);
 		prview = new PatientRecordView(model);
 		ssview = new SlideShowPanel();
 		
@@ -101,7 +97,7 @@ public class HomeView extends JFrame implements viewinterface{
 		// setup slide show in center panel_1
 		//SlideShowPanel ssp = new SlideShowPanel();		
 		//panel_1.add(ssp);
-		JButton btnHome = new JButton("");		
+		btnHome = new JButton("");		
 		btnAddPatient = new JButton("Add Patient");
 		btnFindPatient = new JButton("Find Patient");
 		lblPatientSearch= new JLabel("Patient Search");
@@ -111,9 +107,8 @@ public class HomeView extends JFrame implements viewinterface{
 		//set up top bar panel
 		
 		JPanel northPanel = new JPanel();
+		this.add(northPanel, BorderLayout.NORTH);
 		northPanel.setBackground(new Color(0, 153, 204));
-		this.getContentPane().add(northPanel, BorderLayout.NORTH);
-		
 		textFieldSearch.setHorizontalAlignment(SwingConstants.RIGHT);
 		textFieldSearch.addFocusListener(new FocusAdapter() {
 			@Override
@@ -133,9 +128,7 @@ public class HomeView extends JFrame implements viewinterface{
 				
 				String searchText = textFieldSearch.getText();
 				
-				homeModel.getPatientsView().filter(searchText.toLowerCase());
-				
-				logger.info("User entered into search: " + searchText);
+				HomeView.this.fpview.filter(searchText.toLowerCase());
 			}
 		});
 		textFieldSearch.setColumns(10);
@@ -144,7 +137,7 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		// Top buttons change color from mouse hover
 		
-		MouseListener ml = (new MouseAdapter() {
+		/*MouseListener ml = (new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				((Component) arg0.getSource()).setBackground(new Color(2,108,143));
@@ -160,7 +153,7 @@ public class HomeView extends JFrame implements viewinterface{
 				((AbstractButton) arg0.getSource()).setBorderPainted(false);
 				//System.out.println("mouse over");
 			}
-		});
+		});*/
 		
 		
 		
@@ -168,7 +161,7 @@ public class HomeView extends JFrame implements viewinterface{
 		btnHome.setOpaque(true);
 		btnHome.setContentAreaFilled(false);
 		btnHome.setBorderPainted(false);
-		btnHome.addMouseListener(ml);
+		//btnHome.addMouseListener(ml);
 		
 		
 		
@@ -176,8 +169,7 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		btnHome.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				showHomeView();
+				HomeView.this.ShowHomeView();
 			}
 		});
 		
@@ -185,7 +177,7 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		
 		
-		btnAddPatient.addMouseListener(ml);
+		//btnAddPatient.addMouseListener(ml);
 		btnAddPatient.setToolTipText("Add Patient");
 		/********** font from 16 to 18 ********************/
 		btnAddPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -201,12 +193,8 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				HomeView.this.ShowAddPatientView();
 				
-				 logger.info("User pressed 'Add Patient'");
-				 
-				 homeModel.setAddPatientView(new AddPatientView(home));
-				 homeModel.getAddPatientView().clearinput();
-				  setCenterPanel(homeModel.getAddPatientView().getContentPane());
 			}
 		});
 		btnLogout.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -215,7 +203,7 @@ public class HomeView extends JFrame implements viewinterface{
 		btnLogout.setOpaque(true);
 		btnLogout.setContentAreaFilled(false);
 		btnLogout.setBorderPainted(false);
-		btnLogout.addMouseListener(ml);
+		//btnLogout.addMouseListener(ml);
 		
 		
 		
@@ -232,20 +220,16 @@ public class HomeView extends JFrame implements viewinterface{
 				
 				if (response == JOptionPane.YES_OPTION) {
 					logger.info("User pressed 'YES' in logout dialogue");
-					
 					dispose();
 					LoginView login = new LoginView();
-					login.show();
+					login.setVisible(true);
 					
-				} else {
-					
-					logger.info("User pressed 'NO' in logout dialogue");
 				}
 			}
 		});
 		
 		
-		btnFindPatient.addMouseListener(ml);
+		//btnFindPatient.addMouseListener(ml);
 		btnFindPatient.setForeground(new Color(255, 255, 255));
 		btnFindPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnFindPatient.setOpaque(true);
@@ -259,11 +243,7 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		btnFindPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				logger.info("User pressed 'Find Patient'");
-				
-				homeModel.setFindPatientsView(new FindPatientsView(home));
-				setCenterPanel(homeModel.getPatientsView().getContentPane());
+				HomeView.this.ShowFindPatientsView();
 			}
 		});
 		
@@ -272,14 +252,13 @@ public class HomeView extends JFrame implements viewinterface{
 		btnAllergyAlert = new JButton("ALLERGY ALERT");
 		btnAllergyAlert.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				 PatientRecordView prv = new PatientRecordView(HomeView.this, p);
-			     home.setPatient(p);
-			     
-			     AllergyTabView atv = new AllergyTabView(p, prv, homeModel.getAtg());
-			     
+				//TODO
+				/*HomeView.this.HideallView();
+				HomeView.this.prview.setVisible(true);
+				
 			     home.setCenterPanel(prv);
 			     Component c = prv.getComponentAt(1);
-			     prv.setSelectedComponent(c);
+			     prv.setSelectedComponent(c);*/
 			     
 			}
 		});
@@ -331,64 +310,7 @@ public class HomeView extends JFrame implements viewinterface{
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		northPanel.setLayout(gl_panel);
 		
-		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
-		
-	}
-	
-	/**
-	 * Replaces center/main panel with given JPanel.
-	 * @param container
-	 */
-	public void setCenterPanel(Container container) {
-		
-		LayoutManager layout = this.getContentPane().getLayout();
-		
-		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
-		
-		if(centerComponent != null ) {
-			this.getContentPane().remove(centerComponent);
-		}
-		
-		if(homeModel.getAddPatientView() != null)
-			homeModel.getAddPatientView().hideBalloonTips();
-		
-		this.getContentPane().add(container, BorderLayout.CENTER);
-		this.getContentPane().repaint();
-		this.getContentPane().validate();
-		
-	}
-	
-	/**
-	 * Set up the center panel for the HomeView.
-	 */
-	public void showHomeView() {
-		
-		LayoutManager layout = contentPane.getLayout();
-		
-		Component centerComponent = ((BorderLayout) layout).getLayoutComponent(BorderLayout.CENTER);
-		
-		if(centerComponent != null ) {
-			contentPane.remove(centerComponent);
-			
-			SlideShowPanel ssp = new SlideShowPanel();
-			contentPane.add(ssp);
-		}
-		
-		if(homeModel.getAddPatientView() != null)
-			homeModel.getAddPatientView().hideBalloonTips();
-		
-		contentPane.repaint();
-		contentPane.revalidate();
-	}
-	//TODO 
-	/**
-	 * Gets the homeModel, which HomeView inits and holds a reference for.
-	 * @return HomeModel
-	 */
-	public HomeModel getHomeModel() {
-		return homeModel;
-	}
-	
+	}		
 	public JButton getFindPatientButton() {
 		return btnFindPatient;
 	}
@@ -408,44 +330,19 @@ public class HomeView extends JFrame implements viewinterface{
 			}
 		});
 		
-	}	
-	
-	/**
-	 * Sets the Active Patient on the Home menu
-	 * @param pp patient to set the Home menu to
-	 */
-	public void setPatient(Patient pp){
-		p = pp;
-		checkPatientForAllergies();
-	}
-	
+	}		
 	/**
 	 * Helper function for checking if active Patient has Allergies
 	 */
 	public void checkPatientForAllergies(){
-		List<Allergy> tmpAl = null;
-		try {
-			tmpAl = homeModel.getAtg().fetchAllergiesForPatient(p);
-		} catch (GatewayException e) {
-			e.printStackTrace();
-		}
 		// if patient has allergies
-		if(tmpAl.size() > 0){
+		if(model.getaL().getMyList().size() > 0){
 			// set an alert
 			btnAllergyAlert.setVisible(true);
 		} else {
 			btnAllergyAlert.setVisible(false);
 		}
 	}
-	
-	/**
-	 * When closing an Active Patient, call this function to remove the allery alert
-	 */
-	public void closePatient(){
-		p = null;
-		btnAllergyAlert.setVisible(false);
-	}
-
 	@Override
 	public void showview() {
 		// TODO Auto-generated method stub
@@ -454,8 +351,9 @@ public class HomeView extends JFrame implements viewinterface{
 
 	@Override
 	public void HideallView() {
-		// TODO Auto-generated method stub
-		
+		this.fpview.setVisible(false);
+		this.prview.setVisible(false);
+		this.pview.setVisible(false);
 	}
 
 	public AddPatientView getPview() {
@@ -468,6 +366,18 @@ public class HomeView extends JFrame implements viewinterface{
 
 	public SlideShowPanel getSsview() {
 		return ssview;
+	}
+	public void ShowHomeView(){
+		HomeView.this.HideallView();
+		HomeView.this.ssview.setVisible(true);
+	}
+	public void ShowAddPatientView(){
+		HomeView.this.HideallView();
+		HomeView.this.pview.setVisible(true);
+	}
+	public void ShowFindPatientsView(){
+		HomeView.this.HideallView();
+		HomeView.this.fpview.setVisible(true);
 	}
 	
 }

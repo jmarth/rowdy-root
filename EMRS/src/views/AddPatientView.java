@@ -41,6 +41,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.jdesktop.swingx.JXDatePicker;
 
 import database.GatewayException;
+import models.MasterModel;
 import models.Patient;
 import models.PatientList;
 import net.java.balloontip.BalloonTip;
@@ -49,18 +50,16 @@ import net.java.balloontip.BalloonTip.Orientation;
 import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.RoundedBalloonStyle;
 
-public class AddPatientView extends JFrame implements viewinterface  {
+public class AddPatientView extends JPanel implements viewinterface  {
 	public final static int UPDATEPATIENT =1;
 	public final static int INSERTPATIENT =2;
 	public enum emonth{
 		January,February,March,April,May,June,July,August,September,October,November,December
-		
 	}
 	public enum egender{
 		male,female
 	}
-	private HomeView home;
-	private JPanel contentPane;
+	private MasterModel model;
 	private int updateorinsert;
 	//Text fields
 	private JTextField firstNameTextField;
@@ -109,21 +108,18 @@ public class AddPatientView extends JFrame implements viewinterface  {
 	/**
 	 * Create the frame.
 	 */
-	public AddPatientView(final HomeView home) {
-		this.home = home;
+	public AddPatientView(MasterModel model) {
+		this.model = model;
 		imagePath = "";
 		this.updateorinsert=this.INSERTPATIENT;
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 710, 1118);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
+		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{674, 0};
 		gbl_contentPane.rowHeights = new int[] {0, 0, 0, 451, 0};
 		gbl_contentPane.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_contentPane.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		contentPane.setLayout(gbl_contentPane);
+		this.setLayout(gbl_contentPane);
 		
 		imglabel = new JLabel("");
 		ImageIcon imageIcon = new ImageIcon("user.png");
@@ -135,7 +131,7 @@ public class AddPatientView extends JFrame implements viewinterface  {
 		gbc_label.insets = new Insets(0, 0, 5, 0);
 		gbc_label.gridx = 0;
 		gbc_label.gridy = 1;
-		contentPane.add(imglabel, gbc_label);
+		this.add(imglabel, gbc_label);
 		JButton btnUploadPatientPic = new JButton("Upload Picture");
 		btnUploadPatientPic.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -166,7 +162,7 @@ public class AddPatientView extends JFrame implements viewinterface  {
 		gbc_btnUploadPatientPic.insets = new Insets(0, 0, 5, 0);
 		gbc_btnUploadPatientPic.gridx = 0;
 		gbc_btnUploadPatientPic.gridy = 2;
-		contentPane.add(btnUploadPatientPic, gbc_btnUploadPatientPic);
+		this.add(btnUploadPatientPic, gbc_btnUploadPatientPic);
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -174,7 +170,7 @@ public class AddPatientView extends JFrame implements viewinterface  {
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 3;
-		contentPane.add(scrollPane, gbc_scrollPane);
+		this.add(scrollPane, gbc_scrollPane);
 		
 		JPanel panel = new JPanel();
 		scrollPane.setViewportView(panel);
@@ -678,12 +674,7 @@ public class AddPatientView extends JFrame implements viewinterface  {
 		phoneNumberTextField.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_12.add(phoneNumberTextField);
 		phoneNumberTextField.setColumns(20);
-		
-		SwingUtilities.invokeLater(new Runnable() {
-		      public void run() {
-		    	  firstNameTextField.requestFocus();
-		      }
-		});
+		firstNameTextField.requestFocus();
 		
 		JPanel panel_14 = new JPanel();
 		GridBagConstraints gbc_panel_14 = new GridBagConstraints();
@@ -701,8 +692,8 @@ public class AddPatientView extends JFrame implements viewinterface  {
 		btnCancelButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
-			  {
-				home.showHomeView();
+			{
+				showHomeView();
 				hideBalloonTips();
 			  }
 		});

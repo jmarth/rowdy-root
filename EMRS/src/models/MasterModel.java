@@ -112,7 +112,15 @@ public class MasterModel {
 	public void setVitalsL(VitalsList vitalsL) {
 		this.vitalsL = vitalsL;
 	}
-	
+	/*public void clear(){
+		aL.clear();
+		mL.clear();
+		dL.clear();
+		pL.clear();
+		sL.clear();
+		vL.clear();
+		vitalsL = new VitalsList();
+	}*/
 	
 	
 }
