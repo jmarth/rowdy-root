@@ -40,6 +40,7 @@ import database.GatewayException;
 import models.CL;
 import models.Document;
 import models.DocumentList;
+import models.MasterModel;
 import models.Patient;
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -81,8 +82,8 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	private JScrollPane docScrollPane;
 	private JButton btnRemoveDocument;
 	
-	public DocumentsTabView(final DocumentTableGateway dtg, final Patient p) {
-		
+	//public DocumentsTabView(final DocumentTableGateway dtg, final Patient p) {
+	public DocumentsTabView(){	
 		this.setLayout(new BorderLayout());
 		this.dtg = dtg;
 		this.p = p;
@@ -313,6 +314,33 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
         jLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         jLabel.setAlignmentY(Component.CENTER_ALIGNMENT);
         docPane.add(jLabel, BorderLayout.CENTER);
+	}
+
+
+
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

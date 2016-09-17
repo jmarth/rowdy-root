@@ -26,7 +26,6 @@ import models.VisitList;
  */
 public class PatientRecordView extends JTabbedPane implements viewinterface {
 	
-	private MasterModel model;
 	private DemographicView dgv;
 	private hxView hxv;
 	private VisitsTabView vsv;
@@ -38,16 +37,13 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	 * Create the frame.
 	 */
 	//public PatientRecordView(final HomeModel homeModel, Patient patient) {
-	public PatientRecordView(MasterModel model) {
-		this.model = model;
-		
+	public PatientRecordView() {
 		setBounds(100, 100, 987, 1105);
-		
 		// Create demographics tab
 		JLabel lab1 = new JLabel(Tabs.demographics);
 		lab1.setPreferredSize(new Dimension(145, 30));
 		lab1.setHorizontalAlignment(JLabel.CENTER);
-		dgv = new DemographicView(model);
+		dgv = new DemographicView();
 		this.addTab("", null, dgv, null);
 		this.setTabComponentAt(0, lab1);
 		
@@ -55,7 +51,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		JLabel lab2 = new JLabel(Tabs.hx);
 		lab2.setPreferredSize(new Dimension(145, 30));
 		lab2.setHorizontalAlignment(JLabel.CENTER);
-		hxv = new hxView(model);
+		hxv = new hxView();
 		this.addTab(Tabs.hx, null,hxv, null);
 		this.setTabComponentAt(1, lab2);
 		
@@ -63,7 +59,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		JLabel lab3 = new JLabel(Tabs.ped);
 		lab3.setPreferredSize(new Dimension(145, 30));
 		lab3.setHorizontalAlignment(JLabel.CENTER);
-		vsv = new VisitsTabView(model);
+		vsv = new VisitsTabView();
 		this.addTab(Tabs.ped, null,vsv, null);
 		this.setTabComponentAt(2, lab3);
 		
@@ -73,26 +69,16 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		lab4.setPreferredSize(new Dimension(145, 30));
 		lab4.setHorizontalAlignment(JLabel.CENTER);
 				
-		vtv = new VitalsTabView(patient, this, homeview.getHomeModel());
+		vtv = new VitalsTabView();
 		this.addTab(Tabs.vitals, null, vtv, null);
 		this.setTabComponentAt(3, lab4);
-		
-		/** create testing tab
-		JLabel lab5 = new JLabel(Tabs.testing);
-		lab5.setPreferredSize(new Dimension(145, 30));
-		lab5.setHorizontalAlignment(JLabel.CENTER);
-		
-		JPanel panel_2 = new JPanel();
-		this.addTab(Tabs.testing, null, panel_2);
-		this.setTabComponentAt(4, lab5);
-		**/
 		
 		// create labs tab
 		JLabel lab6 = new JLabel(Tabs.labs);
 		lab6.setPreferredSize(new Dimension(145, 30));
 		lab6.setHorizontalAlignment(JLabel.CENTER);
 		
-		lpv = new LabsAndProceduresTabView(model);
+		lpv = new LabsAndProceduresTabView();
 		this.addTab(Tabs.labs, null,lpv, null);
 		this.setTabComponentAt(4, lab6);
 		
@@ -101,7 +87,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		lab7.setPreferredSize(new Dimension(145, 30));
 		lab7.setHorizontalAlignment(JLabel.CENTER);
 		
-		dtv = new DocumentsTabView(model);
+		dtv = new DocumentsTabView();
 		this.addTab(Tabs.docs, null,dtv, null);
 		this.setTabComponentAt(5, lab7);
 		
@@ -113,41 +99,89 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		        int index = sourceTabbedPane.getSelectedIndex();
 		        String selectedTab = sourceTabbedPane.getTitleAt(index);
 		        if(selectedTab.equals(Tabs.demographics)) {
-		        	visitsTabView.populatePanes();
+		        	PatientRecordView.this.ShowDemoGraphics();
 		        }
 		        else if (selectedTab.equals(Tabs.allergiesAndMeds)) {
-		        	
+		        	PatientRecordView.this.ShowVisitsView();
 		        }
 		        else if (selectedTab.equals(Tabs.ped)) {
-		        	
+		        	PatientRecordView.this.ShowVisitsView();
 		        }
 		        else if (selectedTab.equals(Tabs.vitals)) {
-		        		
-		        }
-		        else if (selectedTab.equals(Tabs.testing)) {
-		        	
+		        	PatientRecordView.this.ShowVitalsView();
 		        }
 		        else if (selectedTab.equals(Tabs.labs)) {
-		        	
+		        	PatientRecordView.this.ShowLabandProceduresView();
+		        }else if(selectedTab.equals(Tabs.docs)){
+		        	PatientRecordView.this.ShowDocumentsView();
 		        }
+		        PatientRecordView.this.setSelectedIndex(index);
 		      }
 		};
 		addChangeListener(changeListener);
 		
 		
 	}
-
-
-	@Override
-	public void showview() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
+	
 	@Override
 	public void HideallView() {
-		// TODO Auto-generated method stub
+		dgv.HideallView();;
+		hxv.HideallView();
+		vsv.HideallView();
+		vtv.HideallView();
+		lpv.HideallView();
+		dtv.HideallView();
+	}
+	public void ShowDemoGraphics(){
+		//TODO
+		this.HideallView();
+		this.dgv.ShowView();
+	}
+	
+	public void ShowHxView(){
+		//TODO
+		this.HideallView();
+		this.hxv.ShowView();
+	}
+	
+	public void ShowVisitsView(){
+		//TODO
+		this.HideallView();
+		this.vsv.ShowView();
+	}
+
+	public void ShowVitalsView(){
+		//TODO
+		this.HideallView();
+		this.vtv.ShowView();
+	}
+	
+	public void ShowLabandProceduresView(){
+		//TODO
+		this.HideallView();
+		this.lpv.ShowView();
+	}
+	
+	public void ShowDocumentsView(){
+		//TODO
+		this.HideallView();
+		this.dtv.ShowView();
+	}
+	
+	public void ShowDemographicsView() {
+		//TODO
+		this.HideallView();
+		this.dgv.ShowView();
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		this.setVisible(true);
 		
 	}
 }

@@ -59,30 +59,29 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		//Set patients from database
 		populatePatientTable();
 		table.addMouseMotionListener(new MouseMotionAdapter() {
-			   public void mouseMoved(MouseEvent e) {
-			      int row = table.rowAtPoint(e.getPoint());
-			      if (row > -1) {
-			         table.clearSelection();
-			         table.setRowSelectionInterval(row, row);
-			      }
-			      else {
-			         table.setSelectionBackground(Color.blue);
-			         Long patientID = (Long) table.getValueAt(row, 0);
-			         logger.info("User hovered over patient: " + patientID);
-			      }
-			      table.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			   }
-			   HomeView a;
-			});
-			table.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent evt) {
-					int row = table.rowAtPoint(evt.getPoint());
-			        Long patientId = (Long) table.getValueAt(row, 0);
-			        Patient patient = FindPatientsView.this.model.getpL().getMyList().get(row);
-			        FindPatientsView.this.model.loadmaster(patient);
-			        showdemographic();
-				}
-			});
+		   public void mouseMoved(MouseEvent e) {
+		      int row = table.rowAtPoint(e.getPoint());
+		      if (row > -1) {
+		         table.clearSelection();
+		         table.setRowSelectionInterval(row, row);
+		      }
+		      else {
+		         table.setSelectionBackground(Color.blue);
+		         Long patientID = (Long) table.getValueAt(row, 0);
+		      }
+		      table.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		   }
+		   HomeView a;
+		});
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent evt) {
+				int row = table.rowAtPoint(evt.getPoint());
+		        Long patientId = (Long) table.getValueAt(row, 0);
+		        Patient patient = FindPatientsView.this.model.getpL().getMyList().get(row);
+		        FindPatientsView.this.model.loadmaster(patient);
+		        showdemographic();
+			}
+		});
 		
 	}
 	private void showdemographic(){
@@ -91,7 +90,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		hv.getPrview().HideallView();
 	}
 	public void populatePatientTable() {
-		PatientList patientList = this.model.getpL();
+		PatientList patientList = this.getMasterModel().getpL();
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		for(Patient patient : patientList.getMyList()) {
 			String fullName =  patient.getFirstName()+" "+
@@ -116,17 +115,18 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		table.setRowSorter(trs);
 		trs.setRowFilter(RowFilter.regexFilter(searchText));
 	}
-
-	@Override
-	public void showview() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	@Override
 	public void HideallView() {
-		// TODO Auto-generated method stub
-		
+		this.setVisible(false);
+	}
+	@Override
+	public void ShowView() {
+		this.populatePatientTable();
+		this.setVisible(true);
+	}
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
 	}
 
 }

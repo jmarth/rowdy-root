@@ -26,6 +26,7 @@ import database.GatewayException;
 import database.MedicationsTableGateway;
 import models.CL;
 import models.Drug;
+import models.MasterModel;
 import models.Med;
 import models.Patient;
 import models.Tabs;
@@ -133,13 +134,11 @@ public class AddMedView extends JPanel implements viewinterface  {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
@@ -228,16 +227,15 @@ public class AddMedView extends JPanel implements viewinterface  {
 		setLayout(groupLayout);
 
 	}
-
 	@Override
-	public void showview() {
+	public void HideallView() {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void HideallView() {
-		// TODO Auto-generated method stub
+	public MasterModel getMasterModel() {
 		
+		return null;
 	}
 }

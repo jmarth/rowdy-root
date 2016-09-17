@@ -59,7 +59,6 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	public enum egender{
 		male,female
 	}
-	private MasterModel model;
 	private int updateorinsert;
 	//Text fields
 	private JTextField firstNameTextField;
@@ -80,7 +79,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	//combobox
 	private JComboBox genderComboBox;
 	private JComboBox birthMonthComboBox;
-	final String[] month = new String[] {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	//final String[] month = new String[] {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	//image Jlabel
 	private JLabel imglabel;
 	//Regex
@@ -89,27 +88,25 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	//private final String NAME_PATTERN_2 = "^$|(^[a-z ,.'-]+$)";//the old code
 	private final String NAME_PATTERN_2 = "^$|(^[a-z]+$)";// the new ode
 	//Balloon tips for each textfield
-	private static BalloonTip firstNameBalloon;
-	private static BalloonTip middleNameBalloon;
-	private static BalloonTip lastNameBalloon;
-	private static BalloonTip dateDayBalloon;
-	private static BalloonTip dateYearBalloon;
-	private static BalloonTip estYearBalloon;
-	private static BalloonTip estMonthBalloon;
-	private static BalloonTip cityBalloon;
-	private static BalloonTip stateBalloon;
-	private static BalloonTip countryBalloon;
+	private BalloonTip firstNameBalloon;
+	private BalloonTip middleNameBalloon;
+	private BalloonTip lastNameBalloon;
+	private BalloonTip dateDayBalloon;
+	private BalloonTip dateYearBalloon;
+	private BalloonTip estYearBalloon;
+	private BalloonTip estMonthBalloon;
+	private BalloonTip cityBalloon;
+	private BalloonTip stateBalloon;
+	private BalloonTip countryBalloon;
 	final JCheckBox hasNameCheckBox = new JCheckBox("Unidentified Patient");
 	private JLabel birtDateErrorLabel;
 	private String imagePath;
 	
-	private static JXDatePicker datePicker;
-	private Patient patient;
+	private  JXDatePicker datePicker;
 	/**
 	 * Create the frame.
 	 */
 	public AddPatientView(MasterModel model) {
-		this.model = model;
 		imagePath = "";
 		this.updateorinsert=this.INSERTPATIENT;
 		setBounds(100, 100, 710, 1118);
@@ -693,8 +690,14 @@ public class AddPatientView extends JPanel implements viewinterface  {
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				showHomeView();
 				hideBalloonTips();
+				if(AddPatientView.this.updateorinsert==AddPatientView.this.UPDATEPATIENT){
+					AddPatientView.this.showHomeView();
+				}else{
+					AddPatientView.this.showDemographic();
+				}
+				
+				
 			  }
 		});
 		
@@ -745,19 +748,17 @@ public class AddPatientView extends JPanel implements viewinterface  {
 						String fullName =  firstNameTextField.getText()+" "+
 								middleNameTextField.getText()+" "+
 								lastNameTextField.getText();
+						MasterModel model = AddPatientView.this.getMasterModel();
 						if(AddPatientView.this.updateorinsert==AddPatientView.INSERTPATIENT){
-							long newId = home.getHomeModel().getPtg().insertPatient(AddPatientView.this.patient);
-							AddPatientView.this.patient=patient;
-							AddPatientView.this.patient.setId(newId);
+							model.getpL().insert(patient);
 						}else{
-							patient.setId(AddPatientView.this.patient.getId());
-							home.getHomeModel().getPtg().updatePatient(patient);
-							AddPatientView.this.patient=patient;
+							model = AddPatientView.this.getMasterModel();
+							model.getpL().update(patient);
 						}
-							
-						PatientRecordView pr = new PatientRecordView(home, AddPatientView.this.patient); // TODO inconsistent data
-						home.setCenterPanel(pr);
-						
+						model.setCurrPatient(patient);
+						HomeView hv =(HomeView) AddPatientView.this.getParent();
+						hv.ShowPatientRecode();
+						hv.getPrview().showDemographicsView();
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -766,6 +767,17 @@ public class AddPatientView extends JPanel implements viewinterface  {
 				}
 			  }
 		});
+	}
+	protected void showDemographic() {
+		HomeView hv = (HomeView)this.getParent();
+		hv.ShowHomeView();
+		hv.getPrview().showDemographicsView();
+		
+	}
+	protected void showHomeView() {
+		HomeView hv = (HomeView)this.getParent();
+		hv.ShowHomeView();
+		
 	}
 	/**
 	 * load user image to 
@@ -780,9 +792,9 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	/**
 	 * load patient into input field
 	 */
-	public void loadpatient(Patient p){
+	public void loadpatient(){
 		this.hideBalloonTips();
-		this.patient=p;
+		Patient p = this.getMasterModel().getCurrPatient();
 		this.updateorinsert=this.UPDATEPATIENT;
 		this.hasNameCheckBox.setSelected(p.getHasPatientName());
 		this.firstNameTextField.setText(p.getFirstName());
@@ -854,13 +866,6 @@ public class AddPatientView extends JPanel implements viewinterface  {
 			e.printStackTrace();
 		}	
 	}
-	/**
-	 *
-	 * @return (contentPane)
-	 */
-	public Container getContentPane() {
-		return contentPane;
-	}
 	
 	/**
 	 * adds balloontip to textfield and shows when
@@ -906,14 +911,14 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	 * recursively looks for all jtextfields and request focus
 	 * @param container 
 	 */
-	private void focusAllTextFields(Container container) {
-		System.out.print("thisfunccalled\n");
-	    for (Component c : container.getComponents()) {
+	private void focusAllTextFields() {
+		//System.out.print("thisfunccalled\n");
+		
+	    for (Component c : this.getComponents()) {
 	        if (c instanceof JTextField) {
 	        	((JTextField)c).requestFocus();
-	        	System.out.print(((JTextField)c).getText()+"\n");
 	        } else if (c instanceof Container) {
-	        	focusAllTextFields((Container)c);
+	        	focusAllTextFields();
 	        }
 	    }
 	}
@@ -930,7 +935,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 		 * This will focus all the textFields forcing
 		 * the focus out listener to check for field errors
 		 */
-		focusAllTextFields(contentPane);
+		focusAllTextFields();
 		
 		//Check if DOB has been entered show error if it has not been entered
 		if((birthDayTextField.getText().equals("") || birthYearTextField.getText().equals("")) &&
@@ -999,8 +1004,19 @@ public class AddPatientView extends JPanel implements viewinterface  {
 		countryBalloon.setVisible(false);
 	}
 	@Override
-	public void showview() {
+	public void HideallView() {
 		// TODO Auto-generated method stub
+		this.setVisible(false);
 		
+	}
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		this.loadpatient();
+		this.setVisible(true);
 	}
 }

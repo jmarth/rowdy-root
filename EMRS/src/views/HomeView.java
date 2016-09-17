@@ -311,14 +311,6 @@ public class HomeView extends JFrame implements viewinterface{
 		northPanel.setLayout(gl_panel);
 		
 	}		
-	public JButton getFindPatientButton() {
-		return btnFindPatient;
-	}
-	
-	public JButton getAddPatientButton() {
-		return btnAddPatient;
-	}
-
 	/**
 	 *  Called by LoginView to show HomeView
 	 */
@@ -343,17 +335,16 @@ public class HomeView extends JFrame implements viewinterface{
 			btnAllergyAlert.setVisible(false);
 		}
 	}
-	@Override
-	public void showview() {
-		// TODO Auto-generated method stub
-		
+	
+	public FindPatientsView getFpview() {
+		return fpview;
 	}
-
+	
 	@Override
 	public void HideallView() {
-		this.fpview.setVisible(false);
-		this.prview.setVisible(false);
-		this.pview.setVisible(false);
+		this.fpview.HideallView();
+		this.prview.HideallView();
+		this.pview.HideallView();
 	}
 
 	public AddPatientView getPview() {
@@ -368,16 +359,28 @@ public class HomeView extends JFrame implements viewinterface{
 		return ssview;
 	}
 	public void ShowHomeView(){
-		HomeView.this.HideallView();
-		HomeView.this.ssview.setVisible(true);
+		this.HideallView();
+		this.ssview.ShowView();;
 	}
 	public void ShowAddPatientView(){
-		HomeView.this.HideallView();
-		HomeView.this.pview.setVisible(true);
+		this.HideallView();
+		this.pview.ShowView();
 	}
 	public void ShowFindPatientsView(){
-		HomeView.this.HideallView();
-		HomeView.this.fpview.setVisible(true);
+		this.HideallView();
+		this.fpview.showview();;
 	}
-	
+	public void ShowPatientRecode(){
+		this.HideallView();
+		this.prview.showview();
+	}
+	@Override
+	public MasterModel getMasterModel() {
+		return this.model;
+	}
+	@Override
+	public void ShowView() {
+		this.setVisible(true);
+		
+	}
 }

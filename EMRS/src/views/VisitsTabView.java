@@ -23,11 +23,12 @@ import org.jdesktop.swingx.JXTaskPaneContainer;
 
 import models.CL;
 import models.HomeModel;
+import models.MasterModel;
 import models.Patient;
 import models.Tabs;
 import models.Visit;
 
-public class VisitsTabView extends JPanel {
+public class VisitsTabView extends JPanel implements viewinterface {
 	private Patient patient;
 	private List<Visit> patientVisitList = new ArrayList<Visit>();
 	private HomeModel homeModel;
@@ -41,7 +42,8 @@ public class VisitsTabView extends JPanel {
 	
 	private boolean painted = false;
 
-	public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
+	//public VisitsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
+	public VisitsTableView(){
 		this.patient = patient;
 		this.homeModel = homeModel;
 		this.tabbedPane = tabbedPane;
@@ -135,6 +137,24 @@ public class VisitsTabView extends JPanel {
 			pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, true));
 			mainTaskPane.add(pane);
 		}
+		
+	}
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
 		
 	}
 }

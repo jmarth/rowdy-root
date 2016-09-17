@@ -31,6 +31,7 @@ import models.Allergy;
 import models.AllergyList;
 import models.CL;
 import models.Hx;
+import models.MasterModel;
 import models.Med;
 import models.Patient;
 import models.Tabs;
@@ -46,7 +47,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
-public class hxView implements viewinterface extends JPanel {
+public class hxView extends JPanel implements viewinterface {
 	private AllergyList al = new AllergyList(); // no make here, in constructor
 	private List<Allergy> allergyList;
 	// Do not need this List<Allergy>, we have an AllergyList and Allergy, AllergyList.getList() instead
@@ -109,8 +110,8 @@ public class hxView implements viewinterface extends JPanel {
 	 * @param drugTableGateway 
 	 * @param hxTableGateway 
 	 */
-	public hxView(final Patient patient, final JTabbedPane tabbedPane, final AllergyTableGateway atg, final MedicationsTableGateway mtg, DrugTableGateway drugTableGateway, HxTableGateway hxTableGateway) {
-		
+	//public hxView(final Patient patient, final JTabbedPane tabbedPane, final AllergyTableGateway atg, final MedicationsTableGateway mtg, DrugTableGateway drugTableGateway, HxTableGateway hxTableGateway) {
+	public hxView(){	
 		this.atg = atg;
 		this.mtg = mtg;
 		this.rtg = drugTableGateway;
@@ -795,9 +796,22 @@ public class hxView implements viewinterface extends JPanel {
 		hxMasterPanel.setLayout(gl_hxMasterPanel);
 	}
 
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 	@Override
-	public void showview() {
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void ShowView() {
 		// TODO Auto-generated method stub
 		
 	}

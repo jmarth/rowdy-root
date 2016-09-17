@@ -17,15 +17,14 @@ import javax.swing.JSeparator;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
+import models.MasterModel;
 import models.Patient;
 
-public class DemographicView extends JPanel {
+public class DemographicView extends JPanel implements viewinterface {
 	
 	//tabbedPane.addTab("Profile", null, panel, null);
-	private Patient patient;
-	private HomeView homeview;
 	
-	public DemographicView(HomeView homeview,Patient patient) {
+	public DemographicView() {
 		this.patient=patient;
 		this.homeview=homeview;
 		GridBagLayout gbl_panel = new GridBagLayout();
@@ -496,6 +495,24 @@ public class DemographicView extends JPanel {
 
 	public void setHomeview(HomeView homeview) {
 		this.homeview = homeview;
+	}
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

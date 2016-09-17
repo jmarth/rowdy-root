@@ -1,7 +1,10 @@
 package views;
 
+import models.MasterModel;
+
 public interface viewinterface {
-	void showview();
 	void HideallView();
+	MasterModel getMasterModel();
+	void ShowView();
 
 }

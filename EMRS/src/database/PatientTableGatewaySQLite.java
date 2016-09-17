@@ -8,13 +8,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-
 import models.Patient;
 
 
 public class PatientTableGatewaySQLite implements PatientTableGateway{
-	
 	/**
 	 * external DB connection
 	 */
@@ -34,14 +31,13 @@ public class PatientTableGatewaySQLite implements PatientTableGateway{
 			e.printStackTrace();
 		}
 	}
-	
 	/**
 	 * Fetch a resultset of all warehosue rows in db and populate a collection with them.
 	 * All warehouse instances are given a reference to this Gateway.
 	 * @return a List of warehouse objects (ArrayList)
 	 * @throws GatewayException
 	 */
-	public List<Patient> fetchPatients() throws GatewayException {
+public List<Patient> fetchPatients() throws GatewayException {
 		
 		ArrayList<Patient> patients = new ArrayList<Patient>();
 		
@@ -95,7 +91,7 @@ public class PatientTableGatewaySQLite implements PatientTableGateway{
 		
 		return patients;
 	}
-	
+
 	public long insertPatient(Patient p) throws GatewayException {
 		
 		//init new id to invalid
@@ -173,7 +169,7 @@ public class PatientTableGatewaySQLite implements PatientTableGateway{
 		return newId;
 	}
 
-	@Override
+
 	public void close() {
 		// TODO Auto-generated method stub
 		
@@ -225,7 +221,6 @@ public class PatientTableGatewaySQLite implements PatientTableGateway{
 			st.setLong(19,p.getId());
 			st.executeUpdate();
 			conn.commit();;
-			System.out.println("update patient success fsadf fas fasd fsafas dfsda fasdfasd fasd fasdfsad "+p.getId());
 		} catch (SQLException e) {
 			try {
 				conn.rollback();
@@ -243,7 +238,6 @@ public class PatientTableGatewaySQLite implements PatientTableGateway{
 			} catch (SQLException e) {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
-		}	
-	}
-
+		}		
+	}	
 }

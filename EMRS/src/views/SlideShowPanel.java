@@ -4,10 +4,13 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+
+import models.MasterModel;
+
 import java.awt.BorderLayout;
 
 
-public class SlideShowPanel extends JPanel {
+public class SlideShowPanel extends JPanel implements viewinterface {
 	JLabel pic;
 	Timer tm;
 	int x = 0;
@@ -74,6 +77,24 @@ public class SlideShowPanel extends JPanel {
         ImageIcon newImc = new ImageIcon(newImg);
         pic.setIcon(newImc);
     }
+
+	@Override
+	public void HideallView() {
+		this.setVisible(false);
+		
+	}
+
+	@Override
+	public void ShowView() {
+		this.setVisible(true);
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
 
 
 

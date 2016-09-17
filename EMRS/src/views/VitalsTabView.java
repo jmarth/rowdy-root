@@ -20,13 +20,14 @@ import javax.swing.table.DefaultTableModel;
 import database.GatewayException;
 import database.VitalsTableGateway;
 import models.HomeModel;
+import models.MasterModel;
 import models.Patient;
 import models.Tabs;
 import models.Vital;
 import models.Vital;
 
 @SuppressWarnings("serial")
-public class VitalsTabView extends JPanel {
+public class VitalsTabView extends JPanel implements viewinterface {
 	
 	/*
 	private final String bpunit_mmHg = "mmHg";
@@ -49,8 +50,8 @@ public class VitalsTabView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public VitalsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
-		
+	//public VitalsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
+	public VitalsTabView(){	
 		this.vtg = homeModel.getVitalstg();
 		this.patient = patient;
 		this.homeModel = homeModel;
@@ -324,5 +325,23 @@ public class VitalsTabView extends JPanel {
 				});
 		}
 		*/
+	}
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
 	}
 }

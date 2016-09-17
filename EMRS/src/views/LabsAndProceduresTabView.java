@@ -21,10 +21,11 @@ import database.GatewayException;
 import database.SurgeryTableGateway;
 import database.SurgeryTemplatesTableGateway;
 import models.CL;
+import models.MasterModel;
 import models.Patient;
 import models.Surgery;
 
-public class LabsAndProceduresTabView implements viewinterface extends JPanel {
+public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	
 	// Containers --------------------------------------
 	private JSplitPane splitPane;
@@ -67,8 +68,8 @@ public class LabsAndProceduresTabView implements viewinterface extends JPanel {
 		return patient;
 	}
 
-	public LabsAndProceduresTabView(Patient param_patient, PatientRecordView param_prv, SurgeryTableGateway param_gate1, SurgeryTemplatesTableGateway param_gate2) {
-		
+	//public LabsAndProceduresTabView(Patient param_patient, PatientRecordView param_prv, SurgeryTableGateway param_gate1, SurgeryTemplatesTableGateway param_gate2) {
+	public LabsAndProceduresTabView(){
 		this.patient = param_patient;
 		this.prv = param_prv;
 		this.gate1 = param_gate1;
@@ -174,6 +175,24 @@ public class LabsAndProceduresTabView implements viewinterface extends JPanel {
 
 	@Override
 	public void showview() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ShowView() {
 		// TODO Auto-generated method stub
 		
 	}

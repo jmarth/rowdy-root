@@ -41,20 +41,7 @@ public class PatientList {
 			return;
 		}
 	}
-
-	// if fail to add, then it do not add to list
-	public void addPatient(Patient p) {
-		try {
-
-			myGateway.insertPatient(p);
-			
-			myIdMap.put(p.getId(), p);
-
-		} catch (GatewayException e) {
-			System.err.println("From PatientList, failed to insert Patient to DB");
-		}
-	}
-
+	
 	public List<Patient> getMyList() {
 		return (List<Patient>) myIdMap.values();
 	}
@@ -68,16 +55,14 @@ public class PatientList {
 		return null;
 	}
 
-	public long insert(Patient p) throws GatewayException {
+	public void insert(Patient p) throws GatewayException {
 
 		p.setId(myGateway.insertPatient(p));
 		this.myIdMap.put(p.getId(), p);
-
-		return p.getId();
 	}
 
 	public void update(Patient a) throws GatewayException {
-		myGateway.updatePatient(a);
+		this.myGateway.updatePatient(a);
 	}
 
 	// TODO
