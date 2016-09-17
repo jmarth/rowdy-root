@@ -53,7 +53,7 @@ import views.HomeView;
 
 public class HomeModel {
 	
-	private AddPatientView addPatientView;
+	/*private AddPatientView addPatientView;
 	private FindPatientsView findPatientsView;
 	
 	private PatientList patientList ;
@@ -332,5 +332,5 @@ public class HomeModel {
 
 	public void setHtg(HxTableGateway htg) {
 		this.htg = htg;
-	}
+	}*/
 }
