@@ -191,4 +191,9 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	public void reload() {
 		
 	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent()).getHomeView();
+	}
 }

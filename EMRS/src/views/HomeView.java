@@ -193,6 +193,7 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				pview.setUpdateorinsert(pview.INSERTPATIENT);
 				HomeView.this.ShowAddPatientView();
 				
 			}
@@ -388,5 +389,9 @@ public class HomeView extends JFrame implements viewinterface{
 	public void reload() {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public HomeView getHomeView() {
+		return this;
 	}
 }

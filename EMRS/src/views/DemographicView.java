@@ -21,9 +21,19 @@ import models.MasterModel;
 import models.Patient;
 
 public class DemographicView extends JPanel implements viewinterface {
-	
-	//tabbedPane.addTab("Profile", null, panel, null);
-	
+	private JLabel lblLogo;
+	private JLabel lblfirstname;
+	private JLabel lblmiddlename;
+	private JLabel lbllastname;
+	private JLabel lblGender;
+	private JLabel lblBirthdate;
+	private JLabel lblAddress;
+	private JLabel lblAddress2;
+	private JLabel lblCity;
+	private JLabel lblState;
+	private JLabel lblPostal;
+	private JLabel lblCountry;
+	private JLabel lblPhone;
 	public DemographicView() {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{63, 293, 0};
@@ -53,26 +63,22 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbl_panel_4.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_4.setLayout(gbl_panel_4);
 		
-		System.out.println("pic path "+patient.getPicPath());
+		Patient patient = this.getMasterModel().getCurrPatient();
 		JLabel lblNewLabel_5 = new JLabel("");
 		if(patient.getPicPath() == null || patient.getPicPath().equals(""))
 			patient.setPicPath("user.png");
 		if(patient.getPicPath() != null && !patient.getPicPath().equals("") ) {
-			System.out.println("in this statment");
 			ImageIcon imageIcon = new ImageIcon(patient.getPicPath());
 	        Image image = imageIcon.getImage(); // transform it 
 	        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 	        imageIcon = new ImageIcon(newimg);  // transform it back
-	        lblNewLabel_5.setIcon(imageIcon);
+	        this.lblLogo.setIcon(imageIcon);
 		}
-		System.out.println("pic path test");
 	    GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
 	    gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel_5.gridx = 0;
 		gbc_lblNewLabel_5.gridy = 0;
 		panel_4.add(lblNewLabel_5, gbc_lblNewLabel_5);
-		
-		System.out.println("pic path here");
 		
 		JPanel panel_6 = new JPanel();
 		GridBagConstraints gbc_panel_6 = new GridBagConstraints();
@@ -88,7 +94,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbl_panel_6.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_6.setLayout(gbl_panel_6);
 		
-		JLabel lblfirstname = new JLabel(patient.getFirstName());
+		lblfirstname = new JLabel(patient.getFirstName());
 		lblfirstname.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblfirstname.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lblfirstname = new GridBagConstraints();
@@ -97,7 +103,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblfirstname.gridy = 0;
 		panel_6.add(lblfirstname, gbc_lblfirstname);
 		
-		JLabel lblmiddlename = new JLabel(patient.getMiddleName());
+		lblmiddlename = new JLabel(patient.getMiddleName());
 		lblmiddlename.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblmiddlename.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lblmiddlename = new GridBagConstraints();
@@ -106,7 +112,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblmiddlename.gridy = 0;
 		panel_6.add(lblmiddlename, gbc_lblmiddlename);
 		
-		JLabel lbllastname = new JLabel(patient.getLastName());
+		lbllastname = new JLabel(patient.getLastName());
 		lbllastname.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lbllastname.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lbllastname = new GridBagConstraints();
@@ -271,23 +277,23 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbl_panel_7.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_7.setLayout(gbl_panel_7);
 		
-		JLabel lblNewLabel_7 = new JLabel(patient.getAddress());
-		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblAddress = new JLabel(patient.getAddress());
+		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
 		gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_7.gridx = 0;
 		gbc_lblNewLabel_7.gridy = 0;
-		panel_7.add(lblNewLabel_7, gbc_lblNewLabel_7);
+		panel_7.add(lblAddress, gbc_lblNewLabel_7);
 		
-		JLabel lblNewLabel_8 = new JLabel(patient.getAddress2());
-		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblAddress2 = new JLabel(patient.getAddress2());
+		lblAddress2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
 		gbc_lblNewLabel_8.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_8.gridx = 1;
 		gbc_lblNewLabel_8.gridy = 0;
-		panel_7.add(lblNewLabel_8, gbc_lblNewLabel_8);
+		panel_7.add(lblAddress2, gbc_lblNewLabel_8);
 		
-		JLabel lblCity = new JLabel(patient.getCity());
+		lblCity = new JLabel(patient.getCity());
 		lblCity.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblCity = new GridBagConstraints();
 		gbc_lblCity.insets = new Insets(0, 0, 5, 5);
@@ -295,7 +301,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblCity.gridy = 0;
 		panel_7.add(lblCity, gbc_lblCity);
 		
-		JLabel lblState = new JLabel(patient.getState());
+		lblState = new JLabel(patient.getState());
 		lblState.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblState = new GridBagConstraints();
 		gbc_lblState.insets = new Insets(0, 0, 5, 5);
@@ -303,7 +309,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblState.gridy = 0;
 		panel_7.add(lblState, gbc_lblState);
 		
-		JLabel lblPostal = new JLabel(patient.getPostalCode());
+		lblPostal = new JLabel(patient.getPostalCode());
 		lblPostal.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblPostal = new GridBagConstraints();
 		gbc_lblPostal.insets = new Insets(0, 0, 5, 5);
@@ -311,7 +317,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblPostal.gridy = 0;
 		panel_7.add(lblPostal, gbc_lblPostal);
 		
-		JLabel lblCountry = new JLabel(patient.getCountry());
+		lblCountry = new JLabel(patient.getCountry());
 		lblCountry.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblCountry = new GridBagConstraints();
 		gbc_lblCountry.insets = new Insets(0, 0, 5, 5);
@@ -319,7 +325,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblCountry.gridy = 0;
 		panel_7.add(lblCountry, gbc_lblCountry);
 		
-		JLabel lblPhone = new JLabel(patient.getPhoneNumber());
+		lblPhone = new JLabel(patient.getPhoneNumber());
 		lblPhone.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblPhone = new GridBagConstraints();
 		gbc_lblPhone.insets = new Insets(0, 0, 5, 0);
@@ -472,27 +478,10 @@ public class DemographicView extends JPanel implements viewinterface {
 		editbutton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				HomeView homev = DemographicView.this.homeview;
-				homev.getHomeModel().getAddPatientView().loadpatient(DemographicView.this.patient);
-				homev.setCenterPanel(homev.getHomeModel().getAddPatientView().getContentPane());
+				DemographicView.this.getHomeView().getPview().setUpdateorinsert(AddPatientView.UPDATEPATIENT);
+				DemographicView.this.getHomeView().ShowAddPatientView();
 			}
 		});
-	}
-
-	public Patient getPatient() {
-		return patient;
-	}
-
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
-
-	public HomeView getHomeview() {
-		return homeview;
-	}
-
-	public void setHomeview(HomeView homeview) {
-		this.homeview = homeview;
 	}
 
 	@Override
@@ -503,20 +492,24 @@ public class DemographicView extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((PatientRecordView)this.getParent()).getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
-		// TODO Auto-generated method stub
-		
+		reload();
+		this.setVisible(true);
 	}
 
 	@Override
 	public void reload() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((PatientRecordView)this.getParent()).getHomeView();
 	}
 	
 }

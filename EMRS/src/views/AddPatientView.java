@@ -956,7 +956,11 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	}
 	@Override
 	public void ShowView() {
-		this.reload();
+		if(this.updateorinsert==this.UPDATEPATIENT){
+			this.reload();
+		}else{
+			this.clearinput();
+		}
 		this.setVisible(true);
 	}
 	@Override
@@ -1005,4 +1009,15 @@ public class AddPatientView extends JPanel implements viewinterface  {
 		}
 		
 	}
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent()).getHomeView();
+	}
+	public int getUpdateorinsert() {
+		return updateorinsert;
+	}
+	public void setUpdateorinsert(int updateorinsert) {
+		this.updateorinsert = updateorinsert;
+	}
+	
 }

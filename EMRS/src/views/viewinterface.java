@@ -3,9 +3,10 @@ package views;
 import models.MasterModel;
 
 public interface viewinterface {
-	void HideallView();
-	MasterModel getMasterModel();
-	void ShowView();
-	void reload();
+	public void HideallView();
+	public MasterModel getMasterModel();
+	public void ShowView();
+	public void reload();
+	public HomeView getHomeView();
 
 }

@@ -124,5 +124,9 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		}
 		
 	}
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent()).getHomeView();
+	}
 
 }
