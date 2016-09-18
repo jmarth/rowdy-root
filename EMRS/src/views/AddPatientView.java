@@ -106,7 +106,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	/**
 	 * Create the frame.
 	 */
-	public AddPatientView(MasterModel model) {
+	public AddPatientView() {
 		imagePath = "";
 		this.updateorinsert=this.INSERTPATIENT;
 		setBounds(100, 100, 710, 1118);
@@ -692,9 +692,9 @@ public class AddPatientView extends JPanel implements viewinterface  {
 			{
 				hideBalloonTips();
 				if(AddPatientView.this.updateorinsert==AddPatientView.this.UPDATEPATIENT){
-					AddPatientView.this.showHomeView();
+					((HomeView)AddPatientView.this.getParent()).getPrview().ShowDemographicsView();
 				}else{
-					AddPatientView.this.showDemographic();
+					((HomeView)AddPatientView.this.getParent()).ShowHomeView();
 				}
 				
 				
@@ -757,8 +757,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 						}
 						model.setCurrPatient(patient);
 						HomeView hv =(HomeView) AddPatientView.this.getParent();
-						hv.ShowPatientRecode();
-						hv.getPrview().showDemographicsView();
+						hv.getPrview().ShowDemographicsView();
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -767,17 +766,6 @@ public class AddPatientView extends JPanel implements viewinterface  {
 				}
 			  }
 		});
-	}
-	protected void showDemographic() {
-		HomeView hv = (HomeView)this.getParent();
-		hv.ShowHomeView();
-		hv.getPrview().showDemographicsView();
-		
-	}
-	protected void showHomeView() {
-		HomeView hv = (HomeView)this.getParent();
-		hv.ShowHomeView();
-		
 	}
 	/**
 	 * load user image to 
@@ -788,53 +776,6 @@ public class AddPatientView extends JPanel implements viewinterface  {
         Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
         return new ImageIcon(newimg);  // transform it back
         //AddPatientView.this.imglabel.setIcon(imageIcon);
-	}
-	/**
-	 * load patient into input field
-	 */
-	public void loadpatient(){
-		this.hideBalloonTips();
-		Patient p = this.getMasterModel().getCurrPatient();
-		this.updateorinsert=this.UPDATEPATIENT;
-		this.hasNameCheckBox.setSelected(p.getHasPatientName());
-		this.firstNameTextField.setText(p.getFirstName());
-		this.middleNameTextField.setText(p.getMiddleName());
-		this.lastNameTextField.setText(p.getLastName());
-		/*if(p.getGender().compareTo("male")==0){
-			this.genderComboBox.setSelectedIndex(0);
-		}else{
-			this.genderComboBox.setSelectedIndex(1);
-		}*/
-		this.genderComboBox.setSelectedIndex(egender.valueOf(p.getGender()).ordinal());
-		this.birthDayTextField.setText(""+p.getBirthDay());
-		this.birthMonthComboBox.setSelectedIndex(emonth.valueOf(p.getBirthMonth()).ordinal());
-		this.birthYearTextField.setText(""+p.getBirthYear());
-		if(p.getEstBirthMonths()!=-1)
-			this.estMonthsTextField.setText(""+p.getEstBirthMonths());
-		else
-			this.estMonthsTextField.setText("");
-		if(p.getEstBirthYears()!=-1)
-			this.estYearsTextField.setText(""+p.getEstBirthYears());
-		else
-			this.estYearsTextField.setText("");
-		this.addressTextField.setText(p.getAddress());
-		this.address2TextField.setText(p.getAddress2());
-		this.cityTextField.setText(p.getCity());
-		this.stateTextField.setText(p.getState());
-		this.countryTextField.setText(p.getCountry());
-		this.postalCodeTextField.setText(p.getPostalCode());
-		this.phoneNumberTextField.setText(p.getPhoneNumber());
-		this.imagePath=p.getPicPath();
-		try {
-			this.imglabel.setIcon(this.loaduserimageicon(imagePath));
-		} catch (Exception e) {
-			try {
-				this.imglabel.setIcon(this.loaduserimageicon("user.png"));
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
 	}
 	/**
 	 * clear all imput field
@@ -1015,8 +956,53 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	}
 	@Override
 	public void ShowView() {
-		// TODO Auto-generated method stub
-		this.loadpatient();
+		this.reload();
 		this.setVisible(true);
+	}
+	@Override
+	public void reload() {
+		this.hideBalloonTips();
+		Patient p = this.getMasterModel().getCurrPatient();
+		this.updateorinsert=this.UPDATEPATIENT;
+		this.hasNameCheckBox.setSelected(p.getHasPatientName());
+		this.firstNameTextField.setText(p.getFirstName());
+		this.middleNameTextField.setText(p.getMiddleName());
+		this.lastNameTextField.setText(p.getLastName());
+		/*if(p.getGender().compareTo("male")==0){
+			this.genderComboBox.setSelectedIndex(0);
+		}else{
+			this.genderComboBox.setSelectedIndex(1);
+		}*/
+		this.genderComboBox.setSelectedIndex(egender.valueOf(p.getGender()).ordinal());
+		this.birthDayTextField.setText(""+p.getBirthDay());
+		this.birthMonthComboBox.setSelectedIndex(emonth.valueOf(p.getBirthMonth()).ordinal());
+		this.birthYearTextField.setText(""+p.getBirthYear());
+		if(p.getEstBirthMonths()!=-1)
+			this.estMonthsTextField.setText(""+p.getEstBirthMonths());
+		else
+			this.estMonthsTextField.setText("");
+		if(p.getEstBirthYears()!=-1)
+			this.estYearsTextField.setText(""+p.getEstBirthYears());
+		else
+			this.estYearsTextField.setText("");
+		this.addressTextField.setText(p.getAddress());
+		this.address2TextField.setText(p.getAddress2());
+		this.cityTextField.setText(p.getCity());
+		this.stateTextField.setText(p.getState());
+		this.countryTextField.setText(p.getCountry());
+		this.postalCodeTextField.setText(p.getPostalCode());
+		this.phoneNumberTextField.setText(p.getPhoneNumber());
+		this.imagePath=p.getPicPath();
+		try {
+			this.imglabel.setIcon(this.loaduserimageicon(imagePath));
+		} catch (Exception e) {
+			try {
+				this.imglabel.setIcon(this.loaduserimageicon("user.png"));
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
 	}
 }

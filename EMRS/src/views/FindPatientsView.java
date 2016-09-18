@@ -33,14 +33,12 @@ import models.PatientList;
 
 public class FindPatientsView extends JPanel implements viewinterface  {
 	
-	private MasterModel model;
 	private JTable table;
 
 	/**
 	 * Create the frame.
 	 */
-	public FindPatientsView(MasterModel model) {
-		this.model = model;
+	public FindPatientsView() {
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setLayout(new GridLayout(0, 1, 0, 0));
 		JScrollPane scrollPane = new JScrollPane();
@@ -55,9 +53,8 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 			}
 		));
 		scrollPane.setViewportView(table);	
-				
+		this.reload();		
 		//Set patients from database
-		populatePatientTable();
 		table.addMouseMotionListener(new MouseMotionAdapter() {
 		   public void mouseMoved(MouseEvent e) {
 		      int row = table.rowAtPoint(e.getPoint());
@@ -71,14 +68,13 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		      }
 		      table.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		   }
-		   HomeView a;
 		});
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				int row = table.rowAtPoint(evt.getPoint());
 		        Long patientId = (Long) table.getValueAt(row, 0);
-		        Patient patient = FindPatientsView.this.model.getpL().getMyList().get(row);
-		        FindPatientsView.this.model.loadmaster(patient);
+		        Patient patient = FindPatientsView.this.getMasterModel().getpL().getMyList().get(row);
+		        FindPatientsView.this.getMasterModel().loadmaster(patient);
 		        showdemographic();
 			}
 		});
@@ -88,8 +84,28 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		HomeView hv = (HomeView) this.getParent();
 		hv.HideallView();
 		hv.getPrview().HideallView();
+	}	
+	public void filter(String searchText) {
+		DefaultTableModel dtm = (DefaultTableModel) table.getModel();
+		TableRowSorter<DefaultTableModel> trs = new TableRowSorter<DefaultTableModel>(dtm);
+		table.setRowSorter(trs);
+		trs.setRowFilter(RowFilter.regexFilter(searchText));
 	}
-	public void populatePatientTable() {
+	@Override
+	public void HideallView() {
+		this.setVisible(false);
+	}
+	@Override
+	public void ShowView() {
+		this.reload();
+		this.setVisible(true);
+	}
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+	@Override
+	public void reload() {
 		PatientList patientList = this.getMasterModel().getpL();
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		for(Patient patient : patientList.getMyList()) {
@@ -107,26 +123,6 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 			model.addRow(new Object[]{patient.getId(), fullName, patient.getGender(), age, birthDate});
 		}
 		
-	}
-	
-	public void filter(String searchText) {
-		DefaultTableModel dtm = (DefaultTableModel) table.getModel();
-		TableRowSorter<DefaultTableModel> trs = new TableRowSorter<DefaultTableModel>(dtm);
-		table.setRowSorter(trs);
-		trs.setRowFilter(RowFilter.regexFilter(searchText));
-	}
-	@Override
-	public void HideallView() {
-		this.setVisible(false);
-	}
-	@Override
-	public void ShowView() {
-		this.populatePatientTable();
-		this.setVisible(true);
-	}
-	@Override
-	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
 	}
 
 }

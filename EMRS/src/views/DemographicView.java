@@ -25,8 +25,6 @@ public class DemographicView extends JPanel implements viewinterface {
 	//tabbedPane.addTab("Profile", null, panel, null);
 	
 	public DemographicView() {
-		this.patient=patient;
-		this.homeview=homeview;
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{63, 293, 0};
 		gbl_panel.rowHeights = new int[]{77, 0};
@@ -511,6 +509,12 @@ public class DemographicView extends JPanel implements viewinterface {
 
 	@Override
 	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
 		// TODO Auto-generated method stub
 		
 	}

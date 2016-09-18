@@ -343,4 +343,13 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 		
 	}
 
+
+
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

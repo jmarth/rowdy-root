@@ -78,9 +78,9 @@ public class HomeView extends JFrame implements viewinterface{
 	public HomeView() {
 		// Models should be independent; a view should grab from a model.
 		this.model = new MasterModel();
-		pview = new AddPatientView(model);
-		fpview = new FindPatientsView(model);
-		prview = new PatientRecordView(model);
+		pview = new AddPatientView();
+		fpview = new FindPatientsView();
+		prview = new PatientRecordView();
 		ssview = new SlideShowPanel();
 		
 		setTitle("EMRS");
@@ -368,11 +368,11 @@ public class HomeView extends JFrame implements viewinterface{
 	}
 	public void ShowFindPatientsView(){
 		this.HideallView();
-		this.fpview.showview();;
+		this.fpview.ShowView();
 	}
 	public void ShowPatientRecode(){
 		this.HideallView();
-		this.prview.showview();
+		this.prview.ShowView();
 	}
 	@Override
 	public MasterModel getMasterModel() {
@@ -380,7 +380,13 @@ public class HomeView extends JFrame implements viewinterface{
 	}
 	@Override
 	public void ShowView() {
+		this.reload();
 		this.setVisible(true);
+		
+	}
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
 		
 	}
 }

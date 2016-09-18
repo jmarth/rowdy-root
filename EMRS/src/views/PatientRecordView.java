@@ -95,27 +95,28 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		
 		ChangeListener changeListener = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changeEvent) {
-		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
-		        int index = sourceTabbedPane.getSelectedIndex();
-		        String selectedTab = sourceTabbedPane.getTitleAt(index);
-		        if(selectedTab.equals(Tabs.demographics)) {
-		        	PatientRecordView.this.ShowDemoGraphics();
-		        }
-		        else if (selectedTab.equals(Tabs.allergiesAndMeds)) {
-		        	PatientRecordView.this.ShowVisitsView();
-		        }
-		        else if (selectedTab.equals(Tabs.ped)) {
-		        	PatientRecordView.this.ShowVisitsView();
-		        }
-		        else if (selectedTab.equals(Tabs.vitals)) {
-		        	PatientRecordView.this.ShowVitalsView();
-		        }
-		        else if (selectedTab.equals(Tabs.labs)) {
-		        	PatientRecordView.this.ShowLabandProceduresView();
-		        }else if(selectedTab.equals(Tabs.docs)){
-		        	PatientRecordView.this.ShowDocumentsView();
-		        }
-		        PatientRecordView.this.setSelectedIndex(index);
+			        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+			        int index = sourceTabbedPane.getSelectedIndex();
+			        String selectedTab = sourceTabbedPane.getTitleAt(index);
+			        if(selectedTab.equals(Tabs.demographics)) {
+			        	dgv.reload();
+			        }
+			        else if (selectedTab.equals(Tabs.allergiesAndMeds)) {
+			        	//TODO
+			        }
+			        else if (selectedTab.equals(Tabs.ped)) {
+			        	vsv.reload();
+			        }
+			        else if (selectedTab.equals(Tabs.vitals)) {
+			        	vtv.reload();
+			        }
+			        else if (selectedTab.equals(Tabs.labs)) {
+			        	lpv.reload();
+			        }else if(selectedTab.equals(Tabs.docs)){
+			        	dtv.reload();
+			        }else if(selectedTab.equals(Tabs.hx)){
+			        	hxv.reload();
+			        }
 		      }
 		};
 		addChangeListener(changeListener);
@@ -132,45 +133,46 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		lpv.HideallView();
 		dtv.HideallView();
 	}
-	public void ShowDemoGraphics(){
-		//TODO
-		this.HideallView();
-		this.dgv.ShowView();
-	}
 	
 	public void ShowHxView(){
 		//TODO
-		this.HideallView();
+		this.ShowView();
+		this.setSelectedIndex(1);
 		this.hxv.ShowView();
 	}
 	
 	public void ShowVisitsView(){
 		//TODO
-		this.HideallView();
+		this.ShowView();
+		this.setSelectedIndex(2);
 		this.vsv.ShowView();
 	}
 
 	public void ShowVitalsView(){
 		//TODO
-		this.HideallView();
+		this.ShowView();
+		this.setSelectedIndex(3);
 		this.vtv.ShowView();
 	}
 	
 	public void ShowLabandProceduresView(){
 		//TODO
-		this.HideallView();
+		this.ShowView();
+		this.setSelectedIndex(4);
 		this.lpv.ShowView();
 	}
 	
 	public void ShowDocumentsView(){
 		//TODO
-		this.HideallView();
+		this.ShowView();
+		this.setSelectedIndex(5);
 		this.dtv.ShowView();
 	}
 	
 	public void ShowDemographicsView() {
 		//TODO
-		this.HideallView();
+		this.ShowView();
+		this.setSelectedIndex(0);
 		this.dgv.ShowView();
 	}
 
@@ -182,6 +184,11 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	@Override
 	public void ShowView() {
 		this.setVisible(true);
+		
+	}
+
+	@Override
+	public void reload() {
 		
 	}
 }

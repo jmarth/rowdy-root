@@ -157,4 +157,10 @@ public class VisitsTabView extends JPanel implements viewinterface {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
 }
