@@ -8,6 +8,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import models.IOPMeasurement;
+import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
@@ -16,6 +17,8 @@ import java.awt.Font;
 @SuppressWarnings("serial")
 public class PanelIOP extends JPanel {
 
+	private final MasterModel masterModel;
+	
 	private JTextField textField_IOP_Value_OD;
 	private JTextField textField_IOP_Type_OD;
 	private JTextField textField_IOP_Notes_OD;
@@ -26,7 +29,10 @@ public class PanelIOP extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelIOP() {
+	public PanelIOP(MasterModel masterModel) {
+		
+		this.masterModel = masterModel;
+		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Intraocular Pressure", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[][grow][grow][grow]", "[][][]"));
 		

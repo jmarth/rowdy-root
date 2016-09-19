@@ -23,7 +23,7 @@ import models.FundusExam;
 import models.HomeModel;
 import models.Patient;
 import net.miginfocom.swing.MigLayout;
-import views.Paint;
+import views.FrameNewSketch;
 
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.MatteBorder;
@@ -196,7 +196,7 @@ public class PanelFundus extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Paint firstSketch = new Paint(hm, p, lblFundusSketch, "FundusTempSketch");
+			FrameNewSketch firstSketch = new FrameNewSketch(hm, p, lblFundusSketch, "FundusTempSketch");
 			firstSketch.setContentPane(firstSketch.getContentPane());
 			firstSketch.setSize(new Dimension(600,600));
 			firstSketch.setResizable(false);

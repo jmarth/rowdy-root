@@ -27,6 +27,7 @@ import models.Patient;
 import models.Tabs;
 import models.Visit;
 
+@SuppressWarnings("serial")
 public class VisitsTabView extends JPanel {
 	private Patient patient;
 	private List<Visit> patientVisitList = new ArrayList<Visit>();

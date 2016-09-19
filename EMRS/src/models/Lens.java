@@ -2,7 +2,6 @@ package models;
 
 import java.io.IOException;
 
-import database.ACTableGatewaySQLite;
 import database.GatewayException;
 import database.LensTableGateway;
 import database.LensTableGatewaySQLite;
@@ -214,7 +213,7 @@ public class Lens {
 		PSC_OS_Notes = pSC_OS_Notes;
 	}
 
-	public Lens loadLens() {
+	public Lens loadLens(long vid) {
 		try {
 			return myGateway.fetchLensForVisit(vid);
 		} catch (GatewayException e) {

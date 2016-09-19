@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 public class MasterModel {
 	
 	private Patient currPatient;
@@ -82,6 +84,10 @@ public class MasterModel {
 		this.sL = sL;
 	}
 
+	public List<Visit> getCurrentPatientVisitList() {
+		return vL.getMyList();
+	}
+	
 	public VisitList getvL() {
 		return vL;
 	}

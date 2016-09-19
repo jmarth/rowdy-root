@@ -6,7 +6,7 @@ public class Med {
 	private Long pid;
 	private String tradeName;// move to medication
 	private String genericName;//move to medication
-	private Drug myDrug;//move to medication
+//	private Drug myDrug;//move to medication //TODO Hm, why do we have a drug class??
 	private String directions;
 
 	

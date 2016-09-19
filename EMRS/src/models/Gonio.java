@@ -244,7 +244,7 @@ public class Gonio {
 	}
 
 
-	public Gonio loadGonio() {
+	public Gonio loadGonio(long vid) {
 		try {
 			return myGateway.fetchGonioForVisit(vid);
 		} catch (GatewayException e) {

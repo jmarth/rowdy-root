@@ -148,7 +148,7 @@ public class GlassesRx {
 		this.glassesRxNotes = glassesRxNotes;
 	}
 
-	public GlassesRx loadGlsRx() {
+	public GlassesRx loadGlsRx(long vid) {
 		try {
 			return myGateway.fetchGlassesRxForVisit(vid);
 		} catch (GatewayException e) {

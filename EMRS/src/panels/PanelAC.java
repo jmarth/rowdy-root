@@ -9,20 +9,21 @@ import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
 
 import models.AnteriorChamber;
+import models.Visit;
 import net.miginfocom.swing.MigLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Enumeration;
 
-import javax.swing.ButtonGroup;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
 
 @SuppressWarnings("serial")
 public class PanelAC extends JPanel {
 
+	private final Visit myVisit;
+	
 	private JCheckBox chkbx_ACODNormal;
 	private JCheckBox chkbx_ACOSNormal;
 
@@ -105,8 +106,10 @@ public class PanelAC extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelAC() {
+	public PanelAC(Visit myVisit) {
 
+		this.myVisit = myVisit;
+		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Anterior Chamber", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 
 		setLayout(new MigLayout("", "[grow]", "[][]"));
@@ -507,25 +510,17 @@ public class PanelAC extends JPanel {
 		return null;
 	}
 
-	public void setFields(ArrayList<Object> acCols) {
+	public void setFields() {
 
-		// will be iterating manually through the tuples
-		int i = -1;
+		//TODO OD vs OS typos/dyslexia
+		AnteriorChamber a = myVisit.getMyAC();
 
-//		System.out.println("AC cols: " + acCols.toString());
 		String temp;
 		
-		if (acCols.get(++i).toString().equals("1"))
-			chkbx_ACODNormal.setSelected(true);
-
+		chkbx_ACODNormal.setSelected(a.isACODNormal() == 1? true:false);
+		chkbx_ACOSNormal.setSelected(a.isACOSNormal() == 1? true:false);
 		
-		
-		if (acCols.get(++i).toString().equals("1"))
-			chkbx_ACOSNormal.setSelected(true);
-
-		
-		
-		temp = acCols.get(++i).toString();
+		temp = a.getACDepthOD();
 		if (temp.equals("+1")) {
 			rdbtn_ACDepthOD1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -536,9 +531,7 @@ public class PanelAC extends JPanel {
 			rdbtn_ACDepthOD4.setSelected(true);
 		}
 		
-		
-		
-		temp = acCols.get(++i).toString();
+		temp = a.getACDepthOS();
 		if (temp.equals("+1")) {
 			rdbtn_ACDepthOS1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -551,7 +544,7 @@ public class PanelAC extends JPanel {
 
 		
 		
-		temp = acCols.get(++i).toString();
+		temp = a.getACAngleOD();
 		if (temp.equals("Open"))
 			rdbtn_ACAngleODOpen.setSelected(true);
 		else if (temp.equals("Closed"))
@@ -559,7 +552,7 @@ public class PanelAC extends JPanel {
 		
 		
 		
-		temp = acCols.get(++i).toString();
+		temp = a.getACAngleOS();
 		if (temp.equals("Open"))
 			rdbtn_ACAngleOSOpen.setSelected(true);
 		else if (temp.equals("Closed"))
@@ -567,7 +560,7 @@ public class PanelAC extends JPanel {
 
 		
 		
-		temp = acCols.get(++i).toString();
+		temp = a.getPASOD();
 		if (temp.equals("Absent"))
 			rdbtn_N_PASOD.setSelected(true);
 		else if (temp.equals("Present"))
@@ -575,7 +568,7 @@ public class PanelAC extends JPanel {
 
 		
 		
-		temp = acCols.get(++i).toString();
+		temp = a.getPASOS();
 		if (temp.equals("Absent"))
 			rdbtn_N_PASOS.setSelected(true);
 		else if (temp.equals("Present"))
@@ -583,7 +576,7 @@ public class PanelAC extends JPanel {
 
 		
 		
-		temp = acCols.get(++i).toString();
+		temp = a.getACODKP();
 		if (temp.equals("+1")) {
 			rdbtn_ACODKP1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -596,7 +589,7 @@ public class PanelAC extends JPanel {
 
 		
 		
-		temp = acCols.get(++i).toString();
+		temp = a.getACOSKP();
 		if (temp.equals("+1")) {
 			rdbtn_ACOSKP1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -609,37 +602,24 @@ public class PanelAC extends JPanel {
 
 		
 		
-		if (acCols.get(++i).toString().equals("1"))
-			rdbtn_ShuntOD.setSelected(true);
-		if (acCols.get(++i).toString().equals("1"))
-			rdbtn_ScarringOD.setSelected(true);
-		if (acCols.get(++i).toString().equals("1"))
-			rdbtn_TraumaOD.setSelected(true);
-		if (acCols.get(++i).toString().equals("1"))
-			rdbtn_BlebOD.setSelected(true);
+		rdbtn_ShuntOD.setSelected(a.isShuntOD() == 1? true:false);
+		rdbtn_ScarringOD.setSelected(a.isScarringOD() == 1? true:false);
+		rdbtn_TraumaOD.setSelected(a.isTraumaOD() == 1? true:false );
+		rdbtn_BlebOD.setSelected(a.isBlebOD() == 1? true:false);
+
+		rdbtn_ShuntOS.setSelected(a.isShuntOS() == 1? true:false);
+		rdbtn_ScarringOS.setSelected(a.isScarringOS() == 1? true:false);
+		rdbtn_TraumaOS.setSelected(a.isTraumaOS() == 1? true:false );
+		rdbtn_BlebOS.setSelected(a.isBlebOS() == 1? true:false);
 
 		
 		
-		if (acCols.get(++i).toString().equals("1"))
-			rdbtn_ShuntOS.setSelected(true);
-		if (acCols.get(++i).toString().equals("1"))
-			rdbtn_ScarringOS.setSelected(true);
-		if (acCols.get(++i).toString().equals("1"))
-			rdbtn_TraumaOS.setSelected(true);
-		if (acCols.get(++i).toString().equals("1"))
-			rdbtn_BlebOS.setSelected(true);
+		rdbtn_VascularOD.setSelected(a.isVascularOD() ==1? true:false);
+		rdbtn_AvascularOD.setSelected(a.isVascularOD() == 0? true:false);
 
 		
 		
-		temp = acCols.get(++i).toString();
-		if (temp.equals("0"))
-			rdbtn_AvascularOD.setSelected(true);
-		else if (temp.equals("1"))
-			rdbtn_VascularOD.setSelected(true);
-
-		
-		
-		temp = acCols.get(++i).toString();
+		temp = a.getBlebOD_Num();
 		if (temp.equals("+1")) {
 			rdbtn_BlebOD1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -652,15 +632,12 @@ public class PanelAC extends JPanel {
 
 		
 		
-		temp = acCols.get(++i).toString();
-		if (temp.equals("0"))
-			rdbtn_AvascularOS.setSelected(true);
-		else if (temp.equals("1"))
-			rdbtn_VascularOS.setSelected(true);
+		rdbtn_VascularOS.setSelected(a.isVascularOS() ==1? true:false);
+		rdbtn_AvascularOS.setSelected(a.isVascularOS() == 0? true:false);
 
 		
 		
-		temp = acCols.get(++i).toString();
+		temp = a.getBlebOS_Num();
 		if (temp.equals("+1")) {
 			rdbtn_BlebOS1.setSelected(true);
 		} else if (temp.equals("+2")) {
@@ -673,18 +650,13 @@ public class PanelAC extends JPanel {
 
 		
 		
-		temp = acCols.get(++i).toString();
-		if (temp.equals("0"))
-			rdbtn_N_KSpindleOD.setSelected(true);
-		else if (temp.equals("1"))
-			rdbtn_Y_KSpindleOD.setSelected(true);
-
+		rdbtn_Y_KSpindleOD.setSelected(a.isKSpindleOD() ==1? true:false);
+		rdbtn_N_KSpindleOD.setSelected(a.isKSpindleOD() ==0? true:false);
+		
+		rdbtn_Y_KSpindleOS.setSelected(a.isKSpindleOS() ==1? true:false);
+		rdbtn_N_KSpindleOS.setSelected(a.isKSpindleOS() ==0? true:false);
 		
 		
-		temp = acCols.get(++i).toString();
-		if (temp.equals("0"))
-			rdbtn_N_KSpindleOS.setSelected(true);
-		else if (temp.equals("1"))
-			rdbtn_Y_KSpindleOS.setSelected(true);
+		
 	}
 }

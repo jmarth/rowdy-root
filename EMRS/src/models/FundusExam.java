@@ -2,7 +2,6 @@ package models;
 
 import java.io.IOException;
 
-import database.ACTableGatewaySQLite;
 import database.FundusTableGateway;
 import database.FundusTableGatewaySQLite;
 import database.GatewayException;
@@ -200,7 +199,7 @@ public class FundusExam {
 	public void setMaculaOSNotes(String maculaOSNotes) {
 		this.maculaOSNotes = maculaOSNotes;
 	}
-	public FundusExam loadFE(){
+	public FundusExam loadFE(long vid){
 		try {
 			return myGateway.fetchFundusExamForVisit(vid);
 		} catch (GatewayException e) {

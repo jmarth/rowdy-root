@@ -1,8 +1,6 @@
 package models;
 
 import java.io.IOException;
-
-import database.ACTableGatewaySQLite;
 import database.DistanceVisionTableGateway;
 import database.DistanceVisionTableGatewaySQLite;
 import database.GatewayException;
@@ -93,7 +91,7 @@ public class DistanceVision {
 		DVOSCC = dVOSCC;
 	}
 
-	public DistanceVision loadDV() {
+	public DistanceVision loadDV(long vid) {
 		try {
 			return myGateway.fetchDistanceVisionForVisit(vid);
 		} catch (GatewayException e) {
