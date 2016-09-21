@@ -18,9 +18,9 @@ import javax.swing.border.TitledBorder;
 import models.CL;
 import models.Visit;
 import net.miginfocom.swing.MigLayout;
-import panels.PanelAC;
-import panels.PanelLens;
-import panels.PanelPupils;
+import visitPanels.PanelAC;
+import visitPanels.PanelLens;
+import visitPanels.PanelPupils;
 
 @SuppressWarnings("serial")
 public class PanelSLE extends JPanel {

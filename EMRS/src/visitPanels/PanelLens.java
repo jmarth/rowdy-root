@@ -1,4 +1,4 @@
-package panels;
+package visitPanels;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JCheckBox;

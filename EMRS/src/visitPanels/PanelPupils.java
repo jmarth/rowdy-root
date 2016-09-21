@@ -1,4 +1,4 @@
-package panels;
+package visitPanels;
 
 import java.awt.Color;
 import java.awt.FlowLayout;

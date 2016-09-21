@@ -1,4 +1,4 @@
-package panels;
+package visitPanels;
 
 import java.util.ArrayList;
 

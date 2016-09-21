@@ -7,8 +7,8 @@ import database.SketchTableGateway;
 // 812w 9n
 public class Visit {
 	
-	final private MasterModel masterModel;
-	
+	//final private MasterModel masterModel; // have call to parent to get mastermodel, parent's parent call , etc.
+	// easier to change
 	private long id;
 	private long pid;
 	
@@ -36,9 +36,8 @@ public class Visit {
 	
 	
 
-	public Visit(MasterModel masterModel, Long id, Long pid, String chiefComplaint, String assessment, String plan, String dateCreated) {
-		
-		this.masterModel = masterModel;
+	public Visit(Long id, Long pid, String chiefComplaint, String assessment, String plan, String dateCreated) {
+		//this.masterModel = masterModel;
 		this.id = id;
 		this.pid = pid;
 		this.chiefComplaint = chiefComplaint;
@@ -48,8 +47,8 @@ public class Visit {
 	}
 
 	
-	public Visit(MasterModel masterModel, Long pid, String chiefComplaint, String plan, String assessment) {
-		this.masterModel = masterModel;
+	public Visit(Long pid, String chiefComplaint, String plan, String assessment) {
+		//this.masterModel = masterModel;
 		this.pid = pid;
 		this.chiefComplaint = chiefComplaint;
 		this.plan = plan;
@@ -236,10 +235,7 @@ public class Visit {
 		sketches.loadSketches(id);
 	}
 
-	public MasterModel getTheMasterModel() {
-		return masterModel;
-	}
-	
+		
 	public Sketches getSketches() {
 		return sketches;
 	}

@@ -25,17 +25,17 @@ import models.Visit;
 
 @SuppressWarnings("serial")
 public class PanelVisit extends JPanel {
-	
+	//
 //	private Patient patient;
 	private List<Visit> currPatientVisitList = new ArrayList<Visit>();
 	
-	private MasterModel masterModel;
+	private MasterModel masterModel; // call to parent instead TODO
 	
 //	private JScrollPane scroller;
 	
 	private JXTaskPaneContainer mainTaskPane;
 	
-	private JTabbedPane tabbedPane;	
+	private JTabbedPane tabbedPane;	// call to parent to tabbedPane, to g
 	
 //	private JPanel scrollPanel;
 	
@@ -48,7 +48,7 @@ public class PanelVisit extends JPanel {
 //	private boolean painted = false;
 
 	public PanelVisit(final JTabbedPane tabbedPane, final MasterModel masterModel) {
-		
+		(JTabbedPane)this.getParent();
 //		this.patient = patient;
 		this.masterModel = masterModel;
 		this.tabbedPane = tabbedPane;
@@ -150,4 +150,6 @@ public class PanelVisit extends JPanel {
 			mainTaskPane.add(pane);
 		}
 	}
+	
+	public void getParent()
 }

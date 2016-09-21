@@ -1,4 +1,4 @@
-package panels;
+package visitPanels;
 
 import javax.swing.AbstractButton;
 import javax.swing.Box;

@@ -1,4 +1,4 @@
-package panels;
+package visitPanels;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;

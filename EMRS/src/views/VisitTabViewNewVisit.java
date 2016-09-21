@@ -4,15 +4,15 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import net.miginfocom.swing.MigLayout;
-import panels.PanelAC;
-import panels.PanelRefraction;
-import panels.PanelDistanceVision;
-import panels.PanelFundus;
-import panels.PanelGlassesRx;
-import panels.PanelGonio;
-import panels.PanelIOP;
-import panels.PanelLens;
-import panels.PanelPupils;
+import visitPanels.PanelAC;
+import visitPanels.PanelDistanceVision;
+import visitPanels.PanelFundus;
+import visitPanels.PanelGlassesRx;
+import visitPanels.PanelGonio;
+import visitPanels.PanelIOP;
+import visitPanels.PanelLens;
+import visitPanels.PanelPupils;
+import visitPanels.PanelRefraction;
 
 import javax.swing.border.TitledBorder;
 

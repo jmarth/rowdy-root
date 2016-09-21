@@ -29,6 +29,7 @@ import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
 import org.jdesktop.swingx.JXPanel;
+import org.jdesktop.swingx.JXTaskPane;
 
 import database.GatewayException;
 import models.AnteriorChamber;
@@ -47,21 +48,22 @@ import models.Refraction;
 import models.Tabs;
 import models.Visit;
 import net.miginfocom.swing.MigLayout;
-import panels.PanelAC;
-import panels.PanelDistanceVision;
-import panels.PanelFundus;
-import panels.PanelGlassesRx;
-import panels.PanelGonio;
-import panels.PanelIOP;
-import panels.PanelLens;
-import panels.PanelPupils;
-import panels.PanelRefraction;
+import visitPanels.PanelAC;
+import visitPanels.PanelDistanceVision;
+import visitPanels.PanelFundus;
+import visitPanels.PanelGlassesRx;
+import visitPanels.PanelGonio;
+import visitPanels.PanelIOP;
+import visitPanels.PanelLens;
+import visitPanels.PanelPupils;
+import visitPanels.PanelRefraction;
 
 @SuppressWarnings("serial")
 public class PanelNewVisit extends JPanel {
 	
 	private Visit myVisit;
 	private final MasterModel masterModel;
+	private JPanel myParent;
 
 	private JTextArea textArea_CC;
 	
@@ -91,14 +93,14 @@ public class PanelNewVisit extends JPanel {
 	 * Constructor for an existing model
 	 * @wbp.parser.constructor
 	 */
-	public PanelNewVisit(Visit v, final JTabbedPane tabbedPane, final MasterModel masterModel) {
+	public PanelNewVisit(Visit v, final JTabbedPane tabbedPane, final MasterModel masterModel, JPanel myParent) {
 		
 		setBackground(CL.turq);
 		
 		myVisit = v;
 		this.tabbedPane = tabbedPane;
 		this.masterModel = masterModel;
-				
+		
 		createView();
 		
 		setVisitFields();

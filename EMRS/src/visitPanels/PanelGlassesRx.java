@@ -1,4 +1,4 @@
-package panels;
+package visitPanels;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
