@@ -59,14 +59,14 @@ import visitPanels.PanelPupils;
 import visitPanels.PanelRefraction;
 
 @SuppressWarnings("serial")
-public class PanelNewVisit extends JPanel {
+public class PanelNewVisit extends JXTaskPane implements viewinterface {
 	
-	private Visit myVisit;
-	private final MasterModel masterModel;
-	private JPanel myParent;
-
+//	private Visit myVisit; // get from index
+//	private final MasterModel masterModel;
+//	private JPanel myParent;
+	private int index;
+	
 	private JTextArea textArea_CC;
-	
 	private JTextArea textArea_Assessment;
 	private JTextArea textArea_Plan;
 
@@ -87,19 +87,18 @@ public class PanelNewVisit extends JPanel {
 	private PanelGonio panel_Gonio;
 	private PanelFundus panel_Fundus;
 	
+	
+	
 //	private , image_Gonio, image_Fundus; TODO
 	
 	/**
 	 * Constructor for an existing model
 	 * @wbp.parser.constructor
 	 */
-	public PanelNewVisit(Visit v, final JTabbedPane tabbedPane, final MasterModel masterModel, JPanel myParent) {
+	public PanelNewVisit(int index) {
 		
 		setBackground(CL.turq);
 		
-		myVisit = v;
-		this.tabbedPane = tabbedPane;
-		this.masterModel = masterModel;
 		
 		createView();
 		
@@ -113,65 +112,7 @@ public class PanelNewVisit extends JPanel {
 		panel_Buttons.setVisible(false);
 		
 		disableFields(this); // TODO Don't make it look ugly and grey
-				
-		//TODO
-		try {
 			
-			//sketches
-			
-			image_SLE = masterModel.getStg().fetchSketchesForVisitByTable(v.getId(), "sketches_sle");
-			if(sketches.size() != 0) {
-				Image img = sketches.get(0);
-				ImageIcon icon = new ImageIcon(img);
-				label_SLE_Sketch.setIcon(icon);
-			}
-			
-			sketches = (ArrayList<Image>) homeModel.getStg().fetchSketchesForVisitByTable(v.getId(), "sketches_gonio");
-			
-			if(sketches.size() != 0) {
-				Image img = sketches.get(0);
-				ImageIcon icon = new ImageIcon(img);
-				panel_Gonio.getSketchLabel().setIcon(icon);
-			}
-			
-			sketches = (ArrayList<Image>) homeModel.getStg().fetchSketchesForVisitByTable(v.getId(), "sketches_fundus");
-			
-			if(sketches.size() != 0) {
-				Image img = sketches.get(0);
-				ImageIcon icon = new ImageIcon(img);
-				panel_Fundus.getSketchLabel().setIcon(icon);
-			}
-			
-			
-			
-			populateVisitPanel(visitCols); // this panel
-			
-			//get db rows in object list for panels from database to populate
-			ArrayList<Object> visitCols = (ArrayList<Object>) homeModel.getVtg().fetchVisitsCols(v.getId());
-			ArrayList<Object> dvCols = (ArrayList<Object>) homeModel.getDvtg().fetchDistanceVisionColsForVisit(v.getId());
-			ArrayList<Object> rxCols = (ArrayList<Object>) homeModel.getGlsRxTG().fetchGlassesRxColsForVisit(v.getId());
-			ArrayList<Object> refractCols = (ArrayList<Object>) homeModel.getRefractionTG().fetchRefractionsColsForVisit(v.getId());
-			ArrayList<Object> pupilsCols = (ArrayList<Object>) homeModel.getPupilsTG().fetchPupilsColsForVisit(v.getId());
-			ArrayList<Object> acCols = (ArrayList<Object>) homeModel.getaCTG().fetchACColsForVisit(v.getId());
-			ArrayList<Object> lensCols = (ArrayList<Object>) homeModel.getLensTG().fetchLensColsForVisit(v.getId());
-			ArrayList<Object> iopCols = (ArrayList<Object>) homeModel.getIopTG().fetchIOPColsForVisit(v.getId());
-			ArrayList<Object> gonioCols = (ArrayList<Object>) homeModel.getGonioTG().fetchGonioForVisit(v.getId());
-			ArrayList<Object> fundusCols = (ArrayList<Object>) homeModel.getFundusTG().fetchFundusExamsForVisit(v.getId());
-//				System.out.println("VISIT ID = " + v.getId());
-
-			populateDVPanel(dvCols);
-			populateGlassesRxPanel(rxCols);
-			populateRefractionPanel(refractCols);
-			panel_Pupils.setFields(pupilsCols);
-			panel_AC.setFields(acCols);
-			panel_Lens.setFields(lensCols);
-			panel_IOP.setFields(iopCols);
-			panel_Gonio.setFields(gonioCols);
-			panel_Fundus.setFields(fundusCols);
-			
-		} catch (GatewayException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -564,5 +505,35 @@ public class PanelNewVisit extends JPanel {
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new CancelListener());
 		panel_Buttons.add(btnCancel);
+	}
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return ((HomeView)this.getParent()).getHomeView();
 	}
 }

@@ -24,18 +24,18 @@ import models.Tabs;
 import models.Visit;
 
 @SuppressWarnings("serial")
-public class PanelVisit extends JPanel {
+public class MasterVisit extends JPanel implements viewinterface {
 	//
 //	private Patient patient;
-	private List<Visit> currPatientVisitList = new ArrayList<Visit>();
+//	private List<Visit> currPatientVisitList = new ArrayList<Visit>();
 	
-	private MasterModel masterModel; // call to parent instead TODO
+//	private MasterModel masterModel; // call to parent instead TODO
 	
 //	private JScrollPane scroller;
 	
 	private JXTaskPaneContainer mainTaskPane;
 	
-	private JTabbedPane tabbedPane;	// call to parent to tabbedPane, to g
+//	private JTabbedPane tabbedPane;	// call to parent to tabbedPane, to g
 	
 //	private JPanel scrollPanel;
 	
@@ -47,7 +47,7 @@ public class PanelVisit extends JPanel {
 	
 //	private boolean painted = false;
 
-	public PanelVisit(final JTabbedPane tabbedPane, final MasterModel masterModel) {
+	public MasterVisit(final JTabbedPane tabbedPane, final MasterModel masterModel) {
 		(JTabbedPane)this.getParent();
 //		this.patient = patient;
 		this.masterModel = masterModel;
@@ -153,3 +153,33 @@ public class PanelVisit extends JPanel {
 	
 	public void getParent()
 }
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
