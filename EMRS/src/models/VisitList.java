@@ -2,16 +2,24 @@ package models;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import database.VisitTableGateway;
 import database.VisitTableGatewaySQLite;
 import database.GatewayException;
 
+/**
+ * Keeps a list of visits for the current active patient
+ * @author Charles
+ *
+ */
 public class VisitList {
 
 	private VisitTableGateway myGateway;
 	private List<Visit> myList;
+	private Map<Long, Visit> myVidMap;
 
 	/**
 	 * Construct a new VisitList
@@ -38,10 +46,14 @@ public class VisitList {
 
 	public void loadMyListForPatient(Patient p) throws GatewayException {
 
+		myVidMap = new HashMap<Long, Visit>();
+		
 		try {
 			myList = myGateway.fetchVisitsForPatient(p);
+			
 			for(Visit e:myList){
 				e.loadVisitFromPatient();
+				myVidMap.put(e.getId(), e);
 			}
 			
 
@@ -57,6 +69,10 @@ public class VisitList {
 		this.myList.add(a);
 
 		return a.getId();
+	}
+	
+	public Visit getVisitById(long id) {
+		return myVidMap.get(id);
 	}
 
 	public void update(Visit a) throws GatewayException {

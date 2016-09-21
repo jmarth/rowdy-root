@@ -2,7 +2,6 @@ package models;
 
 import java.io.IOException;
 
-import database.ACTableGatewaySQLite;
 import database.GatewayException;
 import database.GlassesRxTableGateway;
 import database.GlassesRxTableGatewaySQLite;
@@ -149,9 +148,9 @@ public class GlassesRx {
 		this.glassesRxNotes = glassesRxNotes;
 	}
 
-	public GlassesRx loadGlsRx() {
+	public GlassesRx loadGlsRx(long vid) {
 		try {
-			return myGateway.fetchAnteriorChamberForVisit(vid);
+			return myGateway.fetchGlassesRxForVisit(vid);
 		} catch (GatewayException e) {
 			System.err.println("From AnteriorChamber, could not fetch from DB");
 //			e.printStackTrace();

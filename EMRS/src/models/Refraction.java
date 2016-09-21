@@ -192,7 +192,7 @@ public class Refraction {
 		CC_OS_Axis = cC_OS_Axis;
 	}
 
-	public Refraction loadRefraction() {
+	public Refraction loadRefraction(long vid) {
 		try {
 			return myGateway.fetchRefractionForVisit(vid);
 		} catch (GatewayException e) {

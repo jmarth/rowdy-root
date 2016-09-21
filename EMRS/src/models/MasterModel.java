@@ -1,6 +1,7 @@
 package models;
 
 import database.GatewayException;
+import java.util.List;
 
 public class MasterModel {
 	
@@ -8,7 +9,7 @@ public class MasterModel {
 	
 	private Hx hx;
 	//private HxList hxL;
-		
+	
 	private AllergyList aL;
 	private MedList mL;
 	private DocumentList dL;
@@ -97,6 +98,10 @@ public class MasterModel {
 		this.sL = sL;
 	}
 
+	public List<Visit> getCurrentPatientVisitList() {
+		return vL.getMyList();
+	}
+	
 	public VisitList getvL() {
 		return vL;
 	}

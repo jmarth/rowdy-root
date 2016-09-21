@@ -348,7 +348,7 @@ public class AnteriorChamber {
 		KSpindleOS = kSpindleOS;
 	}
 
-	public AnteriorChamber loadAC(){
+	public AnteriorChamber loadAC(long vid){
 		try {
 			return myGateway.fetchAnteriorChamberForVisit(vid);
 		} catch (GatewayException e) {

@@ -341,7 +341,7 @@ public class HomeView extends JFrame implements viewinterface{
 		return fpview;
 	}
 	
-	@Override
+	@Override // hide all children
 	public void HideallView() {
 		this.fpview.HideallView();
 		this.prview.HideallView();

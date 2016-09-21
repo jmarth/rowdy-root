@@ -10,9 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.IOPList;
 import models.IOPMeasurement;
-import models.Patient;
 
 public class IOPTableGatewaySQLite implements IOPTableGateway {
 	
@@ -136,10 +134,12 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 				iops.add(iop);
 				
 			}
+			
 			return iops;
 
 		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
+			
+			//throw new GatewayException(e.getMessage());
 		} finally {
 			//clean up
 			try {
@@ -235,6 +235,7 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 		ResultSet rs = null;
 		
 		try {
+			
 			//fetch parts
 			st = conn.prepareStatement("select * from iops where vid=?");
 			st.setLong(1, id);
@@ -275,12 +276,5 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 		return row;
 	
 	}
-
-	@Override
-	public List<IOPMeasurement> fetchIOPMeasurementsForPatient(Patient p) throws GatewayException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 }

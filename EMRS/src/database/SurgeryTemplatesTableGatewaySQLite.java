@@ -29,7 +29,7 @@ public class SurgeryTemplatesTableGatewaySQLite implements SurgeryTemplatesTable
 	
 	
 	
-	public List<SurgeryTemplate> fetchAllSurgeries() throws GatewayException {
+	public List<SurgeryTemplate> fetchAllSurgeryTemplates() throws GatewayException {
 		ArrayList<SurgeryTemplate> surgeries = new ArrayList<SurgeryTemplate>();
 		
 		PreparedStatement statement = null;
@@ -101,6 +101,24 @@ public class SurgeryTemplatesTableGatewaySQLite implements SurgeryTemplatesTable
 		}
 		
 		return newID;
+	}
+
+
+
+
+	@Override
+	public void updateSurgeryTemplate(SurgeryTemplate a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void removeSurgeryTemplate(long id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

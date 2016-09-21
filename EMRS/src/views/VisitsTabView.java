@@ -28,7 +28,9 @@ import models.Patient;
 import models.Tabs;
 import models.Visit;
 
-public class VisitsTabView extends JPanel implements viewinterface {
+
+@SuppressWarnings("serial")
+public class VisitsTabView extends JPanel implements viewinterface { 
 	private Patient patient;
 	private List<Visit> patientVisitList = new ArrayList<Visit>();
 	private HomeModel homeModel;
@@ -162,5 +164,11 @@ public class VisitsTabView extends JPanel implements viewinterface {
 	public void reload() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

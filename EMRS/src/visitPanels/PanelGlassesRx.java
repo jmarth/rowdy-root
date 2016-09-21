@@ -1,4 +1,4 @@
-package panels;
+package visitPanels;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -6,6 +6,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
 import models.GlassesRx;
+import models.Visit;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.border.MatteBorder;
 import java.awt.Color;
@@ -13,6 +14,8 @@ import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class PanelGlassesRx extends JPanel {
+	
+	private Visit myVisit;
 
 	private JTextField textField_Rx_OD_Sphere;
 	private JTextField textField_Rx_OD_Cyl;
@@ -27,7 +30,9 @@ public class PanelGlassesRx extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelGlassesRx() {
+	public PanelGlassesRx(Visit myVisit) {
+		
+		this.myVisit = myVisit;
 		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Glasses Rx", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[][grow][grow][grow][grow]", "[][][][]"));
@@ -89,21 +94,19 @@ public class PanelGlassesRx extends JPanel {
 		add(textField_GlassesRxNotes, "cell 1 3 4 1,growx");
 		textField_GlassesRxNotes.setColumns(20);
 	}
-
-	public GlassesRx createNewGlassesRx() {
+	
+	public void setFields() {
 		
-		GlassesRx glsRx = new GlassesRx(
-				textField_Rx_OD_Sphere.getText(),
-				textField_Rx_OD_Cyl.getText(),
-				textField_Rx_OD_Axis.getText(),
-				textField_Rx_OD_Add.getText(),
-				textField_Rx_OS_Sphere.getText(),
-				textField_Rx_OS_Cyl.getText(),
-				textField_Rx_OS_Axis.getText(),
-				textField_Rx_OS_Add.getText(),
-				textField_GlassesRxNotes.getText()
-				);
+		GlassesRx g = myVisit.getMyGlsRx();
 		
-		return glsRx;
+		textField_Rx_OD_Sphere.setText(g.getRx_OD_Sphere());
+		textField_Rx_OD_Cyl.setText(g.getRx_OD_Cyl());
+		textField_Rx_OD_Axis.setText(g.getRx_OD_Axis());
+		textField_Rx_OD_Add.setText(g.getRx_OD_Add());
+		textField_Rx_OS_Sphere.setText(g.getRx_OS_Sphere());
+		textField_Rx_OS_Cyl.setText(g.getRx_OS_Cyl());
+		textField_Rx_OS_Axis.setText(g.getRx_OS_Axis());
+		textField_Rx_OS_Add.setText(g.getRx_OS_Add());
+		textField_GlassesRxNotes.setText(g.getGlassesRxNotes());
 	}
 }

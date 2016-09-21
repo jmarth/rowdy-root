@@ -1,10 +1,8 @@
 package database;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import models.DistanceVision;
-import models.Patient;
 
 public interface DistanceVisionTableGateway {
 	

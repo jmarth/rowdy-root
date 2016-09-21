@@ -2,7 +2,6 @@ package models;
 
 import java.io.IOException;
 
-import database.ACTableGatewaySQLite;
 import database.GatewayException;
 import database.PupilsTableGateway;
 import database.PupilsTableGatewaySQLite;
@@ -190,7 +189,7 @@ public class Pupils {
 		this.isLeftSynechia = isLeftSynechia;
 	}
 
-	public Pupils loadPupils() {
+	public Pupils loadPupils(long vid) {
 		try {
 			return myGateway.fetchPupilsForVisit(vid);
 		} catch (GatewayException e) {

@@ -36,66 +36,6 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 	}
 	
 	/**
-	 * Fetch all visits from DB
-	 * @return list of visits
-	 * @throws GatewayException
-	 */
-	public List<Visit> fetchVisits() throws GatewayException {
-		
-		ArrayList<Visit> visits = new ArrayList<Visit>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			System.out.print("getting info");
-			
-			st = conn.prepareStatement("select * from visits");
-			rs = st.executeQuery();
-			
-			System.out.print("\ninfo loaded");
-			
-			//add each to list of parts to return
-			while(rs.next()) {
-				
-				System.out.print("\ncreating visit object");
-				
-				Visit v = new Visit(rs.getLong("id"),
-						rs.getLong("pid"),
-						rs.getString("chiefComplaint"),
-						rs.getString("assessment"),
-						rs.getString("plan"),
-						rs.getString("dateCreated")
-						);
-				
-				System.out.print("\nvisit object created");
-				
-				visits.add(v);
-				
-				System.out.print("\nvisit object added");
-				
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return visits;
-	}
-	
-	/**
 	 * Fetch visits from DB for patient
 	 * @return list of visits for patient
 	 * @throws GatewayException
@@ -254,6 +194,18 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		}
 		
 		return row;
+	}
+
+	@Override
+	public void updateVisit(Visit a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeVisit(long id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

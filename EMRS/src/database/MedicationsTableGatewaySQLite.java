@@ -42,6 +42,8 @@ public class MedicationsTableGatewaySQLite implements MedicationsTableGateway {
 		
 	}
 
+	//TODO Do we need to fetch all the medications, like, ALL of them?
+
 	@Override
 	public List<Med> fetchMeds() throws GatewayException {
 		ArrayList<Med> meds = new ArrayList<Med>();
@@ -184,7 +186,7 @@ public class MedicationsTableGatewaySQLite implements MedicationsTableGateway {
 	@Override
 	public void updateMed(Med m) throws GatewayException {
 		PreparedStatement st = null;
-		ResultSet rs = null;
+//		ResultSet rs = null;
 		
 		try {
 			st = conn.prepareStatement("UPDATE medications SET"

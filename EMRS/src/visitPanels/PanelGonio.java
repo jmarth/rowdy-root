@@ -1,4 +1,4 @@
-package panels;
+package visitPanels;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,10 +18,9 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 import models.Gonio;
-import models.HomeModel;
-import models.Patient;
+import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
-import views.Paint;
+import views.FrameNewSketch;
 
 import javax.swing.AbstractButton;
 
@@ -33,7 +32,9 @@ import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
 public class PanelGonio extends JPanel {
-		
+	
+	private final MasterModel masterModel;
+	
 	private JRadioButton rdbtnYHFHA;
 	private JRadioButton rdbtnNHFHA;
 	
@@ -107,12 +108,8 @@ public class PanelGonio extends JPanel {
 	private final NoneSelectedButtonGroup bgOSPig = new NoneSelectedButtonGroup();
 	private final NoneSelectedButtonGroup bgOSAntPig = new NoneSelectedButtonGroup();
 	
-
 	
-	private HomeModel hm;
-	private Patient p;
-	
-	private JPanel panel_1 = new JPanel();
+	private JPanel panel_Sketch = new JPanel();
 	
 	/*
 	public void clearSelections(Container container) {
@@ -142,10 +139,9 @@ public class PanelGonio extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelGonio(HomeModel hm, Patient p) {
+	public PanelGonio (MasterModel masterModel) {
 
-		this.hm = hm;
-		this.p = p;
+		this.masterModel = masterModel;
 		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Gonio", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[grow]", "[][][][33px,grow]"));
@@ -472,13 +468,13 @@ public class PanelGonio extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			Paint firstSketch = new Paint(hm, p, lblGonioSketch, "GonioTempSketch");
+			FrameNewSketch firstSketch = new FrameNewSketch(lblGonioSketch, "GonioTempSketch");
 			firstSketch.setContentPane(firstSketch.getContentPane());
 			firstSketch.setSize(new Dimension(600,600));
 			firstSketch.setResizable(false);
 			
-			panel_1 = (JPanel) firstSketch.getContentPane();
-			panel_1.setVisible(true);
+			panel_Sketch = (JPanel) firstSketch.getContentPane();
+			panel_Sketch.setVisible(true);
 			firstSketch.setVisible(true);
 		}
 			

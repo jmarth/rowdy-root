@@ -1,12 +1,14 @@
 package models;
 
 import java.io.File;
-import java.util.List;
 
 import database.GatewayException;
+import database.SketchTableGateway;
 // 812w 9n
 public class Visit {
 	
+	//final private MasterModel masterModel; // have call to parent to get mastermodel, parent's parent call , etc.
+	// easier to change
 	private long id;
 	private long pid;
 	
@@ -15,7 +17,7 @@ public class Visit {
 	private String assessment;
 	private String plan;
 	
-	private AnteriorChamber myAC;
+	private AnteriorChamber myAC; 
 	private DistanceVision myDV;
 	private FundusExam myFE;
 	private GlassesRx myGlsRx;
@@ -27,12 +29,15 @@ public class Visit {
 	//TODO private AScan myAScan;
 	//TODO private Keratometry myK;
 	
+	private Sketches sketches;
+	
+	
 	private File sketchTemp;
 	
 	
 
 	public Visit(Long id, Long pid, String chiefComplaint, String assessment, String plan, String dateCreated) {
-		super();
+		//this.masterModel = masterModel;
 		this.id = id;
 		this.pid = pid;
 		this.chiefComplaint = chiefComplaint;
@@ -43,7 +48,7 @@ public class Visit {
 
 	
 	public Visit(Long pid, String chiefComplaint, String plan, String assessment) {
-		super();
+		//this.masterModel = masterModel;
 		this.pid = pid;
 		this.chiefComplaint = chiefComplaint;
 		this.plan = plan;
@@ -210,27 +215,28 @@ public class Visit {
 		this.sketchTemp = sketchTemp;
 	}
 
-
 	public void loadVisitFromPatient() {
 		//TODO load all the stuff
-		
-		this.myAC = myAC.loadAC();
-		this.myDV = myDV.loadDV();
-		this.myFE = myFE.loadFE();
-		this.myGlsRx = myGlsRx.loadGlsRx();
-		this.myGonio = myGonio.loadGonio();
-		this.myLens = myLens.loadLens();
-		this.myPupils = myPupils.loadPupils();
-		this.myRefraction = myRefraction.loadRefraction();
+		//TODO how it know the vid??? it not created before??
+		this.myAC = myAC.loadAC(id);
+		this.myDV = myDV.loadDV(id);
+		this.myFE = myFE.loadFE(id);
+		this.myGlsRx = myGlsRx.loadGlsRx(id);
+		this.myGonio = myGonio.loadGonio(id);
+		this.myLens = myLens.loadLens(id);
+		this.myPupils = myPupils.loadPupils(id);
+		this.myRefraction = myRefraction.loadRefraction(id);
 		try {
 			this.myIOPList.loadMyListForVisit(id);
 		} catch (GatewayException e) {
 			System.err.println("From Visit, load a model fail");
 		}
 		
-//		
-//		
-//		
+		sketches.loadSketches(id);
 	}
 
+		
+	public Sketches getSketches() {
+		return sketches;
+	}
 }

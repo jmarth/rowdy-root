@@ -1,8 +1,52 @@
 package views;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.TitledBorder;
 
+import org.jdesktop.swingx.JXPanel;
+import org.jdesktop.swingx.JXTaskPane;
+
+import database.GatewayException;
+import models.AnteriorChamber;
+import models.CL;
+import models.DistanceVision;
+import models.FundusExam;
+import models.GlassesRx;
+import models.Gonio;
+import models.HomeModel;
+import models.IOPMeasurement;
+import models.Lens;
+import models.MasterModel;
+import models.Patient;
+import models.Pupils;
+import models.Refraction;
+import models.Tabs;
+import models.Visit;
 import net.miginfocom.swing.MigLayout;
 import visitPanels.PanelAC;
 import visitPanels.PanelDistanceVision;
@@ -14,55 +58,15 @@ import visitPanels.PanelLens;
 import visitPanels.PanelPupils;
 import visitPanels.PanelRefraction;
 
-import javax.swing.border.TitledBorder;
-
-import database.GatewayException;
-import models.FundusExam;
-import models.GlassesRx;
-import models.Gonio;
-import models.HomeModel;
-import models.IOPMeasurement;
-import models.Lens;
-import models.Patient;
-import models.Pupils;
-import models.Refraction;
-import models.Tabs;
-import models.AnteriorChamber;
-import models.CL;
-import models.DistanceVision;
-import models.Visit;
-
-import javax.swing.JLabel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-
-import javax.swing.JTextField;
-import javax.swing.JTabbedPane;
-import javax.swing.JComboBox;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JCheckBox;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.swing.JButton;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.BorderLayout;
-import javax.swing.border.MatteBorder;
-
 @SuppressWarnings("serial")
-public class VisitTabViewNewVisit extends JPanel {
+public class PanelNewVisit extends JPanel {
+	
+	private Visit myVisit;
+	private final MasterModel masterModel;
+	private JPanel myParent;
 
 	private JTextArea textArea_CC;
-		
+	
 	private JTextArea textArea_Assessment;
 	private JTextArea textArea_Plan;
 
@@ -70,126 +74,126 @@ public class VisitTabViewNewVisit extends JPanel {
 	private JButton btnSave;
 	private JButton btnCancel;
 	
-	private Patient patient;
 	private JTabbedPane tabbedPane;
-	private HomeModel homeModel;
 	
-	private JLabel label_SLE_Sketch;
 
 	private PanelDistanceVision panel_DV;
-
 	private PanelGlassesRx panel_GlassesRx;
-
 	private PanelRefraction panel_Refraction;
-
-	private PanelPupils panel_SLE_Pupils;
-
-	private PanelAC panel_SLE_AC;
-
-	private PanelLens panel_SLE_Lens;
+	
+	private PanelSLE panel_SLE;
 
 	private PanelIOP panel_IOP;
-
 	private PanelGonio panel_Gonio;
-
 	private PanelFundus panel_Fundus;
 	
-	private JPanel panel_1 = new JPanel();
+//	private , image_Gonio, image_Fundus; TODO
 	
 	/**
-	 * Create the panel.
-	 */
-	/**
+	 * Constructor for an existing model
 	 * @wbp.parser.constructor
 	 */
-	public VisitTabViewNewVisit(Visit v, Patient patient, final JTabbedPane tabbedPane, HomeModel homeModel, boolean forJXTaskPane) {
+	public PanelNewVisit(Visit v, final JTabbedPane tabbedPane, final MasterModel masterModel, JPanel myParent) {
+		
 		setBackground(CL.turq);
 		
-		this.patient = patient;
+		myVisit = v;
 		this.tabbedPane = tabbedPane;
-		this.homeModel = homeModel;
-		System.out.println("Visit id = " + v.getId() + " pid " + patient.getId());
+		this.masterModel = masterModel;
+		
 		createView();
 		
+		setVisitFields();
+		panel_DV.setFields();
+		panel_GlassesRx.setFields();
+		panel_Refraction.setFields();
+		
+		panel_SLE.setFields();
+		
 		panel_Buttons.setVisible(false);
-		//btnSave.setVisible(false);
-		//btnCancel.setVisible(false);
 		
-		disableFields(this);
-		
-		if (forJXTaskPane) {
-			// will be for the JXTaskPane
-			// Note, this boolean will probably not be used.
-			
-			//TODO
-			try {
-				//sketches
-				ArrayList<Image> sketches = (ArrayList<Image>) homeModel.getStg().fetchSketchesForVisitByTable(v.getId(), "sketches_sle");
-				if(sketches.size() != 0) {
-					Image img = sketches.get(0);
-					ImageIcon icon = new ImageIcon(img);
-					label_SLE_Sketch.setIcon(icon);
-				}
-				sketches = (ArrayList<Image>) homeModel.getStg().fetchSketchesForVisitByTable(v.getId(), "sketches_gonio");
-				if(sketches.size() != 0) {
-					Image img = sketches.get(0);
-					ImageIcon icon = new ImageIcon(img);
-					panel_Gonio.getSketchLabel().setIcon(icon);
-				}
-				sketches = (ArrayList<Image>) homeModel.getStg().fetchSketchesForVisitByTable(v.getId(), "sketches_fundus");
-				if(sketches.size() != 0) {
-					Image img = sketches.get(0);
-					ImageIcon icon = new ImageIcon(img);
-					panel_Fundus.getSketchLabel().setIcon(icon);
-				}
-				//get db rows in object list for panels from database to populate
-				ArrayList<Object> visitCols = (ArrayList<Object>) homeModel.getVtg().fetchVisitsCols(v.getId());
-				ArrayList<Object> dvCols = (ArrayList<Object>) homeModel.getDvtg().fetchDistanceVisionColsForVisit(v.getId());
-				ArrayList<Object> rxCols = (ArrayList<Object>) homeModel.getGlsRxTG().fetchGlassesRxColsForVisit(v.getId());
-				ArrayList<Object> refractCols = (ArrayList<Object>) homeModel.getRefractionTG().fetchRefractionsColsForVisit(v.getId());
-				ArrayList<Object> pupilsCols = (ArrayList<Object>) homeModel.getPupilsTG().fetchPupilsColsForVisit(v.getId());
-				ArrayList<Object> acCols = (ArrayList<Object>) homeModel.getaCTG().fetchACColsForVisit(v.getId());
-				ArrayList<Object> lensCols = (ArrayList<Object>) homeModel.getLensTG().fetchLensColsForVisit(v.getId());
-				ArrayList<Object> iopCols = (ArrayList<Object>) homeModel.getIopTG().fetchIOPColsForVisit(v.getId());
-				ArrayList<Object> gonioCols = (ArrayList<Object>) homeModel.getGonioTG().fetchGonioForVisit(v.getId());
-				ArrayList<Object> fundusCols = (ArrayList<Object>) homeModel.getFundusTG().fetchFundusExamsForVisit(v.getId());
-//				System.out.println("VISIT ID = " + v.getId());
-
-				populateVisitPanel(visitCols); // this panel
-				populateDVPanel(dvCols);
-				populateGlassesRxPanel(rxCols);
-				populateRefractionPanel(refractCols);
-				panel_SLE_Pupils.setFields(pupilsCols);
-				panel_SLE_AC.setFields(acCols);
-				panel_SLE_Lens.setFields(lensCols);
-				panel_IOP.setFields(iopCols);
-				panel_Gonio.setFields(gonioCols);
-				panel_Fundus.setFields(fundusCols);
+		disableFields(this); // TODO Don't make it look ugly and grey
 				
-			} catch (GatewayException e) {
-				e.printStackTrace();
+		//TODO
+		try {
+			
+			//sketches
+			
+			image_SLE = masterModel.getStg().fetchSketchesForVisitByTable(v.getId(), "sketches_sle");
+			if(sketches.size() != 0) {
+				Image img = sketches.get(0);
+				ImageIcon icon = new ImageIcon(img);
+				label_SLE_Sketch.setIcon(icon);
 			}
 			
-		} else {
+			sketches = (ArrayList<Image>) homeModel.getStg().fetchSketchesForVisitByTable(v.getId(), "sketches_gonio");
 			
-			// never used... can probably get rid of boolean and this
-			// keeping boolean for now, maybe useful for sometime?
+			if(sketches.size() != 0) {
+				Image img = sketches.get(0);
+				ImageIcon icon = new ImageIcon(img);
+				panel_Gonio.getSketchLabel().setIcon(icon);
+			}
 			
+			sketches = (ArrayList<Image>) homeModel.getStg().fetchSketchesForVisitByTable(v.getId(), "sketches_fundus");
+			
+			if(sketches.size() != 0) {
+				Image img = sketches.get(0);
+				ImageIcon icon = new ImageIcon(img);
+				panel_Fundus.getSketchLabel().setIcon(icon);
+			}
+			
+			
+			
+			populateVisitPanel(visitCols); // this panel
+			
+			//get db rows in object list for panels from database to populate
+			ArrayList<Object> visitCols = (ArrayList<Object>) homeModel.getVtg().fetchVisitsCols(v.getId());
+			ArrayList<Object> dvCols = (ArrayList<Object>) homeModel.getDvtg().fetchDistanceVisionColsForVisit(v.getId());
+			ArrayList<Object> rxCols = (ArrayList<Object>) homeModel.getGlsRxTG().fetchGlassesRxColsForVisit(v.getId());
+			ArrayList<Object> refractCols = (ArrayList<Object>) homeModel.getRefractionTG().fetchRefractionsColsForVisit(v.getId());
+			ArrayList<Object> pupilsCols = (ArrayList<Object>) homeModel.getPupilsTG().fetchPupilsColsForVisit(v.getId());
+			ArrayList<Object> acCols = (ArrayList<Object>) homeModel.getaCTG().fetchACColsForVisit(v.getId());
+			ArrayList<Object> lensCols = (ArrayList<Object>) homeModel.getLensTG().fetchLensColsForVisit(v.getId());
+			ArrayList<Object> iopCols = (ArrayList<Object>) homeModel.getIopTG().fetchIOPColsForVisit(v.getId());
+			ArrayList<Object> gonioCols = (ArrayList<Object>) homeModel.getGonioTG().fetchGonioForVisit(v.getId());
+			ArrayList<Object> fundusCols = (ArrayList<Object>) homeModel.getFundusTG().fetchFundusExamsForVisit(v.getId());
+//				System.out.println("VISIT ID = " + v.getId());
+
+			populateDVPanel(dvCols);
+			populateGlassesRxPanel(rxCols);
+			populateRefractionPanel(refractCols);
+			panel_Pupils.setFields(pupilsCols);
+			panel_AC.setFields(acCols);
+			panel_Lens.setFields(lensCols);
+			panel_IOP.setFields(iopCols);
+			panel_Gonio.setFields(gonioCols);
+			panel_Fundus.setFields(fundusCols);
+			
+		} catch (GatewayException e) {
+			e.printStackTrace();
 		}
-		
 	}
+	
 	/**
-	 *  Used for an actual new visit only
+	 * For a completely new Visit
+	 * @param tabbedPane
+	 * @param masterModel
 	 */
-	public VisitTabViewNewVisit(Patient patient, final JTabbedPane tabbedPane, HomeModel homeModel) {
-		
-		this.patient = patient;
+	public PanelNewVisit(JTabbedPane tabbedPane, MasterModel masterModel) {
+		myVisit = null; //TODO hmm, work this out, isn't clear, for completely new visit, its it need connection?
 		this.tabbedPane = tabbedPane;
-		this.homeModel = homeModel;
+		this.masterModel = masterModel;
 		
 		createView();
 	}
 	
+	public void setVisitFields() {
+		
+		textArea_CC.setText(myVisit.getChiefComplaint());
+		textArea_Assessment.setText(myVisit.getAssessment());
+		textArea_Plan.setText(myVisit.getPlan());
+	}
+
 	public void populateDVPanel(ArrayList<Object> dvCols) {
 		
 		ArrayList<Component> clist = new ArrayList<Component>();
@@ -219,6 +223,7 @@ public class VisitTabViewNewVisit extends JPanel {
 			
 		
 	}
+	
 	public void populateRefractionPanel(ArrayList<Object> refractCols) {
 		
 		ArrayList<Component> clist = new ArrayList<Component>();
@@ -302,7 +307,7 @@ public class VisitTabViewNewVisit extends JPanel {
 			
 			try {
 				
-				vid = homeModel.getVtg().insertVisit(visit);
+				vid = masterModel.getVtg().insertVisit(visit);
 				
 				DistanceVision dv = panel_DV.createNewDistanceVision();
 				dv.setVid(vid);
@@ -313,13 +318,13 @@ public class VisitTabViewNewVisit extends JPanel {
 				Refraction r = panel_Refraction.createNewRefraction();
 				r.setVid(vid);
 				
-				Pupils p = panel_SLE_Pupils.createNewPupils();
+				Pupils p = panel_Pupils.createNewPupils();
 				p.setVid(vid);
 				
-				AnteriorChamber ac = panel_SLE_AC.createNewAC();
+				AnteriorChamber ac = panel_AC.createNewAC();
 				ac.setVid(vid);
 				
-				Lens l = panel_SLE_Lens.createNewLens();
+				Lens l = panel_Lens.createNewLens();
 				l.setVid(vid);
 				
 				IOPMeasurement iop = panel_IOP.createNewIOP();
@@ -333,24 +338,24 @@ public class VisitTabViewNewVisit extends JPanel {
 				
 				
 				if (label_SLE_Sketch.getIcon() != null){
-					homeModel.getStg().insertSketchToTable(new File("firstSketch.png"), vid, "sketches_sle");
+					masterModel.getStg().insertSketchToTable(new File("firstSketch.png"), vid, "sketches_sle");
 				}
 				if (panel_Gonio.getSketchLabel().getIcon() != null){
-					homeModel.getStg().insertSketchToTable(new File("GonioTempSketch.png"), vid, "sketches_gonio");
+					masterModel.getStg().insertSketchToTable(new File("GonioTempSketch.png"), vid, "sketches_gonio");
 				}
 				if (panel_Fundus.getSketchLabel().getIcon() != null){
-					homeModel.getStg().insertSketchToTable(new File("FundusTempSketch.png"), vid, "sketches_fundus");
+					masterModel.getStg().insertSketchToTable(new File("FundusTempSketch.png"), vid, "sketches_fundus");
 				}
 				
-				long dv_id = homeModel.getDvtg().insertDistanceVision(dv);
-				long glsRx_id = homeModel.getGlsRxTG().insertGlassesRx(glsRx);
-				long r_id = homeModel.getRefractionTG().insertRefraction(r);
-				long p_id = homeModel.getPupilsTG().insertPupils(p);
-				long ac_id = homeModel.getaCTG().insertAnteriorChamber(ac);
-				long lens_id = homeModel.getLensTG().insertLens(l);
-				long iop_id = homeModel.getIopTG().insertIOPMeasurement(iop);
-				long g_id = homeModel.getGonioTG().insertGonio(g);
-				long fun_id = homeModel.getFundusTG().insertFundusExam(f);
+				long dv_id = masterModel.getDvtg().insertDistanceVision(dv);
+				long glsRx_id = masterModel.getGlsRxTG().insertGlassesRx(glsRx);
+				long r_id = masterModel.getRefractionTG().insertRefraction(r);
+				long p_id = masterModel.getPupilsTG().insertPupils(p);
+				long ac_id = masterModel.getaCTG().insertAnteriorChamber(ac);
+				long lens_id = masterModel.getLensTG().insertLens(l);
+				long iop_id = masterModel.getIopTG().insertIOPMeasurement(iop);
+				long g_id = masterModel.getGonioTG().insertGonio(g);
+				long fun_id = masterModel.getFundusTG().insertFundusExam(f);
 				
 				//set its id to what the DB gave us
 				dv.setId(dv_id);
@@ -365,7 +370,7 @@ public class VisitTabViewNewVisit extends JPanel {
 				
 				//dunno what we doing with these lists
 				
-				homeModel.getVl().loadFromGateway();
+				masterModel.getVl().loadFromGateway();
 				showVisitTabView();
 				
 			} catch (GatewayException e1) {
@@ -382,7 +387,6 @@ public class VisitTabViewNewVisit extends JPanel {
 		public void actionPerformed(ActionEvent arg0) {
 			showVisitTabView();
 		}
-		
 	}
 	
 	void disableFields (Container container) {
@@ -417,51 +421,27 @@ public class VisitTabViewNewVisit extends JPanel {
 	public void showVisitTabView() {
 		int index = tabbedPane.indexOfTab(Tabs.ped);
 		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane, homeModel));
+		tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane, masterModel));
 	}	
 	
 	public void createView() {
-		setLayout(new MigLayout("", "[grow]", "[grow]"));
+		
 		setBackground(CL.turq);
+		setLayout(new MigLayout("", "[grow]", "[grow]"));
+		
 		
 		// was for testing, wraps everything in a JScrollPane
-		//JScrollPane scrollPane = new JScrollPane();
-		//scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		//add(scrollPane, "cell 0 0,grow");
+		//JScrollPane scrollPane = new JScrollPane(); // for test wrapper
+		//scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); // for test wrapper
+		//add(scrollPane, "cell 0 0,grow"); // for test wrapper
 		
 		JPanel panel_Everything = new JPanel();
 		panel_Everything.setBackground(CL.turq);
-		//scrollPane.setViewportView(panel_Everything);
+		//scrollPane.setViewportView(panel_Everything); // for test wrapper
 		panel_Everything.setLayout(new MigLayout("", "[grow]", "[grow][grow][grow][grow][]"));
 		add(panel_Everything, "cell 0 0,grow");
 		
 		
-		//Layout should be in this order
-		
-		/*	Panel hierarchy *
-		 
-		    CC
-		    PED
-			    Vision
-					DV
-					GlsRx
-					Refraction
-					SLE <- is a local panel in Vision, no external
-						pupils
-						AC
-						lens
-						SLE Diagram <- is a local panel in SLE, no external
-					IOP
-					GONIO
-						GONIO Diagram
-					FUNDUS
-						FUNDUS Diagram
-			Assessment
-			Plan
-			Buttons
-			
-		 */
-				
 		
 		// CC
 		JPanel panel_CC = new JPanel();
@@ -479,7 +459,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		scrollPane_CC.setViewportView(textArea_CC);
 		
 		
-		// PED ===
+		// PED === TODO Similar to below, needs to be restructured, there was confusion early in terms
 		JPanel panel_PED = new JPanel();
 		panel_PED.setBackground(CL.turq);
 		panel_Everything.add(panel_PED, "cell 0 1,grow");
@@ -488,7 +468,7 @@ public class VisitTabViewNewVisit extends JPanel {
 				
 		
 		
-		// VISION ===
+		// VISION === TODO Unfortunately, holds everything...need to be reworked later
 		JPanel panel_Vision = new JPanel();
 		panel_Vision.setBackground(CL.turq);
 		panel_PED.add(panel_Vision, "cell 0 0,grow");
@@ -497,101 +477,57 @@ public class VisitTabViewNewVisit extends JPanel {
 		
 		
 		// DV
-		panel_DV = new PanelDistanceVision();
+		panel_DV = new PanelDistanceVision(myVisit);
 		panel_Vision.add(panel_DV, "cell 0 0,growx");
 		
-		/**/
 		// GLASSES RX
-		panel_GlassesRx = new PanelGlassesRx();
+		panel_GlassesRx = new PanelGlassesRx(myVisit);
 		panel_GlassesRx.setBackground(CL.turq);
 		panel_Vision.add(panel_GlassesRx, "cell 0 1,growx");
 		
 		// Refraction
-		panel_Refraction = new PanelRefraction();
+		panel_Refraction = new PanelRefraction(masterModel);
 		panel_Refraction.setBackground(CL.turq);
 		panel_Vision.add(panel_Refraction, "cell 0 2,growx");
 		
 		
 		
-		
 		// SLE ==
 		// TODO Make SLE panel contain all the others...maybe need separate objects for SLE?
-		JPanel panel_SLE = new JPanel();
-		panel_SLE.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Slit Lamp Exam", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
+		panel_SLE = new PanelSLE(masterModel);
 		panel_Vision.add(panel_SLE, "cell 0 3,grow");
-		panel_SLE.setLayout(new MigLayout("", "[grow]", "[grow][][grow]"));
-		panel_SLE.setBackground(CL.turq);
-				
-		
-		
-		// PUPILS
-		panel_SLE_Pupils = new PanelPupils();
-		panel_SLE.add(panel_SLE_Pupils, "cell 0 0,grow");
-		
-		
-		// AC
-		panel_SLE_AC = new PanelAC();
-		panel_SLE.add(panel_SLE_AC, "cell 0 1,grow");
-		
-		
-		// SLE Lens
-		panel_SLE_Lens = new PanelLens();
-		panel_SLE.add(panel_SLE_Lens, "cell 0 2,grow");
-		
-		
-		
-		// SLE SKETCH
-		JPanel panel_SLE_Diagram = new JPanel();
-		panel_SLE.add(panel_SLE_Diagram, "cell 0 3,growx");
-		panel_SLE_Diagram.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_SLE_Diagram.setLayout(new BoxLayout(panel_SLE_Diagram, BoxLayout.Y_AXIS));
-	
-		JButton btnSLESketch = new JButton("Sketch");
-		btnSLESketch.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				FrameNewSketch firstSketch = new FrameNewSketch(homeModel, patient, label_SLE_Sketch, "firstSketch");
-				firstSketch.setContentPane(firstSketch.getContentPane());
-				firstSketch.setSize(new Dimension(600,600));
-				firstSketch.setResizable(false);
-				
-				panel_1 = (JPanel) firstSketch.getContentPane();
-				panel_1.setVisible(true);
-				firstSketch.setVisible(true);
-				}
-		});
-		panel_SLE_Diagram.add(btnSLESketch);
-	
-		label_SLE_Sketch = new JLabel("");
-		panel_SLE_Diagram.add(label_SLE_Sketch);
 
-		
 		
 		//IOP
-		panel_IOP = new PanelIOP();
+		panel_IOP = new PanelIOP(masterModel);
 		panel_IOP.setBackground(CL.turq);
 		panel_Vision.add(panel_IOP, "cell 0 4,grow");
 		
+		
+		
 		//GONIO
-		panel_Gonio = new PanelGonio(homeModel, patient);
+		panel_Gonio = new PanelGonio(masterModel);
 		panel_Gonio.setBackground(CL.turq);
 		panel_Vision.add(panel_Gonio, "cell 0 5,grow");
 		
+		
+		
 		//FUNDUS
-		panel_Fundus = new PanelFundus(homeModel, patient);
+		panel_Fundus = new PanelFundus(masterModel);
 		panel_Fundus.setBackground(CL.turq);
 		panel_Vision.add(panel_Fundus, "cell 0 6,grow");
-		/*
-		*/
+
 		
-		// Assessment
+		
+		// Assessment and Plan
+		
 		JPanel panel_Assessment = new JPanel();
 		panel_Assessment.setBackground(CL.turq);
 		panel_Assessment.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Assesment", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_Everything.add(panel_Assessment, "cell 0 2,grow");
 		panel_Assessment.setLayout(new BorderLayout(0, 0));
-				
+
 		JScrollPane scrollPane_Assessment = new JScrollPane();
 		panel_Assessment.add(scrollPane_Assessment);
 		
@@ -600,15 +536,13 @@ public class VisitTabViewNewVisit extends JPanel {
 		textArea_Assessment.setLineWrap(true);
 		scrollPane_Assessment.setViewportView(textArea_Assessment);
 		
+		
 		JPanel panel_Plan = new JPanel();
 		panel_Plan.setBackground(CL.turq);
 		panel_Plan.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Plan", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_Everything.add(panel_Plan, "cell 0 3,grow");
 		panel_Plan.setLayout(new BorderLayout(0, 0));
-		
-		
-		
-		// Plan
+				
 		JScrollPane scrollPane_Plan = new JScrollPane();
 		panel_Plan.add(scrollPane_Plan);
 		
@@ -619,7 +553,7 @@ public class VisitTabViewNewVisit extends JPanel {
 		
 		
 		
-		// Buttons
+		// Buttons at bottom
 		panel_Buttons = new JPanel();
 		panel_Everything.add(panel_Buttons, "cell 0 4,alignx right");
 		
@@ -630,6 +564,5 @@ public class VisitTabViewNewVisit extends JPanel {
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new CancelListener());
 		panel_Buttons.add(btnCancel);
-
 	}
 }
