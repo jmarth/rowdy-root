@@ -3,8 +3,7 @@ package models;
 import java.io.File;
 
 import database.GatewayException;
-import database.SketchTableGateway;
-// 812w 9n
+
 public class Visit {
 	
 	//final private MasterModel masterModel; // have call to parent to get mastermodel, parent's parent call , etc.
@@ -26,8 +25,8 @@ public class Visit {
 	private Lens myLens;
 	private Pupils myPupils;
 	private Refraction myRefraction;
-	//TODO private AScan myAScan;
-	//TODO private Keratometry myK;
+//	private AScan myAScan; TODO implement
+//	private Keratometry myK; TODO implement
 	
 	private Sketches sketches;
 	
@@ -217,7 +216,7 @@ public class Visit {
 
 	public void loadVisitFromPatient() {
 		//TODO load all the stuff
-		//TODO how it know the vid??? it not created before??
+		//TODO how it know the visit id if it not created before??
 		this.myAC = myAC.loadAC(id);
 		this.myDV = myDV.loadDV(id);
 		this.myFE = myFE.loadFE(id);

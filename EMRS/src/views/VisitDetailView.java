@@ -5,7 +5,9 @@ import org.jdesktop.swingx.JXTaskPane;
 import models.MasterModel;
 
 public class VisitDetailView extends JXTaskPane implements viewinterface{
+	
 	private int index;
+	
 	private VisonPanel vp;
 	private SLEPanel sle;
 	private GonioPanel gp;

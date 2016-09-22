@@ -1,28 +1,30 @@
 package visitPanels;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Enumeration;
+
 import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
 import models.AnteriorChamber;
-import models.Visit;
+import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Enumeration;
-
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
+import views.HomeView;
+import views.viewinterface;
 
 @SuppressWarnings("serial")
-public class PanelAC extends JPanel {
+public class PanelAC extends JPanel implements viewinterface {
 
-	private final Visit myVisit;
+	private int index;
 	
 	private JCheckBox chkbx_ACODNormal;
 	private JCheckBox chkbx_ACOSNormal;
@@ -106,9 +108,9 @@ public class PanelAC extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelAC(Visit myVisit) {
+	public PanelAC(int index) {
 
-		this.myVisit = myVisit;
+		this.index = index;
 		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Anterior Chamber", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 
@@ -512,8 +514,9 @@ public class PanelAC extends JPanel {
 
 	public void setFields() {
 
-		//TODO OD vs OS typos/dyslexia
-		AnteriorChamber a = myVisit.getMyAC();
+		//TODO OD versus OS typos/dyslexia
+		
+		AnteriorChamber a = getMasterModel().getCurrentPatientVisitList().get(index).getMyAC();
 
 		String temp;
 		
@@ -658,5 +661,30 @@ public class PanelAC extends JPanel {
 		
 		
 		
+	}
+
+	@Override
+	public void HideallView() {
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		
+	}
+
+	@Override
+	public void reload() {
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent());
 	}
 }

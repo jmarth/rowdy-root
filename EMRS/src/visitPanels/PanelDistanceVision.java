@@ -1,26 +1,26 @@
 package visitPanels;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
 import models.CL;
 import models.DistanceVision;
-import models.Visit;
+import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
+import views.HomeView;
+import views.viewinterface;
 
 @SuppressWarnings("serial")
-public class PanelDistanceVision extends JPanel {
+public class PanelDistanceVision extends JPanel implements viewinterface {
 
-	private Visit myVisit;
-	
-	//private DistanceVision vision;
+	private int index;
 	
 	private JTextField textField_DVODSC;
 	private JTextField textField_DVOSSC;
@@ -29,11 +29,10 @@ public class PanelDistanceVision extends JPanel {
 
 	/**
 	 * Create the panel.
-	 * @param myVisit 
 	 */
-	public PanelDistanceVision(Visit myVisit) {
+	public PanelDistanceVision(int index) {
 		
-		this.myVisit = myVisit;
+		this.index = index;
 		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Distance Vision", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[grow]", "[][]"));
@@ -101,12 +100,36 @@ public class PanelDistanceVision extends JPanel {
 	}
 	
 	public void setFields() {
-		DistanceVision dv = myVisit.getMyDV();
+		DistanceVision dv = getMasterModel().getCurrentPatientVisitList().get(index).getMyDV();
 		textField_DVODSC.setText(dv.getDVODSC());
 		textField_DVOSSC.setText(dv.getDVOSSC());
 		textField_DVODCC.setText(dv.getDVODCC());
 		textField_DVOSCC.setText(dv.getDVOSCC());
-		//TODO how get visit by vid? used hash map but what about threads????
+	}
+
+	@Override
+	public void HideallView() {
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		
+	}
+
+	@Override
+	public void reload() {
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent());
 	}
 
 }

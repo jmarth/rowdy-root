@@ -56,6 +56,7 @@ public class HomeView extends JFrame implements viewinterface{
 	private FindPatientsView fpview;
 	private PatientRecordView prview;
 	private SlideShowPanel ssview;
+	private MasterVisit mvisitview;
 	
 	
 	private final JButton btnHome;
@@ -82,6 +83,7 @@ public class HomeView extends JFrame implements viewinterface{
 		fpview = new FindPatientsView();
 		prview = new PatientRecordView();
 		ssview = new SlideShowPanel();
+		mvisitview = new MasterVisit();
 		
 		setTitle("EMRS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,10 +96,11 @@ public class HomeView extends JFrame implements viewinterface{
 		this.add(fpview, BorderLayout.CENTER);
 		this.add(prview, BorderLayout.CENTER);
 		this.add(ssview, BorderLayout.CENTER);
+		this.add(mvisitview, BorderLayout.CENTER);
 		// setup slide show in center panel_1
 		//SlideShowPanel ssp = new SlideShowPanel();		
 		//panel_1.add(ssp);
-		btnHome = new JButton("");		
+		btnHome = new JButton("");
 		btnAddPatient = new JButton("Add Patient");
 		btnFindPatient = new JButton("Find Patient");
 		lblPatientSearch= new JLabel("Patient Search");

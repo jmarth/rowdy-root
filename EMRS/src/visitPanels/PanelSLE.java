@@ -1,4 +1,4 @@
-package views;
+package visitPanels;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,19 +16,21 @@ import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
 import models.CL;
-import models.Visit;
+import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
-import visitPanels.PanelAC;
-import visitPanels.PanelLens;
-import visitPanels.PanelPupils;
+import views.FrameNewSketch;
+import views.HomeView;
+import views.viewinterface;
 
 @SuppressWarnings("serial")
-public class PanelSLE extends JPanel {
+public class PanelSLE extends JPanel implements viewinterface {
 
 //	private final MasterModel masterModel;
 //	private Patient patient;
 	
-	private Visit myVisit;
+//	private Visit myVisit;
+	
+	private int index;
 	
 	private PanelPupils panel_Pupils;
 	private PanelAC panel_AC;
@@ -37,13 +39,9 @@ public class PanelSLE extends JPanel {
 	private JPanel panel_SLE_Sketch;
 	private JLabel label_SLE_Sketch;
 	
-//	private Image image_SLE;
 	
-	public PanelSLE(Visit myVisit) {
-		
-//		this.masterModel = masterModel;
-//		this.patient = patient;
-		
+	public PanelSLE(int index) {
+				
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Slit Lamp Exam", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[grow]", "[grow][][grow]"));
 		setBackground(CL.turq);
@@ -51,15 +49,15 @@ public class PanelSLE extends JPanel {
 		
 		
 		// PUPILS
-		panel_Pupils = new PanelPupils(myVisit);
+		panel_Pupils = new PanelPupils(index);
 		add(panel_Pupils, "cell 0 0,grow");
 		
 		// AC
-		panel_AC = new PanelAC(myVisit);
+		panel_AC = new PanelAC(index);
 		add(panel_AC, "cell 0 1,grow");
 		
 		// SLE Lens
-		panel_Lens = new PanelLens(myVisit);
+		panel_Lens = new PanelLens(index);
 		add(panel_Lens, "cell 0 2,grow");
 		
 		// SLE SKETCH
@@ -79,20 +77,23 @@ public class PanelSLE extends JPanel {
 		//TODO Not sure how this works
 		label_SLE_Sketch = new JLabel("");
 		panel_SLE_Diagram.add(label_SLE_Sketch);
+		
+		
+	}
+	
+	public void setSketch() {
+		Image image_SLE = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageSLE();
+		ImageIcon iconSLE = new ImageIcon(image_SLE);
+		label_SLE_Sketch.setIcon(iconSLE);
 	}
 	
 	public void setFields() {
+		
 		panel_Pupils.setFields();
 		panel_AC.setFields();
 		panel_Lens.setFields();
-				
-		Image image_SLE = myVisit.getSketches().getImageSLE();
-//		Image image_Gonio = myVisit.getSketches().getImageGonio();
-//		Image image_Fundus = myVisit.getSketches().getImageFundus();
-		ImageIcon iconSLE = new ImageIcon(image_SLE);
-//		ImageIcon iconGonio = new ImageIcon(image_Gonio);
-//		ImageIcon iconFundus = new ImageIcon(image_Fundus);
-		label_SLE_Sketch.setIcon(iconSLE);
+		setSketch();
+
 	}
 
 	private class CreateSketchListener implements ActionListener  {
@@ -110,5 +111,30 @@ public class PanelSLE extends JPanel {
 			firstSketch.setVisible(true);
 		}
 		
+	}
+
+	@Override
+	public void HideallView() {
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		
+	}
+
+	@Override
+	public void reload() {
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent());
 	}
 }

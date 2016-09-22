@@ -1,21 +1,24 @@
 package visitPanels;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
-import models.GlassesRx;
-import models.Visit;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.TitledBorder;
+
+import models.GlassesRx;
+import models.MasterModel;
+import net.miginfocom.swing.MigLayout;
+import views.HomeView;
+import views.viewinterface;
+
 @SuppressWarnings("serial")
-public class PanelGlassesRx extends JPanel {
+public class PanelGlassesRx extends JPanel implements viewinterface {
 	
-	private Visit myVisit;
+	private int index;
 
 	private JTextField textField_Rx_OD_Sphere;
 	private JTextField textField_Rx_OD_Cyl;
@@ -30,9 +33,9 @@ public class PanelGlassesRx extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelGlassesRx(Visit myVisit) {
+	public PanelGlassesRx(int index) {
 		
-		this.myVisit = myVisit;
+		this.index = index;
 		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Glasses Rx", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[][grow][grow][grow][grow]", "[][][][]"));
@@ -97,7 +100,7 @@ public class PanelGlassesRx extends JPanel {
 	
 	public void setFields() {
 		
-		GlassesRx g = myVisit.getMyGlsRx();
+		GlassesRx g = getMasterModel().getCurrentPatientVisitList().get(index).getMyGlsRx();
 		
 		textField_Rx_OD_Sphere.setText(g.getRx_OD_Sphere());
 		textField_Rx_OD_Cyl.setText(g.getRx_OD_Cyl());
@@ -108,5 +111,30 @@ public class PanelGlassesRx extends JPanel {
 		textField_Rx_OS_Axis.setText(g.getRx_OS_Axis());
 		textField_Rx_OS_Add.setText(g.getRx_OS_Add());
 		textField_GlassesRxNotes.setText(g.getGlassesRxNotes());
+	}
+
+	@Override
+	public void HideallView() {
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		
+	}
+
+	@Override
+	public void reload() {
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent());
 	}
 }
