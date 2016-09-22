@@ -45,15 +45,6 @@ public class Visit {
 		this.dateCreated = dateCreated;
 	}
 
-	
-	public Visit(Long pid, String chiefComplaint, String plan, String assessment) {
-		//this.masterModel = masterModel;
-		this.pid = pid;
-		this.chiefComplaint = chiefComplaint;
-		this.plan = plan;
-		this.assessment = assessment;
-	}
-
 
 	public long getId() {
 		return id;

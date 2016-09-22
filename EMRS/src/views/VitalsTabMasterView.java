@@ -1,34 +1,19 @@
 package views;
 
-import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
 
-import database.GatewayException;
-import database.VitalsTableGateway;
-import models.HomeModel;
 import models.MasterModel;
-import models.Patient;
-import models.Tabs;
-import models.Vital;
-import models.Vital;
 
 @SuppressWarnings("serial")
 public class VitalsTabMasterView extends JPanel implements viewinterface {
 	
+	/**
+	 * 
+	 */
 	/*
 	private final String bpunit_mmHg = "mmHg";
 	private final String bpunit_Pa = "Pa";
@@ -40,27 +25,18 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 	//private VitalsList vl = new VitalsList();
 	//private List<Vital> myVitalsList;//no need
 	//private VitalsTableGateway vtg;// goes in vital list, or model
-	private JTable vitalsTable;
+	//private JTable vitalsTable;
 	//private Patient patient;//current Active patient
-	private int selectedRow;
+	//private int selectedRow;
 	
-	@SuppressWarnings("unused")
-	private final HomeModel homeModel;
-	
+	private VitalListView vldv;
+	private VitalSCRUBView vscv;
 	/**
 	 * Create the panel.
 	 */
 	//public VitalsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
 	public VitalsTabMasterView(){
-		
-		//this.vtg = homeModel.getVitalstg();
-		//this.patient = patient;
-		//this.homeModel = homeModel;
-		vitalsTable = new JTable();
-		vitalsTable.setEnabled(false);
-	
-		
-		
+			
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0};
@@ -68,146 +44,16 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		JPanel panelButtons = new JPanel();
-		GridBagConstraints gbc_panelButtons = new GridBagConstraints();
-		gbc_panelButtons.fill = GridBagConstraints.BOTH;
-		gbc_panelButtons.insets = new Insets(0, 0, 5, 0);
-		gbc_panelButtons.gridx = 0;
-		gbc_panelButtons.gridy = 0;
-		add(panelButtons, gbc_panelButtons);
-		panelButtons.setLayout(new BorderLayout(0, 0));
-		
-		
-		
-		// new vital button
-		
-		JButton btnNewVital = new JButton("New Vital");
-		panelButtons.add(btnNewVital, BorderLayout.WEST);
-		btnNewVital.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int index = tabbedPane.indexOfTab(Tabs.vitals);
-				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, new VitalsTabNewVitalsView(tabbedPane, patient, VitalsTabMasterView.this, homeModel, vitalsTable, myVitalsList, vl, null, false));
-			}
-		});
-		
-		
-		
-		// remove vital button
-		
-		JButton btnRemoveVital = new JButton("Remove Vital");
-		panelButtons.add(btnRemoveVital, BorderLayout.EAST);
-		btnRemoveVital.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Vital vtr = myVitalsList.get(selectedRow);
-				try {
-					vtg.removeVitals(vtr.getId());
-				} catch (GatewayException e1) {
-					e1.printStackTrace();
-				}
-				vl.loadFromGateway();
-				myVitalsList = vl.getVitalsList();
-				
-				((DefaultTableModel) vitalsTable.getModel()).removeRow(selectedRow);
-			}
-		});
-		
-		
-		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.add(this.vldv);
+		scrollPane.add(this.vscv);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
 		gbc_scrollPane.gridy = 1;
 		add(scrollPane, gbc_scrollPane);
 		
-		
-		
-		// vitals table update listener
-		
-		/*vitalsTable.addMouseListener(new MouseAdapter() {
-			
-			public void mouseClicked(MouseEvent evt) {
-				
-				if(evt.getClickCount() == 1){
-					
-					selectedRow = vitalsTable.rowAtPoint(evt.getPoint());
-					vitalsTable.setRowSelectionInterval(selectedRow, selectedRow);
-					return;
-				}
-				
-				// Get row number of vital chosen
-				int selectedRow = vitalsTable.getSelectedRow();
-				
-				if(selectedRow == -1) {
-					return;
-				}
-				
-				// Reload vitalsList from gateway and get Vital selected
-				vl.loadFromGateway();
-				
-				//vl.getVitalsListForPatient(patient);
-				//System.out.println("\nvitals list from gw:");
-				//for (Vitals v : vl.getVitalsList()) {
-				//	System.out.println(v.getId());
-				//}
-				
-				// this will all change for lazy load
-				
-				
-				myVitalsList = vl.getVitalsListForPatient(patient);
-				//Vitals tmp = vitalsList.get(selectedRow);
-				
-				Vital tmp = myVitalsList.get(selectedRow);
-				
-				//System.out.println();
-				//System.out.println("patient id = "+patient.getId());
-				//System.out.println("selected row: "+selectedRow+"\tvid: "+tmp.getId());
-
-				// Get tab of vitals and change panel
-				VitalsTabNewVitalsView vnv = new VitalsTabNewVitalsView(tabbedPane, patient, VitalsTabMasterView.this, homeModel, vitalsTable, myVitalsList, vl, tmp, true);
-				
-				// swap the center component
-				int index = tabbedPane.indexOfTab(Tabs.vitals);
-				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, vnv);
-			}
-		});
-		
-		// Add JTable to scrollPane
-		
-		//BP contains sys/dia then unit, etc and et al
-		
-		vitalsTable.setToolTipText("");
-		vitalsTable.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Date", "BP", "BG", "O2", "Hb", "Height", "Weight", "Notes"
-			}
-		) {
-			private static final long serialVersionUID = 1L;
-			Class[] columnTypes = new Class[] {
-				String.class, String.class, String.class, String.class, String.class, String.class, String.class, String.class
-			};
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		
-		vitalsTable.getColumnModel().getColumn(0).setPreferredWidth(30);
-		vitalsTable.getColumnModel().getColumn(1).setPreferredWidth(30);
-		vitalsTable.getColumnModel().getColumn(2).setPreferredWidth(50);
-		vitalsTable.getColumnModel().getColumn(3).setPreferredWidth(50);
-		vitalsTable.getColumnModel().getColumn(4).setPreferredWidth(50);
-		vitalsTable.getColumnModel().getColumn(5).setPreferredWidth(40);
-		vitalsTable.getColumnModel().getColumn(6).setPreferredWidth(30);
-		vitalsTable.getColumnModel().getColumn(7).setPreferredWidth(100);
-		
-		populateVitalsTable();
-		
-		scrollPane.setViewportView(vitalsTable);
-	}*/
+	}
 	
 	/**
 	 * Populates the VitalsTable with all vitals related current Patient
@@ -215,11 +61,11 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 	 * @param patient Patient JTable to populate
 	 *
 	 **/
-	private void populateVitalsTable() {
+	/*private void populateVitalsTable() {
 		
 		// Get model of VitalsTable in order to add rows
 		// Declare variables
-		DefaultTableModel dtm = (DefaultTableModel) vitalsTable.getModel();
+		//DefaultTableModel dtm = (DefaultTableModel) vitalsTable.getModel();
 		
 		
 		// TODO investigate this sketchy stuff
@@ -231,12 +77,12 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 		// Find all allergies for the given patient
 		List<Vital> myVitalsList = this.getMasterModel().getVitalsL().getMyList();
 		
-		/*
+		
 		 * For every vital in the vitalsList
 		 * .. Add that model the JTable
 		 * 
 		 * If it is a height, must be displayed depending on ft/inches or inches or cm
-		 */		
+		 		
 		
 		for(Vital vitals : myVitalsList) {
 			
@@ -282,7 +128,7 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 		}
 		
 		
-		/*
+		
 		DefaultTableModel model = (DefaultTableModel) vitalsTable.getModel();
 		
 		/**
@@ -326,19 +172,20 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 					vitals.getBps(), vitals.getBpd(), vitals.getBpUnit(), vitals.getHcm(), vitals.gethUnit(), vitals.getWeight(), vitals.getwUnit(), vitals.getNotes()
 				});
 		}
-		*/
-	}
-	public void ShowVitalListDetailView(){
 		
+	}*/
+	public void ShowVitalListView(){
+		this.HideallView();
+		this.vldv.ShowView();
 	}
-	
-	public void ShowVitalNewView(){
-		
+	public void ShowVitalSCRUDView(){
+		this.HideallView();
+		this.vscv.ShowView();
 	}
 	@Override
 	public void HideallView() {
-		// TODO Auto-generated method stub
-		
+		this.vldv.setVisible(false);
+		this.vscv.setVisible(false);
 	}
 
 	@Override
@@ -348,10 +195,8 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 
 	@Override
 	public void ShowView() {
-		// TODO Auto-generated method stub
 		reload();
 		this.setVisible(true);
-		
 	}
 
 	@Override
@@ -359,7 +204,6 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 		// TODO Auto-generated method stub
 		
 	}
-
 	@Override
 	public HomeView getHomeView() {
 		return ((PatientRecordView)this.getParent()).getHomeView();

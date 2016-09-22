@@ -21,12 +21,12 @@ import models.MasterModel;
 import models.Tabs;
 import models.Vital;
 
-public class VitalListDetailView extends JPanel implements viewinterface {
+public class VitalListView extends JPanel implements viewinterface {
 	
 	private JTable vitalsTable;
 	private int selectedRow;
 	
-	public VitalListDetailView() {
+	public VitalListView() {
 		super();
 		selectedRow=0;
 		vitalsTable = new JTable();
@@ -55,7 +55,7 @@ public class VitalListDetailView extends JPanel implements viewinterface {
 		panelButtons.add(btnNewVital, BorderLayout.WEST);
 		btnNewVital.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				VitalListDetailView.this.ShowVitalNewView();
+				VitalListView.this.ShowVitalSCRUDView();
 				//int index = tabbedPane.indexOfTab(Tabs.vitals);
 				//tabbedPane.setComponentAt(index, null);
 				//tabbedPane.setComponentAt(index, new VitalNewView(tabbedPane, patient, VitalsTabMasterView.this, homeModel, vitalsTable, myVitalsList, vl, null, false));
@@ -71,7 +71,7 @@ public class VitalListDetailView extends JPanel implements viewinterface {
 		btnRemoveVital.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					VitalListDetailView.this.getMasterModel().getVitalsL().delete(selectedRow);
+					VitalListView.this.getMasterModel().getVitalsL().delete(selectedRow);
 				} catch (GatewayException e1) {
 					e1.printStackTrace();
 				}
@@ -89,12 +89,10 @@ public class VitalListDetailView extends JPanel implements viewinterface {
 			
 			public void mouseClicked(MouseEvent evt) {
 				if(evt.getClickCount() == 1){
-					
 					selectedRow = vitalsTable.rowAtPoint(evt.getPoint());
 					vitalsTable.setRowSelectionInterval(selectedRow, selectedRow);
 					return;
 				}
-				
 				// Get row number of vital chosen
 				selectedRow = vitalsTable.getSelectedRow();
 				
@@ -103,8 +101,8 @@ public class VitalListDetailView extends JPanel implements viewinterface {
 				}
 				
 				// this will all change for lazy load
-				List<Vital> myVitalsList = VitalListDetailView.this.getMasterModel().getVitalsL().getMyList();
-				VitalListDetailView.this.ShowVitalNewView();
+				List<Vital> myVitalsList = VitalListView.this.getMasterModel().getVitalsL().getMyList();
+				VitalListView.this.ShowVitalSCRUDView();
 			}
 		});
 		
@@ -121,9 +119,9 @@ public class VitalListDetailView extends JPanel implements viewinterface {
 			}));
 		
 	}
-	private void ShowVitalNewView(){
+	private void ShowVitalSCRUDView(){
 		VitalsTabMasterView vtmv = (VitalsTabMasterView) this.getParent();
-		vtmv.ShowVitalNewView();
+		vtmv.ShowVitalSCRUDView();
 	}
 	@Override
 	public void HideallView() {

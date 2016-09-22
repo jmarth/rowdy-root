@@ -8,7 +8,7 @@ public class VisitDetailView extends JXTaskPane implements viewinterface{
 	
 	private int index;
 	
-	private VisonPanel vp;
+	private VisionPanel vp;
 	private SLEPanel sle;
 	private GonioPanel gp;
 	private FUndusPanel fp;

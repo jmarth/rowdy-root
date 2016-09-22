@@ -31,13 +31,14 @@ public class MasterVisit extends JPanel implements viewinterface {
 //	private JSplitPane splitPane;
 
 	private VisitListView vlv;	
+	//detail
 	
 	public MasterVisit() {
 		
 		setLayout(new BorderLayout(0, 0));
 		
 		vlv = new VisitListView();
-		
+		//new visit
 //		populatePanes();
 		
 		/*
@@ -89,14 +90,16 @@ public class MasterVisit extends JPanel implements viewinterface {
 			
 			getMasterModel().getCurrentPatientVisitList().add(0, new Visit()); // inserts at head, then shifts others down
 			
-			//TODO insert to DB
+			//TODO insert to DB/list model
 			
-			PanelNewVisit newVisit = new PanelNewVisit(0);
+//			PanelNewVisit newVisit = new PanelNewVisit(0);
 			
 			//TODO add to list
 			
-			JScrollPane rightPane = new JScrollPane(newVisit);
-			rightPane.getVerticalScrollBar().setUnitIncrement(16);
+			//show()
+			
+			//JScrollPane rightPane = new JScrollPane(newVisit);
+			//rightPane.getVerticalScrollBar().setUnitIncrement(16);
 			
 			
 //			int index = tabbedPane.indexOfTab(Tabs.ped);
@@ -109,7 +112,7 @@ public class MasterVisit extends JPanel implements viewinterface {
 
 	@Override
 	public void HideallView() {
-		
+//		this.vlv.setvi///TODO
 	}
 
 	@Override

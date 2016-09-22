@@ -44,6 +44,8 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 		setBackground(CL.blueGrey);
 		
 		// TODO this loops backwards, does it need to?
+		
+		//for each
 		for (int i = visitList.size() - 1; i >= 0; i--) {
 			
 			Visit v = visitList.get(i);
