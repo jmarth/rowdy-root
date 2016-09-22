@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import javax.swing.JComponent;
 
+@SuppressWarnings("serial")
 public class DrawArea extends JComponent {
  
   // Image in which we're going to draw
@@ -22,7 +23,7 @@ public class DrawArea extends JComponent {
   private Graphics2D g2;
   // Mouse coordinates
   private int currentX, currentY, oldX, oldY;
-  private BufferedImage bimage;
+//  private BufferedImage bimage;
  
   public DrawArea() {
     setDoubleBuffered(false);

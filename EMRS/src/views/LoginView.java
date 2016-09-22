@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+@SuppressWarnings("serial")
 public class LoginView extends JFrame {
 	
 	private static final Logger logger = LogManager.getLogger(LoginView.class);

@@ -2,7 +2,6 @@ package models;
 
 import java.io.IOException;
 
-import database.ACTableGatewaySQLite;
 import database.GatewayException;
 import database.GonioTableGateway;
 import database.GonioTableGatewaySQLite;

@@ -14,12 +14,12 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
 import models.MasterModel;
 import models.Patient;
 
+@SuppressWarnings("serial")
 public class DemographicView extends JPanel implements viewinterface {
 	private JLabel lblLogo;
 	private JLabel lblfirstname;
@@ -121,7 +121,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lbllastname.gridy = 0;
 		panel_6.add(lbllastname, gbc_lbllastname);
 		
-		MatteBorder border = new MatteBorder(1, 0, 0, 0, Color.GRAY);
+//		MatteBorder border = new MatteBorder(1, 0, 0, 0, Color.GRAY);
 		
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBorder(null);

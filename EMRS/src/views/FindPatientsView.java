@@ -1,18 +1,13 @@
 package views;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.IOException;
-import java.util.List;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,16 +16,11 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import database.GatewayException;
-import database.PatientTableGateway;
-import database.PatientTableGatewaySQLite;
 import models.MasterModel;
 import models.Patient;
 import models.PatientList;
 
+@SuppressWarnings("serial")
 public class FindPatientsView extends JPanel implements viewinterface  {
 	
 	private JTable table;
@@ -64,7 +54,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		      }
 		      else {
 		         table.setSelectionBackground(Color.blue);
-		         Long patientID = (Long) table.getValueAt(row, 0);
+//		         Long patientID = (Long) table.getValueAt(row, 0); TODO why this here no use
 		      }
 		      table.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		   }
@@ -72,7 +62,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				int row = table.rowAtPoint(evt.getPoint());
-		        Long patientId = (Long) table.getValueAt(row, 0);
+//		        Long patientId = (Long) table.getValueAt(row, 0); TODO why this here no use
 		        Patient patient = FindPatientsView.this.getMasterModel().getpL().getMyList().get(row);
 		        FindPatientsView.this.getMasterModel().loadmaster(patient);
 		        showdemographic();

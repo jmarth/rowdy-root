@@ -51,14 +51,13 @@ public class VitalsTabView extends JPanel implements viewinterface {
 	 * Create the panel.
 	 */
 	//public VitalsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
-	public VitalsTabView(){	
+	public VitalsTabView(){
+		
 		this.vtg = homeModel.getVitalstg();
 		this.patient = patient;
 		this.homeModel = homeModel;
 		vitalsTable.setEnabled(false);
 	
-		
-		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0};

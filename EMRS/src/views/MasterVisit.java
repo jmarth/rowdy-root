@@ -25,52 +25,29 @@ import models.Visit;
 
 @SuppressWarnings("serial")
 public class MasterVisit extends JPanel implements viewinterface {
-	//
-//	private Patient patient;
-//	private List<Visit> currPatientVisitList = new ArrayList<Visit>();
-	
-//	private MasterModel masterModel; // call to parent instead TODO
-	
-//	private JScrollPane scroller;
-	
-	private JXTaskPaneContainer mainTaskPane;
-	
-//	private JTabbedPane tabbedPane;	// call to parent to tabbedPane, to g
-	
-//	private JPanel scrollPanel;
-	
-	private JLabel iconLabel;
-	
-//	private JSplitPane splitPane;
-	
-	private JPanel headerPanel;
-	
-//	private boolean painted = false;
 
-	public MasterVisit(final JTabbedPane tabbedPane, final MasterModel masterModel) {
-		(JTabbedPane)this.getParent();
-//		this.patient = patient;
-		this.masterModel = masterModel;
-		this.tabbedPane = tabbedPane;
+	//	private JScrollPane scroller;
+//	private JPanel scrollPanel;
+//	private JSplitPane splitPane;
+
+	private VisitListView vlv;	
+	
+	public MasterVisit() {
 		
 		setLayout(new BorderLayout(0, 0));
 		
-		iconLabel = new JLabel();
-		iconLabel.setIcon(new ImageIcon("medical_history_icon.jpg"));
-		iconLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
+		vlv = new VisitListView();
 		
-		headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		headerPanel.setBackground(CL.belize);
-				
-		mainTaskPane = new JXTaskPaneContainer();
-		
-		populatePanes();
+//		populatePanes();
 		
 		/*
+		 * for the old split pane view, maybe re-factor will fix
+		 * the previous display issue can fix it later
 		splitPane = new JSplitPane();
 		splitPane.setEnabled(false);
 		splitPane.setResizeWeight(0.5d);
 		splitPane.setDividerSize(3);
+		*
 		*/
 		
 		//TODO Edit a selected visit...how?
@@ -82,14 +59,18 @@ public class MasterVisit extends JPanel implements viewinterface {
 		btnNewVisit.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		
-		JScrollPane leftPane = new JScrollPane(mainTaskPane);
+		JScrollPane leftPane = new JScrollPane(vlv);
 		leftPane.getVerticalScrollBar().setUnitIncrement(16);
+		
 		/*
+		 * for the old split pane view, maybe re-factor will fix
+		 * the previous display issue can fix it later
 		splitPane.setLeftComponent(leftPane);
 		splitPane.setRightComponent(btnNewVisit);
-		
 		splitPane.setDividerLocation(0.5d);
+		*
 		*/
+		
 		add(leftPane, BorderLayout.CENTER);
 		
 		add(btnNewVisit, BorderLayout.SOUTH);
@@ -102,84 +83,52 @@ public class MasterVisit extends JPanel implements viewinterface {
 		
 		public void actionPerformed(ActionEvent e) {
 			
-			PanelNewVisit newVisit = new PanelNewVisit(tabbedPane, masterModel);
+			
+			//TODO get selected index
+			//TODO Should create the visit in the list also
+			
+			getMasterModel().getCurrentPatientVisitList().add(0, new Visit()); // inserts at head, then shifts others down
+			
+			//TODO insert to DB
+			
+			PanelNewVisit newVisit = new PanelNewVisit(0);
+			
+			//TODO add to list
 			
 			JScrollPane rightPane = new JScrollPane(newVisit);
 			rightPane.getVerticalScrollBar().setUnitIncrement(16);
 			
-			int index = tabbedPane.indexOfTab(Tabs.ped);
-			tabbedPane.setComponentAt(index, null);
-			tabbedPane.setComponentAt(index, rightPane);
+			
+//			int index = tabbedPane.indexOfTab(Tabs.ped);
+//			tabbedPane.setComponentAt(index, null);
+//			tabbedPane.setComponentAt(index, rightPane);
 			//splitPane.setRightComponent(rightPane);
 		}
 	}
 	
-	//extend JXTaskPane, the mainJX panes will, the list will have the list
-	public void populatePanes() {
-		
-		mainTaskPane.removeAll();
-
-		List<Visit> visitList = masterModel.getCurrentPatientVisitList(); //TODO was using .getvL() BUT should probably should return something more practical
-		
-		if (visitList != null) {
-			currPatientVisitList = visitList;
-		}
-		
-		iconLabel.setText("\t\t" + currPatientVisitList.size() + " visits");
-		mainTaskPane.add(iconLabel, BorderLayout.NORTH);
-		mainTaskPane.setBackground(CL.blueGrey);
-		
-		for (int i = currPatientVisitList.size() - 1; i >= 0; i--) {
-			Visit v = currPatientVisitList.get(i);
-			JXTaskPane pane = new JXTaskPane();// TODO not sure about this, maybe experiment, why a TaskPane?
-			String date = v.getDateCreated();
-			date = date.substring(0, date.length() - 3);
-			String[] data = date.split(" ");
-			String cc = v.getChiefComplaint();
-			cc.trim();
-			
-			if (cc.length() > 40) {
-				cc = cc.substring(0, 40) + "...";
-			}
-			
-			pane.setTitle("Date: " + data[0] + ", Time: " + data[1] + "\t|\t" + cc);
-			pane.setAnimated(false);
-			pane.setCollapsed(true);
-			pane.setScrollOnExpand(true);
-			pane.add(new PanelNewVisit(v, tabbedPane, masterModel));
-			mainTaskPane.add(pane);
-		}
-	}
-	
-	public void getParent()
-}
 
 	@Override
 	public void HideallView() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public MasterModel getMasterModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((HomeView)this.getParent()).getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void reload() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((HomeView)this.getParent());
 	}
+}

@@ -4,21 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -28,7 +22,6 @@ import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
-import org.jdesktop.swingx.JXPanel;
 import org.jdesktop.swingx.JXTaskPane;
 
 import database.GatewayException;
@@ -38,32 +31,25 @@ import models.DistanceVision;
 import models.FundusExam;
 import models.GlassesRx;
 import models.Gonio;
-import models.HomeModel;
 import models.IOPMeasurement;
 import models.Lens;
 import models.MasterModel;
-import models.Patient;
 import models.Pupils;
 import models.Refraction;
 import models.Tabs;
 import models.Visit;
 import net.miginfocom.swing.MigLayout;
-import visitPanels.PanelAC;
 import visitPanels.PanelDistanceVision;
 import visitPanels.PanelFundus;
 import visitPanels.PanelGlassesRx;
 import visitPanels.PanelGonio;
 import visitPanels.PanelIOP;
-import visitPanels.PanelLens;
-import visitPanels.PanelPupils;
 import visitPanels.PanelRefraction;
+import visitPanels.PanelSLE;
 
 @SuppressWarnings("serial")
-public class PanelNewVisit extends JXTaskPane implements viewinterface {
+public class PanelNewVisit extends JPanel implements viewinterface {
 	
-//	private Visit myVisit; // get from index
-//	private final MasterModel masterModel;
-//	private JPanel myParent;
 	private int index;
 	
 	private JTextArea textArea_CC;
@@ -97,8 +83,9 @@ public class PanelNewVisit extends JXTaskPane implements viewinterface {
 	 */
 	public PanelNewVisit(int index) {
 		
-		setBackground(CL.turq);
+		this.index = index;
 		
+		setBackground(CL.turq);
 		
 		createView();
 		
@@ -117,13 +104,9 @@ public class PanelNewVisit extends JXTaskPane implements viewinterface {
 	
 	/**
 	 * For a completely new Visit
-	 * @param tabbedPane
-	 * @param masterModel
 	 */
-	public PanelNewVisit(JTabbedPane tabbedPane, MasterModel masterModel) {
-		myVisit = null; //TODO hmm, work this out, isn't clear, for completely new visit, its it need connection?
-		this.tabbedPane = tabbedPane;
-		this.masterModel = masterModel;
+	public PanelNewVisit(int index, boolean isNew) {
+		this.index = index;
 		
 		createView();
 	}
@@ -370,11 +353,14 @@ public class PanelNewVisit extends JXTaskPane implements viewinterface {
 		setBackground(CL.turq);
 		setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
-		
+		/*
+		 * 
 		// was for testing, wraps everything in a JScrollPane
 		//JScrollPane scrollPane = new JScrollPane(); // for test wrapper
 		//scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); // for test wrapper
 		//add(scrollPane, "cell 0 0,grow"); // for test wrapper
+		 * 
+		 */
 		
 		JPanel panel_Everything = new JPanel();
 		panel_Everything.setBackground(CL.turq);
@@ -406,7 +392,6 @@ public class PanelNewVisit extends JXTaskPane implements viewinterface {
 		panel_Everything.add(panel_PED, "cell 0 1,grow");
 		panel_PED.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Physical Exam Detail", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_PED.setLayout(new MigLayout("", "[grow]", "[grow]"));
-				
 		
 		
 		// VISION === TODO Unfortunately, holds everything...need to be reworked later
@@ -418,16 +403,16 @@ public class PanelNewVisit extends JXTaskPane implements viewinterface {
 		
 		
 		// DV
-		panel_DV = new PanelDistanceVision(myVisit);
+		panel_DV = new PanelDistanceVision(index);
 		panel_Vision.add(panel_DV, "cell 0 0,growx");
 		
 		// GLASSES RX
-		panel_GlassesRx = new PanelGlassesRx(myVisit);
+		panel_GlassesRx = new PanelGlassesRx(index);
 		panel_GlassesRx.setBackground(CL.turq);
 		panel_Vision.add(panel_GlassesRx, "cell 0 1,growx");
 		
 		// Refraction
-		panel_Refraction = new PanelRefraction(masterModel);
+		panel_Refraction = new PanelRefraction(index);
 		panel_Refraction.setBackground(CL.turq);
 		panel_Vision.add(panel_Refraction, "cell 0 2,growx");
 		
@@ -435,27 +420,27 @@ public class PanelNewVisit extends JXTaskPane implements viewinterface {
 		
 		// SLE ==
 		// TODO Make SLE panel contain all the others...maybe need separate objects for SLE?
-		panel_SLE = new PanelSLE(masterModel);
+		panel_SLE = new PanelSLE(index);
 		panel_Vision.add(panel_SLE, "cell 0 3,grow");
 
 
 		
 		//IOP
-		panel_IOP = new PanelIOP(masterModel);
+		panel_IOP = new PanelIOP(index);
 		panel_IOP.setBackground(CL.turq);
 		panel_Vision.add(panel_IOP, "cell 0 4,grow");
 		
 		
 		
 		//GONIO
-		panel_Gonio = new PanelGonio(masterModel);
+		panel_Gonio = new PanelGonio(index);
 		panel_Gonio.setBackground(CL.turq);
 		panel_Vision.add(panel_Gonio, "cell 0 5,grow");
 		
 		
 		
 		//FUNDUS
-		panel_Fundus = new PanelFundus(masterModel);
+		panel_Fundus = new PanelFundus(index);
 		panel_Fundus.setBackground(CL.turq);
 		panel_Vision.add(panel_Fundus, "cell 0 6,grow");
 
@@ -509,7 +494,6 @@ public class PanelNewVisit extends JXTaskPane implements viewinterface {
 
 	@Override
 	public void HideallView() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -521,19 +505,16 @@ public class PanelNewVisit extends JXTaskPane implements viewinterface {
 
 	@Override
 	public void ShowView() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void reload() {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		// TODO Auto-generated method stub
 		return ((HomeView)this.getParent()).getHomeView();
 	}
 }

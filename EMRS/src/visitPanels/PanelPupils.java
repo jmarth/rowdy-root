@@ -1,6 +1,7 @@
 package visitPanels;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,18 +15,19 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
+import models.MasterModel;
 import models.Pupils;
-import models.Visit;
 import net.miginfocom.swing.MigLayout;
-import java.awt.Component;
-import javax.swing.border.MatteBorder;
+import views.HomeView;
+import views.viewinterface;
 
 @SuppressWarnings("serial")
-public class PanelPupils extends JPanel {
-
-	private Visit myVisit;
+public class PanelPupils extends JPanel implements viewinterface {
+	
+	private int index;
 	
 	private JCheckBox chckBx_NormalPupilsBoth;
 	private JRadioButton rdbtn_RoundPupilsBoth;
@@ -67,10 +69,10 @@ public class PanelPupils extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelPupils(Visit myVisit) {
+	public PanelPupils(int index) {
 		
-		this.myVisit = myVisit;
-
+		this.index = index;
+		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Pupils", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[grow]", "[][][]"));
 
@@ -356,10 +358,10 @@ public class PanelPupils extends JPanel {
 	
 	public void setFields() {
 		
-		Pupils p = myVisit.getMyPupils();
+		Pupils p = getMasterModel().getCurrentPatientVisitList().get(index).getMyPupils();
 		
 		
-
+		
 		chckBx_NormalPupilsBoth.setSelected(p.isBothPupilsNormal() == 1? true : false);
 		
 		if (p.isBothPupilsNormal() == 1) {
@@ -386,7 +388,6 @@ public class PanelPupils extends JPanel {
 		
 		chckBx_NormalPupilRight.setSelected(p.isRightPupilNormal() == 1? true:false);
 		
-		
 		if (p.isRightPupilNormal() == 1) {
 			rdbtn_RoundPupilRight.setSelected(true);
 		} else {
@@ -411,7 +412,6 @@ public class PanelPupils extends JPanel {
 		
 		chckBx_NormalPupilLeft.setSelected(p.isLeftPupilNormal() == 1? true:false);
 		
-		
 		if (p.isLeftPupilNormal() == 1) {
 			rdbtn_RoundPupilLeft.setSelected(true);
 		} else {
@@ -431,6 +431,31 @@ public class PanelPupils extends JPanel {
 		} else {
 			rdbtn_N_SynechiaLeft.setSelected(true);
 		}
+	}
+
+	@Override
+	public void HideallView() {
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+	}
+
+	@Override
+	public void reload() {
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent());
+
 	}
 
 }
