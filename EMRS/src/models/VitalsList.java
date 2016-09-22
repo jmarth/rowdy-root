@@ -59,8 +59,10 @@ public class VitalsList {
 		myGateway.updateVitals(a);
 	}
 
-	public void delete(long id) throws GatewayException {
-		myGateway.removeVitals(id);
+	public void delete(int index) throws GatewayException {
+		Vital vt = this.myList.get(index);
+		myGateway.removeVitals(vt.getId());
+		this.myList.remove(index);
 	}
 
 }
