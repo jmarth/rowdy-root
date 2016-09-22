@@ -330,8 +330,7 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 
 	@Override
 	public MasterModel getMasterModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((PatientRecordView)this.getParent()).getMasterModel();
 	}
 
 
@@ -348,8 +347,7 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 
 	@Override
 	public void reload() {
-		// TODO Auto-generated method stub
-		
+		return ((PatientRecordView)this.getParent()).getHomeView();
 	}
 
 }

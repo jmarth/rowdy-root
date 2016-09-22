@@ -46,7 +46,7 @@ import javax.swing.JCheckBox;
 import javax.swing.border.MatteBorder;
 import javax.swing.BoxLayout;
 
-@SuppressWarnings("serial")
+
 public class hxView extends JPanel implements viewinterface {
 	private AllergyList al = new AllergyList(); // no make here, in constructor
 	private List<Allergy> allergyList;
@@ -821,5 +821,12 @@ public class hxView extends JPanel implements viewinterface {
 	public void reload() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

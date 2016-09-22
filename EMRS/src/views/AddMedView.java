@@ -238,4 +238,19 @@ public class AddMedView extends JPanel implements viewinterface  {
 		
 		return null;
 	}
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

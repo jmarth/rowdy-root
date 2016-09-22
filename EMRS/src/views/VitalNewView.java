@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import database.GatewayException;
 import models.Comment;
 import models.HomeModel;
+import models.MasterModel;
 import models.Patient;
 import models.Tabs;
 import models.Vital;
@@ -44,7 +45,7 @@ import java.awt.Container;
 import javax.swing.JCheckBox;
 import javax.swing.BoxLayout;
 
-public class VitalsTabNewVitalsView extends JPanel {
+public class VitalNewView extends JPanel implements viewinterface {
 
 	private JButton btnAppendNote;
 	private JButton btnConfirm;
@@ -109,7 +110,7 @@ public class VitalsTabNewVitalsView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public VitalsTabNewVitalsView(final JTabbedPane tabbedPane, Patient patient, final JPanel vitalsPanel,
+	public VitalNewView(final JTabbedPane tabbedPane, Patient patient, final JPanel vitalsPanel,
 			final HomeModel homeModel, JTable vitalsTable, List<Vital> vitalsList, VitalsList vl, Vital vitals,
 			Boolean detailedView) {
 
@@ -482,8 +483,8 @@ public class VitalsTabNewVitalsView extends JPanel {
 				textArea_Notes.getText()
 				);
 		try {
-			long vid = homeModel.getVitalstg().insertVitals(vitals);
-			vitals.setId(vid);
+			//long vid = homeModel.getVitalstg().insertVitals(vitals);
+			//vitals.setId(vid);
 
 		} catch (GatewayException e) {
 			e.printStackTrace();
@@ -880,6 +881,44 @@ public class VitalsTabNewVitalsView extends JPanel {
 		btnConfirm.addActionListener(new ConfirmVitalListener());
 		btnCancel.addActionListener(new CancelVitalListener());
 
+	}
+
+
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((PatientRecordView)this.getParent()).getMasterModel();
+	}
+
+
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public HomeView getHomeView() {
+		return ((PatientRecordView)this.getParent()).getHomeView();
 	}
 
 }
