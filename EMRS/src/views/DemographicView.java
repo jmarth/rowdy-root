@@ -63,17 +63,15 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbl_panel_4.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_4.setLayout(gbl_panel_4);
 		
-		Patient patient = this.getMasterModel().getCurrPatient();
+		
 		JLabel lblNewLabel_5 = new JLabel("");
-		if(patient.getPicPath() == null || patient.getPicPath().equals(""))
-			patient.setPicPath("user.png");
-		if(patient.getPicPath() != null && !patient.getPicPath().equals("") ) {
-			ImageIcon imageIcon = new ImageIcon(patient.getPicPath());
-	        Image image = imageIcon.getImage(); // transform it 
-	        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-	        imageIcon = new ImageIcon(newimg);  // transform it back
-	        this.lblLogo.setIcon(imageIcon);
-		}
+		lblLogo =new JLabel();
+		ImageIcon imageIcon = new ImageIcon("user.png");
+        Image image = imageIcon.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        imageIcon = new ImageIcon(newimg);  // transform it back
+        this.lblLogo.setIcon(imageIcon);
+	        
 	    GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
 	    gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel_5.gridx = 0;
@@ -94,7 +92,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbl_panel_6.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_6.setLayout(gbl_panel_6);
 		
-		lblfirstname = new JLabel(patient.getFirstName());
+		lblfirstname = new JLabel("");//patient.getFirstName());
 		lblfirstname.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblfirstname.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lblfirstname = new GridBagConstraints();
@@ -103,7 +101,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblfirstname.gridy = 0;
 		panel_6.add(lblfirstname, gbc_lblfirstname);
 		
-		lblmiddlename = new JLabel(patient.getMiddleName());
+		lblmiddlename = new JLabel("");//(patient.getMiddleName());
 		lblmiddlename.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblmiddlename.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lblmiddlename = new GridBagConstraints();
@@ -112,7 +110,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblmiddlename.gridy = 0;
 		panel_6.add(lblmiddlename, gbc_lblmiddlename);
 		
-		lbllastname = new JLabel(patient.getLastName());
+		lbllastname = new JLabel("");//(patient.getLastName());
 		lbllastname.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lbllastname.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lbllastname = new GridBagConstraints();
@@ -179,7 +177,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblNewLabel_1.gridy = 2;
 		panel_6.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
-		JLabel lblGender = new JLabel(patient.getGender());
+		JLabel lblGender = new JLabel("");//(patient.getGender());
 		GridBagConstraints gbc_lblGender = new GridBagConstraints();
 		gbc_lblGender.anchor = GridBagConstraints.SOUTH;
 		gbc_lblGender.insets = new Insets(10, 0, 5, 5);
@@ -188,7 +186,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		panel_6.add(lblGender, gbc_lblGender);
 		lblGender.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
-		JLabel lblAge = new JLabel(patient.getAge()+" year(s)");
+		JLabel lblAge = new JLabel("");//(patient.getAge()+" year(s)");
 		GridBagConstraints gbc_lblAge = new GridBagConstraints();
 		gbc_lblAge.anchor = GridBagConstraints.SOUTH;
 		gbc_lblAge.insets = new Insets(0, 0, 5, 5);
@@ -197,7 +195,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		panel_6.add(lblAge, gbc_lblAge);
 		lblAge.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
-		JLabel lblBirthdate = new JLabel("("+patient.getBirthDay()+"."+patient.getBirthMonth()+"."+patient.getBirthYear()+")");
+		JLabel lblBirthdate = new JLabel("");//("("+patient.getBirthDay()+"."+patient.getBirthMonth()+"."+patient.getBirthYear()+")");
 		GridBagConstraints gbc_lblBirthdate = new GridBagConstraints();
 		gbc_lblBirthdate.insets = new Insets(0, 0, 5, 0);
 		gbc_lblBirthdate.anchor = GridBagConstraints.SOUTH;
@@ -277,7 +275,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbl_panel_7.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_7.setLayout(gbl_panel_7);
 		
-		lblAddress = new JLabel(patient.getAddress());
+		lblAddress = new JLabel("");//(patient.getAddress());
 		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
 		gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
@@ -285,7 +283,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblNewLabel_7.gridy = 0;
 		panel_7.add(lblAddress, gbc_lblNewLabel_7);
 		
-		lblAddress2 = new JLabel(patient.getAddress2());
+		lblAddress2 = new JLabel("");//(patient.getAddress2());
 		lblAddress2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
 		gbc_lblNewLabel_8.insets = new Insets(0, 0, 5, 5);
@@ -293,7 +291,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblNewLabel_8.gridy = 0;
 		panel_7.add(lblAddress2, gbc_lblNewLabel_8);
 		
-		lblCity = new JLabel(patient.getCity());
+		lblCity = new JLabel("");//(patient.getCity());
 		lblCity.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblCity = new GridBagConstraints();
 		gbc_lblCity.insets = new Insets(0, 0, 5, 5);
@@ -301,7 +299,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblCity.gridy = 0;
 		panel_7.add(lblCity, gbc_lblCity);
 		
-		lblState = new JLabel(patient.getState());
+		lblState = new JLabel("");//(patient.getState());
 		lblState.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblState = new GridBagConstraints();
 		gbc_lblState.insets = new Insets(0, 0, 5, 5);
@@ -309,7 +307,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblState.gridy = 0;
 		panel_7.add(lblState, gbc_lblState);
 		
-		lblPostal = new JLabel(patient.getPostalCode());
+		lblPostal = new JLabel("");//(patient.getPostalCode());
 		lblPostal.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblPostal = new GridBagConstraints();
 		gbc_lblPostal.insets = new Insets(0, 0, 5, 5);
@@ -317,7 +315,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblPostal.gridy = 0;
 		panel_7.add(lblPostal, gbc_lblPostal);
 		
-		lblCountry = new JLabel(patient.getCountry());
+		lblCountry = new JLabel("");//(patient.getCountry());
 		lblCountry.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblCountry = new GridBagConstraints();
 		gbc_lblCountry.insets = new Insets(0, 0, 5, 5);
@@ -325,7 +323,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblCountry.gridy = 0;
 		panel_7.add(lblCountry, gbc_lblCountry);
 		
-		lblPhone = new JLabel(patient.getPhoneNumber());
+		lblPhone = new JLabel("");//(patient.getPhoneNumber());
 		lblPhone.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblPhone = new GridBagConstraints();
 		gbc_lblPhone.insets = new Insets(0, 0, 5, 0);
@@ -504,6 +502,33 @@ public class DemographicView extends JPanel implements viewinterface {
 	@Override
 	public void reload() {
 		// TODO Auto-generated method stub
+		Patient p= this.getMasterModel().getCurrPatient();
+		if(p!=null){
+			
+			if(!p.getPicPath().equals("") ) {
+				ImageIcon imageIcon = new ImageIcon(p.getPicPath());
+		        Image image = imageIcon.getImage(); // transform it 
+		        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		        imageIcon = new ImageIcon(newimg);  // transform it back
+		        this.lblLogo.setIcon(imageIcon);
+			}
+			//lblLogo. = p.getPicPath();
+			lblfirstname.setText(p.getFirstName());
+			lblmiddlename.setText(p.getMiddleName());
+			lbllastname.setText(p.getLastName());
+			lblGender.setText(p.getGender());
+			lblBirthdate.setText("("+p.getBirthDay()+"."+p.getBirthMonth()+"."+p.getBirthYear()+")");
+			lblAddress.setText(p.getAddress());
+			lblAddress2.setText(p.getAddress2());
+			lblCity.setText(p.getCity());
+			lblState.setText(p.getState());
+			lblPostal.setText(p.getPostalCode());
+			lblCountry.setText(p.getCountry());
+			lblPhone.setText(p.getPhoneNumber());
+		}else{
+			p.setPicPath("user.png");
+		}
+		
 		
 	}
 

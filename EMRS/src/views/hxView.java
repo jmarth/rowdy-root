@@ -183,14 +183,14 @@ public class hxView extends JPanel implements viewinterface {
 		} catch (GatewayException e1) {
 			e1.printStackTrace();
 		}*/
-		
-		if (!(healthHistory.isEmpty())) {
-			populateHealthHistory();
-			presentConditionPanel.add(btnEditForm);
+		//just hightlight make it work
+		/*if (!(healthHistory.isEmpty())) {
+			//TODO populateHealthHistory();
+			//presentConditionPanel.add(btnEditForm);
 		}
 		else {
 			presentConditionPanel.add(btnNewForm);
-		}
+		}*/
 		
 		
 		medMasterPanel.setLayout(new BorderLayout(0, 0));
@@ -232,7 +232,7 @@ public class hxView extends JPanel implements viewinterface {
 				}
 		));
 		
-		populateMedTable();
+		//TODO populateMedTable();
 		
 		medScroller = new JScrollPane(medTable);
 		
@@ -248,7 +248,7 @@ public class hxView extends JPanel implements viewinterface {
 		
 		
 
-		populateAllergyTable();
+		//TODO populateAllergyTable();
 		
 		allergyPanel = new JPanel();
 		allergyPanel.setLayout(new BorderLayout(0, 0));

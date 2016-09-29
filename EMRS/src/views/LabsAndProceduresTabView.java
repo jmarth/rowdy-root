@@ -47,11 +47,11 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	JLabel headerLabel;
 	
 	// Other -------------------------------------------
-	SurgeryTableGateway gate1;
-	SurgeryTemplatesTableGateway gate2;
+	//SurgeryTableGateway gate1;
+	//SurgeryTemplatesTableGateway gate2;
 	PatientRecordView prv;
-	Patient patient;
-	
+	//Patient patient;
+	/*
 	public SurgeryTableGateway getGate1() {
 		return gate1;
 	}
@@ -67,7 +67,7 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	public Patient getPatient() {
 		return patient;
 	}
-
+*/
 	//public LabsAndProceduresTabView(Patient param_patient, PatientRecordView param_prv, SurgeryTableGateway param_gate1, SurgeryTemplatesTableGateway param_gate2) {
 	public LabsAndProceduresTabView(){
 		//this.patient = param_patient;
@@ -88,7 +88,7 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 		// setup main panel
 		masterContainer = new JXTaskPaneContainer();
 		
-		populateMasterContainer();
+		//TODO populateMasterContainer();
 		
 		procedureScroller = new JScrollPane(masterContainer);
 		
@@ -98,11 +98,12 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				NewProcedureView view = new NewProcedureView(gate2, LabsAndProceduresTabView.this);
+				//TODO
+				/*NewProcedureView view = new NewProcedureView(gate2, LabsAndProceduresTabView.this);
 				proceduresParentPanel.removeAll();
 				proceduresParentPanel.add(view, BorderLayout.CENTER);
 				validate();
-				repaint();
+				repaint();*/
 			}
 			
 		});
@@ -128,11 +129,11 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 		masterContainer.removeAll();
 
 		ArrayList<Surgery> surgeries = new ArrayList<Surgery>();
-		try {
-			surgeries = (ArrayList<Surgery>) gate1.fetchSurgeriesForPatient(patient);
+		/*try {
+			//TODO surgeries = (ArrayList<Surgery>) gate1.fetchSurgeriesForPatient(patient);
 		} catch (GatewayException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
 		
 		if (surgeries.size() == 0) {

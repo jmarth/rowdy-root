@@ -83,7 +83,7 @@ public class HomeView extends JFrame implements viewinterface{
 		prview = new PatientRecordView();
 		ssview = new SlideShowPanel();
 		mvisitview = new MasterVisit();
-		
+		this.HideallView();
 		setTitle("EMRS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(200, 100, 1139, 1124); // set size of Home View

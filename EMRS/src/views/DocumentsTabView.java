@@ -93,7 +93,7 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 		//dl.loadFromGateway();
 		//this.getMasterModel().
 		
-		docListController = new DocumentListController(this.getMasterModel().getdL());
+		//TODO docListController = new DocumentListController(this.getMasterModel().getdL());
 		
 		
 		docPane = new JPanel();

@@ -45,6 +45,8 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 		setLayout(gridBagLayout);
 		
 		JScrollPane scrollPane = new JScrollPane();
+		vldv = new VitalListView();
+		vscv = new VitalSCRUBView(-1);
 		scrollPane.add(this.vldv);
 		scrollPane.add(this.vscv);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
@@ -206,6 +208,6 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 	}
 	@Override
 	public HomeView getHomeView() {
-		return ((PatientRecordView)this.getParent()).getHomeView();
+		return ((PatientRecordView)this.getParent().getParent()).getHomeView();
 	}
 }

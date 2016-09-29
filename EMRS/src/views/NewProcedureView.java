@@ -115,13 +115,14 @@ public class NewProcedureView extends JPanel implements viewinterface {
 				
 				/** get the body of the template (description) **/
 				String body = textPane.getText();
-				long pid = parent.getPatient().getId();
+				//TODO
+				//long pid = parent.getPatient().getId();
 								
-				Surgery s = new Surgery(0, pid, title, body);
+				//Surgery s = new Surgery(0, pid, title, body);
 								
 				int index = parent.prv.indexOfTab(Tabs.labs);
 				parent.prv.setComponentAt(index, null);
-				parent.prv.setComponentAt(index, new SafeSurgery(s, parent, NewProcedureView.this));
+				//parent.prv.setComponentAt(index, new SafeSurgery(s, parent, NewProcedureView.this));
 								
 			}
 			

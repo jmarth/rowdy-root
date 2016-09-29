@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 import models.CL;
+import models.MasterModel;
 import models.Surgery;
 import models.Tabs;
 
@@ -26,7 +27,7 @@ import javax.swing.JScrollPane;
 import java.awt.BorderLayout;
 import javax.swing.JTextPane;
 
-public class SafeSurgery extends JPanel {
+public class SafeSurgery extends JPanel implements viewinterface {
 	
 	private String title;
 	private String body;
@@ -138,7 +139,7 @@ public class SafeSurgery extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				long newID = 0;
 				try {
-					newID = parent.gate1.insertSurgery(surgery);
+					newID = SafeSurgery.this.getMasterModel().getsL().insert(surgery);
 				} catch (GatewayException e1) {
 					e1.printStackTrace();
 				}
@@ -187,5 +188,35 @@ public class SafeSurgery extends JPanel {
 		
 		textPane.setText(body);
 
+	}
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -43,7 +43,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 			}
 		));
 		scrollPane.setViewportView(table);	
-		this.reload();		
+		//this.reload();		
 		//Set patients from database
 		table.addMouseMotionListener(new MouseMotionAdapter() {
 		   public void mouseMoved(MouseEvent e) {
