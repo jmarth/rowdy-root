@@ -11,6 +11,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import models.CL;
+import models.MasterModel;
 import models.Surgery;
 
 public class ClosedProcedureView extends JPanel implements viewinterface {
@@ -53,10 +54,36 @@ public class ClosedProcedureView extends JPanel implements viewinterface {
 		add(mainPanel, BorderLayout.CENTER);
 	}
 
+	
+
 	@Override
-	public void showview() {
+	public void HideallView() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

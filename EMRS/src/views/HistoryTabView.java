@@ -15,33 +15,34 @@ import javax.swing.JTabbedPane;
 import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
-import models.HomeModel;
+import models.MasterModel;
 import models.Patient;
 import models.Visit;
 
-public class HistoryTabView implements viewinterface extends JPanel {
+public class HistoryTabView extends JPanel implements viewinterface  {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private HomeModel homeModel;
+	//private HomeModel homeModel;
 	
-	private Patient patient;
+	//private Patient patient;
 	
 	private JTabbedPane tabbedPane;
 	
-	private List<Visit> visitList = new ArrayList<Visit>();
+	//private List<Visit> visitList = new ArrayList<Visit>();
 	
 	private JScrollPane scroller;
 	
 	private JXTaskPaneContainer mainTaskPane;
 		
-	public HistoryTabView(final Patient pt, final HomeModel hm, final JTabbedPane tp) {
-		this.patient = pt;
-		this.homeModel = hm;
-		this.tabbedPane = tp;
+	//public HistoryTabView(final Patient pt, final HomeModel hm, final JTabbedPane tp) {
+	public HistoryTabView(){
+		//this.patient = pt;
+		//this.homeModel = hm;
+		//this.tabbedPane = tp;
 		
 		setLayout(new BorderLayout());
 		
@@ -64,23 +65,61 @@ public class HistoryTabView implements viewinterface extends JPanel {
 		mainTaskPane.removeAll();
 		JLabel iconLabel = new JLabel();
 		iconLabel.setIcon(new ImageIcon("medical_history_icon.jpg"));
-		Collection<Visit> coll = (Collection<Visit>) homeModel.getVl().getMyPidMap().get(patient.getId());
-		if (coll != null) {
+		//Collection<Visit> coll = (Collection<Visit>) this.getMasterModel().getvL().getMyPidMap().get(patient.getId());
+		/*if (coll != null) {
 			visitList = (List<Visit>) coll;
-		}
-		iconLabel.setText("\t\t" + visitList.size() + " total visits");
+		}*/
+		iconLabel.setText("\t\t" + this.getMasterModel().getvL().getMyList().size() + " total visits");
 		iconLabel.setFont(new Font("Roboto", Font.BOLD, 30));
 		mainTaskPane.add(iconLabel);
 				
-		for (Visit v : visitList) {
+		for (Visit v : this.getMasterModel().getvL().getMyList()) {
 			JXTaskPane pane = new JXTaskPane();
 			pane.setTitle(v.getDateCreated() + "\t|\t" + v.getChiefComplaint());
 			pane.setAnimated(false);
 			pane.setCollapsed(true);
-			pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, true));
+			//TODO pane.add(new VisitTabViewNewVisit(v, patient, tabbedPane, homeModel, true));
 			mainTaskPane.add(pane);
 		}
 		
+	}
+
+
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((PatientRecordView)this.getParent()).getMasterModel();
+	}
+
+
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public HomeView getHomeView() {
+		return ((PatientRecordView)this.getParent()).getHomeView();
 	}
 	
 }

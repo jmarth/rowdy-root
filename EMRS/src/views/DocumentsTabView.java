@@ -46,7 +46,7 @@ import net.coobird.thumbnailator.Thumbnails;
 
 public class DocumentsTabView extends JPanel implements viewinterface  {
 	
-	private DocumentTableGateway dtg;
+	//private DocumentTableGateway dtg;
 	
 	private JScrollPane scroller;
 	
@@ -76,8 +76,8 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	private JPanel filesPanel;
 	private JList fileList;
 	private Document selectedDocument;
-	private DocumentList dl;
-	private Patient p;
+	//private DocumentList dl;
+	//private Patient p;
 	private DocumentListController docListController;
 	private JScrollPane docScrollPane;
 	private JButton btnRemoveDocument;
@@ -85,14 +85,15 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	//public DocumentsTabView(final DocumentTableGateway dtg, final Patient p) {
 	public DocumentsTabView(){	
 		this.setLayout(new BorderLayout());
-		this.dtg = dtg;
-		this.p = p;
+		//this.dtg = dtg;
+		//this.p = p;
 		
-		dl = new DocumentList(p);
-		dl.setGateway(dtg);
-		dl.loadFromGateway();
+		//dl = new DocumentList(p);
+		//dl.setGateway(dtg);
+		//dl.loadFromGateway();
+		//this.getMasterModel().
 		
-		docListController = new DocumentListController(dl);
+		docListController = new DocumentListController(this.getMasterModel().getdL());
 		
 		
 		docPane = new JPanel();
@@ -118,16 +119,18 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 				}
 				
 				String ext = FilenameUtils.getExtension(filePath.getAbsolutePath());
-				Document tmpDoc = new Document(p.getId(), filePath.getName(), filePath.getAbsolutePath(), ext);
+				Document tmpDoc = new Document(DocumentsTabView.this.getMasterModel().getCurrPatient().getId(),
+						filePath.getName(), filePath.getAbsolutePath(), ext);
 				try {
-					Long newId = dtg.insertDocument(tmpDoc);
-					tmpDoc.setId(newId);
+					tmpDoc.setId(DocumentsTabView.this.getMasterModel().getdL().insert(tmpDoc));
+					//Long newId = dtg.insertDocument(tmpDoc);
+					//tmpDoc.setId(newId);
 				} catch (GatewayException e1) {
 					System.out.println(e1.getMessage());
 				}
 				
-				dl.addDocumentToList(tmpDoc);
-				docListController.setList(dl);
+				//dl.addDocumentToList(tmpDoc);
+				//docListController.setList(dl);
 				
 				fileList.repaint();
 				fileList.updateUI();
@@ -196,12 +199,13 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 				Document selectedDocument = docListController.getElementAt(selectedIndex);
 				
 				try {
-					dtg.removeDocument(selectedDocument.getId());
+					//dtg.removeDocument(selectedDocument.getId())
+					DocumentsTabView.this.getMasterModel().getdL().delete(selectedDocument.getId());;
 				} catch (GatewayException e) {
 					System.out.println(e.getMessage());
 				}
-				dl.removeDocumentFromList(selectedDocument);
-				docListController.setList(dl);
+				//dl.removeDocumentFromList(selectedDocument);
+				//docListController.setList(dl);
 				
 				// Calls to clear pane after deletion of file
 				docPane.removeAll();
@@ -325,28 +329,25 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 		
 	}
 
-
-
-
 	@Override
 	public MasterModel getMasterModel() {
 		return ((PatientRecordView)this.getParent()).getMasterModel();
 	}
 
-
-
-
 	@Override
 	public void ShowView() {
 		// TODO Auto-generated method stub
+		this.setVisible(true);
 		
 	}
 
-
-
-
 	@Override
 	public void reload() {
+		//TODO
+	}
+
+	@Override
+	public HomeView getHomeView() {
 		return ((PatientRecordView)this.getParent()).getHomeView();
 	}
 

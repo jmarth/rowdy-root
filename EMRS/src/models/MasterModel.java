@@ -17,6 +17,8 @@ public class MasterModel {
 	private SurgeryList sL;
 	private VisitList vL;
 	private VitalsList vitalsL;
+	private SurgeryTemplatesList stll;
+	
 	
 	public MasterModel () {
 		
@@ -116,5 +118,11 @@ public class MasterModel {
 
 	public void setVitalsL(VitalsList vitalsL) {
 		this.vitalsL = vitalsL;
+	}
+	public SurgeryTemplatesList getStll() {
+		return stll;
+	}
+	public void setStll(SurgeryTemplatesList stll) {
+		this.stll = stll;
 	}
 }

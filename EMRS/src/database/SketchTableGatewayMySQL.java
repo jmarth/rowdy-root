@@ -380,4 +380,11 @@ public List<Image> fetchSketchesForVisitByTable(long vid, String table) throws G
 		
 	}
 
+
+	@Override
+	public Image fetchSketchForVisitByTable(long vid, String table) throws GatewayException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

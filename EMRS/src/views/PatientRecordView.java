@@ -13,7 +13,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import models.CL;
-import models.HomeModel;
 import models.MasterModel;
 import models.Patient;
 import models.Tabs;
@@ -28,7 +27,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	
 	private DemographicView dgv;
 	private hxView hxv;
-	private VisitsTabView vsv;
+	private VitalsTabMasterView vsv;
 	private VitalsTabMasterView vtv;
 	private LabsAndProceduresTabView lpv;
 	private DocumentsTabView dtv;
@@ -59,7 +58,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		JLabel lab3 = new JLabel(Tabs.ped);
 		lab3.setPreferredSize(new Dimension(145, 30));
 		lab3.setHorizontalAlignment(JLabel.CENTER);
-		vsv = new VisitsTabView();
+		vsv = new VitalsTabMasterView();
 		this.addTab(Tabs.ped, null,vsv, null);
 		this.setTabComponentAt(2, lab3);
 		
@@ -135,42 +134,36 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	}
 	
 	public void ShowHxView(){
-		//TODO
 		this.ShowView();
 		this.setSelectedIndex(1);
 		this.hxv.ShowView();
 	}
 	
 	public void ShowVisitsView(){
-		//TODO
 		this.ShowView();
 		this.setSelectedIndex(2);
 		this.vsv.ShowView();
 	}
 
 	public void ShowVitalsView(){
-		//TODO
 		this.ShowView();
 		this.setSelectedIndex(3);
 		this.vtv.ShowView();
 	}
 	
 	public void ShowLabandProceduresView(){
-		//TODO
 		this.ShowView();
 		this.setSelectedIndex(4);
 		this.lpv.ShowView();
 	}
 	
 	public void ShowDocumentsView(){
-		//TODO
 		this.ShowView();
 		this.setSelectedIndex(5);
 		this.dtv.ShowView();
 	}
 	
 	public void ShowDemographicsView() {
-		//TODO
 		this.ShowView();
 		this.setSelectedIndex(0);
 		this.dgv.ShowView();
@@ -183,6 +176,8 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 
 	@Override
 	public void ShowView() {
+		reload();
+		this.getHomeView().ShowPatientRecode();
 		this.setVisible(true);
 		
 	}

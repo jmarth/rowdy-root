@@ -70,10 +70,10 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 
 	//public LabsAndProceduresTabView(Patient param_patient, PatientRecordView param_prv, SurgeryTableGateway param_gate1, SurgeryTemplatesTableGateway param_gate2) {
 	public LabsAndProceduresTabView(){
-		this.patient = param_patient;
-		this.prv = param_prv;
-		this.gate1 = param_gate1;
-		this.gate2 = param_gate2;
+		//this.patient = param_patient;
+		//this.prv = param_prv;
+		//this.gate1 = param_gate1;
+		//his.gate2 = param_gate2;
 		
 		setLayout(new BorderLayout());
 		
@@ -174,12 +174,6 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	}
 
 	@Override
-	public void showview() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void HideallView() {
 		// TODO Auto-generated method stub
 		
@@ -201,6 +195,12 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	public void reload() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

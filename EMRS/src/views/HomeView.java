@@ -39,7 +39,6 @@ import org.apache.logging.log4j.Logger;
 import database.GatewayException;
 import models.Allergy;
 import models.CL;
-import models.HomeModel;
 import models.MasterModel;
 import models.Patient;
 

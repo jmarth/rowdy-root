@@ -96,6 +96,18 @@ public class SlideShowPanel extends JPanel implements viewinterface {
 		return ((HomeView)this.getParent()).getMasterModel();
 	}
 
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }

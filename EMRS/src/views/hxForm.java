@@ -8,6 +8,7 @@ import javax.swing.border.TitledBorder;
 
 import models.CL;
 import models.Hx;
+import models.MasterModel;
 import models.Patient;
 import models.Tabs;
 
@@ -41,7 +42,7 @@ import java.util.List;
 import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
-public class hxForm implements viewinterface extends JPanel {
+public class hxForm extends JPanel implements viewinterface  {
 	private JTextField pcTextField;
 	private JTextField hasDATextField;
 	private JTextField pshTextField;
@@ -241,7 +242,7 @@ public class hxForm implements viewinterface extends JPanel {
 	
 	private void createView() {
 
-		setBackground(CL.cararra);
+		//setBackground(CL.cararra);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(CL.cararra);
@@ -794,10 +795,33 @@ public class hxForm implements viewinterface extends JPanel {
 		return tmpHx;
 	}
 
+	
 	@Override
-	public void showview() {
+	public void HideallView() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent()).getHomeView();
 	}
 }
 

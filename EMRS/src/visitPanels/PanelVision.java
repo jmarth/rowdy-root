@@ -17,7 +17,7 @@ public class PanelVision extends JPanel implements viewinterface {
 	
 	public PanelVision (int index) {
 		this.index = index;
-		panelDV = new PanelDistanceVision();
+		//TODO panelDV = new PanelDistanceVision();
 	}
 	
 	@Override

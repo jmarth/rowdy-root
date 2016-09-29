@@ -20,12 +20,13 @@ import javax.swing.SwingConstants;
 import database.GatewayException;
 import database.SurgeryTemplatesTableGateway;
 import models.CL;
+import models.MasterModel;
 import models.Surgery;
 import models.SurgeryTemplate;
 import models.SurgeryTemplatesList;
 import models.Tabs;
 
-public class NewProcedureView extends JPanel {
+public class NewProcedureView extends JPanel implements viewinterface {
 	
 	// Containers --------------------------------------
 	JPanel comboboxPanel;
@@ -152,34 +153,62 @@ public class NewProcedureView extends JPanel {
 
 	private void setupComboBox() {
 		
-		list = new SurgeryTemplatesList();
+		/*list = new SurgeryTemplatesList();
 		list.setGateway(gateway);
-		list.loadFromGateway();
+		list.loadFromGateway();*/
 		
-		ArrayList<SurgeryTemplate> templates = (ArrayList<SurgeryTemplate>) list.getSurgeryTemplatesList();
+		//ArrayList<SurgeryTemplate> templates = (ArrayList<SurgeryTemplate>) list.getSurgeryTemplatesList();
 		
-		String[] array = new String[templates.size()];
+		/*String[] array = new String[templates.size()];
 		
 		int i;
 		for (i = 0; i < templates.size(); i++) {
 			array[i] = templates.get(i).getTitle();
-		}
+		}*/
 		
 		
-		comboBox = new JComboBox(array);
+		comboBox = new JComboBox((SurgeryTemplate[])this.getMasterModel().getStll().getMyList().toArray());
 		comboBox.setSelectedItem(null);
-		
+		comboBox.setRenderer(new SurgeryTemplateCellRenderer());
 		comboBox.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JComboBox tmp = (JComboBox) e.getSource();
-				String title = (String) tmp.getSelectedItem();
-				SurgeryTemplate template = list.findTemplate(title);
+				//JComboBox tmp = (JComboBox) e.getSource();
+				//String title = (String) tmp.getSelectedItem();
+				//SurgeryTemplate template = list.findTemplate(title);
 				//textArea.setText(template.getDescription());
-				textPane.setText(template.getDescription());
+				textPane.setText(((SurgeryTemplate)comboBox.getSelectedItem()).getDescription());
 			}
 			
 		});
+	}
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent()).getHomeView();
 	}
 }

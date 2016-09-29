@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 
 import javax.swing.JButton;
@@ -112,10 +113,10 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 	}
 	
 	public void setVisitFields() {
-		
-		textArea_CC.setText(myVisit.getChiefComplaint());
+		//TODO
+		/*textArea_CC.setText(myVisit.getChiefComplaint());
 		textArea_Assessment.setText(myVisit.getAssessment());
-		textArea_Plan.setText(myVisit.getPlan());
+		textArea_Plan.setText(myVisit.getPlan());*/
 	}
 
 	public void populateDVPanel(ArrayList<Object> dvCols) {
@@ -158,7 +159,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 			Component c = iter.next();
 //			System.out.println("\t i = " +i+": c ="+c.getClass()+" and refractCols = "+refractCols.get(i).toString());
 			if (i == 0) {
-				panel_Refraction.setFields(refractCols);
+				//TODO panel_Refraction.setFields(refractCols);
 				iter.next();//skip
 			}
 //			System.out.println("xxx"+c.getClass());
@@ -220,23 +221,23 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 			// Parse ALL the things!
 			// but get the vid first.
 			
-			visit = new Visit(
-					patient.getId(),
+			visit = new Visit((long)0,
+					PanelNewVisit.this.getMasterModel().getCurrPatient().getId(),
 					textArea_CC.getText(),
 					textArea_Assessment.getText(),
-					textArea_Plan.getText()
-					);
+					textArea_Plan.getText(),
+					new Date().toString());
 			
 			long vid = 0;
 			
 			try {
 				
-				vid = masterModel.getVtg().insertVisit(visit);
+				visit.setId(PanelNewVisit.this.getMasterModel().getvL().insert(visit));
 				
-				DistanceVision dv = panel_DV.createNewDistanceVision();
-				dv.setVid(vid);
-				
-				GlassesRx glsRx = panel_GlassesRx.createNewGlassesRx();
+				//TODO DistanceVision dv = panel_DV.createNewDistanceVision();
+				//TODO dv.setVid(vid);
+				//TODO
+				/*GlassesRx glsRx = panel_GlassesRx.createNewGlassesRx();
 				glsRx.setVid(vid);
 				
 				Refraction r = panel_Refraction.createNewRefraction();
@@ -295,7 +296,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 				//dunno what we doing with these lists
 				
 				masterModel.getVl().loadFromGateway();
-				showVisitTabView();
+				showVisitTabView();*/
 				
 			} catch (GatewayException e1) {
 				e1.printStackTrace();
@@ -345,7 +346,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 	public void showVisitTabView() {
 		int index = tabbedPane.indexOfTab(Tabs.ped);
 		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane, masterModel));
+		//TODO tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane, masterModel));
 	}	
 	
 	public void createView() {

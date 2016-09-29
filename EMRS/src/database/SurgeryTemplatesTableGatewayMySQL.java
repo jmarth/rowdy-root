@@ -138,4 +138,22 @@ public class SurgeryTemplatesTableGatewayMySQL implements SurgeryTemplatesTableG
 	}
 
 
+
+
+	@Override
+	public void updateSurgeryTemplate(SurgeryTemplate a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void removeSurgeryTemplate(long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 }

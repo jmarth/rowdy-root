@@ -3,15 +3,19 @@ package views;
 import org.jdesktop.swingx.JXTaskPane;
 
 import models.MasterModel;
+import visitPanels.PanelFundus;
+import visitPanels.PanelGonio;
+import visitPanels.PanelSLE;
+import visitPanels.PanelVision;
 
 public class VisitDetailView extends JXTaskPane implements viewinterface{
 	
 	private int index;
 	
-	private VisionPanel vp;
-	private SLEPanel sle;
-	private GonioPanel gp;
-	private FUndusPanel fp;
+	private PanelVision vp;
+	private PanelSLE sle;
+	private PanelGonio gp;
+	private PanelFundus fp;
 	
 	//private Visit myVisit;
 	public VisitDetailView(int index) {

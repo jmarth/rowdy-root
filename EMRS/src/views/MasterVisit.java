@@ -88,7 +88,7 @@ public class MasterVisit extends JPanel implements viewinterface {
 			//TODO get selected index
 			//TODO Should create the visit in the list also
 			
-			getMasterModel().getCurrentPatientVisitList().add(0, new Visit()); // inserts at head, then shifts others down
+			//TODO getMasterModel().getCurrentPatientVisitList().add(0, new Visit()); // inserts at head, then shifts others down
 			
 			//TODO insert to DB/list model
 			

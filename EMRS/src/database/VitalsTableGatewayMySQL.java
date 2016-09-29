@@ -45,7 +45,7 @@ public class VitalsTableGatewayMySQL implements VitalsTableGateway {
 		}
 	}
 
-	@Override
+	//@Override
 	public List<Vital> fetchVitals() throws GatewayException {
 		
 		ArrayList<Vital> vitals = new ArrayList<Vital>();

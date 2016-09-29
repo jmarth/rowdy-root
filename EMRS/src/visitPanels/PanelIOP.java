@@ -97,13 +97,13 @@ public class PanelIOP extends JPanel implements viewinterface {
 	public void setFields() {
 		
 //		IOPMeasurement i = getMasterModel().getCurrentPatientVisitList().get(index).getMyIOPList();
-		
-		textField_IOP_Value_OD.setText(iopCols.get(++i).toString());
+		//TODO
+		/*textField_IOP_Value_OD.setText(iopCols.get(++i).toString());
 		textField_IOP_Type_OD.setText(iopCols.get(++i).toString());
 		textField_IOP_Notes_OD.setText(iopCols.get(++i).toString());
 		textField_IOP_Value_OS.setText(iopCols.get(++i).toString());
 		textField_IOP_Type_OS.setText(iopCols.get(++i).toString());
-		textField_IOP_Notes_OS.setText(iopCols.get(++i).toString());
+		textField_IOP_Notes_OS.setText(iopCols.get(++i).toString());*/
 	}
 
 	@Override
