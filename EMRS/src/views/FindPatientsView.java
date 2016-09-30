@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -29,6 +30,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	 * Create the frame.
 	 */
 	public FindPatientsView() {
+		
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setLayout(new GridLayout(0, 1, 0, 0));
 		JScrollPane scrollPane = new JScrollPane();
@@ -73,7 +75,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	private void showdemographic(){
 		HomeView hv = (HomeView) this.getParent();
 		hv.HideallView();
-		hv.getPrview().HideallView();
+		hv.getPrview().ShowDemographicsView();
 	}	
 	public void filter(String searchText) {
 		DefaultTableModel dtm = (DefaultTableModel) table.getModel();
@@ -92,10 +94,11 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	}
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return this.getHomeView().getMasterModel();
 	}
 	@Override
 	public void reload() {
+		this.getMasterModel().getpL().loadFromGateway();
 		PatientList patientList = this.getMasterModel().getpL();
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		for(Patient patient : patientList.getMyList()) {
@@ -112,11 +115,10 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 			}
 			model.addRow(new Object[]{patient.getId(), fullName, patient.getGender(), age, birthDate});
 		}
-		
 	}
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent()).getHomeView();
+		return (HomeView)SwingUtilities.getRoot(this);
 	}
 
 }

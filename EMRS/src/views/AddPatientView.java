@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -689,9 +690,9 @@ public class AddPatientView extends JPanel implements viewinterface  {
 			{
 				hideBalloonTips();
 				if(AddPatientView.this.updateorinsert==AddPatientView.this.UPDATEPATIENT){
-					((HomeView)AddPatientView.this.getParent()).getPrview().ShowDemographicsView();
+					AddPatientView.this.getHomeView().getPrview().ShowDemographicsView();
 				}else{
-					((HomeView)AddPatientView.this.getParent()).ShowHomeView();
+					AddPatientView.this.getHomeView().ShowHomeView();
 				}
 				
 				
@@ -753,7 +754,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 							model.getpL().update(patient);
 						}
 						model.setCurrPatient(patient);
-						HomeView hv =(HomeView) AddPatientView.this.getParent();
+						HomeView hv =AddPatientView.this.getHomeView();
 						hv.getPrview().ShowDemographicsView();
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
@@ -850,15 +851,20 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	 * @param container 
 	 */
 	private void focusAllTextFields() {
-		//System.out.print("thisfunccalled\n");
-		
-	    for (Component c : this.getComponents()) {
-	        if (c instanceof JTextField) {
-	        	((JTextField)c).requestFocus();
-	        } else if (c instanceof Container) {
-	        	focusAllTextFields();
-	        }
-	    }
+		firstNameTextField.requestFocus();
+		middleNameTextField.requestFocus();
+		lastNameTextField.requestFocus();
+		birthDayTextField.requestFocus();
+		birthYearTextField.requestFocus();
+		estYearsTextField.requestFocus();
+		estMonthsTextField.requestFocus();
+		addressTextField.requestFocus();
+		address2TextField.requestFocus();
+		cityTextField.requestFocus();
+		countryTextField.requestFocus();
+		postalCodeTextField.requestFocus();
+		stateTextField.requestFocus();
+		phoneNumberTextField.requestFocus();	
 	}
 	
 	/**
@@ -949,7 +955,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	}
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return this.getHomeView().getMasterModel();
 	}
 	@Override
 	public void ShowView() {
@@ -1008,7 +1014,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	}
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent()).getHomeView();
+		return (HomeView)SwingUtilities.getRoot(this);
 	}
 	public int getUpdateorinsert() {
 		return updateorinsert;

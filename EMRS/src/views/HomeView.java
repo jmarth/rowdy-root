@@ -51,11 +51,11 @@ public class HomeView extends JFrame implements viewinterface{
 	
 	private MasterModel model;
 	
-	private AddPatientView pview;
+	private AddPatientView paview;
 	private FindPatientsView fpview;
 	private PatientRecordView prview;
 	private SlideShowPanel ssview;
-	private MasterVisit mvisitview;
+	//private MasterVisit mvisitview;
 	
 	
 	private final JButton btnHome;
@@ -78,12 +78,13 @@ public class HomeView extends JFrame implements viewinterface{
 	public HomeView() {
 		// Models should be independent; a view should grab from a model.
 		this.model = new MasterModel();
-		pview = new AddPatientView();
+		paview = new AddPatientView();
 		fpview = new FindPatientsView();
-		prview = new PatientRecordView();
+		//prview = new PatientRecordView();
 		ssview = new SlideShowPanel();
-		mvisitview = new MasterVisit();
+		//mvisitview = new MasterVisit();
 		this.HideallView();
+		this.ssview.setVisible(true);
 		setTitle("EMRS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(200, 100, 1139, 1124); // set size of Home View
@@ -91,11 +92,11 @@ public class HomeView extends JFrame implements viewinterface{
 		// set up contentPane panel
 		this.setLayout(new BorderLayout());
 		this.setBackground(CL.cararra);
-		this.add(pview, BorderLayout.CENTER);
+		this.add(paview, BorderLayout.CENTER);
 		this.add(fpview, BorderLayout.CENTER);
-		this.add(prview, BorderLayout.CENTER);
+		//TODO this.add(prview, BorderLayout.CENTER);
 		this.add(ssview, BorderLayout.CENTER);
-		this.add(mvisitview, BorderLayout.CENTER);
+		//TODO this.add(mvisitview, BorderLayout.CENTER);
 		// setup slide show in center panel_1
 		//SlideShowPanel ssp = new SlideShowPanel();		
 		//panel_1.add(ssp);
@@ -195,7 +196,7 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				pview.setUpdateorinsert(pview.INSERTPATIENT);
+				paview.setUpdateorinsert(paview.INSERTPATIENT);
 				HomeView.this.ShowAddPatientView();
 				
 			}
@@ -345,13 +346,14 @@ public class HomeView extends JFrame implements viewinterface{
 	
 	@Override // hide all children
 	public void HideallView() {
-		this.fpview.HideallView();
-		this.prview.HideallView();
-		this.pview.HideallView();
+		this.fpview.setVisible(false);
+		//TODO this.prview.HideallView();
+		this.paview.setVisible(false);
+		this.ssview.setVisible(false);
 	}
 
 	public AddPatientView getPview() {
-		return pview;
+		return paview;
 	}
 
 	public PatientRecordView getPrview() {
@@ -367,7 +369,7 @@ public class HomeView extends JFrame implements viewinterface{
 	}
 	public void ShowAddPatientView(){
 		this.HideallView();
-		this.pview.ShowView();
+		this.paview.ShowView();
 	}
 	public void ShowFindPatientsView(){
 		this.HideallView();

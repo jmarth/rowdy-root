@@ -1,6 +1,7 @@
 package models;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class PatientList {
 		try {
 			
 			List<Patient> patients = myGateway.fetchPatients();
+			System.out.println(patients.size());
 			for (Patient patient : patients) {
 				patient.setBirthDayDate();
 				myIdMap.put(patient.getId(), patient);
@@ -42,8 +44,11 @@ public class PatientList {
 		}
 	}
 	
-	public List<Patient> getMyList() {
-		return (List<Patient>) myIdMap.values();
+	public ArrayList<Patient> getMyList() {
+		ArrayList<Patient> temp = new ArrayList<Patient>();
+		temp.addAll(myIdMap.values());
+		System.out.println(temp.size());
+		return temp;
 	}
 
 	public Patient findById(long id) {
