@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -25,16 +26,17 @@ import models.PatientList;
 public class FindPatientsView extends JPanel implements viewinterface  {
 	
 	private JTable table;
-
+	private JScrollPane scrollPane;
 	/**
 	 * Create the frame.
 	 */
 	public FindPatientsView() {
-		
+		super();
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
-		this.setLayout(new GridLayout(0, 1, 0, 0));
-		JScrollPane scrollPane = new JScrollPane();
-		this.add(scrollPane);
+		//this.setLayout(new GridLayout(0,1,0,0));
+		this.setLayout(new BorderLayout());
+		scrollPane = new JScrollPane();
+		this.add(scrollPane,BorderLayout.CENTER);
 		table = new JTable();
 		table.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		table.setModel(new DefaultTableModel(
@@ -44,6 +46,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 				"Identifier", "Name", "Gender", "Age", "Birthdate"
 			}
 		));
+		this.add(table,BorderLayout.CENTER);
 		scrollPane.setViewportView(table);	
 		//this.reload();		
 		//Set patients from database
@@ -90,6 +93,9 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	@Override
 	public void ShowView() {
 		this.reload();
+		System.out.println(this.getHomeView().getHeight()+"  "+this.getHomeView().getWidth());
+		System.out.println(this.getHeight()+"  "+this.getWidth());
+		//scrollPane.setBounds(this.getBounds());
 		this.setVisible(true);
 	}
 	@Override
@@ -100,7 +106,13 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	public void reload() {
 		this.getMasterModel().getpL().loadFromGateway();
 		PatientList patientList = this.getMasterModel().getpL();
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		DefaultTableModel model = new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"Identifier", "Name", "Gender", "Age", "Birthdate"
+				});
+		table.setModel(model);		  
 		for(Patient patient : patientList.getMyList()) {
 			String fullName =  patient.getFirstName()+" "+
 					patient.getMiddleName()+" "+

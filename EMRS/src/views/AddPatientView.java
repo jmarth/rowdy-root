@@ -105,9 +105,9 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	 * Create the frame.
 	 */
 	public AddPatientView() {
+		super();
 		imagePath = "";
 		this.updateorinsert=this.INSERTPATIENT;
-		setBounds(100, 100, 710, 1118);
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
 		GridBagLayout gbl_contentPane = new GridBagLayout();
 		gbl_contentPane.columnWidths = new int[]{674, 0};

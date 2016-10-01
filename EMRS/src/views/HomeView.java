@@ -4,10 +4,14 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -77,6 +81,7 @@ public class HomeView extends JFrame implements viewinterface{
 	 */
 	public HomeView() {
 		// Models should be independent; a view should grab from a model.
+		super();
 		this.model = new MasterModel();
 		paview = new AddPatientView();
 		fpview = new FindPatientsView();
@@ -90,12 +95,19 @@ public class HomeView extends JFrame implements viewinterface{
 		setBounds(200, 100, 1139, 1124); // set size of Home View
 		
 		// set up contentPane panel
+		JPanel center = new JPanel(new FlowLayout());
+		center.add(this.ssview,BorderLayout.CENTER);
+		center.add(this.paview,BorderLayout.CENTER);
+		center.add(this.fpview,BorderLayout.CENTER);
+		
 		this.setLayout(new BorderLayout());
 		this.setBackground(CL.cararra);
-		this.add(paview, BorderLayout.CENTER);
-		this.add(fpview, BorderLayout.CENTER);
+		//this.add(paview, BorderLayout.CENTER);
+		//this.add(fpview, BorderLayout.CENTER);
 		//TODO this.add(prview, BorderLayout.CENTER);
-		this.add(ssview, BorderLayout.CENTER);
+		//this.add(ssview, BorderLayout.CENTER);
+		this.add(center);
+		
 		//TODO this.add(mvisitview, BorderLayout.CENTER);
 		// setup slide show in center panel_1
 		//SlideShowPanel ssp = new SlideShowPanel();		
@@ -140,7 +152,7 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		// Top buttons change color from mouse hover
 		
-		/*MouseListener ml = (new MouseAdapter() {
+		MouseListener ml = (new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				((Component) arg0.getSource()).setBackground(new Color(2,108,143));
@@ -156,15 +168,13 @@ public class HomeView extends JFrame implements viewinterface{
 				((AbstractButton) arg0.getSource()).setBorderPainted(false);
 				//System.out.println("mouse over");
 			}
-		});*/
-		
-		
+		});
 		
 		btnHome.setIcon(new ImageIcon("logo1.png"));
 		btnHome.setOpaque(true);
 		btnHome.setContentAreaFilled(false);
 		btnHome.setBorderPainted(false);
-		//btnHome.addMouseListener(ml);
+		btnHome.addMouseListener(ml);
 		
 		
 		
@@ -180,7 +190,7 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		
 		
-		//btnAddPatient.addMouseListener(ml);
+		btnAddPatient.addMouseListener(ml);
 		btnAddPatient.setToolTipText("Add Patient");
 		/********** font from 16 to 18 ********************/
 		btnAddPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -207,7 +217,7 @@ public class HomeView extends JFrame implements viewinterface{
 		btnLogout.setOpaque(true);
 		btnLogout.setContentAreaFilled(false);
 		btnLogout.setBorderPainted(false);
-		//btnLogout.addMouseListener(ml);
+		btnLogout.addMouseListener(ml);
 		
 		
 		
@@ -233,7 +243,7 @@ public class HomeView extends JFrame implements viewinterface{
 		});
 		
 		
-		//btnFindPatient.addMouseListener(ml);
+		btnFindPatient.addMouseListener(ml);
 		btnFindPatient.setForeground(new Color(255, 255, 255));
 		btnFindPatient.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnFindPatient.setOpaque(true);
@@ -313,6 +323,33 @@ public class HomeView extends JFrame implements viewinterface{
 		lblPatientSearch.setForeground(new Color(255, 255, 255));
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		northPanel.setLayout(gl_panel);
+		this.pack();
+		this.addComponentListener(new ComponentListener(){
+
+			@Override
+			public void componentHidden(ComponentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void componentMoved(ComponentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void componentResized(ComponentEvent arg0) {
+				HomeView.this.validate();
+				
+			}
+
+			@Override
+			public void componentShown(ComponentEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		
 	}		
 	/**

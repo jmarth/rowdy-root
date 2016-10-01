@@ -47,16 +47,13 @@ public class PatientList {
 	public ArrayList<Patient> getMyList() {
 		ArrayList<Patient> temp = new ArrayList<Patient>();
 		temp.addAll(myIdMap.values());
-		System.out.println(temp.size());
 		return temp;
 	}
 
 	public Patient findById(long id) {
-
 		// check the identity map
 		if (myIdMap.containsKey(id))
 			return myIdMap.get(id);
-
 		return null;
 	}
 

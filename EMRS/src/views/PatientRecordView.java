@@ -6,6 +6,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -171,7 +172,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return this.getHomeView().getMasterModel();
 	}
 
 	@Override
@@ -189,6 +190,6 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent()).getHomeView();
+		return (HomeView)SwingUtilities.getRoot(this);
 	}
 }
