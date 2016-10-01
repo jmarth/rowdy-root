@@ -48,7 +48,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		this.setTabComponentAt(0, lab1);
 		
 		// Create allergies & meds tab
-		JLabel lab2 = new JLabel(Tabs.hx);
+		/*TODO JLabel lab2 = new JLabel(Tabs.hx);
 		lab2.setPreferredSize(new Dimension(145, 30));
 		lab2.setHorizontalAlignment(JLabel.CENTER);
 		hxv = new hxView();
@@ -61,35 +61,35 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		lab3.setHorizontalAlignment(JLabel.CENTER);
 		vsv = new VitalsTabMasterView();
 		this.addTab(Tabs.ped, null,vsv, null);
-		this.setTabComponentAt(2, lab3);
+		this.setTabComponentAt(2, lab3);*/
 		
 		
 		// create vitals tab
-		JLabel lab4 = new JLabel(Tabs.vitals);
+		/*TODO JLabel lab4 = new JLabel(Tabs.vitals);
 		lab4.setPreferredSize(new Dimension(145, 30));
 		lab4.setHorizontalAlignment(JLabel.CENTER);
 				
 		vtv = new VitalsTabMasterView();
 		this.addTab(Tabs.vitals, null, vtv, null);
-		this.setTabComponentAt(3, lab4);
+		this.setTabComponentAt(3, lab4);*/
 		
 		// create labs tab
-		JLabel lab6 = new JLabel(Tabs.labs);
+		/*TODO JLabel lab6 = new JLabel(Tabs.labs);
 		lab6.setPreferredSize(new Dimension(145, 30));
 		lab6.setHorizontalAlignment(JLabel.CENTER);
 		
 		lpv = new LabsAndProceduresTabView();
 		this.addTab(Tabs.labs, null,lpv, null);
-		this.setTabComponentAt(4, lab6);
+		this.setTabComponentAt(4, lab6);*/
 		
 		// create documents tab
-		JLabel lab7 = new JLabel(Tabs.docs);
+		/*TODO JLabel lab7 = new JLabel(Tabs.docs);
 		lab7.setPreferredSize(new Dimension(145, 30));
 		lab7.setHorizontalAlignment(JLabel.CENTER);
 		
 		dtv = new DocumentsTabView();
 		this.addTab(Tabs.docs, null,dtv, null);
-		this.setTabComponentAt(5, lab7);
+		this.setTabComponentAt(5, lab7);*/
 		
 		this.setBackground(CL.porcelian);
 		
@@ -127,11 +127,11 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	@Override
 	public void HideallView() {
 		dgv.HideallView();;
-		hxv.HideallView();
+		/*TODO hxv.HideallView();
 		vsv.HideallView();
 		vtv.HideallView();
 		lpv.HideallView();
-		dtv.HideallView();
+		dtv.HideallView();*/
 	}
 	
 	public void ShowHxView(){
@@ -190,6 +190,6 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 
 	@Override
 	public HomeView getHomeView() {
-		return (HomeView)SwingUtilities.getRoot(this);
+		return (HomeView)SwingUtilities.getWindowAncestor(this);
 	}
 }

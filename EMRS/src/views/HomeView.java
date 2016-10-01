@@ -19,6 +19,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowStateListener;
 import java.util.List;
 
 import javax.swing.AbstractButton;
@@ -73,6 +76,7 @@ public class HomeView extends JFrame implements viewinterface{
 	
 	private JButton btnAllergyAlert;
 	
+	private JPanel center;
 	/**
 	 * Home constructor.
 	 * 
@@ -85,9 +89,9 @@ public class HomeView extends JFrame implements viewinterface{
 		this.model = new MasterModel();
 		paview = new AddPatientView();
 		fpview = new FindPatientsView();
-		//prview = new PatientRecordView();
+		prview = new PatientRecordView();
 		ssview = new SlideShowPanel();
-		//mvisitview = new MasterVisit();
+		//TODO mvisitview = new MasterVisit();
 		this.HideallView();
 		this.ssview.setVisible(true);
 		setTitle("EMRS");
@@ -95,18 +99,18 @@ public class HomeView extends JFrame implements viewinterface{
 		setBounds(200, 100, 1139, 1124); // set size of Home View
 		
 		// set up contentPane panel
-		JPanel center = new JPanel(new FlowLayout());
-		center.add(this.ssview,BorderLayout.CENTER);
-		center.add(this.paview,BorderLayout.CENTER);
-		center.add(this.fpview,BorderLayout.CENTER);
-		
+		center = new JPanel(null);
+		center.add(this.ssview);
+		center.add(this.paview);
+		center.add(this.fpview);
+		center.add(this.prview);
 		this.setLayout(new BorderLayout());
 		this.setBackground(CL.cararra);
 		//this.add(paview, BorderLayout.CENTER);
 		//this.add(fpview, BorderLayout.CENTER);
 		//TODO this.add(prview, BorderLayout.CENTER);
 		//this.add(ssview, BorderLayout.CENTER);
-		this.add(center);
+		this.add(center,BorderLayout.CENTER);
 		
 		//TODO this.add(mvisitview, BorderLayout.CENTER);
 		// setup slide show in center panel_1
@@ -329,29 +333,62 @@ public class HomeView extends JFrame implements viewinterface{
 			@Override
 			public void componentHidden(ComponentEvent arg0) {
 				// TODO Auto-generated method stub
-				
+				//System.out.println("get in hidden");
 			}
 
 			@Override
 			public void componentMoved(ComponentEvent arg0) {
 				// TODO Auto-generated method stub
+				//System.out.println("get in moved");
 				
 			}
 
 			@Override
 			public void componentResized(ComponentEvent arg0) {
-				HomeView.this.validate();
-				
+				//TODO
+				//System.out.println("homeview:\t"+center.getX()+":"+center.getY());
+				updatecomponentsize();
 			}
 
 			@Override
 			public void componentShown(ComponentEvent arg0) {
 				// TODO Auto-generated method stub
-				
+				//System.out.println("get in gainedfocus");
 			}
 		});
+		this.addWindowStateListener(new WindowStateListener(){
+
+			@Override
+			public void windowStateChanged(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				//System.out.println("homeview:\t"+center.getWidth()+":"+center.getHeight());
+				updatecomponentsize();
+			}
+			
+		});
+		this.addWindowFocusListener(new WindowFocusListener(){
+
+			@Override
+			public void windowGainedFocus(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				//System.out.println("get in gainedfocus");
+			}
+
+			@Override
+			public void windowLostFocus(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				//System.out.println("get in lostFocus");
+			}
+			
+		});
 		
-	}		
+	}
+	private void updatecomponentsize(){
+		paview.setBounds(0, 0, center.getWidth(), center.getHeight());
+		ssview.setBounds(0, 0, center.getWidth(), center.getHeight());
+		fpview.setBounds(0, 0, center.getWidth(), center.getHeight());
+		prview.setBounds(0, 0, center.getWidth(), center.getHeight());
+	}
 	/**
 	 *  Called by LoginView to show HomeView
 	 */

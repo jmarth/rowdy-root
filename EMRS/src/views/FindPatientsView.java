@@ -33,10 +33,10 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	public FindPatientsView() {
 		super();
 		this.setBorder(new EmptyBorder(5, 5, 5, 5));
-		//this.setLayout(new GridLayout(0,1,0,0));
-		this.setLayout(new BorderLayout());
+		this.setLayout(new GridLayout(0,1,0,0));
+		//this.setLayout(new BorderLayout());
 		scrollPane = new JScrollPane();
-		this.add(scrollPane,BorderLayout.CENTER);
+		this.add(scrollPane);
 		table = new JTable();
 		table.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		table.setModel(new DefaultTableModel(
@@ -46,7 +46,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 				"Identifier", "Name", "Gender", "Age", "Birthdate"
 			}
 		));
-		this.add(table,BorderLayout.CENTER);
+		//this.add(table,BorderLayout.CENTER);
 		scrollPane.setViewportView(table);	
 		//this.reload();		
 		//Set patients from database
@@ -76,7 +76,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		
 	}
 	private void showdemographic(){
-		HomeView hv = (HomeView) this.getParent();
+		HomeView hv = this.getHomeView();
 		hv.HideallView();
 		hv.getPrview().ShowDemographicsView();
 	}	
@@ -93,8 +93,6 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	@Override
 	public void ShowView() {
 		this.reload();
-		System.out.println(this.getHomeView().getHeight()+"  "+this.getHomeView().getWidth());
-		System.out.println(this.getHeight()+"  "+this.getWidth());
 		//scrollPane.setBounds(this.getBounds());
 		this.setVisible(true);
 	}
@@ -130,7 +128,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	}
 	@Override
 	public HomeView getHomeView() {
-		return (HomeView)SwingUtilities.getRoot(this);
+		return (HomeView)SwingUtilities.getWindowAncestor(this);
 	}
 
 }

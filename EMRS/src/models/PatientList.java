@@ -33,7 +33,6 @@ public class PatientList {
 		try {
 			
 			List<Patient> patients = myGateway.fetchPatients();
-			System.out.println(patients.size());
 			for (Patient patient : patients) {
 				patient.setBirthDayDate();
 				myIdMap.put(patient.getId(), patient);

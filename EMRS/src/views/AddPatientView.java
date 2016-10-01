@@ -1014,7 +1014,8 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	}
 	@Override
 	public HomeView getHomeView() {
-		return (HomeView)SwingUtilities.getRoot(this);
+		//return (HomeView)SwingUtilities.getRoot(this);
+		return (HomeView)SwingUtilities.getWindowAncestor(this);
 	}
 	public int getUpdateorinsert() {
 		return updateorinsert;
