@@ -10,4 +10,5 @@ public interface HxTableGateway {
 	public List<Hx> fetchHxForPatient(Patient p) throws GatewayException;
 	public long insertHx(Hx hx) throws GatewayException;
 	public void updateHx(Hx hx) throws GatewayException;
+	public void removeHx(long pid) throws GatewayException;
 }

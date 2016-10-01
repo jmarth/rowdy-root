@@ -5,9 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import models.DistanceVision;
 
@@ -19,7 +17,7 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 	private Connection conn = null;
 	
 	/**
-	 * Constructor: creates database connection
+	 * Constructor: Creates database connection
 	 * @throws GatewayException
 	 * @throws IOException 
 	 */
@@ -34,8 +32,8 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 	}
 	
 	/**
-	 * Fetch visits from DB for patient
-	 * @return list of visits for patient
+	 * Fetch DistanceVision from DB for Visit
+	 * @return DistanceVision for Visit
 	 * @throws GatewayException
 	 */
 	public DistanceVision fetchDistanceVisionForVisit(long vid) throws GatewayException {
@@ -45,12 +43,15 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 		ResultSet rs = null;
 		
 		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from distance_visions where vid=?");
+			
+			//fetch DistanceVision for Visit
+			st = conn.prepareStatement("SELECT * FROM distance_visions WHERE vid=?");
+			
 			st.setLong(1, vid);
+			
 			rs = st.executeQuery();
 			
-			//add each to list of parts to return
+			// ResultSet contains only one.
 			if(rs.next()){
 				
 					dv = new DistanceVision(
@@ -66,10 +67,14 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 			}
 		
 		} catch (SQLException e) {
+			
 			throw new GatewayException(e.getMessage());
+			
 		} finally {
+			
 			//clean up
 			try {
+				
 				if(rs != null)
 					rs.close();
 				
@@ -77,6 +82,7 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 					st.close();
 				
 			} catch (SQLException e) {
+				
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}			
 		}
@@ -84,7 +90,7 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 	}
 	
 	/**
-	 * Inserts visit into visits table
+	 * Inserts DistanceVision into distance_visions table
 	 */
 	public long insertDistanceVision(DistanceVision dv) throws GatewayException {
 		
@@ -150,54 +156,8 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 	}
 
 	@Override
-	public ArrayList<Object> fetchDistanceVisionColsForVisit(long id) throws GatewayException {
-
-	    ArrayList<Object> row = new ArrayList<Object>();
+	public void updateDistanceVision(DistanceVision dv) throws GatewayException {
+		// TODO Auto-generated method stub
 		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from distance_visions where vid=?");
-			st.setLong(1, id);
-			
-			rs = st.executeQuery();
-			
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		    
-		    int colCount = meta.getColumnCount();
-
-//		    System.out.println("====DV ======= " + colCount);
-			
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-//					System.out.println("column #"+ i + " : " + rs.getObject(i));
-				}
-			}
-//			System.out.println("\n****************\n DV ROW:"+row.toString());
-			
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return row;
 	}
-
-
 }

@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +29,18 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
 			
 		} catch (SQLException e) {
+			System.err.println("From IOP TG, no db connection");
 			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * Fetch all iops from DB
-	 * @return list of iops
+	 * Fetch all IOPs from DB
+	 * @return list of all IOPs
 	 * @throws GatewayException
+	 * 
 	 */
+	@Deprecated
 	public List<IOPMeasurement> fetchIOPMeasurements() throws GatewayException {
 		
 		ArrayList<IOPMeasurement> iops = new ArrayList<IOPMeasurement>();
@@ -47,19 +49,12 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 		ResultSet rs = null;
 		
 		try {
-			//fetch parts
-//			System.out.print("getting info");
 			
 			st = conn.prepareStatement("select * from iops");
 			rs = st.executeQuery();
 			
-//			System.out.print("\ninfo loaded");
 			
-			//add each to list of parts to return
 			while(rs.next()) {
-				
-//				System.out.print("\ncreating iop object");
-				
 				
 				IOPMeasurement v = new IOPMeasurement(
 						rs.getLong("id"),
@@ -73,11 +68,7 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 						rs.getString("dateCreated")
 						);
 				
-//				System.out.print("\niop object created");
-				
 				iops.add(v);
-				
-//				System.out.print("\niop object added");
 				
 			}
 		} catch (SQLException e) {
@@ -100,8 +91,8 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 	}
 	
 	/**
-	 * Fetch iops from DB for patient
-	 * @return list of iops for patient
+	 * Fetch IOPs from DB for Visit
+	 * @return list of IOPs for a Visit
 	 * @throws GatewayException
 	 */
 	public List<IOPMeasurement> fetchIOPMeasurementsForVisit(long vid) throws GatewayException {
@@ -113,7 +104,7 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 		
 		try {
 			//fetch parts
-			st = conn.prepareStatement("select * from iops where vid=?");
+			st = conn.prepareStatement("SELECT * FROM iops WHERE vid=?");
 			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
@@ -216,6 +207,12 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 	}
 	
 	@Override
+	public long updateIOPMeasurements(IOPMeasurement v) throws GatewayException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
 	public void removeIOPMeasurements(Long vid) throws GatewayException {
 		// TODO Auto-generated method stub
 		
@@ -225,56 +222,4 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public ArrayList<Object> fetchIOPColsForVisit(long id) throws GatewayException {
-
-	    ArrayList<Object> row = new ArrayList<Object>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			
-			//fetch parts
-			st = conn.prepareStatement("select * from iops where vid=?");
-			st.setLong(1, id);
-			
-			rs = st.executeQuery();
-			
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		    
-		    int colCount = meta.getColumnCount();
-//		    System.out.println("====iop======" + colCount);
-			
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-//					System.out.println("column #"+ i + " : " + rs.getObject(i));
-				}
-			}
-//			System.out.println("\n****************\n iop ROW:"+row.toString());
-			
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return row;
-	
-	}
-
 }

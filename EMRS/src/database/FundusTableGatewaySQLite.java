@@ -5,19 +5,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import models.Patient;
 import models.FundusExam;
 
 public class FundusTableGatewaySQLite implements FundusTableGateway {
-	
-	/**
-	 * external DB connection
-	 */
+
 	private Connection conn = null;
 	
 	/**
@@ -36,8 +29,8 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 	}
 	
 	/**
-	 * Fetch Fundus Exams from DB for patient
-	 * @return list of Fundus Exams for patient
+	 * Fetch FundusExam from DB for Visit
+	 * @return list of FundusExams for Visit
 	 * @throws GatewayException
 	 */
 	public FundusExam fetchFundusExamForVisit(long vid) throws GatewayException {
@@ -46,13 +39,13 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 		ResultSet rs = null;
 		
 		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from fundus_exams where pid=?");
+			//fetch FundusExam
+			st = conn.prepareStatement("SELECT * FROM fundus_exams WHERE vid=?");
 			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
-			//add each to list of parts to return
+			// rs has one
 			if (rs.next() )
 			{
 				FundusExam fe = new FundusExam(
@@ -105,7 +98,7 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 	}
 	
 	/**
-	 * Inserts Fundus Exam into fundus table
+	 * Inserts FundusExam into fundus_exams table
 	 */
 	public long insertFundusExam(FundusExam fe) throws GatewayException {
 		
@@ -197,6 +190,11 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 	}
 
 	
+	@Override
+	public void updateFundusExamForVisit(long vid) throws GatewayException {
+		// TODO Auto-generated method stub
+		// set autocommit false, then back again.
+	}
 	
 	@Override
 	public void removeFundusExam(Long vid) throws GatewayException {
@@ -209,51 +207,5 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 		
 	}
 
-	@Override
-	public ArrayList<Object> fetchFundusExamsForVisit(long id) throws GatewayException {
-ArrayList<Object> row = new ArrayList<Object>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from fundus_exams where vid=?");
-			st.setLong(1, id);
-			
-			rs = st.executeQuery();
-			
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		    
-		    int colCount = meta.getColumnCount();
-		    //System.out.println("====fundus======" + colCount);
-			
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-//					System.out.println("column #"+ i + " : " + rs.getObject(i));
-				}
-			}
-			//System.out.println("\n****************\n fundus ROW:"+row.toString());
-			
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return row;
-	}
+
 }

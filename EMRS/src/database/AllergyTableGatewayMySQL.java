@@ -6,11 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.Random;
 
 import javax.sql.DataSource;
 
@@ -20,12 +18,7 @@ import models.Allergy;
 import models.Patient;
 
 public class AllergyTableGatewayMySQL implements AllergyTableGateway {
-	
-	private static final SimpleDateFormat DB_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	private static final boolean DEBUG = true;
-	private static final int QUERY_TIMEOUT = 70;//query timeout threshold in seconds
-	private static final Random roller = new Random();
-	
+
 	/**
 	 * external DB connection
 	 */
@@ -298,5 +291,11 @@ public class AllergyTableGatewayMySQL implements AllergyTableGateway {
         mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
         mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
         return mysqlDS;
+	}
+
+	@Override
+	public List<Allergy> fetchAllergiesForPatient(long pid) throws GatewayException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

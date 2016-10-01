@@ -5,12 +5,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.Patient;
 import models.Visit;
 
 public class VisitTableGatewaySQLite implements VisitTableGateway {
@@ -40,7 +38,8 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 	 * @return list of visits for patient
 	 * @throws GatewayException
 	 */
-	public List<Visit> fetchVisitsForPatient(Patient p) throws GatewayException {
+	@Override
+	public List<Visit> fetchVisitsForPatient(long pid) throws GatewayException {
 		
 		ArrayList<Visit> visits = new ArrayList<Visit>();
 		
@@ -49,8 +48,8 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		
 		try {
 			//fetch parts
-			st = conn.prepareStatement("select * from visits where pid=?");
-			st.setLong(1, p.getId());
+			st = conn.prepareStatement("SELECT * FROM visits WHERE pid=?");
+			st.setLong(1, pid);
 			
 			rs = st.executeQuery();
 			
@@ -146,54 +145,6 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public ArrayList<Object> fetchVisitsCols(long id) throws GatewayException {
-		ArrayList<Object> row = new ArrayList<Object>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from visits where id=?");
-			st.setLong(1, id);
-			
-			rs = st.executeQuery();
-			
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		    
-		    int colCount = meta.getColumnCount();
-		    //System.out.println("==== ======" + colCount);
-			
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-//					System.out.println("column #"+ i + " : " + rs.getObject(i));
-				}
-			}
-			//System.out.println("\n****************\n    ROW:"+row.toString());
-			
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return row;
 	}
 
 	@Override
