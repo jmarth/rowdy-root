@@ -22,7 +22,6 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 	private JPanel headerPanel;
 	private JLabel iconLabel;
 
-	
 	public VisitListView () {
 		super();
 		

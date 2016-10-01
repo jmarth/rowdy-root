@@ -11,19 +11,17 @@ import models.Gonio;
 
 public class GonioTableGatewaySQLite implements GonioTableGateway {
 	
-	/**
-	 * external DB connection
-	 */
 	private Connection conn = null;
 	
 	/**
 	 * Constructor: creates database connection
 	 * @throws GatewayException
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public GonioTableGatewaySQLite() throws GatewayException, IOException {
 
 		try {
+			
 			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
 			
 		} catch (SQLException e) {
@@ -32,9 +30,9 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 	}
 	
 	/**
-	 * Inserts visit into visits table
+	 * Inserts Gonio into gonios table
 	 */
-	public long insertGonio(Gonio p) throws GatewayException {
+	public long insertGonioForVisit(Gonio g) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;
@@ -73,30 +71,30 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 					+ " values ( ?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?, ?, ?, ?,?, ?,?,?,?,?  ) ",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			
-			st.setLong(1, p.getVid());
+			st.setLong(1, g.getVid());
 			
-			st.setInt(2, p.isHxFHA());
-			st.setString(3, p.getFHASide());
+			st.setInt(2, g.isHxFHA());
+			st.setString(3, g.getFHASide());
 			
-			st.setInt(4, p.isODNormal());
-			st.setString(5, p.getOdABCDNon());
-			st.setString(6, p.getOdABCDComp());
-			st.setString(7, p.getOdDegreeNon());
-			st.setString(8, p.getOdDegreeComp());
-			st.setString(9, p.getOdRSQNon());
-			st.setString(10, p.getOdRSQComp());
-			st.setString(11, p.getOdPigment());
-			st.setInt(12, p.isODAntPigLine());
+			st.setInt(4, g.isODNormal());
+			st.setString(5, g.getOdABCDNon());
+			st.setString(6, g.getOdABCDComp());
+			st.setString(7, g.getOdDegreeNon());
+			st.setString(8, g.getOdDegreeComp());
+			st.setString(9, g.getOdRSQNon());
+			st.setString(10, g.getOdRSQComp());
+			st.setString(11, g.getOdPigment());
+			st.setInt(12, g.isODAntPigLine());
 			
-			st.setInt(13, p.isOSNormal());
-			st.setString(14, p.getOsABCDNon());
-			st.setString(15, p.getOsABCDComp());
-			st.setString(16, p.getOsDegreeNon());
-			st.setString(17, p.getOsDegreeComp());
-			st.setString(18, p.getOsRSQNon());
-			st.setString(19, p.getOsRSQComp());
-			st.setString(20, p.getOsPigment());
-			st.setInt(21, p.isOSAntPigLine());
+			st.setInt(13, g.isOSNormal());
+			st.setString(14, g.getOsABCDNon());
+			st.setString(15, g.getOsABCDComp());
+			st.setString(16, g.getOsDegreeNon());
+			st.setString(17, g.getOsDegreeComp());
+			st.setString(18, g.getOsRSQNon());
+			st.setString(19, g.getOsRSQComp());
+			st.setString(20, g.getOsPigment());
+			st.setInt(21, g.isOSAntPigLine());
 			
 			st.executeUpdate();
 			
@@ -123,6 +121,12 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 		
 		return newId;
 	}
+	
+	@Override
+	public void updateGonioForVisit(long vid) throws GatewayException {
+		// TODO Auto-generated method stub
+		// auto commit false then true after
+	}
 
 	@Override
 	public void removeGonio(Long vid) throws GatewayException {
@@ -136,7 +140,7 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 	}
 
 	@Override
-	public Gonio fetchGonioForVisit(long id) throws GatewayException {
+	public Gonio fetchGonioForVisit(long vid) throws GatewayException {
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -144,7 +148,7 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from gonios where vid=?");
-			st.setLong(1, id);
+			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
@@ -199,6 +203,4 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 		
 		return null;
 	}
-
-
 }

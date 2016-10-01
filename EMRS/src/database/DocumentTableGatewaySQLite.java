@@ -30,7 +30,8 @@ public class DocumentTableGatewaySQLite implements DocumentTableGateway {
 			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println("From Document TG, Could not connect to DB.");
+//			e.printStackTrace();
 		}
 	}
 	
@@ -54,7 +55,7 @@ public class DocumentTableGatewaySQLite implements DocumentTableGateway {
 			
 			rs = st.executeQuery();
 			
-			//add each to list of allergies to return
+			//add each to list of Documents to return
 			while(rs.next()) {
 				
 				Document tmpDoc = new Document(
@@ -164,5 +165,12 @@ public class DocumentTableGatewaySQLite implements DocumentTableGateway {
 				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
+	}
+
+	@Override
+	public void updateDocumentForPatient(Long pid) throws GatewayException {
+		// TODO Auto-generated method stub
+		// TODO Don't forget setAutoCommmit false, then set it afterwards.
+		
 	}
 }
