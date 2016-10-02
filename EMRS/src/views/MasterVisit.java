@@ -15,6 +15,7 @@ import models.MasterModel;
 @SuppressWarnings("serial")
 public class MasterVisit extends JPanel implements viewinterface {
 
+	JScrollPane scrollPane;
 	private VisitListView vlv;	
 	
 	public MasterVisit() {
@@ -24,6 +25,7 @@ public class MasterVisit extends JPanel implements viewinterface {
 		vlv = new VisitListView();
 		
 		//TODO Edit a selected visit...how?
+		
 		JButton btnNewVisit = new JButton("Add A New Visit");
 		btnNewVisit.setBackground(CL.cararra);
 		btnNewVisit.setOpaque(true);
@@ -31,7 +33,7 @@ public class MasterVisit extends JPanel implements viewinterface {
 		btnNewVisit.setForeground(CL.colorBlue);
 		btnNewVisit.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
-		JScrollPane scrollPane = new JScrollPane(vlv);
+		scrollPane = new JScrollPane(vlv);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 		
 		add(scrollPane, BorderLayout.CENTER);
@@ -44,6 +46,8 @@ public class MasterVisit extends JPanel implements viewinterface {
 	private class NewVisitListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {
+			
+			
 			
 			//TODO get selected index
 			//TODO Should create the visit in the list also

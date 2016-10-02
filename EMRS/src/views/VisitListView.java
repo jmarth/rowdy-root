@@ -25,7 +25,7 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 	public VisitListView () {
 		super();
 		
-//		setLayout(new BorderLayout(0, 0));
+		setLayout(new BorderLayout(0, 0));
 
 		iconLabel = new JLabel();
 		iconLabel.setIcon(new ImageIcon("medical_history_icon.jpg"));
@@ -44,7 +44,6 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 		
 		// TODO this loops backwards, does it need to?
 		
-		//for each
 		for (int i = visitList.size() - 1; i >= 0; i--) {
 			
 			Visit v = visitList.get(i);
