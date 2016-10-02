@@ -46,15 +46,21 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 	
 	/*
 	 * Creates a detail view for the JXTask
-	 * Can be edited or deleted.
+	 * Can be edited.
 	 */
 	public JXTaskPaneVisitDetailView(int index) {
+		
 		//create panels TODO
+		
 		MasterModel mm;
 		mm = (MasterModel)this.getMasterModel();
 		mm.getCurrentPatientVisitList().get(index);
 		
-		createView();
+		VisitDetailView vdv = new VisitDetailView(index);
+		
+		add(vdv);
+		
+//		createView();
 	}
 	
 	public void createView() {

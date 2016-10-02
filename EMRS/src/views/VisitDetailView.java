@@ -12,8 +12,6 @@ import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
-import org.jdesktop.swingx.JXTaskPane;
-
 import models.CL;
 import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
@@ -24,11 +22,9 @@ import visitPanels.PanelSLE;
 import visitPanels.PanelVision;
 
 @SuppressWarnings("serial")
-public class VisitDetailView extends JXTaskPane implements viewinterface {
-	
-	// TODO Should be a JXTaskPane or JPanel added to JXTaskPane?
-	
-	private int index;
+public class VisitDetailView extends JPanel implements viewinterface {
+		
+	private int index; // index of the patient's visit in their visit list
 	
 	private PanelVision panel_Vision;
 	private PanelSLE panel_SLE;
@@ -49,12 +45,15 @@ public class VisitDetailView extends JXTaskPane implements viewinterface {
 	 * Can be edited or deleted.
 	 */
 	public VisitDetailView(int index) {
-		//create panels TODO
+		
+		this.index = index;
+		
 		MasterModel mm;
 		mm = (MasterModel)this.getMasterModel();
-		mm.getCurrentPatientVisitList().get(index);
+		mm.getvL().getMyList().get(index);
 		
 		createView();
+		panel_Buttons.setVisible(false);
 	}
 	
 	public void createView() {
@@ -201,6 +200,4 @@ public class VisitDetailView extends JXTaskPane implements viewinterface {
 	public HomeView getHomeView() {
 		return ((HomeView)this.getParent()).getHomeView();
 	}
-	
-	
 }
