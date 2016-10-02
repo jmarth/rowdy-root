@@ -6,8 +6,6 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
@@ -77,31 +75,16 @@ public class HomeView extends JFrame implements viewinterface{
 		fpview = new FindPatientsView();
 		prview = new PatientRecordView();
 		ssview = new SlideShowPanel();
-		//TODO mvisitview = new MasterVisit();
+		
 		this.HideallView();
 		this.ssview.setVisible(true);
 		setTitle("EMRS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//setBounds(200, 100, 1139, 800); // set size of Home View
 		
 		// set up contentPane panel
-		center = new JPanel(null);
-		center.add(this.ssview);
-		center.add(this.paview);
-		center.add(this.fpview);
-		center.add(this.prview);
 		this.setLayout(new BorderLayout());
 		this.setBackground(CL.cararra);
-		//this.add(paview, BorderLayout.CENTER);
-		//this.add(fpview, BorderLayout.CENTER);
-		//TODO this.add(prview, BorderLayout.CENTER);
-		//this.add(ssview, BorderLayout.CENTER);
-		this.add(center,BorderLayout.CENTER);
-		
-		//TODO this.add(mvisitview, BorderLayout.CENTER);
-		// setup slide show in center panel_1
-		//SlideShowPanel ssp = new SlideShowPanel();		
-		//panel_1.add(ssp);
+		this.add(ssview,BorderLayout.CENTER);
 		btnHome = new JButton("");
 		btnAddPatient = new JButton("Add Patient");
 		btnFindPatient = new JButton("Find Patient");
@@ -118,8 +101,7 @@ public class HomeView extends JFrame implements viewinterface{
 		textFieldSearch.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusGained(FocusEvent arg0) {
-				HomeView.this.HideallView();
-				HomeView.this.fpview.setVisible(true);
+				HomeView.this.ShowFindPatientsView();;
 			}
 		});
 		
@@ -173,10 +155,6 @@ public class HomeView extends JFrame implements viewinterface{
 				HomeView.this.ShowHomeView();
 			}
 		});
-		
-		
-		
-		
 		
 		btnAddPatient.addMouseListener(ml);
 		btnAddPatient.setToolTipText("Add Patient");
@@ -313,41 +291,41 @@ public class HomeView extends JFrame implements viewinterface{
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		northPanel.setLayout(gl_panel);
 		this.pack();
-		this.addComponentListener(new ComponentListener(){
-
-			@Override
-			public void componentHidden(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
-				//System.out.println("get in hidden");
-			}
-
-			@Override
-			public void componentMoved(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
-				//System.out.println("get in moved");
-				
-			}
-
-			@Override
-			public void componentResized(ComponentEvent arg0) {
-				//TODO
-				//System.out.println("homeview:\t"+center.getX()+":"+center.getY());
-				updatecomponentsize();
-			}
-
-			@Override
-			public void componentShown(ComponentEvent arg0) {
-				// TODO Auto-generated method stub
-				//System.out.println("get in gainedfocus");
-			}
-		});
+//		this.addComponentListener(new ComponentListener(){
+//
+//			@Override
+//			public void componentHidden(ComponentEvent arg0) {
+//				// TODO Auto-generated method stub
+//				//System.out.println("get in hidden");
+//			}
+//
+//			@Override
+//			public void componentMoved(ComponentEvent arg0) {
+//				// TODO Auto-generated method stub
+//				//System.out.println("get in moved");
+//				
+//			}
+//
+//			@Override
+//			public void componentResized(ComponentEvent arg0) {
+//				//TODO
+//				//System.out.println("homeview:\t"+center.getX()+":"+center.getY());
+//				updatecomponentsize();
+//			}
+//
+//			@Override
+//			public void componentShown(ComponentEvent arg0) {
+//				// TODO Auto-generated method stub
+//				//System.out.println("get in gainedfocus");
+//			}
+//		});
 	}
-	private void updatecomponentsize(){
-		paview.setBounds(0, 0, center.getWidth(), center.getHeight());
-		ssview.setBounds(0, 0, center.getWidth(), center.getHeight());
-		fpview.setBounds(0, 0, center.getWidth(), center.getHeight());
-		prview.setBounds(0, 0, center.getWidth(), center.getHeight());
-	}
+//	private void updatecomponentsize(){
+//		paview.setBounds(0, 0, center.getWidth(), center.getHeight());
+//		ssview.setBounds(0, 0, center.getWidth(), center.getHeight());
+//		fpview.setBounds(0, 0, center.getWidth(), center.getHeight());
+//		prview.setBounds(0, 0, center.getWidth(), center.getHeight());
+//	}
 	/**
 	 *  Called by LoginView to show HomeView
 	 */
@@ -379,10 +357,10 @@ public class HomeView extends JFrame implements viewinterface{
 	
 	@Override // hide all children
 	public void HideallView() {
-		this.fpview.setVisible(false);
-		this.prview.setVisible(false);
-		this.paview.setVisible(false);
-		this.ssview.setVisible(false);
+		this.remove(fpview);
+		this.remove(prview);
+		this.remove(paview);
+		this.remove(ssview);
 	}
 
 	public AddPatientView getPview() {
@@ -398,19 +376,32 @@ public class HomeView extends JFrame implements viewinterface{
 	}
 	public void ShowHomeView(){
 		this.HideallView();
-		this.ssview.ShowView();;
+		this.add(ssview,BorderLayout.CENTER);
+		ssview.reload();
+		this.validate();
+		this.repaint();
 	}
 	public void ShowAddPatientView(){
 		this.HideallView();
-		this.paview.ShowView();
+		this.add(paview,BorderLayout.CENTER);
+		paview.clearinput();
+		this.validate();
+		this.repaint();
 	}
 	public void ShowFindPatientsView(){
 		this.HideallView();
-		this.fpview.ShowView();
+		this.add(fpview,BorderLayout.CENTER);
+		fpview.reload();
+		this.validate();
+		this.repaint();
 	}
 	public void ShowPatientRecode(){
 		this.HideallView();
-		this.prview.ShowView();
+		this.add(prview,BorderLayout.CENTER);
+		prview.reload();
+		this.validate();
+		this.validate();
+		this.repaint();
 	}
 	@Override
 	public MasterModel getMasterModel() {

@@ -3,6 +3,7 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -47,8 +48,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 			}
 		));
 		//this.add(table,BorderLayout.CENTER);
-		scrollPane.setViewportView(table);	
-		//this.reload();		
+		scrollPane.setViewportView(table);			
 		//Set patients from database
 		table.addMouseMotionListener(new MouseMotionAdapter() {
 		   public void mouseMoved(MouseEvent e) {
@@ -59,7 +59,6 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		      }
 		      else {
 		         table.setSelectionBackground(Color.blue);
-//		         Long patientID = (Long) table.getValueAt(row, 0); TODO why this here no use
 		      }
 		      table.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		   }
@@ -69,7 +68,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 				int row = table.rowAtPoint(evt.getPoint());
 //		        Long patientId = (Long) table.getValueAt(row, 0); TODO why this here no use
 		        Patient patient = FindPatientsView.this.getMasterModel().getpL().getMyList().get(row);
-		        FindPatientsView.this.getMasterModel().setCurrPatient(patient);
+		        //FindPatientsView.this.getMasterModel().setCurrPatient(patient);
 		        FindPatientsView.this.getMasterModel().loadmaster(patient);
 		        showdemographic();
 			}
@@ -78,7 +77,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	}
 	private void showdemographic(){
 		HomeView hv = this.getHomeView();
-		hv.HideallView();
+		hv.ShowPatientRecode();
 		hv.getPrview().ShowDemographicsView();
 	}	
 	public void filter(String searchText) {

@@ -37,7 +37,7 @@ public class MasterModel {
 			//TODO aL.loadMyListForPatient(currPatient);
 			//mL.loadMyListForPatient(currPatient);
 			dL.loadMyListForPatient(currPatient);
-			//sL.loadMyListForPatient(currPatient);
+			sL.loadMyListForPatient(currPatient);
 			//vL.loadMyListForPatient(currPatient);
 			//vitalsL.loadMyListForPatient(currPatient);
 		} catch (GatewayException e) {

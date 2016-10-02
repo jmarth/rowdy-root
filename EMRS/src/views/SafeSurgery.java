@@ -151,7 +151,7 @@ public class SafeSurgery extends JPanel implements viewinterface {
 				parent.prv.setComponentAt(index, null);
 				parent.prv.setComponentAt(index, parent);
 				
-				parent.resetAndUpdate();
+				//TODO parent.resetAndUpdate();
 
 				
 			}
