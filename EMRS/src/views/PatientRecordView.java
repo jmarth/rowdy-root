@@ -165,7 +165,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	}
 	
 	public void ShowDemographicsView() {
-		this.ShowView();
+		this.getHomeView().ShowPatientRecode();
 		this.setSelectedIndex(0);
 		this.dgv.ShowView();
 	}
@@ -178,9 +178,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	@Override
 	public void ShowView() {
 		reload();
-		this.getHomeView().ShowPatientRecode();
 		this.setVisible(true);
-		
 	}
 
 	@Override

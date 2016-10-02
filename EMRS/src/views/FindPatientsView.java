@@ -69,7 +69,8 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 				int row = table.rowAtPoint(evt.getPoint());
 //		        Long patientId = (Long) table.getValueAt(row, 0); TODO why this here no use
 		        Patient patient = FindPatientsView.this.getMasterModel().getpL().getMyList().get(row);
-		        FindPatientsView.this.getMasterModel().loadmaster(patient);
+		        FindPatientsView.this.getMasterModel().setCurrPatient(patient);
+		        //FindPatientsView.this.getMasterModel().loadmaster(patient);
 		        showdemographic();
 			}
 		});
@@ -110,6 +111,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 				new String[] {
 					"Identifier", "Name", "Gender", "Age", "Birthdate"
 				});
+		table.setRowSorter(null);
 		table.setModel(model);		  
 		for(Patient patient : patientList.getMyList()) {
 			String fullName =  patient.getFirstName()+" "+

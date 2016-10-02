@@ -64,6 +64,7 @@ public class PatientList {
 
 	public void update(Patient a) throws GatewayException {
 		this.myGateway.updatePatient(a);
+		this.myIdMap.replace(a.getId(),a);
 	}
 
 	// TODO

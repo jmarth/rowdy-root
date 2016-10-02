@@ -741,7 +741,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 					countryTextField.getText(),
 					postalCodeTextField.getText(),
 					phoneNumberTextField.getText(),
-					imagePath);
+					imagePath!=null?imagePath:"");
 					try {
 						String fullName =  firstNameTextField.getText()+" "+
 								middleNameTextField.getText()+" "+
@@ -751,6 +751,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 							model.getpL().insert(patient);
 						}else{
 							model = AddPatientView.this.getMasterModel();
+							patient.setId(model.getCurrPatient().getId());
 							model.getpL().update(patient);
 						}
 						model.setCurrPatient(patient);

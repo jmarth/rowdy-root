@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -34,6 +35,7 @@ public class DemographicView extends JPanel implements viewinterface {
 	private JLabel lblPostal;
 	private JLabel lblCountry;
 	private JLabel lblPhone;
+	private JLabel lblAge;
 	public DemographicView() {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{63, 293, 0};
@@ -177,7 +179,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		gbc_lblNewLabel_1.gridy = 2;
 		panel_6.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
-		JLabel lblGender = new JLabel("");//(patient.getGender());
+		lblGender = new JLabel("");//(patient.getGender());
 		GridBagConstraints gbc_lblGender = new GridBagConstraints();
 		gbc_lblGender.anchor = GridBagConstraints.SOUTH;
 		gbc_lblGender.insets = new Insets(10, 0, 5, 5);
@@ -186,7 +188,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		panel_6.add(lblGender, gbc_lblGender);
 		lblGender.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
-		JLabel lblAge = new JLabel("");//(patient.getAge()+" year(s)");
+		lblAge = new JLabel("");//(patient.getAge()+" year(s)");
 		GridBagConstraints gbc_lblAge = new GridBagConstraints();
 		gbc_lblAge.anchor = GridBagConstraints.SOUTH;
 		gbc_lblAge.insets = new Insets(0, 0, 5, 5);
@@ -195,7 +197,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		panel_6.add(lblAge, gbc_lblAge);
 		lblAge.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
-		JLabel lblBirthdate = new JLabel("");//("("+patient.getBirthDay()+"."+patient.getBirthMonth()+"."+patient.getBirthYear()+")");
+		lblBirthdate = new JLabel("");//("("+patient.getBirthDay()+"."+patient.getBirthMonth()+"."+patient.getBirthYear()+")");
 		GridBagConstraints gbc_lblBirthdate = new GridBagConstraints();
 		gbc_lblBirthdate.insets = new Insets(0, 0, 5, 0);
 		gbc_lblBirthdate.anchor = GridBagConstraints.SOUTH;
@@ -505,7 +507,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		Patient p= this.getMasterModel().getCurrPatient();
 		if(p!=null){
 			
-			if(!p.getPicPath().equals("") ) {
+			if(p.getPicPath()!=null && !p.getPicPath().isEmpty() ) {
 				ImageIcon imageIcon = new ImageIcon(p.getPicPath());
 		        Image image = imageIcon.getImage(); // transform it 
 		        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  

@@ -32,17 +32,17 @@ public class MasterModel {
 		vitalsL = new VitalsList();
 	}
 	public void loadmaster(Patient patient){
-		try {
+		//try {
 			this.currPatient=patient;
-			aL.loadMyListForPatient(currPatient);
-			mL.loadMyListForPatient(currPatient);
-			dL.loadMyListForPatient(currPatient);
-			sL.loadMyListForPatient(currPatient);
-			vL.loadMyListForPatient(currPatient);
-			vitalsL.loadMyListForPatient(currPatient);
-		} catch (GatewayException e) {
-			System.err.println("from MasterModel, can not fetch from database");
-		}
+			//TODO aL.loadMyListForPatient(currPatient);
+			//mL.loadMyListForPatient(currPatient);
+			//dL.loadMyListForPatient(currPatient);
+			//sL.loadMyListForPatient(currPatient);
+			//vL.loadMyListForPatient(currPatient);
+			//vitalsL.loadMyListForPatient(currPatient);
+		//} //catch (GatewayException e) {
+			//System.err.println("from MasterModel, can not fetch from database");
+		//}
 			
 	}
 	public Patient getCurrPatient() {

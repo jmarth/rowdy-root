@@ -93,6 +93,7 @@ public class LoginView extends JFrame {
 				
 				//Create home view
 				HomeView home  = new HomeView();
+				home.setBounds(100, 100, 1080,720);
 				home.launchUI();
 			}
 		});

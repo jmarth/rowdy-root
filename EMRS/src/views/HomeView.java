@@ -96,7 +96,7 @@ public class HomeView extends JFrame implements viewinterface{
 		this.ssview.setVisible(true);
 		setTitle("EMRS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(200, 100, 1139, 1124); // set size of Home View
+		//setBounds(200, 100, 1139, 800); // set size of Home View
 		
 		// set up contentPane panel
 		center = new JPanel(null);
@@ -145,7 +145,7 @@ public class HomeView extends JFrame implements viewinterface{
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				
-				String searchText = textFieldSearch.getText();
+				String searchText = textFieldSearch.getText().trim();
 				
 				HomeView.this.fpview.filter(searchText.toLowerCase());
 			}
@@ -168,9 +168,7 @@ public class HomeView extends JFrame implements viewinterface{
 			public void mouseExited(MouseEvent arg0) {
 				((Component) arg0.getSource()).setBackground(new Color(0, 153, 204));
 				((JComponent) arg0.getSource()).setOpaque(true);
-				//btnAddPatient.setContentAreaFilled(true);
 				((AbstractButton) arg0.getSource()).setBorderPainted(false);
-				//System.out.println("mouse over");
 			}
 		});
 		
@@ -261,6 +259,7 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		btnFindPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				HomeView.this.textFieldSearch.setText("");
 				HomeView.this.ShowFindPatientsView();
 			}
 		});
@@ -356,32 +355,6 @@ public class HomeView extends JFrame implements viewinterface{
 				//System.out.println("get in gainedfocus");
 			}
 		});
-		this.addWindowStateListener(new WindowStateListener(){
-
-			@Override
-			public void windowStateChanged(WindowEvent arg0) {
-				// TODO Auto-generated method stub
-				//System.out.println("homeview:\t"+center.getWidth()+":"+center.getHeight());
-				updatecomponentsize();
-			}
-			
-		});
-		this.addWindowFocusListener(new WindowFocusListener(){
-
-			@Override
-			public void windowGainedFocus(WindowEvent arg0) {
-				// TODO Auto-generated method stub
-				//System.out.println("get in gainedfocus");
-			}
-
-			@Override
-			public void windowLostFocus(WindowEvent arg0) {
-				// TODO Auto-generated method stub
-				//System.out.println("get in lostFocus");
-			}
-			
-		});
-		
 	}
 	private void updatecomponentsize(){
 		paview.setBounds(0, 0, center.getWidth(), center.getHeight());
@@ -395,7 +368,7 @@ public class HomeView extends JFrame implements viewinterface{
 	public void launchUI() {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				setExtendedState(JFrame.MAXIMIZED_BOTH);
+				//setExtendedState(JFrame.MAXIMIZED_BOTH);
 				setVisible(true);
 			}
 		});
@@ -421,7 +394,7 @@ public class HomeView extends JFrame implements viewinterface{
 	@Override // hide all children
 	public void HideallView() {
 		this.fpview.setVisible(false);
-		//TODO this.prview.HideallView();
+		this.prview.setVisible(false);
 		this.paview.setVisible(false);
 		this.ssview.setVisible(false);
 	}
