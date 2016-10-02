@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -50,31 +51,9 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	//SurgeryTableGateway gate1;
 	//SurgeryTemplatesTableGateway gate2;
 	PatientRecordView prv;
-	//Patient patient;
-	/*
-	public SurgeryTableGateway getGate1() {
-		return gate1;
-	}
-
-	public SurgeryTemplatesTableGateway getGate2() {
-		return gate2;
-	}
-
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
-
-	public Patient getPatient() {
-		return patient;
-	}
-*/
 	//public LabsAndProceduresTabView(Patient param_patient, PatientRecordView param_prv, SurgeryTableGateway param_gate1, SurgeryTemplatesTableGateway param_gate2) {
 	public LabsAndProceduresTabView(){
-		//this.patient = param_patient;
-		//this.prv = param_prv;
-		//this.gate1 = param_gate1;
-		//his.gate2 = param_gate2;
-		
+				
 		setLayout(new BorderLayout());
 		
 		// setup header panel
@@ -99,11 +78,12 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				//TODO
-				/*NewProcedureView view = new NewProcedureView(gate2, LabsAndProceduresTabView.this);
+				//NewProcedureView view = new NewProcedureView(gate2, LabsAndProceduresTabView.this);
+				NewProcedureView view = new NewProcedureView();
 				proceduresParentPanel.removeAll();
 				proceduresParentPanel.add(view, BorderLayout.CENTER);
 				validate();
-				repaint();*/
+				repaint();
 			}
 			
 		});
@@ -125,16 +105,16 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 		
 	}
 
-	private void populateMasterContainer() {
+	/*private void populateMasterContainer() {
 		masterContainer.removeAll();
 
-		ArrayList<Surgery> surgeries = new ArrayList<Surgery>();
-		/*try {
+		//ArrayList<Surgery> surgeries = new ArrayList<Surgery>();
+		try {
 			//TODO surgeries = (ArrayList<Surgery>) gate1.fetchSurgeriesForPatient(patient);
 		} catch (GatewayException e) {
 			e.printStackTrace();
-		}*/
-		
+		}
+		List<Surgery> surgeries = this.getMasterModel().getsL().getMyList();
 		
 		if (surgeries.size() == 0) {
 			JLabel label = new JLabel("No procedures done");
@@ -156,7 +136,7 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 			validate();
 			repaint();
 		}
-	}
+	}*/
 
 	public void reset() {
 		proceduresParentPanel.removeAll();
@@ -166,13 +146,13 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 		
 	}
 
-	public void resetAndUpdate() {
+	/*public void resetAndUpdate() {
 		proceduresParentPanel.removeAll();
 		populateMasterContainer();
 		proceduresParentPanel.add(proceduresContentPanel, BorderLayout.CENTER);
 		validate();
 		repaint();
-	}
+	}*/
 
 	@Override
 	public void HideallView() {
@@ -182,26 +162,46 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((PatientRecordView)this.getParent()).getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
-		// TODO Auto-generated method stub
-		
+		this.reload();
+		this.setVisible(true);
 	}
 
 	@Override
 	public void reload() {
-		// TODO Auto-generated method stub
+		masterContainer.removeAll();
+		List<Surgery> surgeries = this.getMasterModel().getsL().getMyList();
+		
+		if (surgeries.size() == 0) {
+			JLabel label = new JLabel("No procedures done");
+			label.setFont(new Font("Tahoma", Font.ITALIC, 16));
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			masterContainer.add(label);
+			return;
+		}
+		
+		for (Surgery tmp : surgeries) {
+			JXTaskPane pane = new JXTaskPane();
+			ClosedProcedureView view = new ClosedProcedureView(tmp);
+			pane.setTitle(tmp.getTitle());
+			pane.setAnimated(false);
+			pane.setCollapsed(true);
+			pane.setScrollOnExpand(false);
+			pane.add(view);
+			masterContainer.add(pane);
+			/*validate();
+			repaint();*/
+		}
 		
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((PatientRecordView)this.getParent()).getHomeView();
 	}
 	
 }
