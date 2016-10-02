@@ -48,12 +48,10 @@ public class DocumentList {
 		}
 	}
 
-	public long insert(Document a) throws GatewayException {
-
+	public void insert(Document a) throws GatewayException {
 		a.setId(myGateway.insertDocument(a));
+		System.out.println(a.getId());
 		this.myList.add(a);
-
-		return a.getId();
 	}
 
 	
@@ -63,6 +61,13 @@ public class DocumentList {
 
 	public void delete(long id) throws GatewayException {
 		myGateway.removeDocument(id);
+		
+	}
+	public void delete(int index) throws GatewayException {
+		Document d = this.myList.get(index);
+		myGateway.removeDocument(d.getId());
+		this.myList.remove(index);
+		
 	}
 
 }

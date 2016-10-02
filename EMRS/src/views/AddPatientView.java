@@ -1,8 +1,6 @@
 package views;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -80,6 +78,9 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	//final String[] month = new String[] {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 	//image Jlabel
 	private JLabel imglabel;
+	
+	//new button
+	private JButton btnNewButton;
 	//Regex
 	//private final String NAME_PATTERN = "^[a-z ,.'-]+$";//the old code
 	private final String NAME_PATTERN = "^[a-z]+$";// the new code (^\\d{4}$)?
@@ -652,7 +653,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 		panel.add(panel_6, gbc_panel_6);
 		GridBagLayout gbl_panel_6 = new GridBagLayout();
 		gbl_panel_6.columnWidths = new int[]{672, 0};
-		gbl_panel_6.rowHeights = new int[]{0, 81, 0};
+		//gbl_panel_6.rowHeights = new int[]{0, 10, 0};
 		gbl_panel_6.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gbl_panel_6.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
 		panel_6.setLayout(gbl_panel_6);
@@ -694,12 +695,10 @@ public class AddPatientView extends JPanel implements viewinterface  {
 				}else{
 					AddPatientView.this.getHomeView().ShowHomeView();
 				}
-				
-				
-			  }
+			}
 		});
 		
-		JButton btnNewButton = new JButton("Save");
+		btnNewButton = new JButton("Insert");
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.gridx = 1;
 		gbc_btnNewButton.gridy = 0;
@@ -962,8 +961,10 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	public void ShowView() {
 		if(this.updateorinsert==this.UPDATEPATIENT){
 			this.reload();
+			this.btnNewButton.setText("Update");
 		}else{
 			this.clearinput();
+			this.btnNewButton.setText("Insert");
 		}
 		this.setVisible(true);
 	}

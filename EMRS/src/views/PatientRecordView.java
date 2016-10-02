@@ -48,48 +48,48 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		this.setTabComponentAt(0, lab1);
 		
 		// Create allergies & meds tab
-		/*TODO JLabel lab2 = new JLabel(Tabs.hx);
+		JLabel lab2 = new JLabel(Tabs.hx);
 		lab2.setPreferredSize(new Dimension(145, 30));
 		lab2.setHorizontalAlignment(JLabel.CENTER);
-		hxv = new hxView();
-		this.addTab(Tabs.hx, null,hxv, null);
+		//TODO hxv = new hxView();
+		this.addTab(Tabs.hx, null,null, null);//TODO this.addTab(Tabs.hx, null,hxv, null);
 		this.setTabComponentAt(1, lab2);
 		
 		// Create visits tab
 		JLabel lab3 = new JLabel(Tabs.ped);
 		lab3.setPreferredSize(new Dimension(145, 30));
 		lab3.setHorizontalAlignment(JLabel.CENTER);
-		vsv = new VitalsTabMasterView();
-		this.addTab(Tabs.ped, null,vsv, null);
-		this.setTabComponentAt(2, lab3);*/
+		//TODO vsv = new VitalsTabMasterView();
+		this.addTab(Tabs.ped, null,null, null);//TODO this.addTab(Tabs.ped, null,vsv, null);
+		this.setTabComponentAt(2, lab3);
 		
 		
 		// create vitals tab
-		/*TODO JLabel lab4 = new JLabel(Tabs.vitals);
+		JLabel lab4 = new JLabel(Tabs.vitals);
 		lab4.setPreferredSize(new Dimension(145, 30));
 		lab4.setHorizontalAlignment(JLabel.CENTER);
 				
-		vtv = new VitalsTabMasterView();
-		this.addTab(Tabs.vitals, null, vtv, null);
-		this.setTabComponentAt(3, lab4);*/
+		//TODO vtv = new VitalsTabMasterView();
+		this.addTab(Tabs.vitals, null, null, null);//TODO this.addTab(Tabs.vitals, null, vtv, null);
+		this.setTabComponentAt(3, lab4);
 		
 		// create labs tab
-		/*TODO JLabel lab6 = new JLabel(Tabs.labs);
+		JLabel lab6 = new JLabel(Tabs.labs);
 		lab6.setPreferredSize(new Dimension(145, 30));
 		lab6.setHorizontalAlignment(JLabel.CENTER);
 		
-		lpv = new LabsAndProceduresTabView();
-		this.addTab(Tabs.labs, null,lpv, null);
-		this.setTabComponentAt(4, lab6);*/
+		//TODOlpv = new LabsAndProceduresTabView();
+		this.addTab(Tabs.labs, null,null, null);//TODO this.addTab(Tabs.labs, null,lpv, null);
+		this.setTabComponentAt(4, lab6);
 		
 		// create documents tab
-		/*TODO JLabel lab7 = new JLabel(Tabs.docs);
+		JLabel lab7 = new JLabel(Tabs.docs);
 		lab7.setPreferredSize(new Dimension(145, 30));
 		lab7.setHorizontalAlignment(JLabel.CENTER);
 		
 		dtv = new DocumentsTabView();
 		this.addTab(Tabs.docs, null,dtv, null);
-		this.setTabComponentAt(5, lab7);*/
+		this.setTabComponentAt(5, lab7);//TODO
 		
 		this.setBackground(CL.porcelian);
 		
@@ -126,12 +126,12 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	
 	@Override
 	public void HideallView() {
-		dgv.HideallView();;
-		/*TODO hxv.HideallView();
-		vsv.HideallView();
-		vtv.HideallView();
-		lpv.HideallView();
-		dtv.HideallView();*/
+//		dgv.setVisible(false);
+//		hxv.HideallView();
+//		vsv.HideallView();
+//		vtv.HideallView();
+//		lpv.HideallView();
+//		dtv.HideallView();	
 	}
 	
 	public void ShowHxView(){
@@ -160,7 +160,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	
 	public void ShowDocumentsView(){
 		this.ShowView();
-		this.setSelectedIndex(5);
+		this.setSelectedIndex(5);//TODO
 		this.dtv.ShowView();
 	}
 	

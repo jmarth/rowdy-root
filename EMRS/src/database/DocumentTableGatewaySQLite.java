@@ -45,7 +45,6 @@ public class DocumentTableGatewaySQLite implements DocumentTableGateway {
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		
 		try {
 			
 			//fetch Documents

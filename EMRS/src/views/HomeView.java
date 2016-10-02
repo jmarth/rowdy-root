@@ -3,11 +3,7 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -19,11 +15,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
-import java.awt.event.WindowStateListener;
-import java.util.List;
-
 import javax.swing.AbstractButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -38,16 +29,11 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import database.GatewayException;
-import models.Allergy;
 import models.CL;
 import models.MasterModel;
-import models.Patient;
 
 @SuppressWarnings("serial")
 public class HomeView extends JFrame implements viewinterface{

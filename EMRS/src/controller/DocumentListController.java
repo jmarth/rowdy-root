@@ -17,6 +17,11 @@ public class DocumentListController extends AbstractListModel {
 	 *
 	 * private MDIChild myWarehouseListView;
 	 */
+	public DocumentListController(){
+		super();
+		myDocumentList=null;
+		
+	}
 	
 	public DocumentListController(DocumentList dl) {
 		super();

@@ -76,34 +76,18 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	private JPanel filesPanel;
 	private JList fileList;
 	private Document selectedDocument;
-	//private DocumentList dl;
-	//private Patient p;
 	private DocumentListController docListController;
 	private JScrollPane docScrollPane;
 	private JButton btnRemoveDocument;
 	
-	//public DocumentsTabView(final DocumentTableGateway dtg, final Patient p) {
-	public DocumentsTabView(){	
+	public DocumentsTabView(){
+		docListController = new DocumentListController();
 		this.setLayout(new BorderLayout());
-		//this.dtg = dtg;
-		//this.p = p;
-		
-		//dl = new DocumentList(p);
-		//dl.setGateway(dtg);
-		//dl.loadFromGateway();
-		//this.getMasterModel().
-		
-		//TODO docListController = new DocumentListController(this.getMasterModel().getdL());
-		
-		
 		docPane = new JPanel();
 		docPane.setLayout(new BoxLayout(docPane, BoxLayout.Y_AXIS));
 		docPane.setBackground(CL.antiqueWhite);
-		
 		scroller = new JScrollPane(docPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-				
 		fc.setFileFilter(filter);
-		
 		uploadButton = new JButton("Upload");
 		uploadButton.addActionListener(new ActionListener() {
 			@Override
@@ -122,18 +106,13 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 				Document tmpDoc = new Document(DocumentsTabView.this.getMasterModel().getCurrPatient().getId(),
 						filePath.getName(), filePath.getAbsolutePath(), ext);
 				try {
-					tmpDoc.setId(DocumentsTabView.this.getMasterModel().getdL().insert(tmpDoc));
-					//Long newId = dtg.insertDocument(tmpDoc);
-					//tmpDoc.setId(newId);
+					DocumentsTabView.this.getMasterModel().getdL().insert(tmpDoc);
+					reload();
 				} catch (GatewayException e1) {
 					System.out.println(e1.getMessage());
 				}
-				
-				//dl.addDocumentToList(tmpDoc);
-				//docListController.setList(dl);
-				
-				fileList.repaint();
-				fileList.updateUI();
+				/*fileList.repaint();
+				fileList.updateUI();*/
 			}
 		});
 		
@@ -149,7 +128,8 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 		filesPanel.setBackground(Color.WHITE);
 		
 		
-		fileList = new JList(docListController);
+		//fileList = new JList(docListController);
+		fileList = new JList ();
 		fileList.setVisibleRowCount(10);
 		fileList.setBorder(new EmptyBorder(5, 5, 5, 5));
 		fileList.setBackground(Color.WHITE);
@@ -196,11 +176,12 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 			public void actionPerformed(ActionEvent evt) {
 				// Do the removing part
 				int selectedIndex = fileList.getSelectedIndex();
-				Document selectedDocument = docListController.getElementAt(selectedIndex);
+				//Document selectedDocument = docListController.getElementAt(selectedIndex);
 				
 				try {
 					//dtg.removeDocument(selectedDocument.getId())
-					DocumentsTabView.this.getMasterModel().getdL().delete(selectedDocument.getId());;
+					DocumentsTabView.this.getMasterModel().getdL().delete(selectedIndex);
+					reload();
 				} catch (GatewayException e) {
 					System.out.println(e.getMessage());
 				}
@@ -208,13 +189,13 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 				//docListController.setList(dl);
 				
 				// Calls to clear pane after deletion of file
-				docPane.removeAll();
+				/*docPane.removeAll();
 				docPane.updateUI();
 				docPane.validate();
 				docPane.repaint();
 				
 				fileList.repaint();
-				fileList.updateUI();
+				fileList.updateUI();*/
 			}
 		});
 		
@@ -234,16 +215,9 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 		splitPane.setEnabled(false);
 		splitPane.setBorder(null);
 
-		
-
-		add(splitPane);
-
-		
+		add(splitPane);		
 	}
-	
-	
-	
-	
+
 	/**
 	 * 
 	 * @param filePath
@@ -256,33 +230,32 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 		
 		try {
 			doc = PDDocument.load(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		numPages = doc.getNumberOfPages();
-		
-		docRenderer = new PDFRenderer(doc);
+			numPages = doc.getNumberOfPages();
 			
-		try {
-			for (i = 0; i < numPages; i++) {
-				temp = docRenderer.renderImage(i);
+			docRenderer = new PDFRenderer(doc);
+				
+			try {
+				for (i = 0; i < numPages; i++) {
+					temp = docRenderer.renderImage(i);
 
-				label = new JLabel(new ImageIcon(temp));
-				label.setAlignmentX(Component.CENTER_ALIGNMENT);
-				docPane.add(label);
-				label = null;
-				//docPane.add(new JSeparator(SwingConstants.HORIZONTAL));
+					label = new JLabel(new ImageIcon(temp));
+					label.setAlignmentX(Component.CENTER_ALIGNMENT);
+					docPane.add(label);
+					label = null;
+					//docPane.add(new JSeparator(SwingConstants.HORIZONTAL));
+				}
+			} catch (Exception e) {
+				System.err.println("cann't load page: " +"i");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			try {
+				doc.close();
+			} catch (IOException e1) {
+				System.err.println("cann't close PDF file");
+			}
+		} catch (IOException e) {
+			System.err.println("Cann't open file: " + file.getAbsolutePath());
 		}
 		
-		try {
-			doc.close();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
 		doc = null;
 	}
 	
@@ -337,6 +310,7 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	@Override
 	public void ShowView() {
 		// TODO Auto-generated method stub
+		reload();
 		this.setVisible(true);
 		
 	}
@@ -344,6 +318,10 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	@Override
 	public void reload() {
 		//TODO
+		System.out.println(this.getMasterModel().getdL().getMyList().size());
+		docListController.setList(this.getMasterModel().getdL());
+		fileList.removeAll();
+		fileList.setListData(this.getMasterModel().getdL().getMyList().toArray());
 	}
 
 	@Override
