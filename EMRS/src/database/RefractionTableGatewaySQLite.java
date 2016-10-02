@@ -5,9 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import models.Refraction;
 
@@ -34,11 +32,11 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 	}
 	
 	/**
-	 * Fetch visits from DB for patient
-	 * @return list of visits for patient
+	 * Fetch Refraction from DB for Visit
+	 * @return Refraction for Visit
 	 * @throws GatewayException
 	 */
-	public Refraction fetchRefractionsForVisit(long vid) throws GatewayException {
+	public Refraction fetchRefractionForVisit(long vid) throws GatewayException {
 		
 		
 		PreparedStatement st = null;
@@ -174,69 +172,22 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 		
 		return newId;
 	}
+	
 	@Override
-	public ArrayList<Object> fetchRefractionsColsForVisit(long id) throws GatewayException {
-
-	    ArrayList<Object> row = new ArrayList<Object>();
+	public void updateRefractionForVisit(Refraction r) throws GatewayException {
+		// TODO Auto-generated method stub
 		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from refractions where vid=?");
-			st.setLong(1, id);
-			
-			rs = st.executeQuery();
-			
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		    
-		    int colCount = meta.getColumnCount();
-//		    System.out.println("====REFRACTIONS======" + colCount);
-//		    System.out.println("META: " + colCount);
-			
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-//					System.out.println("column #"+ i + " : " + rs.getObject(i));
-				}
-			}
-//			System.out.println("\n****************\n REFRAC ROW:"+row.toString());
-			
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return row;
 	}
+	
 	@Override
 	public void removeRefraction(Long vid) throws GatewayException {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public Refraction fetchRefractionForVisit(long vid) throws GatewayException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void close() {
 		// TODO Auto-generated method stub
 		
 	}
+
 }

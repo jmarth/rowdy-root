@@ -5,19 +5,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import models.Lens;
-import models.Patient;
 
 public class LensTableGatewaySQLite implements LensTableGateway {
 	
-	/**
-	 * external DB connection
-	 */
 	private Connection conn = null;
 	
 	/**
@@ -36,8 +29,8 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 	}
 	
 	/**
-	 * Fetch visits from DB for patient
-	 * @return list of visits for patient
+	 * Fetch Lens from DB for Visit
+	 * @return Lens for Visit
 	 * @throws GatewayException
 	 */
 	public Lens fetchLensForVisit(long vid) throws GatewayException {
@@ -46,8 +39,8 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 		ResultSet rs = null;
 		
 		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from lenses where vid=?");
+			
+			st = conn.prepareStatement("SELECT * FROM lenses WHERE vid=?");
 			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
@@ -107,7 +100,7 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 	/**
 	 * Inserts visit into visits table
 	 */
-	public long insertLens(Lens p) throws GatewayException {
+	public long insertLensForVisit(Lens p) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;
@@ -200,53 +193,12 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 		return newId;
 	}
 	
-	public ArrayList<Object> fetchLensColsForVisit(long id) throws GatewayException {
-
-	    ArrayList<Object> row = new ArrayList<Object>();
+	@Override
+	public void updateLensForVisit(Lens l) throws GatewayException {
+		// TODO Auto-generated method stub
 		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from lenses where vid=?");
-			st.setLong(1, id);
-			
-			rs = st.executeQuery();
-			
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		    
-		    int colCount = meta.getColumnCount();
-//		    System.out.println("====Lenses======" + colCount);
-			
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-//					System.out.println("column #"+ i + " : " + rs.getObject(i));
-				}
-			}
-//			System.out.println("\n****************\n Lenses ROW:"+row.toString());
-			
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return row;
 	}
+	
 	@Override
 	public void removeLens(Long vid) throws GatewayException {
 		
@@ -256,7 +208,4 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
 }

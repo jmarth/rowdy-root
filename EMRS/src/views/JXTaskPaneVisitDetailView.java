@@ -12,6 +12,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
+import org.jdesktop.swingx.JXTaskPane;
+
 import models.CL;
 import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
@@ -22,9 +24,11 @@ import visitPanels.PanelSLE;
 import visitPanels.PanelVision;
 
 @SuppressWarnings("serial")
-public class VisitDetailView extends JPanel implements viewinterface {
-		
-	private int index; // index of the patient's visit in their visit list
+public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterface {
+	
+	// TODO Should be a JXTaskPane or JPanel added to JXTaskPane?
+	
+	private int index;
 	
 	private PanelVision panel_Vision;
 	private PanelSLE panel_SLE;
@@ -42,18 +46,21 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	
 	/*
 	 * Creates a detail view for the JXTask
-	 * Can be edited or deleted.
+	 * Can be edited.
 	 */
-	public VisitDetailView(int index) {
+	public JXTaskPaneVisitDetailView(int index) {
 		
-		this.index = index;
+		//create panels TODO
 		
 		MasterModel mm;
 		mm = (MasterModel)this.getMasterModel();
-		mm.getvL().getMyList().get(index);
+		mm.getCurrentPatientVisitList().get(index);
 		
-		createView();
-		panel_Buttons.setVisible(false);
+		VisitDetailView vdv = new VisitDetailView(index);
+		
+		add(vdv);
+		
+//		createView();
 	}
 	
 	public void createView() {
@@ -180,9 +187,10 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		
 	}
 
+	//TODO Get parent of parent, parent above is JScrollPane
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((HomeView)this.getParent().getParent()).getMasterModel();
 	}
 
 	@Override
@@ -200,4 +208,6 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	public HomeView getHomeView() {
 		return ((HomeView)this.getParent()).getHomeView();
 	}
+	
+	
 }
