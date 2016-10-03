@@ -73,8 +73,8 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		lab4.setPreferredSize(new Dimension(145, 30));
 		lab4.setHorizontalAlignment(JLabel.CENTER);
 				
-		//TODO vtv = new VitalsTabMasterView();
-		this.addTab(Tabs.vitals, null, null, null);//TODO this.addTab(Tabs.vitals, null, vtv, null);
+		vtv = new VitalsTabMasterView();
+		this.addTab(Tabs.vitals, null,vtv, null);//TODO this.addTab(Tabs.vitals, null, vtv, null);
 		this.setTabComponentAt(3, lab4);
 		
 		// create labs tab

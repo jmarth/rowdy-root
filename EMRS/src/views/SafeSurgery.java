@@ -120,6 +120,7 @@ public class SafeSurgery extends JPanel implements viewinterface {
 		panel_4.add(scrollPane, BorderLayout.CENTER);
 		
 		textPane = new JTextPane();
+		textPane.setEditable(false);;
 		scrollPane.setViewportView(textPane);
 		
 		lblHeresWhatWe = new JLabel("Here's what we found:");
