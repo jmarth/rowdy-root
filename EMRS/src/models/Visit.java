@@ -28,7 +28,7 @@ public class Visit {
 //	private AScan myAScan; TODO implement
 //	private Keratometry myK; TODO implement
 	
-	private Sketches sketches;
+	private Sketches mySketches;
 	
 	
 	private File sketchTemp;
@@ -43,6 +43,18 @@ public class Visit {
 		this.assessment = assessment;
 		this.plan = plan;
 		this.dateCreated = dateCreated;
+		
+		myAC = new AnteriorChamber();
+		myDV = new DistanceVision();
+		myFE = new FundusExam();
+		myGlsRx = new GlassesRx();
+		myGonio = new Gonio();
+		myIOPList = new IOPList();
+		myLens = new Lens();
+		myPupils = new Pupils();
+		myRefraction = new Refraction();
+		mySketches = new Sketches();
+		
 	}
 
 
@@ -208,25 +220,26 @@ public class Visit {
 	public void loadVisitFromPatient() {
 		//TODO load all the stuff
 		//TODO how it know the visit id if it not created before??
-		this.myAC = myAC.loadAC(id);
-		this.myDV = myDV.loadDV(id);
-		this.myFE = myFE.loadFE(id);
-		this.myGlsRx = myGlsRx.loadGlsRx(id);
-		this.myGonio = myGonio.loadGonio(id);
-		this.myLens = myLens.loadLens(id);
-		this.myPupils = myPupils.loadPupils(id);
-		this.myRefraction = myRefraction.loadRefraction(id);
-		try {
-			this.myIOPList.loadMyListForVisit(id);
-		} catch (GatewayException e) {
-			System.err.println("From Visit, load a model fail");
-		}
+		myAC = myAC.loadAC(id);
+		myDV = myDV.loadDV(id);
+		myFE.loadFE(id);
+		myGlsRx.loadGlsRx(id);
+		myGonio.loadGonio(id);
+		myLens.loadLens(id);
+		myPupils.loadPupils(id);
+		myRefraction.loadRefraction(id);
 		
-		sketches.loadSketches(id);
+//		try {
+//			this.myIOPList.loadMyListForVisit(id);
+//		} catch (GatewayException e) {
+//			System.err.println("From Visit, load a model fail");
+//		}
+		
+		mySketches.loadSketches(id);
 	}
 
 		
 	public Sketches getSketches() {
-		return sketches;
+		return mySketches;
 	}
 }

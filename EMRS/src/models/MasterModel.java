@@ -33,10 +33,25 @@ public class MasterModel {
 		stll = new SurgeryTemplatesList();
 	}
 	public void loadmaster(Patient patient){
+		
 		try {
+			
 			this.currPatient=patient;
+<<<<<<< HEAD
 			aL.loadMyListForPatient(currPatient);
 			mL.loadMyListForPatient(currPatient);
+=======
+			
+			try {
+				this.vL.loadMyListForPatient(patient);
+				System.out.println(vL.toStringTest());
+			} catch (GatewayException e) {
+				System.err.println("From MasterModel: Connect to DB failed");
+//				e.printStackTrace();
+			}
+			//TODO aL.loadMyListForPatient(currPatient);
+			//mL.loadMyListForPatient(currPatient);
+>>>>>>> refs/heads/visitRefactor6
 			dL.loadMyListForPatient(currPatient);
 			sL.loadMyListForPatient(currPatient);
 			vL.loadMyListForPatient(currPatient);

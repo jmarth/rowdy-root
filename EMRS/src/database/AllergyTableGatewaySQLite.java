@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Allergy;
-import models.Patient;
 
 public class AllergyTableGatewaySQLite implements AllergyTableGateway {
 	
@@ -30,7 +29,8 @@ public class AllergyTableGatewaySQLite implements AllergyTableGateway {
 			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println("From Allergy TG, couldn't get connection.");
+//			e.printStackTrace();
 		}
 	}
 
@@ -39,7 +39,7 @@ public class AllergyTableGatewaySQLite implements AllergyTableGateway {
 	 * 
 	 * @throws GatewayException 
 	 */
-	public List<Allergy> fetchAllergiesForPatient(Patient p) throws GatewayException{
+	public List<Allergy> fetchAllergiesForPatient(long pid) throws GatewayException {
 		
 		ArrayList<Allergy> allergies = new ArrayList<Allergy>();
 		
@@ -48,9 +48,9 @@ public class AllergyTableGatewaySQLite implements AllergyTableGateway {
 		
 		try {
 			
-			//fetch Allergies
-			st = conn.prepareStatement("select * from allergies WHERE pid=?");
-			st.setLong(1, p.getId());
+			//fetch Allergies for a patient
+			st = conn.prepareStatement("SELECT * FROM allergies WHERE pid=?");
+			st.setLong(1, pid);
 			
 			rs = st.executeQuery();
 			
@@ -144,7 +144,6 @@ public class AllergyTableGatewaySQLite implements AllergyTableGateway {
 	public void updateAllergy(Allergy a) throws GatewayException{
 		
 		PreparedStatement st = null;
-//		ResultSet rs = null;
 		
 		try {
 			

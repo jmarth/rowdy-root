@@ -31,6 +31,18 @@ public class Lens {
 	
 	private LensTableGateway myGateway;
 	
+	public Lens() {
+		try {
+			myGateway = new LensTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+			// e.printStackTrace();
+		}
+	}
+	
 	public Lens(long id, long vid, String nS_OD, String nS_OD_Notes, String nS_OS, String nS_OS_Notes,
 			int isStableLensOD, int isStableLensOS, int isPseudophakia_OD, int isPseudophakia_OS,
 			int isPCO_OD, int isPCO_OS, String coritcal_OD, String cortical_OD_Notes, String coritcal_OS,

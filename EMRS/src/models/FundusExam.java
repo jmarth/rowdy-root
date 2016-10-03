@@ -39,6 +39,18 @@ public class FundusExam {
 	
 	private FundusTableGateway myGateway;
 	
+	public FundusExam(){
+		try {
+			myGateway = new FundusTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+			// e.printStackTrace();
+		}
+	}
+	
 	public FundusExam(long id, long vid, int dialated, String dialNotes, int cDODAb, String cDOD, String cDODNotes,
 			int cDOSAb, String cDOS, String cDOSNotes, int retinaODAb, String retinaODNotes, int retinaOSAb,
 			String retinaOSNotes, int maculaODAb, String maculaODNotes, int maculaOSAb, String maculaOSNotes) {
