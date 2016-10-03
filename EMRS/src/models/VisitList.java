@@ -1,79 +1,86 @@
 package models;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.collections4.map.MultiValueMap;
-
-import database.GatewayException;
 import database.VisitTableGateway;
+import database.VisitTableGatewaySQLite;
+import database.GatewayException;
 
+/**
+ * Keeps a list of visits for the current active patient
+ * @author Charles
+ *
+ */
 public class VisitList {
+
+	private VisitTableGateway myGateway;
 	private List<Visit> myList;
-	private VisitTableGateway gateway;
-	private HashMap<Long, Visit> myIdMap;
-	MultiValueMap myPidMap;
-	
+	private Map<Long, Visit> myVidMap;
+
 	/**
 	 * Construct a new VisitList
 	 */
-	public VisitList(){
+	public VisitList() {
+
 		myList = new ArrayList<Visit>();
-		myIdMap = new HashMap<Long, Visit>();
-	}
-	
-	/**
-	 * Load records from DB into VisitList
-	 */
-	public void loadFromGateway() {
-		//fetch list of objects from the database
+
 		try {
-			myPidMap = new MultiValueMap();
-			System.out.println("loading now");
-			List<Visit> visitsTmp = gateway.fetchVisits();
-			System.out.println("\n done loading now");
-			for(Visit tmpVisit: visitsTmp){
-				myIdMap.put(tmpVisit.getId(), tmpVisit);
-				myPidMap.put(tmpVisit.getPid(), tmpVisit);
-				myList.add(tmpVisit);
-			}
+			myGateway = new VisitTableGatewaySQLite();
 		} catch (GatewayException e) {
-			//TODO: handle exception here
-			return;
+			System.err.println("From VisitList, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From VisitList, IO Exception");
+			// e.printStackTrace();
 		}
 	}
-	
-	public MultiValueMap<Long, Visit> getMyPidMap() {
-		return myPidMap;
-	}
 
-	public void setMyPidMap(MultiValueMap<Long, Visit> myPidMap) {
-		this.myPidMap = myPidMap;
-	}
+	public List<Visit> getMyList() {
 
-	/**
-	 * Returns ArrayList of Allergies in the VisitList
-	 * @return All Allergies in list
-	 */
-	public List<Visit> getVisitList() {
 		return myList;
 	}
-	
-	public List<Visit> getVisitListForPatient(Patient p){
-		List<Visit> tmpList = new ArrayList<Visit>();
+
+	public void loadMyListForPatient(Patient p) throws GatewayException {
+
+		myVidMap = new HashMap<Long, Visit>();
 		
 		try {
-			tmpList = gateway.fetchVisitsForPatinet(p);
+			myList = myGateway.fetchVisitsForPatient(p);
+			
+			for(Visit e:myList){
+				e.loadVisitFromPatient();
+				myVidMap.put(e.getId(), e);
+			}
+			
+
 		} catch (GatewayException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("VisitList failed to load from its gateway. In VisitList Model");
+//			e.printStackTrace();
 		}
-		
-		return tmpList;
 	}
 
-	public void setGateway(VisitTableGateway gateway) {
-		this.gateway = gateway;
+	public long insert(Visit a) throws GatewayException {
+
+		a.setId(myGateway.insertVisit(a));
+		this.myList.add(a);
+
+		return a.getId();
 	}
+	
+	public Visit getVisitById(long id) {
+		return myVidMap.get(id);
+	}
+
+	public void update(Visit a) throws GatewayException {
+		myGateway.updateVisit(a);
+	}
+
+	public void delete(long id) throws GatewayException {
+		myGateway.removeVisit(id);
+	}
+
 }

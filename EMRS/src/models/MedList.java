@@ -1,56 +1,66 @@
 package models;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import database.AllergyTableGateway;
-import database.GatewayException;
 import database.MedicationsTableGateway;
+import database.MedicationsTableGatewaySQLite;
+import database.GatewayException;
 
 public class MedList {
 
-	private List<Med> list;
-	private MedicationsTableGateway gateway;
-	private HashMap<Long, Med> myIdMap;
-	
+	private MedicationsTableGateway myGateway;
+	private List<Med> myList;
+
+	/**
+	 * Construct a new MedList
+	 */
 	public MedList() {
-		list = new ArrayList<Med>();
-		myIdMap = new HashMap<Long, Med>();
-	}
-	
-	public void loadFromGateway() {
-		//fetch list of objects from the database
+
+		myList = new ArrayList<Med>();
+
 		try {
-			List<Med> meds = gateway.fetchMeds();
-			for(Med tmpMed: meds){
-				myIdMap.put(tmpMed.getId(), tmpMed);
-				list.add(tmpMed);
-			}
+			myGateway = new MedicationsTableGatewaySQLite();
 		} catch (GatewayException e) {
-			//TODO: handle exception here
-			return;
+			System.err.println("From MedList, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From MedList, IO Exception");
+			// e.printStackTrace();
 		}
-	}
-	
-	public List<Med> getMedList() {
-		return list;
-	}
-	
-	public List<Med> getMedListForPatient(Patient p){
-		List<Med> tmpList = new ArrayList<Med>();
-		
-		try {
-			tmpList = gateway.fetchMedsForPatient(p);
-		} catch (GatewayException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return tmpList;
 	}
 
-	public void setGateway(MedicationsTableGateway gateway) {
-		this.gateway = gateway;
+	public List<Med> getMyList() {
+
+		return myList;
 	}
+
+	public void loadMyListForPatient(Patient p) throws GatewayException {
+
+		try {
+			myList = myGateway.fetchMedsForPatient(p);
+
+		} catch (GatewayException e) {
+			System.err.println("MedList failed to load from its gateway. In MedList Model");
+//			e.printStackTrace();
+		}
+	}
+
+	public long insert(Med a) throws GatewayException {
+
+		a.setId(myGateway.insertMed(a));
+		this.myList.add(a);
+
+		return a.getId();
+	}
+
+	public void update(Med a) throws GatewayException {
+		myGateway.updateMed(a);
+	}
+
+	public void delete(long id) throws GatewayException {
+		myGateway.removeMed(id);
+	}
+
 }

@@ -8,7 +8,7 @@ import models.DocumentList;
 @SuppressWarnings("serial")
 public class DocumentListController extends AbstractListModel {
 
-	private DocumentList myList;
+	private DocumentList myDocumentList;
 	
 	/*
 	 * /**
@@ -17,10 +17,15 @@ public class DocumentListController extends AbstractListModel {
 	 *
 	 * private MDIChild myWarehouseListView;
 	 */
+	public DocumentListController(){
+		super();
+		myDocumentList=null;
+		
+	}
 	
 	public DocumentListController(DocumentList dl) {
 		super();
-		myList = dl;
+		myDocumentList = dl;
 	}
 	
 	/*
@@ -34,16 +39,16 @@ public class DocumentListController extends AbstractListModel {
 		if (index > getSize()) {
 			throw new IndexOutOfBoundsException("Index " + index + " is out of bounds.");
 		}
-		return myList.getList().get(index);
+		return myDocumentList.getMyList().get(index);
 	}
 	
 	@Override
 	public int getSize() {
-		return myList.getList().size();
+		return myDocumentList.getMyList().size();
 	}
 	
 	public void setList(DocumentList dl){
-		myList = dl;
+		myDocumentList = dl;
 	}
 	
 }

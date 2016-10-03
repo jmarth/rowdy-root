@@ -1,5 +1,10 @@
 package models;
 
+import java.io.IOException;
+import database.DistanceVisionTableGateway;
+import database.DistanceVisionTableGatewaySQLite;
+import database.GatewayException;
+
 public class DistanceVision {
 	
 	private long id;
@@ -9,8 +14,19 @@ public class DistanceVision {
 	private String DVODCC;
 	private String DVOSCC;
 	
+	private DistanceVisionTableGateway myGateway;
+	
 	public DistanceVision(String dVODSC, String dVOSSC, String dVODCC, String dVOSCC) {
 		super();
+		try {
+			myGateway = new DistanceVisionTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From  DistanceVision, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From  DistanceVision, IO error");
+			// e.printStackTrace();
+		}
 		DVODSC = dVODSC;
 		DVOSSC = dVOSSC;
 		DVODCC = dVODCC;
@@ -74,6 +90,17 @@ public class DistanceVision {
 	public void setDVOSCC(String dVOSCC) {
 		DVOSCC = dVOSCC;
 	}
+
+	public DistanceVision loadDV(long vid) {
+		try {
+			return myGateway.fetchDistanceVisionForVisit(vid);
+		} catch (GatewayException e) {
+			System.err.println("From DistanceVision, could not fetch from DB");
+//			e.printStackTrace();
+		}
+		return null;
+	}
+	
 
 	
 }

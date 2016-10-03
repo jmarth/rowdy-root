@@ -28,10 +28,11 @@ import database.AllergyTableGatewaySQLite;
 import database.GatewayException;
 import models.Allergy;
 import models.AllergyList;
+import models.MasterModel;
 import models.Patient;
 import models.Tabs;
 
-public class AllergyTabViewNewAllergy extends JPanel {
+public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 	
 	private final ButtonGroup severityButtonGroup = new ButtonGroup();
 	
@@ -39,15 +40,15 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	private JTextField textField;
 	
 	// Patient this Allergy corresponds to
-	Patient patient;
-	Allergy a;
-	private List<Allergy> allergyList;
-	AllergyList al;
+	//Patient patient;
+	Allergy a;//TODO
+	//private List<Allergy> allergyList;
+	//AllergyList al;
 	
 	JPanel oldPanel;
 	
 	// Table Gateway
-	AllergyTableGateway atg;
+	//AllergyTableGateway atg;
 	
 	// Variables for JCheckBoxes
 	List<JCheckBox> checkboxes = new ArrayList<JCheckBox>();
@@ -89,12 +90,12 @@ public class AllergyTabViewNewAllergy extends JPanel {
 	 * Create the panel.
 	 */
 	public AllergyTabViewNewAllergy(final JTabbedPane tabbedPane, Patient patient, JPanel allergiesPanel, AllergyTableGateway gateway, JTable allergyTable, List<Allergy> allergyList, AllergyList al, Allergy a, Boolean exists) {
-		this.patient = patient;
-		this.a = a;
-		this.atg = gateway;
-		this.allergyTable = allergyTable;
-		this.allergyList = allergyList;
-		this.al = al;
+		//this.patient = patient;
+		//this.a = a;
+		//this.atg = gateway;
+		//this.allergyTable = allergyTable;
+		//this.allergyList = allergyList;
+		//this.al = al;
 		oldPanel = allergiesPanel;
 		
 		/**
@@ -102,20 +103,20 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		 * Set the gateway of the AllergyList
 		 * Load Allergies into the AllergyList
 		 */
-		try {
-			atg = new AllergyTableGatewaySQLite();
+		/*try {
+			//atg = new AllergyTableGatewaySQLite();
 		} catch (GatewayException e) {
 			System.out.println("Could not connect to DB");
 			e.printStackTrace();
 		} catch (IOException e) {
 			System.out.println("Could not connect to DB");
 			e.printStackTrace();
-		}
+		}*/
 		
 		if(exists){
-			createExistingView(tabbedPane, patient, allergiesPanel, atg, a, allergyTable);
+			//TODO createExistingView(tabbedPane, patient, allergiesPanel, atg, a, allergyTable);
 		} else {
-			createNewView(tabbedPane, patient, allergiesPanel, atg, allergyTable);
+			//TODO createNewView(tabbedPane, patient, allergiesPanel, atg, allergyTable);
 		}
 
 	}
@@ -180,8 +181,9 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		 */
 		Allergy allergy = new Allergy(0, patient.getId(), textField.getText(), severity, strBuild.toString());
 		try {
-			long aid = atg.insertAllergy(allergy);
-			allergy.setId(aid);
+			/*long aid = atg.insertAllergy(allergy);
+			allergy.setId(aid);*/
+			allergy.setId(this.getMasterModel().getaL().insert(allergy));
 		} catch (GatewayException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -202,7 +204,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		});
 		
 		// Add allergy to allergyList
-		allergyList.add(allergy);
+		//allergyList.add(allergy);
 		
 		int index = tabbedPane.indexOfTab(Tabs.hx);
 		
@@ -259,9 +261,10 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		 */
 		Allergy allergy = new Allergy(a.getId(), patient.getId(), textField.getText(), severity, strBuild.toString());
 		try {
-			atg.updateAllergy(allergy);
+			/*atg.updateAllergy(allergy);
 			al.loadFromGateway();
-			allergyList = al.getAllergyList();
+			allergyList = al.getAllergyList();*/
+			this.getMasterModel().getaL().update(allergy);
 		} catch (GatewayException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -274,7 +277,7 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		allergyTable.setValueAt(allergy.getAdverseReaction(), selectedRow, 2);
 		
 		// Update the Allergy in the allergyList
-		allergyList.set(selectedRow, allergy);
+		//allergyList.set(selectedRow, allergy);
 		
 		DefaultTableModel dtm = (DefaultTableModel)allergyTable.getModel();
 		
@@ -983,6 +986,38 @@ public class AllergyTabViewNewAllergy extends JPanel {
 		gbc_btnCancel.gridx = 4;
 		gbc_btnCancel.gridy = 16;
 		add(btnCancel, gbc_btnCancel);
+	}
+
+	
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

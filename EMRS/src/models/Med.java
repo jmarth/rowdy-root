@@ -1,16 +1,19 @@
 package models;
 
+//extend Drug
 public class Med {
 	private Long id;
 	private Long pid;
-	private String tradeName;
-	private String genericName;
+	private String tradeName;// move to medication
+	private String genericName;//move to medication
+//	private Drug myDrug;//move to medication //TODO Hm, why do we have a drug class??
 	private String directions;
 
 	
 	public Med(Long param_id, Long param_pid, String param_trade, String param_generic, String param_directions) {
 		this.setId(param_id);
 		this.setPid(param_pid);
+//		myDrug.setTradeName(param_trade);
 		this.setTradeName(param_trade);
 		this.setGenericName(param_generic);
 		this.setDirections(param_directions);

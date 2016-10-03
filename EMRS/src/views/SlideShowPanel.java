@@ -1,16 +1,27 @@
 package views;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import models.MasterModel;
+
 import java.awt.BorderLayout;
 
 
-public class SlideShowPanel extends JPanel {
-	JLabel pic;
-	Timer tm;
-	int x = 0;
+
+public class SlideShowPanel extends JPanel implements viewinterface {
+	//JLabel pic;
+	//Timer tm;
+	private int x = 0;
+	private BufferedImage currentimage;
 
 	//Images Path In Array
 	String[] list = {
@@ -37,44 +48,77 @@ public class SlideShowPanel extends JPanel {
 	
 	public SlideShowPanel(){
 	    super();
-	    pic = new JLabel();
-	    pic.setBounds(0, 0, 1139, 1124);
+	    x=0;
+	    //pic = new JLabel();
+	    //pic.setBounds(0, 0, 1139, 1124);
 	    
 	    //Call The Function SetImageSize
         //SetImageSize(0);
         
-
-       //set a timer
-        tm = new Timer(550000,new ActionListener() {
+       //set a timer 550000
+	    Timer tm;
+        tm = new Timer(10000,new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-            	System.out.println("switching");
-                SetImageSize(x);
+            	//System.out.println("switching");
+                //SetImageSize(x);
                 x += 1;
                 if(x >= list.length )
-                    x = 0; 
+                    x = 0;
+                try {
+					currentimage = ImageIO.read(new File(list[x]));
+				} catch (IOException e1) {
+					System.err.println("can not load image in slideshowview");
+					e1.printStackTrace();
+				}
+                SlideShowPanel.this.repaint();
             }
         });
         tm.setInitialDelay(600);
-        setLayout(new BorderLayout(0, 0));
-        add(pic);
+        //setLayout(new BorderLayout(0, 0));
+        //add(pic);
         tm.start();
-        setSize(pic.getWidth(), pic.getHeight());
-        setVisible(true);
-        this.revalidate();
-        this.repaint();
+        //setSize(pic.getWidth(), pic.getHeight());
+        //setVisible(true);
+       // this.revalidate();
+       // this.repaint();
     }
 	
-	 //create a function to resize the image 
-    public void SetImageSize(int i){
-        ImageIcon icon = new ImageIcon(list[i]);
-        Image img = icon.getImage();
-        Image newImg = img.getScaledInstance(pic.getWidth(), pic.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon newImc = new ImageIcon(newImg);
-        pic.setIcon(newImc);
-    }
+	 @Override
+	protected void paintComponent(Graphics g) {
+		// TODO Auto-generated method stub
+		super.paintComponent(g);
+		g.drawImage(currentimage,SlideShowPanel.this.getX(),SlideShowPanel.this.getY(),
+				SlideShowPanel.this.getWidth(),SlideShowPanel.this.getHeight(),null);
+	}
+	 
+	@Override
+	public void HideallView() {
+		this.setVisible(false);
+		
+	}
 
+	@Override
+	public void ShowView() {
+		this.setVisible(true);
+		
+	}
 
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return getHomeView().getMasterModel();
+	}
 
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return (HomeView)SwingUtilities.getRoot(this);
+	}
 }

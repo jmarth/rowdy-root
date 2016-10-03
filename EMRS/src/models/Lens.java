@@ -1,5 +1,11 @@
 package models;
 
+import java.io.IOException;
+
+import database.GatewayException;
+import database.LensTableGateway;
+import database.LensTableGatewaySQLite;
+
 public class Lens {
 	
 	private long id;
@@ -22,6 +28,8 @@ public class Lens {
 	private String PSC_OD_Notes;
 	private String PSC_OS;
 	private String PSC_OS_Notes;
+	
+	private LensTableGateway myGateway;
 	
 	public Lens(long id, long vid, String nS_OD, String nS_OD_Notes, String nS_OS, String nS_OS_Notes,
 			int isStableLensOD, int isStableLensOS, int isPseudophakia_OD, int isPseudophakia_OS,
@@ -54,7 +62,16 @@ public class Lens {
 			int isStableLensOD, int isStableLensOS, int isPseudophakia_OD, int isPseudophakia_OS,
 			int isPCO_OD, int isPCO_OS, String coritcal_OD, String cortical_OD_Notes, String coritcal_OS,
 			String cortical_OS_Notes, String pSC_OD, String pSC_OD_Notes, String pSC_OS, String pSC_OS_Notes) {
-		super();
+
+		try {
+			myGateway = new LensTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+			// e.printStackTrace();
+		}
 		NS_OD = nS_OD;
 		NS_OD_Notes = nS_OD_Notes;
 		NS_OS = nS_OS;
@@ -195,6 +212,16 @@ public class Lens {
 	public void setPSC_OS_Notes(String pSC_OS_Notes) {
 		PSC_OS_Notes = pSC_OS_Notes;
 	}
-	
-	
+
+	public Lens loadLens(long vid) {
+		try {
+			return myGateway.fetchLensForVisit(vid);
+		} catch (GatewayException e) {
+			System.err.println("From Lens, could not fetch from DB");
+//			e.printStackTrace();
+		}
+		return null;
+	}
 }
+	
+	

@@ -1,5 +1,11 @@
 package models;
 
+import java.io.IOException;
+
+import database.GatewayException;
+import database.RefractionTableGateway;
+import database.RefractionTableGatewaySQLite;
+
 public class Refraction {
 	
 	private long id;
@@ -17,6 +23,7 @@ public class Refraction {
 	private String CC_OS_Sphere;
 	private String CC_OS_Cyl;
 	private String CC_OS_Axis;
+	private RefractionTableGateway myGateway;
 	
 	public Refraction(long id, long vid, int isManifest, String sC_OD_Sphere, String sC_OD_Cyl, String sC_OD_Axis,
 			String sC_OS_Sphere, String sC_OS_Cyl, String sC_OS_Axis, String cC_OD_Sphere, String cC_OD_Cyl,
@@ -42,8 +49,15 @@ public class Refraction {
 	public Refraction(int isManifest, String sC_OD_Sphere, String sC_OD_Cyl, String sC_OD_Axis,
 			String sC_OS_Sphere, String sC_OS_Cyl, String sC_OS_Axis, String cC_OD_Sphere, String cC_OD_Cyl,
 			String cC_OD_Axis, String cC_OS_Sphere, String cC_OS_Cyl, String cC_OS_Axis) {
-		super();
-		this.isManifest = isManifest;
+		try {
+			myGateway = new RefractionTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From Refraction, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From Refraction, IO error");
+			// e.printStackTrace();
+		}		this.isManifest = isManifest;
 		SC_OD_Sphere = sC_OD_Sphere;
 		SC_OD_Cyl = sC_OD_Cyl;
 		SC_OD_Axis = sC_OD_Axis;
@@ -176,6 +190,16 @@ public class Refraction {
 
 	public void setCC_OS_Axis(String cC_OS_Axis) {
 		CC_OS_Axis = cC_OS_Axis;
+	}
+
+	public Refraction loadRefraction(long vid) {
+		try {
+			return myGateway.fetchRefractionForVisit(vid);
+		} catch (GatewayException e) {
+			System.err.println("From Refraction, could not fetch from DB");
+//			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	

@@ -46,7 +46,7 @@ public class SurgeryTemplatesTableGatewayMySQL implements SurgeryTemplatesTableG
 	
 	
 	@Override
-	public List<SurgeryTemplate> fetchAllSurgeries() throws GatewayException {
+	public List<SurgeryTemplate> fetchAllSurgeryTemplates() throws GatewayException {
 		ArrayList<SurgeryTemplate> surgeries = new ArrayList<SurgeryTemplate>();
 		
 		PreparedStatement statement = null;
@@ -85,7 +85,7 @@ public class SurgeryTemplatesTableGatewayMySQL implements SurgeryTemplatesTableG
 	}
 
 	@Override
-	public long insertSurgery(SurgeryTemplate s) throws GatewayException {
+	public long insertSurgeryTemplate(SurgeryTemplate s) throws GatewayException {
 		long newID = 0;
 		
 		PreparedStatement statement = null;
@@ -135,6 +135,24 @@ public class SurgeryTemplatesTableGatewayMySQL implements SurgeryTemplatesTableG
         mysqlDS.setUser(props.getProperty("MYSQL_DB_USERNAME"));
         mysqlDS.setPassword(props.getProperty("MYSQL_DB_PASSWORD"));
         return mysqlDS;
+	}
+
+
+
+
+	@Override
+	public void updateSurgeryTemplate(SurgeryTemplate a) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+	@Override
+	public void removeSurgeryTemplate(long id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

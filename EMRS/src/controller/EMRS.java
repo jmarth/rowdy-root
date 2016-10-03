@@ -12,6 +12,14 @@ import views.LoginView;
 
 public class EMRS {
 	
+	//TODO
+	// medication extends drug
+	// visitpanel extends JXTaskPane, during creation to optimize, extend any others to JXTaskPane
+	// keep homemodel as a final reference in all views
+	// hashmap list to keep track of all lists
+	// list models are only ones that use gateways to CRUD DB
+	// bilateral symmetry solution: what has changed? highlight changes of document, (no b/c doesn't handle previous 
+	
 	private static final Logger logger = LogManager.getLogger(EMRS.class);
 	
 	public static void main(String[] args) {

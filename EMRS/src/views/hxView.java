@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ import models.Allergy;
 import models.AllergyList;
 import models.CL;
 import models.Hx;
+import models.MasterModel;
 import models.Med;
 import models.Patient;
 import models.Tabs;
@@ -46,13 +46,22 @@ import javax.swing.JCheckBox;
 import javax.swing.border.MatteBorder;
 import javax.swing.BoxLayout;
 
-public class hxView extends JPanel {
-	private AllergyList al = new AllergyList();
-	private List<Allergy> allergyList;
-	private AllergyTableGateway atg;
-	private MedicationsTableGateway mtg;
-	private DrugTableGateway rtg;
-	private HxTableGateway htg;
+
+public class hxView extends JPanel implements viewinterface {
+	//private AllergyList al = new AllergyList(); // no make here, in constructor
+	//private List<Allergy> allergyList;
+	// Do not need this List<Allergy>, we have an AllergyList and Allergy, AllergyList.getList() instead
+	
+	//private AllergyTableGateway atg; // Gateways should be in the Model, not the view, view holds model.
+	
+	//private MedicationsTableGateway mtg; // Med Model
+	
+	//private DrugTableGateway rtg; // Drug Model
+	
+	//private HxTableGateway htg; //
+	
+	
+	
 	private Patient patient;
 	private JTable allergyTable = new JTable();
 	
@@ -90,22 +99,25 @@ public class hxView extends JPanel {
 	private JCheckBox ck13;
 	private JPanel presentConditionPanel;
 	private JButton btnNewForm;
-	private JScrollPane hxScroller;
+	private JButton btnEditForm;
+	//private JScrollPane hxScroller; TODO what is this doing here
 	
 	private List<JCheckBox> peList;
+	private JTabbedPane tabbedPane;
 
 	/**
 	 * Create the panel.
 	 * @param drugTableGateway 
 	 * @param hxTableGateway 
 	 */
-	public hxView(final Patient patient, final JTabbedPane tabbedPane, final AllergyTableGateway atg, final MedicationsTableGateway mtg, DrugTableGateway drugTableGateway, HxTableGateway hxTableGateway) {
-		
-		this.atg = atg;
-		this.mtg = mtg;
-		this.rtg = drugTableGateway;
-		this.htg = hxTableGateway;
+	//public hxView(final Patient patient, final JTabbedPane tabbedPane, final AllergyTableGateway atg, final MedicationsTableGateway mtg, DrugTableGateway drugTableGateway, HxTableGateway hxTableGateway) {
+	public hxView(){	
+		//this.atg = atg;
+		//this.mtg = mtg;
+		//this.rtg = drugTableGateway;
+		//this.htg = hxTableGateway;
 		this.patient = patient;
+		this.tabbedPane = tabbedPane;
 		
 		
 		setBackground(CL.colorBlue);
@@ -161,30 +173,24 @@ public class hxView extends JPanel {
 
 		
 		btnNewForm = new JButton("Fill out Health History");
-		btnNewForm.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				hxView prevPanel = hxView.this;
-				int index = tabbedPane.indexOfTab(Tabs.hx);
-				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, new hxForm(patient, htg, prevPanel, tabbedPane));
-			}
-			
-		});
+		btnNewForm.addActionListener(new NewFormListener());
 		
-		try {
+		btnEditForm = new JButton("Edit Form TEST");
+		btnEditForm.addActionListener(new EditFormListener());
+		
+		/*try {
 			healthHistory = htg.fetchHxForPatient(this.patient);
 		} catch (GatewayException e1) {
 			e1.printStackTrace();
-		}
-		
-		if (!(healthHistory.isEmpty())) {
-			populateHealthHistory();
+		}*/
+		//just hightlight make it work
+		/*if (!(healthHistory.isEmpty())) {
+			//TODO populateHealthHistory();
+			//presentConditionPanel.add(btnEditForm);
 		}
 		else {
 			presentConditionPanel.add(btnNewForm);
-		}
+		}*/
 		
 		
 		medMasterPanel.setLayout(new BorderLayout(0, 0));
@@ -204,9 +210,9 @@ public class hxView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JPanel prevPanel = hxView.this;
+				//JPanel prevPanel = hxView.this; TODO why this here
 				int index = tabbedPane.indexOfTab("Health History");
-				tabbedPane.setComponentAt(index, new AddMedView(rtg, hxView.this.mtg, tabbedPane, hxView.this, hxView.this.patient));
+				//TODO tabbedPane.setComponentAt(index, new AddMedView(rtg, hxView.this.mtg, tabbedPane, hxView.this, hxView.this.patient));
 				revalidate();
 				repaint();
 			}
@@ -226,7 +232,7 @@ public class hxView extends JPanel {
 				}
 		));
 		
-		populateMedTable();
+		//TODO populateMedTable();
 		
 		medScroller = new JScrollPane(medTable);
 		
@@ -242,7 +248,7 @@ public class hxView extends JPanel {
 		
 		
 
-		populateAllergyTable();
+		//TODO populateAllergyTable();
 		
 		allergyPanel = new JPanel();
 		allergyPanel.setLayout(new BorderLayout(0, 0));
@@ -257,7 +263,7 @@ public class hxView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int index = tabbedPane.indexOfTab(Tabs.hx);
 				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, new AllergyTabViewNewAllergy(tabbedPane, patient, hxView.this, atg, allergyTable, allergyList, al, null, false));				
+				//TODO tabbedPane.setComponentAt(index, new AllergyTabViewNewAllergy(tabbedPane, patient, hxView.this, atg, allergyTable, allergyList, al, null, false));				
 			}
 		});
 		allergyButtonPanel.add(btnAddAllergy);
@@ -272,15 +278,15 @@ public class hxView extends JPanel {
 				if  (selection == -1) {
 					return;
 				}
-				al.loadFromGateway();
-				allergyList = al.getAllergyListForPatient(patient);
-				Allergy tmp = allergyList.get(selection);
+				//al.loadFromGateway();
+				//allergyList = al.getAllergyListForPatient(patient);
+				Allergy tmp = hxView.this.getMasterModel().getaL().getMyList().get(selection);
 				
-				AllergyTabViewNewAllergy anv = new AllergyTabViewNewAllergy(tabbedPane, patient, hxView.this, atg, allergyTable, allergyList, al, tmp, true);
+				//TODO AllergyTabViewNewAllergy anv = new AllergyTabViewNewAllergy(tabbedPane, patient, hxView.this, atg, allergyTable, allergyList, al, tmp, true);
 				
 				int index = tabbedPane.indexOfTab(Tabs.hx);
 				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, anv);
+				//TODO tabbedPane.setComponentAt(index, anv);
 			}
 			
 		});
@@ -295,16 +301,43 @@ public class hxView extends JPanel {
 
 	}
 	
+	
+	
+	private class NewFormListener implements ActionListener {
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			hxView prevPanel = hxView.this;
+			int index = tabbedPane.indexOfTab(Tabs.hx);
+			tabbedPane.setComponentAt(index, null);
+			//TODO tabbedPane.setComponentAt(index, new hxForm(patient, htg, prevPanel, tabbedPane));
+		}
+		
+	}
+	
+	private class EditFormListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			hxView prevPanel = hxView.this;
+			int index = tabbedPane.indexOfTab(Tabs.hx);
+			tabbedPane.setComponentAt(index, null);
+			//TODO tabbedPane.setComponentAt(index, new hxForm(patient, htg, prevPanel, tabbedPane, true));
+		}
+		
+	}
+	
 	public void populateHealthHistory() {
 		presentConditionPanel.removeAll();
 		healthHistory = new ArrayList<Hx>();
 		
-		try {
+		/*try {
 			healthHistory = htg.fetchHxForPatient(patient);
+			System.out.println("SIZESIZESIZESIZESIZESIZE\n: " + healthHistory.size());
+
 		} catch (GatewayException e) {
 			e.printStackTrace();
-		}
+		}*/
 		Hx hx = null;
 		
 		if (healthHistory.size() > 0)
@@ -393,17 +426,17 @@ public class hxView extends JPanel {
 		// Declare variables
 		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
 		
-		al.setGateway(atg);
-		al.loadFromGateway();
+		/*al.setGateway(atg);
+		al.loadFromGateway();*/
 		
 		// Find all allergies for the given patient
-		allergyList = al.getAllergyListForPatient(patient);
+		//allergyList = al.getAllergyListForPatient(patient);
 		
 		/**
 		 * For every allergy in the allergyList
 		 * .. Add that model the JTable
 		 */
-		for(Allergy allergy : allergyList) {
+		for(Allergy allergy : this.getMasterModel().getaL().getMyList()) {
 			model.addRow(new Object[]{
 					allergy.getAllergy(), 
 					allergy.getSeverity(), 
@@ -415,12 +448,12 @@ public class hxView extends JPanel {
 	public void populateMedTable(){
 		List<Med> tmpList = new ArrayList<Med>();
 		
-		try {
+		/*try {
 			tmpList = mtg.fetchMedsForPatient(patient);
 		} catch (GatewayException e) {
 			e.printStackTrace();
-		}
-		System.out.println(tmpList.size());
+		}*/
+		//System.out.println(tmpList.size());
 		
 		
 		// Get model of MedTable in order to add rows
@@ -435,7 +468,7 @@ public class hxView extends JPanel {
 		 * For every med in the medList
 		 * .. Add that model the JTable
 		 */
-		for(Med med : tmpList) {
+		for(Med med : this.getMasterModel().getmL().getMyList()) {
 			model.addRow(new Object[]{
 					med.getTradeName(), 
 					med.getGenericName(),
@@ -761,5 +794,39 @@ public class hxView extends JPanel {
 		pmhPanel.setLayout(new BoxLayout(pmhPanel, BoxLayout.Y_AXIS));
 		drugAllergyPanel.setLayout(new BoxLayout(drugAllergyPanel, BoxLayout.Y_AXIS));
 		hxMasterPanel.setLayout(gl_hxMasterPanel);
+	}
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.IOPMeasurement;
-import models.Patient;
 
 public class IOPTableGatewaySQLite implements IOPTableGateway {
 	
@@ -105,9 +104,9 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 	 * @return list of iops for patient
 	 * @throws GatewayException
 	 */
-	public List<IOPMeasurement> fetchIOPMeasurementsForPatient(Patient p) throws GatewayException {
+	public List<IOPMeasurement> fetchIOPMeasurementsForVisit(long vid) throws GatewayException {
 		
-		ArrayList<IOPMeasurement> iops = new ArrayList<IOPMeasurement>();
+		List<IOPMeasurement> iops = new ArrayList<IOPMeasurement>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -115,13 +114,13 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from iops where vid=?");
-			st.setLong(1, p.getId());
+			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
 			//add each to list of parts to return
 			while(rs.next()) {
-				IOPMeasurement v = new IOPMeasurement(
+				IOPMeasurement iop = new IOPMeasurement(
 						rs.getLong("id"),
 						rs.getLong("vid"),
 						rs.getString("ODValue"),
@@ -132,11 +131,15 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 						rs.getString("OSNotes"),
 						rs.getString("dateCreated")
 						);
+				iops.add(iop);
 				
-				iops.add(v);
 			}
+			
+			return iops;
+
 		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
+			
+			//throw new GatewayException(e.getMessage());
 		} finally {
 			//clean up
 			try {
@@ -151,7 +154,7 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 			}
 		}
 		
-		return iops;
+		return null;
 	}
 	
 	/**
@@ -232,6 +235,7 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 		ResultSet rs = null;
 		
 		try {
+			
 			//fetch parts
 			st = conn.prepareStatement("select * from iops where vid=?");
 			st.setLong(1, id);
@@ -272,6 +276,5 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 		return row;
 	
 	}
-
 
 }

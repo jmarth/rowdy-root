@@ -20,18 +20,20 @@ import javax.swing.SwingConstants;
 import database.GatewayException;
 import database.SurgeryTemplatesTableGateway;
 import models.CL;
+import models.MasterModel;
+import models.Patient;
 import models.Surgery;
 import models.SurgeryTemplate;
 import models.SurgeryTemplatesList;
 import models.Tabs;
 
-public class NewProcedureView extends JPanel {
+public class NewProcedureView extends JPanel implements viewinterface {
 	
 	// Containers --------------------------------------
 	JPanel comboboxPanel;
 	JPanel buttonPanel;
 	JPanel mainPanel;
-	LabsAndProceduresTabView parent;
+	//LabsAndProceduresTabView parent;
 	
 	
 	// Buttons -----------------------------------------
@@ -50,8 +52,8 @@ public class NewProcedureView extends JPanel {
 
 	
 	// Other -------------------------------------------
-	private SurgeryTemplatesList list; 
-	private SurgeryTemplatesTableGateway gateway;
+	//private SurgeryTemplatesList list; 
+	//private SurgeryTemplatesTableGateway gateway; // gateway goes in list or model TODO
 	
 	private JScrollPane scroller;
 	
@@ -60,9 +62,10 @@ public class NewProcedureView extends JPanel {
 
 	
 	
-	public NewProcedureView(SurgeryTemplatesTableGateway param_gateway, LabsAndProceduresTabView param_parent) {
-		this.gateway = param_gateway;
-		this.parent = param_parent;
+	//public NewProcedureView(SurgeryTemplatesTableGateway param_gateway, LabsAndProceduresTabView param_parent) {
+	public NewProcedureView() {
+		//this.gateway = param_gateway;
+		//this.parent = param_parent;
 		
 		
 		setLayout(new BorderLayout());
@@ -102,7 +105,7 @@ public class NewProcedureView extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				Object tmp = comboBox.getSelectedItem();
+				SurgeryTemplate tmp = (SurgeryTemplate)comboBox.getSelectedItem();
 				
 				/** tmp will be null when nothing has been selected from the combo box **/
 				if (tmp == null) {
@@ -110,17 +113,24 @@ public class NewProcedureView extends JPanel {
 				}
 				
 				/** get the title of the template **/
-				String title = ((String) tmp).toString();
+				String title = tmp.getTitle();
 				
 				/** get the body of the template (description) **/
 				String body = textPane.getText();
-				long pid = parent.getPatient().getId();
+				//TODO
+				MasterModel m = ((LabsAndProceduresTabView)(NewProcedureView.this.getParent().getParent())).getMasterModel();
 								
-				Surgery s = new Surgery(0, pid, title, body);
-								
-				int index = parent.prv.indexOfTab(Tabs.labs);
-				parent.prv.setComponentAt(index, null);
-				parent.prv.setComponentAt(index, new SafeSurgery(s, parent, NewProcedureView.this));
+				Surgery s = new Surgery(0,m.getCurrPatient().getId(), title, body);
+				/*try {
+					m.getsL().insert(s);
+					((LabsAndProceduresTabView)(NewProcedureView.this.getParent().getParent())).reset();
+				} catch (GatewayException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	*/			
+				//int index = parent.prv.indexOfTab(Tabs.labs);
+				//parent.prv.setComponentAt(index, null);
+				//parent.prv.setComponentAt(index, new SafeSurgery(s, parent, NewProcedureView.this));
 								
 			}
 			
@@ -131,10 +141,11 @@ public class NewProcedureView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				parent.reset();
-				int index = parent.prv.indexOfTab(Tabs.labs);
-				parent.prv.setComponentAt(index, null);
-				parent.prv.setComponentAt(index, parent);
+				((LabsAndProceduresTabView)(NewProcedureView.this.getParent().getParent())).reset();
+				//parent.reset();
+				//int index = parent.prv.indexOfTab(Tabs.labs);
+				//parent.prv.setComponentAt(index, null);
+				//parent.prv.setComponentAt(index, parent);
 			}
 			
 		});
@@ -152,34 +163,62 @@ public class NewProcedureView extends JPanel {
 
 	private void setupComboBox() {
 		
-		list = new SurgeryTemplatesList();
+		/*list = new SurgeryTemplatesList();
 		list.setGateway(gateway);
-		list.loadFromGateway();
+		list.loadFromGateway();*/
 		
-		ArrayList<SurgeryTemplate> templates = (ArrayList<SurgeryTemplate>) list.getSurgeryTemplatesList();
+		//ArrayList<SurgeryTemplate> templates = (ArrayList<SurgeryTemplate>) list.getSurgeryTemplatesList();
 		
-		String[] array = new String[templates.size()];
+		/*String[] array = new String[templates.size()];
 		
 		int i;
 		for (i = 0; i < templates.size(); i++) {
 			array[i] = templates.get(i).getTitle();
-		}
+		}*/
 		
 		
-		comboBox = new JComboBox(array);
+		comboBox = new JComboBox((SurgeryTemplate[])this.getMasterModel().getStll().getMyList().toArray());
 		comboBox.setSelectedItem(null);
-		
+		comboBox.setRenderer(new SurgeryTemplateCellRenderer());
 		comboBox.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox tmp = (JComboBox) e.getSource();
-				String title = (String) tmp.getSelectedItem();
-				SurgeryTemplate template = list.findTemplate(title);
-				//textArea.setText(template.getDescription());
+				//String title = (String) tmp.getSelectedItem();
+				//SurgeryTemplate template = list.findTemplate(title);
+				SurgeryTemplate template = (SurgeryTemplate)tmp.getSelectedItem();
+				textArea.setText(template.getDescription());
 				textPane.setText(template.getDescription());
-			}
-			
+			}	
 		});
+	}
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return this.getHomeView().getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)(this.getParent().getParent())).getHomeView();
 	}
 }

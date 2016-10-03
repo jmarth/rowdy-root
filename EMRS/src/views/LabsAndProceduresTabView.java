@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,10 +22,11 @@ import database.GatewayException;
 import database.SurgeryTableGateway;
 import database.SurgeryTemplatesTableGateway;
 import models.CL;
+import models.MasterModel;
 import models.Patient;
 import models.Surgery;
 
-public class LabsAndProceduresTabView extends JPanel {
+public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	
 	// Containers --------------------------------------
 	private JSplitPane splitPane;
@@ -46,34 +48,12 @@ public class LabsAndProceduresTabView extends JPanel {
 	JLabel headerLabel;
 	
 	// Other -------------------------------------------
-	SurgeryTableGateway gate1;
-	SurgeryTemplatesTableGateway gate2;
+	//SurgeryTableGateway gate1;
+	//SurgeryTemplatesTableGateway gate2;
 	PatientRecordView prv;
-	Patient patient;
-	
-	public SurgeryTableGateway getGate1() {
-		return gate1;
-	}
-
-	public SurgeryTemplatesTableGateway getGate2() {
-		return gate2;
-	}
-
-	public void setPatient(Patient patient) {
-		this.patient = patient;
-	}
-
-	public Patient getPatient() {
-		return patient;
-	}
-
-	public LabsAndProceduresTabView(Patient param_patient, PatientRecordView param_prv, SurgeryTableGateway param_gate1, SurgeryTemplatesTableGateway param_gate2) {
-		
-		this.patient = param_patient;
-		this.prv = param_prv;
-		this.gate1 = param_gate1;
-		this.gate2 = param_gate2;
-		
+	//public LabsAndProceduresTabView(Patient param_patient, PatientRecordView param_prv, SurgeryTableGateway param_gate1, SurgeryTemplatesTableGateway param_gate2) {
+	public LabsAndProceduresTabView(){
+				
 		setLayout(new BorderLayout());
 		
 		// setup header panel
@@ -87,7 +67,7 @@ public class LabsAndProceduresTabView extends JPanel {
 		// setup main panel
 		masterContainer = new JXTaskPaneContainer();
 		
-		populateMasterContainer();
+		//TODO populateMasterContainer();
 		
 		procedureScroller = new JScrollPane(masterContainer);
 		
@@ -97,7 +77,9 @@ public class LabsAndProceduresTabView extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				NewProcedureView view = new NewProcedureView(gate2, LabsAndProceduresTabView.this);
+				//TODO
+				//NewProcedureView view = new NewProcedureView(gate2, LabsAndProceduresTabView.this);
+				NewProcedureView view = new NewProcedureView();
 				proceduresParentPanel.removeAll();
 				proceduresParentPanel.add(view, BorderLayout.CENTER);
 				validate();
@@ -123,16 +105,16 @@ public class LabsAndProceduresTabView extends JPanel {
 		
 	}
 
-	private void populateMasterContainer() {
+	/*private void populateMasterContainer() {
 		masterContainer.removeAll();
 
-		ArrayList<Surgery> surgeries = new ArrayList<Surgery>();
+		//ArrayList<Surgery> surgeries = new ArrayList<Surgery>();
 		try {
-			surgeries = (ArrayList<Surgery>) gate1.fetchSurgeriesForPatient(patient);
+			//TODO surgeries = (ArrayList<Surgery>) gate1.fetchSurgeriesForPatient(patient);
 		} catch (GatewayException e) {
 			e.printStackTrace();
 		}
-		
+		List<Surgery> surgeries = this.getMasterModel().getsL().getMyList();
 		
 		if (surgeries.size() == 0) {
 			JLabel label = new JLabel("No procedures done");
@@ -154,7 +136,7 @@ public class LabsAndProceduresTabView extends JPanel {
 			validate();
 			repaint();
 		}
-	}
+	}*/
 
 	public void reset() {
 		proceduresParentPanel.removeAll();
@@ -164,12 +146,62 @@ public class LabsAndProceduresTabView extends JPanel {
 		
 	}
 
-	public void resetAndUpdate() {
+	/*public void resetAndUpdate() {
 		proceduresParentPanel.removeAll();
 		populateMasterContainer();
 		proceduresParentPanel.add(proceduresContentPanel, BorderLayout.CENTER);
 		validate();
 		repaint();
+	}*/
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((PatientRecordView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		this.reload();
+		this.setVisible(true);
+	}
+
+	@Override
+	public void reload() {
+		masterContainer.removeAll();
+		List<Surgery> surgeries = this.getMasterModel().getsL().getMyList();
+		
+		if (surgeries.size() == 0) {
+			JLabel label = new JLabel("No procedures done");
+			label.setFont(new Font("Tahoma", Font.ITALIC, 16));
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			masterContainer.add(label);
+			return;
+		}
+		
+		for (Surgery tmp : surgeries) {
+			JXTaskPane pane = new JXTaskPane();
+			ClosedProcedureView view = new ClosedProcedureView(tmp);
+			pane.setTitle(tmp.getTitle());
+			pane.setAnimated(false);
+			pane.setCollapsed(true);
+			pane.setScrollOnExpand(false);
+			pane.add(view);
+			masterContainer.add(pane);
+			/*validate();
+			repaint();*/
+		}
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((PatientRecordView)this.getParent()).getHomeView();
 	}
 	
 }

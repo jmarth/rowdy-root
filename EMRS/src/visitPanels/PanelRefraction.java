@@ -1,28 +1,30 @@
-package panels;
+package visitPanels;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
-
-import models.Refraction;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.JRadioButton;
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.util.ArrayList;
 import java.util.Enumeration;
-
-import javax.swing.border.EtchedBorder;
-import java.awt.Color;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
+import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
+import javax.swing.border.TitledBorder;
+
+import models.MasterModel;
+import models.Refraction;
+import net.miginfocom.swing.MigLayout;
+import views.HomeView;
+import views.viewinterface;
 
 @SuppressWarnings("serial")
-public class PanelRefraction extends JPanel {
+public class PanelRefraction extends JPanel implements viewinterface {
+	
+	private int index;
 
 	private JRadioButton rdbtn_AutoRefraction;
 	private JRadioButton rdbtn_ManifestRefraction;
@@ -49,8 +51,10 @@ public class PanelRefraction extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelRefraction() {
-				
+	public PanelRefraction(int index) {
+		
+		this.index = index;
+		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Refraction", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 				
 		setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][][][][][][][][][]"));
@@ -192,12 +196,48 @@ public class PanelRefraction extends JPanel {
 		return null;
 	}
 	
-	public void setFields(ArrayList<Object> refractCols) {
-		String temp = refractCols.get(0).toString();
-		if (temp.equals("0")) {
-			rdbtn_AutoRefraction.setSelected(true);
-		} else if (temp.equals("1")) {
-			rdbtn_ManifestRefraction.setSelected(true);
-		}
+	public void setFields() {
+		
+		Refraction r = getMasterModel().getCurrentPatientVisitList().get(index).getMyRefraction();
+		
+		rdbtn_ManifestRefraction.setSelected(r.isManifest() == 1? true : false);
+		
+		textField_ARSC_OD_Sphere.setText(r.getSC_OD_Sphere());
+		textField_ARSC_OD_Cyl.setText(r.getSC_OD_Cyl());
+		textField_ARSC_OD_Axis.setText(r.getSC_OD_Axis());
+		textField_ARSC_OS_Sphere.setText(r.getSC_OS_Sphere());
+		textField_ARSC_OS_Cyl.setText(r.getSC_OS_Cyl());
+		textField_ARSC_OS_Axis.setText(r.getSC_OS_Axis());
+		textField_ARCC_OD_Sphere.setText(r.getCC_OD_Sphere());
+		textField_ARCC_OD_Cyl.setText(r.getCC_OD_Cyl());
+		textField_ARCC_OD_Axis.setText(r.getCC_OD_Axis());
+		textField_ARCC_OS_Sphere.setText(r.getCC_OS_Sphere());
+		textField_ARCC_OS_Cyl.setText(r.getCC_OS_Cyl());
+		textField_ARCC_OS_Axis.setText(r.getCC_OS_Axis());
+	}
+
+	@Override
+	public void HideallView() {
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		
+	}
+
+	@Override
+	public void reload() {
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent());
 	}
 }

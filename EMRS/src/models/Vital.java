@@ -1,6 +1,6 @@
 package models;
 
-public class Vitals {
+public class Vital {
 
 	public static final String MMHG = "mm/Hg";
 	public static final String PA = "Pa";
@@ -45,7 +45,7 @@ public class Vitals {
 	private String notes;
 	private String dateCreated;
 
-	public Vitals(long id, long pid, float bps, float bpd, String bpUnit, boolean fasting, float bg, String bgUnit,
+	public Vital(long id, long pid, float bps, float bpd, String bpUnit, boolean fasting, float bg, String bgUnit,
 			float o2sat, float hb, int hFeet, int hInches, int hcm, String hUnit, float weight, String wUnit,
 			String notes, String dateCreated) {
 
@@ -71,7 +71,7 @@ public class Vitals {
 
 	}
 	
-	public Vitals(long id, long pid, float bps, float bpd, String bpUnit, boolean fasting, float bg, String bgUnit,
+	public Vital(long id, long pid, float bps, float bpd, String bpUnit, boolean fasting, float bg, String bgUnit,
 			float o2sat, float hb, int hFeet, int hInches, int hcm, String hUnit, float weight, String wUnit,
 			String notes) {
 

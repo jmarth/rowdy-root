@@ -11,23 +11,32 @@ import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
+import models.MasterModel;
 import models.Patient;
 
-public class ProfileTabView extends JPanel {
-	
-	//tabbedPane.addTab("Profile", null, panel, null);
-	private Patient patient;
-	private HomeView homeview;
-	
-	public ProfileTabView(HomeView homeview,Patient patient) {
-		this.patient=patient;
-		this.homeview=homeview;
+@SuppressWarnings("serial")
+public class DemographicView extends JPanel implements viewinterface {
+	private JLabel lblLogo;
+	private JLabel lblfirstname;
+	private JLabel lblmiddlename;
+	private JLabel lbllastname;
+	private JLabel lblGender;
+	private JLabel lblBirthdate;
+	private JLabel lblAddress;
+	private JLabel lblAddress2;
+	private JLabel lblCity;
+	private JLabel lblState;
+	private JLabel lblPostal;
+	private JLabel lblCountry;
+	private JLabel lblPhone;
+	private JLabel lblAge;
+	public DemographicView() {
 		GridBagLayout gbl_panel = new GridBagLayout();
 		gbl_panel.columnWidths = new int[]{63, 293, 0};
 		gbl_panel.rowHeights = new int[]{77, 0};
@@ -56,26 +65,20 @@ public class ProfileTabView extends JPanel {
 		gbl_panel_4.rowWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_4.setLayout(gbl_panel_4);
 		
-		System.out.println("pic path "+patient.getPicPath());
+		
 		JLabel lblNewLabel_5 = new JLabel("");
-		if(patient.getPicPath() == null || patient.getPicPath().equals(""))
-			patient.setPicPath("user.png");
-		if(patient.getPicPath() != null && !patient.getPicPath().equals("") ) {
-			System.out.println("in this statment");
-			ImageIcon imageIcon = new ImageIcon(patient.getPicPath());
-	        Image image = imageIcon.getImage(); // transform it 
-	        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
-	        imageIcon = new ImageIcon(newimg);  // transform it back
-	        lblNewLabel_5.setIcon(imageIcon);
-		}
-		System.out.println("pic path test");
+		lblLogo =new JLabel();
+		ImageIcon imageIcon = new ImageIcon("user.png");
+        Image image = imageIcon.getImage(); // transform it 
+        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+        imageIcon = new ImageIcon(newimg);  // transform it back
+        this.lblLogo.setIcon(imageIcon);
+	        
 	    GridBagConstraints gbc_lblNewLabel_5 = new GridBagConstraints();
 	    gbc_lblNewLabel_5.insets = new Insets(0, 0, 5, 0);
 		gbc_lblNewLabel_5.gridx = 0;
 		gbc_lblNewLabel_5.gridy = 0;
 		panel_4.add(lblNewLabel_5, gbc_lblNewLabel_5);
-		
-		System.out.println("pic path here");
 		
 		JPanel panel_6 = new JPanel();
 		GridBagConstraints gbc_panel_6 = new GridBagConstraints();
@@ -91,7 +94,7 @@ public class ProfileTabView extends JPanel {
 		gbl_panel_6.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		panel_6.setLayout(gbl_panel_6);
 		
-		JLabel lblfirstname = new JLabel(patient.getFirstName());
+		lblfirstname = new JLabel("");//patient.getFirstName());
 		lblfirstname.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblfirstname.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lblfirstname = new GridBagConstraints();
@@ -100,7 +103,7 @@ public class ProfileTabView extends JPanel {
 		gbc_lblfirstname.gridy = 0;
 		panel_6.add(lblfirstname, gbc_lblfirstname);
 		
-		JLabel lblmiddlename = new JLabel(patient.getMiddleName());
+		lblmiddlename = new JLabel("");//(patient.getMiddleName());
 		lblmiddlename.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lblmiddlename.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lblmiddlename = new GridBagConstraints();
@@ -109,7 +112,7 @@ public class ProfileTabView extends JPanel {
 		gbc_lblmiddlename.gridy = 0;
 		panel_6.add(lblmiddlename, gbc_lblmiddlename);
 		
-		JLabel lbllastname = new JLabel(patient.getLastName());
+		lbllastname = new JLabel("");//(patient.getLastName());
 		lbllastname.setFont(new Font("Tahoma", Font.BOLD, 18));
 		lbllastname.setForeground(Color.DARK_GRAY);
 		GridBagConstraints gbc_lbllastname = new GridBagConstraints();
@@ -118,7 +121,7 @@ public class ProfileTabView extends JPanel {
 		gbc_lbllastname.gridy = 0;
 		panel_6.add(lbllastname, gbc_lbllastname);
 		
-		MatteBorder border = new MatteBorder(1, 0, 0, 0, Color.GRAY);
+//		MatteBorder border = new MatteBorder(1, 0, 0, 0, Color.GRAY);
 		
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBorder(null);
@@ -176,7 +179,7 @@ public class ProfileTabView extends JPanel {
 		gbc_lblNewLabel_1.gridy = 2;
 		panel_6.add(lblNewLabel_1, gbc_lblNewLabel_1);
 		
-		JLabel lblGender = new JLabel(patient.getGender());
+		lblGender = new JLabel("");//(patient.getGender());
 		GridBagConstraints gbc_lblGender = new GridBagConstraints();
 		gbc_lblGender.anchor = GridBagConstraints.SOUTH;
 		gbc_lblGender.insets = new Insets(10, 0, 5, 5);
@@ -185,7 +188,7 @@ public class ProfileTabView extends JPanel {
 		panel_6.add(lblGender, gbc_lblGender);
 		lblGender.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
-		JLabel lblAge = new JLabel(patient.getAge()+" year(s)");
+		lblAge = new JLabel("");//(patient.getAge()+" year(s)");
 		GridBagConstraints gbc_lblAge = new GridBagConstraints();
 		gbc_lblAge.anchor = GridBagConstraints.SOUTH;
 		gbc_lblAge.insets = new Insets(0, 0, 5, 5);
@@ -194,7 +197,7 @@ public class ProfileTabView extends JPanel {
 		panel_6.add(lblAge, gbc_lblAge);
 		lblAge.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
-		JLabel lblBirthdate = new JLabel("("+patient.getBirthDay()+"."+patient.getBirthMonth()+"."+patient.getBirthYear()+")");
+		lblBirthdate = new JLabel("");//("("+patient.getBirthDay()+"."+patient.getBirthMonth()+"."+patient.getBirthYear()+")");
 		GridBagConstraints gbc_lblBirthdate = new GridBagConstraints();
 		gbc_lblBirthdate.insets = new Insets(0, 0, 5, 0);
 		gbc_lblBirthdate.anchor = GridBagConstraints.SOUTH;
@@ -274,23 +277,23 @@ public class ProfileTabView extends JPanel {
 		gbl_panel_7.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		panel_7.setLayout(gbl_panel_7);
 		
-		JLabel lblNewLabel_7 = new JLabel(patient.getAddress());
-		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblAddress = new JLabel("");//(patient.getAddress());
+		lblAddress.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel_7 = new GridBagConstraints();
 		gbc_lblNewLabel_7.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_7.gridx = 0;
 		gbc_lblNewLabel_7.gridy = 0;
-		panel_7.add(lblNewLabel_7, gbc_lblNewLabel_7);
+		panel_7.add(lblAddress, gbc_lblNewLabel_7);
 		
-		JLabel lblNewLabel_8 = new JLabel(patient.getAddress2());
-		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblAddress2 = new JLabel("");//(patient.getAddress2());
+		lblAddress2.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblNewLabel_8 = new GridBagConstraints();
 		gbc_lblNewLabel_8.insets = new Insets(0, 0, 5, 5);
 		gbc_lblNewLabel_8.gridx = 1;
 		gbc_lblNewLabel_8.gridy = 0;
-		panel_7.add(lblNewLabel_8, gbc_lblNewLabel_8);
+		panel_7.add(lblAddress2, gbc_lblNewLabel_8);
 		
-		JLabel lblCity = new JLabel(patient.getCity());
+		lblCity = new JLabel("");//(patient.getCity());
 		lblCity.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblCity = new GridBagConstraints();
 		gbc_lblCity.insets = new Insets(0, 0, 5, 5);
@@ -298,7 +301,7 @@ public class ProfileTabView extends JPanel {
 		gbc_lblCity.gridy = 0;
 		panel_7.add(lblCity, gbc_lblCity);
 		
-		JLabel lblState = new JLabel(patient.getState());
+		lblState = new JLabel("");//(patient.getState());
 		lblState.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblState = new GridBagConstraints();
 		gbc_lblState.insets = new Insets(0, 0, 5, 5);
@@ -306,7 +309,7 @@ public class ProfileTabView extends JPanel {
 		gbc_lblState.gridy = 0;
 		panel_7.add(lblState, gbc_lblState);
 		
-		JLabel lblPostal = new JLabel(patient.getPostalCode());
+		lblPostal = new JLabel("");//(patient.getPostalCode());
 		lblPostal.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblPostal = new GridBagConstraints();
 		gbc_lblPostal.insets = new Insets(0, 0, 5, 5);
@@ -314,7 +317,7 @@ public class ProfileTabView extends JPanel {
 		gbc_lblPostal.gridy = 0;
 		panel_7.add(lblPostal, gbc_lblPostal);
 		
-		JLabel lblCountry = new JLabel(patient.getCountry());
+		lblCountry = new JLabel("");//(patient.getCountry());
 		lblCountry.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblCountry = new GridBagConstraints();
 		gbc_lblCountry.insets = new Insets(0, 0, 5, 5);
@@ -322,7 +325,7 @@ public class ProfileTabView extends JPanel {
 		gbc_lblCountry.gridy = 0;
 		panel_7.add(lblCountry, gbc_lblCountry);
 		
-		JLabel lblPhone = new JLabel(patient.getPhoneNumber());
+		lblPhone = new JLabel("");//(patient.getPhoneNumber());
 		lblPhone.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		GridBagConstraints gbc_lblPhone = new GridBagConstraints();
 		gbc_lblPhone.insets = new Insets(0, 0, 5, 0);
@@ -475,27 +478,65 @@ public class ProfileTabView extends JPanel {
 		editbutton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				HomeView homev = ProfileTabView.this.homeview;
-				homev.getHomeModel().getAddPatientView().loadpatient(ProfileTabView.this.patient);
-				homev.setCenterPanel(homev.getHomeModel().getAddPatientView().getContentPane());
+				DemographicView.this.getHomeView().getPview().setUpdateorinsert(AddPatientView.UPDATEPATIENT);
+				DemographicView.this.getHomeView().ShowAddPatientView();
 			}
 		});
 	}
 
-	public Patient getPatient() {
-		return patient;
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
 	}
 
-	public void setPatient(Patient patient) {
-		this.patient = patient;
+	@Override
+	public MasterModel getMasterModel() {
+		return ((PatientRecordView)this.getParent()).getMasterModel();
 	}
 
-	public HomeView getHomeview() {
-		return homeview;
+	@Override
+	public void ShowView() {
+		reload();
+		this.setVisible(true);
 	}
 
-	public void setHomeview(HomeView homeview) {
-		this.homeview = homeview;
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		Patient p= this.getMasterModel().getCurrPatient();
+		if(p!=null){
+			
+			if(p.getPicPath()!=null && !p.getPicPath().isEmpty() ) {
+				ImageIcon imageIcon = new ImageIcon(p.getPicPath());
+		        Image image = imageIcon.getImage(); // transform it 
+		        Image newimg = image.getScaledInstance(128, 128,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+		        imageIcon = new ImageIcon(newimg);  // transform it back
+		        this.lblLogo.setIcon(imageIcon);
+			}
+			//lblLogo. = p.getPicPath();
+			lblfirstname.setText(p.getFirstName());
+			lblmiddlename.setText(p.getMiddleName());
+			lbllastname.setText(p.getLastName());
+			lblGender.setText(p.getGender());
+			lblBirthdate.setText("("+p.getBirthDay()+"."+p.getBirthMonth()+"."+p.getBirthYear()+")");
+			lblAddress.setText(p.getAddress());
+			lblAddress2.setText(p.getAddress2());
+			lblCity.setText(p.getCity());
+			lblState.setText(p.getState());
+			lblPostal.setText(p.getPostalCode());
+			lblCountry.setText(p.getCountry());
+			lblPhone.setText(p.getPhoneNumber());
+		}else{
+			p.setPicPath("user.png");
+		}
+		
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((PatientRecordView)this.getParent()).getHomeView();
 	}
 	
 }

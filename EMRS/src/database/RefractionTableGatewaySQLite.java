@@ -8,10 +8,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import models.Refraction;
-import models.Patient;
 
 public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 	
@@ -36,23 +34,24 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 	}
 	
 	/**
-	 * Fetch all visits from DB
-	 * @return list of visits
+	 * Fetch visits from DB for patient
+	 * @return list of visits for patient
 	 * @throws GatewayException
 	 */
-	public List<Refraction> fetchRefractions() throws GatewayException {
+	public Refraction fetchRefractionsForVisit(long vid) throws GatewayException {
 		
-		ArrayList<Refraction> rl = new ArrayList<Refraction>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
+			//fetch parts
+			st = conn.prepareStatement("select * from refractions where vid=?");
+			st.setLong(1, vid);
 			
-			st = conn.prepareStatement("select * from refractions");
 			rs = st.executeQuery();
 			
-			while(rs.next()) {
+			if(rs.next()) {
 				
 				Refraction r = new Refraction(
 						rs.getLong("id"),
@@ -75,8 +74,7 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 						rs.getString("CC_OS_Axis")
 						);
 				
-				rl.add(r);
-				
+				return r;
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -94,70 +92,7 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 			}
 		}
 		
-		return rl;
-	}
-	
-	/**
-	 * Fetch visits from DB for patient
-	 * @return list of visits for patient
-	 * @throws GatewayException
-	 */
-	public List<Refraction> fetchRefractionsForPatient(Patient p) throws GatewayException {
-		
-		ArrayList<Refraction> rl = new ArrayList<Refraction>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from refractions where vid=?");
-			st.setLong(1, p.getId());
-			
-			rs = st.executeQuery();
-			
-			while(rs.next()) {
-				
-				Refraction glsrx = new Refraction(
-						rs.getLong("id"),
-						rs.getLong("vid"),
-						
-						rs.getInt("isManifest"),
-						
-						rs.getString("SC_OD_Sphere"),
-						rs.getString("SC_OD_Cyl"),
-						rs.getString("SC_OD_Axis"),
-						rs.getString("SC_OS_Sphere"),
-						rs.getString("SC_OS_Cyl"),
-						rs.getString("SC_OS_Axis"),
-						
-						rs.getString("CC_OD_Sphere"),
-						rs.getString("CC_OD_Cyl"),
-						rs.getString("CC_OD_Axis"),
-						rs.getString("CC_OS_Sphere"),
-						rs.getString("CC_OS_Cyl"),
-						rs.getString("CC_OS_Axis")
-						);
-				
-				rl.add(glsrx);
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return rl;
+		return null;
 	}
 	
 	/**
@@ -293,11 +228,15 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	@Override
+	public Refraction fetchRefractionForVisit(long vid) throws GatewayException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	public void close() {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }

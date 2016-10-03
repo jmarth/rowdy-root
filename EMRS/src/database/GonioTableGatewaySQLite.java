@@ -5,13 +5,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import models.Gonio;
-import models.Patient;
 
 public class GonioTableGatewaySQLite implements GonioTableGateway {
 	
@@ -33,144 +29,6 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/**
-	 * Fetch all visits from DB
-	 * @return list of visits
-	 * @throws GatewayException
-	 */
-	public List<Gonio> fetchGonios() throws GatewayException {
-		
-		ArrayList<Gonio> pl = new ArrayList<Gonio>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			
-			st = conn.prepareStatement("select * from gonios");
-			rs = st.executeQuery();
-			
-			while(rs.next()) {
-				
-				Gonio p = new Gonio(
-						rs.getLong("id"),
-						rs.getLong("vid"),
-						
-						rs.getInt("isHxFHA"),
-						rs.getString("FHASide"),
-						
-						rs.getInt("isODNormal"),
-						rs.getString("odABCDNon"),
-						rs.getString("odABCDComp"),
-						rs.getString("odDegreeNon"),
-						rs.getString("odDegreeComp"),
-						rs.getString("odRSQNon"),
-						rs.getString("odRSQComp"),
-						rs.getString("odPigment"),
-						rs.getInt("isODAntPigLine"),
-						
-						rs.getInt("isOSNormal"),
-						rs.getString("osABCDNon"),
-						rs.getString("osABCDComp"),
-						rs.getString("osDegreeNon"),
-						rs.getString("osDegreeComp"),
-						rs.getString("osRSQNon"),
-						rs.getString("osRSQComp"),
-						rs.getString("osPigment"),
-						rs.getInt("isOSAntPigLine")
-						);
-				
-				pl.add(p);
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return pl;
-	}
-	
-	/**
-	 * Fetch visits from DB for patient
-	 * @return list of visits for patient
-	 * @throws GatewayException
-	 */
-	public List<Gonio> fetchGoniosForPatient(Patient p) throws GatewayException {
-		
-		ArrayList<Gonio> pl = new ArrayList<Gonio>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from gonios where vid=?");
-			st.setLong(1, p.getId());
-			
-			rs = st.executeQuery();
-			
-			while(rs.next()) {
-				
-				Gonio pu = new Gonio(
-						rs.getLong("id"),
-						rs.getLong("vid"),
-						
-						rs.getInt("isHxFHA"),
-						rs.getString("FHASide"),
-						
-						rs.getInt("isODNormal"),
-						rs.getString("odABCDNon"),
-						rs.getString("odABCDComp"),
-						rs.getString("odDegreeNon"),
-						rs.getString("odDegreeComp"),
-						rs.getString("odRSQNon"),
-						rs.getString("odRSQComp"),
-						rs.getString("odPigment"),
-						rs.getInt("isODAntPigLine"),
-						
-						rs.getInt("isOSNormal"),
-						rs.getString("osABCDNon"),
-						rs.getString("osABCDComp"),
-						rs.getString("osDegreeNon"),
-						rs.getString("osDegreeComp"),
-						rs.getString("osRSQNon"),
-						rs.getString("osRSQComp"),
-						rs.getString("osPigment"),
-						rs.getInt("isOSAntPigLine")
-						);
-				
-				pl.add(pu);
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return pl;
 	}
 	
 	/**
@@ -278,9 +136,7 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 	}
 
 	@Override
-	public ArrayList<Object> fetchGonioForVisit(long id) throws GatewayException {
-
-	    ArrayList<Object> row = new ArrayList<Object>();
+	public Gonio fetchGonioForVisit(long id) throws GatewayException {
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -292,20 +148,38 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 			
 			rs = st.executeQuery();
 			
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		    
-		    int colCount = meta.getColumnCount();
-//		    System.out.println("====goinos======" + colCount);
 			
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-//					System.out.println("column #"+ i + " : " + rs.getObject(i));
-				}
+			if (rs.next()) {
+				Gonio g = new Gonio(
+						rs.getLong("id"),
+						rs.getLong("vid"),
+						
+						rs.getInt("isHxFHA"),
+						rs.getString("FHASide"),
+						
+						rs.getInt("isODNormal"),
+						rs.getString("odABCDNon"),
+						rs.getString("odABCDComp"),
+						rs.getString("odDegreeNon"),
+						rs.getString("odDegreeComp"),
+						rs.getString("odRSQNon"),
+						rs.getString("odRSQComp"),
+						rs.getString("odPigment"),
+						rs.getInt("isODAntPigLine"),
+						
+						rs.getInt("isOSNormal"),
+						rs.getString("osABCDNon"),
+						rs.getString("osABCDComp"),
+						rs.getString("osDegreeNon"),
+						rs.getString("osDegreeComp"),
+						rs.getString("osRSQNon"),
+						rs.getString("osRSQComp"),
+						rs.getString("osPigment"),
+						rs.getInt("isOSAntPigLine")
+						);
+				return g;
 			}
-//			System.out.println("\n****************\n gonio ROW:"+row.toString());
+			
 			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -323,7 +197,7 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 			}
 		}
 		
-		return row;
+		return null;
 	}
 
 

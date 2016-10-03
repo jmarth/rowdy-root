@@ -1,64 +1,66 @@
 package models;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import database.GatewayException;
 import database.SurgeryTemplatesTableGateway;
+import database.SurgeryTemplatesTableGatewaySQLite;
+import database.GatewayException;
 
 public class SurgeryTemplatesList {
-	
-	private List<SurgeryTemplate> list;
-	private SurgeryTemplatesTableGateway gateway;
-	private HashMap<Long, SurgeryTemplate> myIdMap;
-	
+
+	private SurgeryTemplatesTableGateway myGateway;
+	private List<SurgeryTemplate> myList;
+
 	/**
-	 * Construct a new SurgeryList
+	 * Construct a new SurgeryTemplateList
 	 */
 	public SurgeryTemplatesList() {
-		list = new ArrayList<SurgeryTemplate>();
-		myIdMap = new HashMap<Long, SurgeryTemplate>();
-	}
-	
-	/**
-	 * Load records from DB into Surgery List
-	 */
-	public void loadFromGateway() {
-		//fetch list of objects from the database
+
+		myList = new ArrayList<SurgeryTemplate>();
+
 		try {
-			List<SurgeryTemplate> tmpList = gateway.fetchAllSurgeries();
-			
-			for(SurgeryTemplate tmp: tmpList){
-				myIdMap.put(tmp.getId(), tmp);
-				list.add(tmp);
-			}
+			myGateway = new SurgeryTemplatesTableGatewaySQLite();
 		} catch (GatewayException e) {
-			//TODO: handle exception here
-			return;
+			System.err.println("From SurgeryTemplateList, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From SurgeryTemplateList, IO Exception");
+			// e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Returns ArrayList of Allergies in the AllergyList
-	 * @return All Allergies in list
-	 */
-	public List<SurgeryTemplate> getSurgeryTemplatesList() {
-		return list;
+
+	public List<SurgeryTemplate> getMyList() {
+
+		return myList;
 	}
 
-	public void setGateway(SurgeryTemplatesTableGateway gateway) {
-		this.gateway = gateway;
-	}
+	public void loadMyListForPatient(Patient p) throws GatewayException {
 
-	public SurgeryTemplate findTemplate(String title) {
-		for (SurgeryTemplate tmp : getSurgeryTemplatesList()) {
-			if (title.equals(tmp.getTitle())) {
-				return tmp;
-			}
+		try {
+			myList = myGateway.fetchAllSurgeryTemplates(); //patient does not have specific templates, so all surgeries
+
+		} catch (GatewayException e) {
+			System.err.println("SurgeryTemplateList failed to load from its gateway. In SurgeryTemplateList Model");
+//			e.printStackTrace();
 		}
-		return null;
 	}
-	
+
+	public long insert(SurgeryTemplate a) throws GatewayException {
+
+		a.setId(myGateway.insertSurgeryTemplate(a));
+		this.myList.add(a);
+
+		return a.getId();
+	}
+
+	public void update(SurgeryTemplate a) throws GatewayException {
+		myGateway.updateSurgeryTemplate(a);
+	}
+
+	public void delete(long id) throws GatewayException {
+		myGateway.removeSurgeryTemplate(id);
+	}
 
 }

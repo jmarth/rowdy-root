@@ -58,6 +58,7 @@ public class MedicationsTableGatewayMySQL implements MedicationsTableGateway {
 			throw new GatewayException("SQL Error: " + e.getMessage());
 		}
 	}
+	
 	@Override
 	public List<Med> fetchMeds() throws GatewayException {
 		ArrayList<Med> meds = new ArrayList<Med>();

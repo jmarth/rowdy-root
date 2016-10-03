@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-import models.Vitals;
+import models.Vital;
 import models.Patient;
 
 public class VitalsTableGatewaySQLite implements VitalsTableGateway {
@@ -28,79 +28,9 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 	}
 
 	@Override
-	public List<Vitals> fetchVitals() throws GatewayException {
+	public List<Vital> fetchVitalsForPatient(Patient p) throws GatewayException {
 		
-		ArrayList<Vitals> vitals = new ArrayList<Vitals>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			
-			// fetch all the vitals
-			st = conn.prepareStatement("select * from vitals");
-			rs = st.executeQuery();
-			
-			// add each to list of vitals to return
-			
-			while(rs.next()) {
-				
-				Vitals tmpVitals = new Vitals(
-						rs.getLong("id"),
-						rs.getLong("pid"),
-						rs.getFloat("bps"),
-						rs.getFloat("bpd"),
-						rs.getString("bpUnit"),
-						rs.getBoolean("fasting"),
-						rs.getFloat("bg"),
-						rs.getString("bgUnit"),
-						rs.getFloat("o2sat"),
-						rs.getFloat("hb"),
-						rs.getInt("hFeet"),
-						rs.getInt("hInches"),
-						rs.getInt("hcm"),
-						rs.getString("hUnit"),
-						rs.getFloat("weight"),
-						rs.getString("wUnit"),
-						rs.getString("notes"),
-						rs.getString("dateCreated")
-						);
-				
-				vitals.add(tmpVitals);
-				
-			}
-			
-		} catch (SQLException e) {
-			
-			throw new GatewayException(e.getMessage());
-			
-		} finally {
-			
-			// clean up
-			
-			try {
-				
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-			//System.out.println("from vitalstg, what was resultset:");
-			//for (Vitals v: vitals )
-			//	System.out.println(v.getId());
-			return vitals;
-	}
-
-	@Override
-	public List<Vitals> fetchVitalsForPatient(Patient p) throws GatewayException {
-		
-		ArrayList<Vitals> vitals = new ArrayList<Vitals>();
+		ArrayList<Vital> vitals = new ArrayList<Vital>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -118,7 +48,7 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 			
 			while(rs.next()) {
 				
-				Vitals tmpVitals = new Vitals(
+				Vital tmpVitals = new Vital(
 						rs.getLong("id"),
 						rs.getLong("pid"),
 						rs.getFloat("bps"),
@@ -165,7 +95,7 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 	}
 
 	@Override
-	public long insertVitals(Vitals v) throws GatewayException {
+	public long insertVitals(Vital v) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;
@@ -230,13 +160,15 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 		return newId;
 	}
 	
-	@Deprecated
-	public long updateVitals(Vitals v) throws GatewayException{
+	
+	public long updateVitals(Vital v) throws GatewayException{
 		
 		PreparedStatement st = null;
 		//ResultSet rs = null;
 		
 		try {
+			
+			conn.setAutoCommit(false);
 			
 			st = conn.prepareStatement("UPDATE vitals SET"
 					+ " bps = ?,"
@@ -274,6 +206,8 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 			st.setString(15, v.getNotes());
 			st.setLong(16, v.getId());
 			st.executeUpdate();
+			
+			conn.commit();
 			
 		} catch (SQLException e) {
 			System.out.println("vital being prepared: ");

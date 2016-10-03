@@ -20,6 +20,7 @@ import database.AllergyTableGateway;
 import database.GatewayException;
 import models.Allergy;
 import models.AllergyList;
+import models.MasterModel;
 import models.Patient;
 import models.Tabs;
 
@@ -27,18 +28,18 @@ import models.Tabs;
  * This is the JPanel that is shown in the 
  * 'Allergies' tab in the PatientRecordView
  */
-public class AllergyTabView extends JPanel {
-	private AllergyList al = new AllergyList();
-	private List<Allergy> allergyList;
-	private AllergyTableGateway atg;
+public class AllergyTabView extends JPanel implements viewinterface  {
+	//private AllergyList al = new AllergyList();
+	//private List<Allergy> allergyList;
+	//private AllergyTableGateway atg;
 	private JTable allergyTable = new JTable();
-	private Patient patient;
+	//private Patient patient;
 	private int selectedRow;
 	
 	public AllergyTabView(final Patient patient, final JTabbedPane tabbedPane, final AllergyTableGateway atg) {
 		
-		this.atg = atg;
-		this.patient = patient;
+		//this.atg = atg;
+		//this.patient = patient;
 		allergyTable.setEnabled(false);
 		
 		
@@ -57,7 +58,7 @@ public class AllergyTabView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int index = tabbedPane.indexOfTab(Tabs.allergiesAndMeds);
 				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, null, false));
+				//TODO tabbedPane.setComponentAt(index, new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, null, false));
 			}
 		});
 		
@@ -77,15 +78,16 @@ public class AllergyTabView extends JPanel {
 		JButton btnRemoveAllergy = new JButton("Remove Allergy");
 		btnRemoveAllergy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Allergy atr = allergyList.get(selectedRow);
+				Allergy atr = AllergyTabView.this.getMasterModel().getaL().getMyList().get(selectedRow);
 				try {
-					atg.removeAllergy(atr.getId());
+					//atg.removeAllergy(atr.getId());
+					AllergyTabView.this.getMasterModel().getaL().delete(atr.getId());
 				} catch (GatewayException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				al.loadFromGateway();
-				allergyList = al.getAllergyList();
+				//al.loadFromGateway();
+				//allergyList = //al.getAllergyList();
 				
 				DefaultTableModel dtm = (DefaultTableModel)allergyTable.getModel();
 				dtm.removeRow(selectedRow);
@@ -123,18 +125,18 @@ public class AllergyTabView extends JPanel {
 				}
 				
 				// Reload allergyList from gateway and get Allergy selected
-				al.loadFromGateway();
+				//al.loadFromGateway();
 				//allergyList = al.getAllergyList();
 				
-				allergyList = al.getAllergyListForPatient(patient);
-				Allergy tmp = allergyList.get(selectedRow);
+				//allergyList = al.getAllergyListForPatient(patient);
+				Allergy tmp = AllergyTabView.this.getMasterModel().getaL().getMyList().get(selectedRow);
 				
 				// Get tab of allergies and change panel
-				AllergyTabViewNewAllergy anv = new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, tmp, true);
+				//TODO AllergyTabViewNewAllergy anv = new AllergyTabViewNewAllergy(tabbedPane, patient, AllergyTabView.this, atg, allergyTable, allergyList, al, tmp, true);
 				
 				int index = tabbedPane.indexOfTab(Tabs.allergiesAndMeds);
 				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, anv);
+				//TODO tabbedPane.setComponentAt(index, anv);
 			}
 		});
 		
@@ -182,24 +184,53 @@ public class AllergyTabView extends JPanel {
 		// Declare variables
 		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
 		
-		al.setGateway(atg);
-		al.loadFromGateway();
+		//al.setGateway(atg);
+		//al.loadFromGateway();
 		
-		System.out.print("printing list"+al);
+		//System.out.print("printing list"+al);
 		
 		// Find all allergies for the given patient
-		allergyList = al.getAllergyListForPatient(patient);
+		//allergyList = al.getAllergyListForPatient(patient);
 		
 		/**
 		 * For every allergy in the allergyList
 		 * .. Add that model the JTable
 		 */
-		for(Allergy allergy : allergyList) {
+		for(Allergy allergy : this.getMasterModel().getaL().getMyList()) {
 			model.addRow(new Object[]{
 					allergy.getAllergy(), 
 					allergy.getSeverity(), 
 					allergy.getAdverseReaction()
 				});
 		}
+	}
+
+	
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent()).getHomeView();
 	}
 }

@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+@SuppressWarnings("serial")
 public class LoginView extends JFrame {
 	
 	private static final Logger logger = LogManager.getLogger(LoginView.class);
@@ -92,6 +93,7 @@ public class LoginView extends JFrame {
 				
 				//Create home view
 				HomeView home  = new HomeView();
+				home.setBounds(100, 100, 1080,720);
 				home.launchUI();
 			}
 		});

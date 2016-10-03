@@ -26,6 +26,7 @@ import database.GatewayException;
 import database.MedicationsTableGateway;
 import models.CL;
 import models.Drug;
+import models.MasterModel;
 import models.Med;
 import models.Patient;
 import models.Tabs;
@@ -39,7 +40,7 @@ import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
 
-public class AddMedView extends JPanel {
+public class AddMedView extends JPanel implements viewinterface  {
 	private JTextField textField;
 	
 	private JList list;
@@ -133,13 +134,11 @@ public class AddMedView extends JPanel {
 			@Override
 			public void keyTyped(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
@@ -227,5 +226,31 @@ public class AddMedView extends JPanel {
 		panel_3.add(btnCancel);
 		setLayout(groupLayout);
 
+	}
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		
+		return null;
+	}
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

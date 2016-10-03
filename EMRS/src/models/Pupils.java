@@ -1,5 +1,11 @@
 package models;
 
+import java.io.IOException;
+
+import database.GatewayException;
+import database.PupilsTableGateway;
+import database.PupilsTableGatewaySQLite;
+
 public class Pupils {
 	
 	private long id;
@@ -22,6 +28,8 @@ public class Pupils {
 	private String leftDiameter;
 	private int isLeftRAPD;
 	private int isLeftSynechia;
+	
+	private PupilsTableGateway myGateway;
 	
 	public Pupils(long id, long vid, int isBothPupilsNormal, String bothShape, String bothDiameter, int isBothRAPD,
 			int isBothSynechia, int isRightPupilNormal, String rightShape, String rightDiameter,
@@ -51,7 +59,16 @@ public class Pupils {
 			int isBothSynechia, int isRightPupilNormal, String rightShape, String rightDiameter,
 			int isRightRAPD, int isRightSynechia, int isLeftPupilNormal, String leftShape, String leftDiameter,
 			int isLeftRAPD, int isLeftSynechia) {
-		super();
+
+		try {
+			myGateway = new PupilsTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+			// e.printStackTrace();
+		}
 		this.isBothPupilsNormal = isBothPupilsNormal;
 		this.bothShape = bothShape;
 		this.bothDiameter = bothDiameter;
@@ -170,5 +187,15 @@ public class Pupils {
 	}
 	public void setLeftSynechia(int isLeftSynechia) {
 		this.isLeftSynechia = isLeftSynechia;
+	}
+
+	public Pupils loadPupils(long vid) {
+		try {
+			return myGateway.fetchPupilsForVisit(vid);
+		} catch (GatewayException e) {
+			System.err.println("From Pupils, could not fetch from DB");
+//			e.printStackTrace();
+		}
+		return null;
 	}
 }

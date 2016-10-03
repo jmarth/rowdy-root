@@ -11,9 +11,10 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import models.CL;
+import models.MasterModel;
 import models.Surgery;
 
-public class ClosedProcedureView extends JPanel {
+public class ClosedProcedureView extends JPanel implements viewinterface {
 	
 	// Containers --------------------------------------
 		JPanel titlePanel;
@@ -31,7 +32,7 @@ public class ClosedProcedureView extends JPanel {
 		setLayout(new BorderLayout());
 		
 		mainPanel = new JPanel(new BorderLayout());
-		mainPanel.setBorder(new LineBorder(CL.blueGrey, 3));
+		mainPanel.setBorder(new LineBorder(CL.red, 3));
 		
 		titleLabel = new JLabel(tmp.getTitle());
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -51,6 +52,38 @@ public class ClosedProcedureView extends JPanel {
 		mainPanel.add(titlePanel, BorderLayout.NORTH);
 		mainPanel.add(textArea, BorderLayout.CENTER);
 		add(mainPanel, BorderLayout.CENTER);
+	}
+
+	
+
+	@Override
+	public void HideallView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void ShowView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void reload() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

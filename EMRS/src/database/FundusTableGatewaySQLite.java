@@ -36,105 +36,25 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 	}
 	
 	/**
-	 * Fetch all fundus exams from DB
-	 * @return list of fundus exams
-	 * @throws GatewayException
-	 */
-	public List<FundusExam> fetchFundusExams() throws GatewayException {
-		
-		ArrayList<FundusExam> fundusExams = new ArrayList<FundusExam>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			System.out.print("getting info");
-			
-			st = conn.prepareStatement("select * from fundus_exams");
-			rs = st.executeQuery();
-			
-			System.out.print("\ninfo loaded");
-			
-			//add each to list of parts to return
-			while(rs.next()) {
-				
-				//System.out.print("\ncreating FundusExam object");
-				
-				FundusExam fe = new FundusExam(
-						rs.getLong("id"),
-						rs.getLong("vid"),
-						rs.getInt("isDialated"),
-						rs.getString("dialNotes"),
-						
-						rs.getInt("isCDODAb"),
-						rs.getString("CDOD"),
-						rs.getString("CDODNotes"),
-						
-						rs.getInt("isCDOSAb"),
-						rs.getString("CDOS"),
-						rs.getString("CDOSNotes"),
-						
-						rs.getInt("isMaculaODAb"),
-						rs.getString("MaculaODNotes"),
-						
-						rs.getInt("isMaculaOSAb"),
-						rs.getString("MaculaOSNotes"),
-						
-						rs.getInt("isRetinaODAb"),
-						rs.getString("RetinaODNotes"),
-						
-						rs.getInt("isRetinaOSAb"),
-						rs.getString("RetinaOSNotes")
-						);
-				
-				//System.out.print("\nFundusExamobject created");
-				
-				fundusExams.add(fe);
-				
-				//System.out.print("\nFundusExam object added");
-				
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return fundusExams;
-	}
-	
-	/**
 	 * Fetch Fundus Exams from DB for patient
 	 * @return list of Fundus Exams for patient
 	 * @throws GatewayException
 	 */
-	public List<FundusExam> fetchFundusExamsForPatient(Patient p) throws GatewayException {
-		
-		ArrayList<FundusExam> fundusExams = new ArrayList<FundusExam>();
-		
+	public FundusExam fetchFundusExamForVisit(long vid) throws GatewayException {
+				
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			//fetch parts
 			st = conn.prepareStatement("select * from fundus_exams where pid=?");
-			st.setLong(1, p.getId());
+			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
 			//add each to list of parts to return
-			while(rs.next()) {
+			if (rs.next() )
+			{
 				FundusExam fe = new FundusExam(
 						rs.getLong("id"),
 						rs.getLong("vid"),
@@ -163,7 +83,7 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 						rs.getString("RetinaOSNotes")
 						);
 				
-				fundusExams.add(fe);
+				return fe;
 			}
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -181,7 +101,7 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 			}
 		}
 		
-		return fundusExams;
+		return null;
 	}
 	
 	/**

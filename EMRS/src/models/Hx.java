@@ -3,7 +3,7 @@ package models;
 public class Hx {
 	private Long id;
 	private Long pid;
-	private String pc;
+	private String presentCondition;
 	private String da;
 	private String bt;
 	private String pmh;
@@ -17,7 +17,7 @@ public class Hx {
 		super();
 		this.id = id;
 		this.pid = pid;
-		this.pc = pc;
+		this.presentCondition = pc;
 		this.da = da;
 		this.bt = bt;
 		this.pmh = pmh;
@@ -40,10 +40,10 @@ public class Hx {
 		this.pid = pid;
 	}
 	public String getPc() {
-		return pc;
+		return presentCondition;
 	}
 	public void setPc(String pc) {
-		this.pc = pc;
+		this.presentCondition = pc;
 	}
 	public String getDa() {
 		return da;

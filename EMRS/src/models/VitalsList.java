@@ -1,88 +1,68 @@
 package models;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import database.GatewayException;
 import database.VitalsTableGateway;
+import database.VitalsTableGatewaySQLite;
+import database.GatewayException;
 
 public class VitalsList {
 
-	private List<Vitals> myList;
-	private VitalsTableGateway gateway;
-	private HashMap<Long, Vitals> myIdMap;
-	
-	private List<Vitals> myPatientVitals;
+	private VitalsTableGateway myGateway;
+	private List<Vital> myList;
 
 	/**
-	 * Construct a new VitalsList
+	 * Construct a new VitalList
 	 */
 	public VitalsList() {
-		myList = new ArrayList<Vitals>();
-		myIdMap = new HashMap<Long, Vitals>();
-		
-		myPatientVitals = new ArrayList<Vitals>();
-	}
 
-	/**
-	 * Load records from DB into VitalsList
-	 */
-	public void loadFromGateway() {
-
-		// fetch list of objects from the database
+		myList = new ArrayList<Vital>();
 
 		try {
-
-			List<Vitals> vitals = gateway.fetchVitals();
-
-			for (Vitals tmpVitals : vitals) {
-
-				myIdMap.put(tmpVitals.getId(), tmpVitals);
-				myList.add(tmpVitals);
-			}
-
+			myGateway = new VitalsTableGatewaySQLite();
 		} catch (GatewayException e) {
-
-			return;
+			System.err.println("From VitalList, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From VitalList, IO Exception");
+			// e.printStackTrace();
 		}
 	}
 
-	/**
-	 * Returns ArrayList of Vitals in the VitalsList
-	 * 
-	 * @return All Vitals in list
-	 */
-	public List<Vitals> getVitalsList() {
+	public List<Vital> getMyList() {
+
 		return myList;
 	}
 
-	public List<Vitals> getVitalsListForPatient(Patient p) {
-
-		List<Vitals> tmpList = new ArrayList<Vitals>();
+	public void loadMyListForPatient(Patient p) throws GatewayException {
 
 		try {
-
-			tmpList = gateway.fetchVitalsForPatient(p);
+			myList = myGateway.fetchVitalsForPatient(p);
 
 		} catch (GatewayException e) {
-
-			e.printStackTrace();
+			System.err.println("VitalList failed to load from its gateway. In VitalList Model");
+			//e.printStackTrace();
 		}
-
-		return tmpList;
 	}
 
-	public void setGateway(VitalsTableGateway gateway) {
-		this.gateway = gateway;
+	public long insert(Vital a) throws GatewayException {
+
+		a.setId(myGateway.insertVitals(a));
+		this.myList.add(a);
+
+		return a.getId();
 	}
 
-	public void loadFromGatewayForPatient(Patient patient) {
-		
-		loadFromGateway();
-		
+	public void update(Vital a) throws GatewayException {
+		myGateway.updateVitals(a);
 	}
-	
-	
+
+	public void delete(int index) throws GatewayException {
+		Vital vt = this.myList.get(index);
+		myGateway.removeVitals(vt.getId());
+		this.myList.remove(index);
+	}
 
 }

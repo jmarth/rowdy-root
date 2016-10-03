@@ -6,17 +6,24 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class Patient {
+	
 	private long id;
+	
 	private boolean hasPatientName;
 	private String firstName;
 	private String middleName;
 	private String lastName;
+	
 	private String gender;
+	
 	private int birthDay;
 	private String birthMonth;
 	private int birthYear;
+	
+	private boolean hasEstBirthDate;
 	private int estBirthYears;
 	private int estBirthMonths;
+	
 	private String address;
 	private String address2;
 	private String city;
@@ -24,7 +31,7 @@ public class Patient {
 	private String country;
 	private String postalCode;
 	private String phoneNumber;
-	private boolean hasEstBirthDate;
+		
 	private String picPath;
 
 	public Patient(long id, boolean hasPatientName, String firstName, String middleName, String lastName, String gender, int birthDay,

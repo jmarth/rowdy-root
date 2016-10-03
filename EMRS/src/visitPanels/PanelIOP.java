@@ -1,21 +1,26 @@
-package panels;
+package visitPanels;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
 import models.IOPMeasurement;
+import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
-import java.awt.Font;
+import views.HomeView;
+import views.viewinterface;
 
 @SuppressWarnings("serial")
-public class PanelIOP extends JPanel {
-
+public class PanelIOP extends JPanel implements viewinterface {
+	
+	private int index;
+	
 	private JTextField textField_IOP_Value_OD;
 	private JTextField textField_IOP_Type_OD;
 	private JTextField textField_IOP_Notes_OD;
@@ -26,7 +31,10 @@ public class PanelIOP extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelIOP() {
+	public PanelIOP(int index) {
+		
+		this.index = index;
+		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Intraocular Pressure", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[][grow][grow][grow]", "[][][]"));
 		
@@ -86,17 +94,41 @@ public class PanelIOP extends JPanel {
 		return iop;
 	}
 	
-	public void setFields(ArrayList<Object> iopCols) {
+	public void setFields() {
 		
-		int i = -1;
-		
-		
-		textField_IOP_Value_OD.setText(iopCols.get(++i).toString());
+//		IOPMeasurement i = getMasterModel().getCurrentPatientVisitList().get(index).getMyIOPList();
+		//TODO
+		/*textField_IOP_Value_OD.setText(iopCols.get(++i).toString());
 		textField_IOP_Type_OD.setText(iopCols.get(++i).toString());
 		textField_IOP_Notes_OD.setText(iopCols.get(++i).toString());
 		textField_IOP_Value_OS.setText(iopCols.get(++i).toString());
 		textField_IOP_Type_OS.setText(iopCols.get(++i).toString());
-		textField_IOP_Notes_OS.setText(iopCols.get(++i).toString());
+		textField_IOP_Notes_OS.setText(iopCols.get(++i).toString());*/
+	}
+
+	@Override
+	public void HideallView() {
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)this.getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		
+	}
+
+	@Override
+	public void reload() {
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HomeView)this.getParent());
 	}
 	
 	

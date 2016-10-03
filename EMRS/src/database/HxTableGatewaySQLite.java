@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import models.Hx;
 import models.Patient;
 
@@ -26,6 +25,7 @@ public class HxTableGatewaySQLite implements HxTableGateway {
 		}
 	}
 
+	//TODO Do not need vvv
 	@Override
 	public List<Hx> fetchHx() throws GatewayException {
 		ArrayList<Hx> hxList = new ArrayList<Hx>();
@@ -183,6 +183,51 @@ public class HxTableGatewaySQLite implements HxTableGateway {
 				}
 
 				return newId;
+	}
+
+	@Override
+public void updateHx(Hx hx) throws GatewayException{
+		
+		PreparedStatement st = null;
+//		ResultSet rs = null;
+		
+		try {
+			st = conn.prepareStatement(
+					"UPDATE hx SET "
+					+ "pc = ?, "
+					+ "da = ?, "
+					+ "bt = ?, "
+					+ "pmh = ?, "
+					+ "psh = ?, "
+					+ "fh = ?, "
+					+ "law = ?, "
+					+ "pe = ? "
+					+ " WHERE id = ? ", PreparedStatement.RETURN_GENERATED_KEYS);
+			
+			st.setString(1, hx.getPc());
+			st.setString(2, hx.getDa());
+			st.setString(3, hx.getBt());
+			st.setString(4, hx.getPmh());
+			st.setString(5, hx.getPsh());
+			st.setString(6, hx.getFh());
+			st.setString(7, hx.getLaw());
+			st.setString(8, hx.getPe());
+
+			st.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+				
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
 	}
 
 }

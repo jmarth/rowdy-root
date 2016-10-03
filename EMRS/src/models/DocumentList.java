@@ -1,136 +1,73 @@
 package models;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import database.DocumentTableGateway;
+import database.DocumentTableGatewaySQLite;
 import database.GatewayException;
 
 public class DocumentList {
-	
-	/**
-	 *  Collection of Documents
-	 */
-	private List<Document> myList;
-	
-	/**
-	 * Identity map for determining if Warehouse is already in this list.
-	 */
-	private HashMap<Long, Document> myIdMap;
-	
-	/**
-	 * Collection of newly added records to know when to update key in identity
-	 * map.
-	 */
-	private ArrayList<Document> newDocuments;
-	
-	/**
-	 * Database connection for the Document list
-	 */
+
 	private DocumentTableGateway myGateway;
-	
+	private List<Document> myList;
+
 	/**
-	 * Patient who this list belongs to
+	 * Construct a new DocumentList
 	 */
-	Patient patient;
-	
-	/**
-	 * Constructor
-	 */
-	public DocumentList(Patient p) {
-		this.patient = p;
+	public DocumentList() {
+
 		myList = new ArrayList<Document>();
-		myIdMap = new HashMap<Long, Document>();
-		newDocuments = new ArrayList<Document>();
-	}
-	
-	/**
-	 * Load all Documents from gateway
-	 */
-	public void loadFromGateway() {
-		// fetch list of objects from the database
-		List<Document> documents = null;
 
 		try {
-			documents = myGateway.fetchPatientDocuments(this.patient);
+			myGateway = new DocumentTableGatewaySQLite();
 		} catch (GatewayException e) {
-			e.printStackTrace();
-			return;
-		}
-
-		// any Documents in list and not in database needs be removed from list
-
-		// clear contents of list
-		for (int i = myList.size() - 1; i >= 0; i--) {
-			Document d = myList.get(i);
-			boolean removeDocument = true;
-			// don't remove a recently added record which has not been saved
-			if (d.getId() == -1) {
-				removeDocument = false;
-			} else {
-				for (Document dCheck : documents) {
-					if (dCheck.getId() == d.getId()) {
-						removeDocument = false;
-						break;
-					}
-				}
-			}
-			// d not in database so delete it
-			if (removeDocument)
-				removeDocumentFromList(d);
-
-		}
-
-		for (Document d : documents) {
-			if (!myIdMap.containsKey(d.getId()))
-				addDocumentToList(d);
+			System.err.println("From DocumentList, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From DocumentList, IO Exception");
+			// e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Add a Document object to the list's collection and set its gateway to
-	 * this list's gateway.
-	 * 
-	 * @param d Document to add
-	 *           
-	 */
-	public void addDocumentToList(Document d) {
-		myList.add(d);
-		myIdMap.put(d.getId(), d); // add record to IdMap
-		
-	}
-	
-	/**
-	 * Remove a Document from the list
-	 * 
-	 * @param d Document to remove
-	 * @return Document d if found in the list, otherwise null
-	 */
-	public Document removeDocumentFromList(Document d) {
-		if (myList.contains(d)) {
-			myList.remove(d);
-			myIdMap.remove(d.getId()); // also from IdMap
 
-			return d;
-		}
-		return null;
-	}
-	
-	
-	// ~~~~~~~~~~~ GETTERS AND SETTERS ~~~~~~~~~~~~~~~~~~
-	public List<Document> getList() {
+	public List<Document> getMyList() {
+
 		return myList;
 	}
-	public DocumentTableGateway getGateway() {
-		return myGateway;
-	}
-	public void setList(List<Document> l) {
-		myList = l;
+
+	public void loadMyListForPatient(Patient p) throws GatewayException {
+
+		try {
+			
+			myList = myGateway.fetchDocumentsForPatient(p);
+
+		} catch (GatewayException e) {
+			System.err.println("DocumentList failed to load from its gateway. In DocumentList Model");
+//			e.printStackTrace();
+		}
 	}
 
-	public void setGateway(DocumentTableGateway dtg) {
-		myGateway = dtg;
+	public void insert(Document a) throws GatewayException {
+		a.setId(myGateway.insertDocument(a));
+		System.out.println(a.getId());
+		this.myList.add(a);
+	}
+
+	
+//	public void update(Document a) throws GatewayException {
+//		myGateway.updateDocument(a);
+//	}
+
+	public void delete(long id) throws GatewayException {
+		myGateway.removeDocument(id);
+		
+	}
+	public void delete(int index) throws GatewayException {
+		Document d = this.myList.get(index);
+		myGateway.removeDocument(d.getId());
+		this.myList.remove(index);
+		
 	}
 
 }
