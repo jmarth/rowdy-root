@@ -52,7 +52,6 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	//SurgeryTableGateway gate1;
 	//SurgeryTemplatesTableGateway gate2;
 	PatientRecordView prv;
-	//public LabsAndProceduresTabView(Patient param_patient, PatientRecordView param_prv, SurgeryTableGateway param_gate1, SurgeryTemplatesTableGateway param_gate2) {
 	public LabsAndProceduresTabView(){
 				
 		setLayout(new BorderLayout());
