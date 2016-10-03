@@ -37,7 +37,8 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	private JPanel proceduresButtonPanel;
 	private JXTaskPaneContainer masterContainer;
 	private JScrollPane procedureScroller;
-	
+	private NewProcedureView pdview;
+	private SafeSurgery ssview;
 	
 	
 	// Buttons -----------------------------------------
@@ -79,9 +80,10 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 			public void actionPerformed(ActionEvent arg0) {
 				//TODO
 				//NewProcedureView view = new NewProcedureView(gate2, LabsAndProceduresTabView.this);
-				NewProcedureView view = new NewProcedureView();
+				pdview = new NewProcedureView();
 				proceduresParentPanel.removeAll();
-				proceduresParentPanel.add(view, BorderLayout.CENTER);
+				proceduresParentPanel.add(pdview, BorderLayout.CENTER);
+				pdview.reload();
 				validate();
 				repaint();
 			}
@@ -162,7 +164,7 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((PatientRecordView)this.getParent()).getMasterModel();
+		return this.getHomeView().getMasterModel();
 	}
 
 	@Override
@@ -175,7 +177,7 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	public void reload() {
 		masterContainer.removeAll();
 		List<Surgery> surgeries = this.getMasterModel().getsL().getMyList();
-		
+		this.reset();
 		if (surgeries.size() == 0) {
 			JLabel label = new JLabel("No procedures done");
 			label.setFont(new Font("Tahoma", Font.ITALIC, 16));
@@ -193,8 +195,8 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 			pane.setScrollOnExpand(false);
 			pane.add(view);
 			masterContainer.add(pane);
-			/*validate();
-			repaint();*/
+			validate();
+			repaint();
 		}
 		
 	}
@@ -202,6 +204,34 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	@Override
 	public HomeView getHomeView() {
 		return ((PatientRecordView)this.getParent()).getHomeView();
+	}
+
+	public NewProcedureView getPdview() {
+		return pdview;
+	}
+
+	public void setPdview(NewProcedureView pdview) {
+		this.pdview = pdview;
+	}
+
+	public SafeSurgery getSsview() {
+		return ssview;
+	}
+
+	public void setSsview(SafeSurgery ssview) {
+		this.ssview = ssview;
+	}
+
+	public JPanel getProceduresParentPanel() {
+		return proceduresParentPanel;
+	}
+
+	public JXTaskPaneContainer getMasterContainer() {
+		return masterContainer;
+	}
+
+	public void setMasterContainer(JXTaskPaneContainer masterContainer) {
+		this.masterContainer = masterContainer;
 	}
 	
 }

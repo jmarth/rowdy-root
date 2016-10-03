@@ -47,6 +47,18 @@ public class AnteriorChamber {
 	private int KSpindleOS;
 
 	private ACTableGateway myGateway;
+	
+	public AnteriorChamber() {
+		try {
+			myGateway = new ACTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+			// e.printStackTrace();
+		}
+	}
 
 	public AnteriorChamber(long id, long vid, int aCODNormal, int aCOSNormal, String aCDepthOD, String aCDepthOS,
 			String aCAngleOD, String aCAngleOS, String pASOD, String pASOS, String aCODKP, String aCOSKP, int shuntOD,

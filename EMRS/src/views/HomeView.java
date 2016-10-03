@@ -68,8 +68,9 @@ public class HomeView extends JFrame implements viewinterface{
 	 * 
 	 */
 	public HomeView() {
-		// Models should be independent; a view should grab from a model.
+
 		super();
+		
 		this.model = new MasterModel();
 		paview = new AddPatientView();
 		fpview = new FindPatientsView();
@@ -291,34 +292,6 @@ public class HomeView extends JFrame implements viewinterface{
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		northPanel.setLayout(gl_panel);
 		this.pack();
-//		this.addComponentListener(new ComponentListener(){
-//
-//			@Override
-//			public void componentHidden(ComponentEvent arg0) {
-//				// TODO Auto-generated method stub
-//				//System.out.println("get in hidden");
-//			}
-//
-//			@Override
-//			public void componentMoved(ComponentEvent arg0) {
-//				// TODO Auto-generated method stub
-//				//System.out.println("get in moved");
-//				
-//			}
-//
-//			@Override
-//			public void componentResized(ComponentEvent arg0) {
-//				//TODO
-//				//System.out.println("homeview:\t"+center.getX()+":"+center.getY());
-//				updatecomponentsize();
-//			}
-//
-//			@Override
-//			public void componentShown(ComponentEvent arg0) {
-//				// TODO Auto-generated method stub
-//				//System.out.println("get in gainedfocus");
-//			}
-//		});
 	}
 //	private void updatecomponentsize(){
 //		paview.setBounds(0, 0, center.getWidth(), center.getHeight());
@@ -403,6 +376,7 @@ public class HomeView extends JFrame implements viewinterface{
 		this.validate();
 		this.repaint();
 	}
+	
 	@Override
 	public MasterModel getMasterModel() {
 		return this.model;

@@ -56,14 +56,8 @@ public class VitalListView extends JPanel implements viewinterface {
 		btnNewVital.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				VitalListView.this.ShowVitalSCRUDView();
-				//int index = tabbedPane.indexOfTab(Tabs.vitals);
-				//tabbedPane.setComponentAt(index, null);
-				//tabbedPane.setComponentAt(index, new VitalNewView(tabbedPane, patient, VitalsTabMasterView.this, homeModel, vitalsTable, myVitalsList, vl, null, false));
 			}
-		});
-		
-		
-		
+		});		
 		// remove vital button
 		
 		JButton btnRemoveVital = new JButton("Remove Vital");
@@ -72,10 +66,10 @@ public class VitalListView extends JPanel implements viewinterface {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					VitalListView.this.getMasterModel().getVitalsL().delete(selectedRow);
+					((DefaultTableModel) vitalsTable.getModel()).removeRow(selectedRow);
 				} catch (GatewayException e1) {
 					e1.printStackTrace();
 				}
-				((DefaultTableModel) vitalsTable.getModel()).removeRow(selectedRow);
 			}
 		});
 		
@@ -131,7 +125,7 @@ public class VitalListView extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((PatientRecordView)this.getParent()).getMasterModel();
+		return this.getHomeView().getMasterModel();
 	}
 
 	@Override
@@ -200,7 +194,7 @@ public class VitalListView extends JPanel implements viewinterface {
 
 	@Override
 	public HomeView getHomeView() {
-		return ((PatientRecordView)this.getParent()).getHomeView();
+		return ((VitalsTabMasterView)(this.getParent())).getHomeView();
 	}
 
 }

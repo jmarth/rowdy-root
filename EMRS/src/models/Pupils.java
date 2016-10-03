@@ -31,6 +31,18 @@ public class Pupils {
 	
 	private PupilsTableGateway myGateway;
 	
+	public Pupils() {
+		try {
+			myGateway = new PupilsTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+			// e.printStackTrace();
+		}
+	}
+	
 	public Pupils(long id, long vid, int isBothPupilsNormal, String bothShape, String bothDiameter, int isBothRAPD,
 			int isBothSynechia, int isRightPupilNormal, String rightShape, String rightDiameter,
 			int isRightRAPD, int isRightSynechia, int isLeftPupilNormal, String leftShape, String leftDiameter,

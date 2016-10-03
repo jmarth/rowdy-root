@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import database.GatewayException;
 import database.SurgeryTemplatesTableGateway;
@@ -57,17 +59,8 @@ public class NewProcedureView extends JPanel implements viewinterface {
 	
 	private JScrollPane scroller;
 	
-
-	
-
-	
-	
 	//public NewProcedureView(SurgeryTemplatesTableGateway param_gateway, LabsAndProceduresTabView param_parent) {
 	public NewProcedureView() {
-		//this.gateway = param_gateway;
-		//this.parent = param_parent;
-		
-		
 		setLayout(new BorderLayout());
 		
 		mainPanel = new JPanel(new BorderLayout());
@@ -76,8 +69,20 @@ public class NewProcedureView extends JPanel implements viewinterface {
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 
-			
-		setupComboBox();
+		comboBox = new JComboBox();
+		comboBox.setSelectedItem(null);
+		comboBox.setRenderer(new SurgeryTemplateCellRenderer());
+		comboBox.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JComboBox tmp = (JComboBox) e.getSource();
+				SurgeryTemplate template = (SurgeryTemplate)tmp.getSelectedItem();
+				textArea.setText(template.getDescription());
+				textPane.setText(template.getDescription());
+			}	
+		});
+		//setupComboBox()zxc;
 		comboboxPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		comboboxPanel.add(titleLabel);
 		comboboxPanel.add(comboBox);
@@ -118,9 +123,14 @@ public class NewProcedureView extends JPanel implements viewinterface {
 				/** get the body of the template (description) **/
 				String body = textPane.getText();
 				//TODO
-				MasterModel m = ((LabsAndProceduresTabView)(NewProcedureView.this.getParent().getParent())).getMasterModel();
-								
+				MasterModel m = NewProcedureView.this.getMasterModel();		
 				Surgery s = new Surgery(0,m.getCurrPatient().getId(), title, body);
+				LabsAndProceduresTabView parent =(LabsAndProceduresTabView)(NewProcedureView.this.getParent().getParent());
+				SafeSurgery ssview = new SafeSurgery(s);
+				parent.getProceduresParentPanel().removeAll();
+				parent.getProceduresParentPanel().add(ssview, BorderLayout.CENTER);
+				parent.validate();
+				parent.repaint();
 				/*try {
 					m.getsL().insert(s);
 					((LabsAndProceduresTabView)(NewProcedureView.this.getParent().getParent())).reset();
@@ -142,10 +152,6 @@ public class NewProcedureView extends JPanel implements viewinterface {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				((LabsAndProceduresTabView)(NewProcedureView.this.getParent().getParent())).reset();
-				//parent.reset();
-				//int index = parent.prv.indexOfTab(Tabs.labs);
-				//parent.prv.setComponentAt(index, null);
-				//parent.prv.setComponentAt(index, parent);
 			}
 			
 		});
@@ -162,22 +168,6 @@ public class NewProcedureView extends JPanel implements viewinterface {
 	}
 
 	private void setupComboBox() {
-		
-		/*list = new SurgeryTemplatesList();
-		list.setGateway(gateway);
-		list.loadFromGateway();*/
-		
-		//ArrayList<SurgeryTemplate> templates = (ArrayList<SurgeryTemplate>) list.getSurgeryTemplatesList();
-		
-		/*String[] array = new String[templates.size()];
-		
-		int i;
-		for (i = 0; i < templates.size(); i++) {
-			array[i] = templates.get(i).getTitle();
-		}*/
-		
-		
-		comboBox = new JComboBox((SurgeryTemplate[])this.getMasterModel().getStll().getMyList().toArray());
 		comboBox.setSelectedItem(null);
 		comboBox.setRenderer(new SurgeryTemplateCellRenderer());
 		comboBox.addActionListener(new ActionListener() {
@@ -185,8 +175,6 @@ public class NewProcedureView extends JPanel implements viewinterface {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JComboBox tmp = (JComboBox) e.getSource();
-				//String title = (String) tmp.getSelectedItem();
-				//SurgeryTemplate template = list.findTemplate(title);
 				SurgeryTemplate template = (SurgeryTemplate)tmp.getSelectedItem();
 				textArea.setText(template.getDescription());
 				textPane.setText(template.getDescription());
@@ -213,12 +201,11 @@ public class NewProcedureView extends JPanel implements viewinterface {
 
 	@Override
 	public void reload() {
-		// TODO Auto-generated method stub
-		
+		comboBox.setModel(new DefaultComboBoxModel(getMasterModel().getStll().getMyList().toArray()));
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)(this.getParent().getParent())).getHomeView();
+		return ((LabsAndProceduresTabView)(this.getParent().getParent())).getHomeView();
 	}
 }

@@ -36,7 +36,7 @@ public class SurgeryTemplatesList {
 		return myList;
 	}
 
-	public void loadMyListForPatient(Patient p) throws GatewayException {
+	public void loadMyListForPatient() throws GatewayException {
 
 		try {
 			myList = myGateway.fetchAllSurgeryTemplates(); //patient does not have specific templates, so all surgeries

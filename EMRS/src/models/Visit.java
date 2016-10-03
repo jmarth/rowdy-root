@@ -1,8 +1,12 @@
 package models;
 
 import java.io.File;
+import java.io.IOException;
 
+import database.ACTableGatewaySQLite;
 import database.GatewayException;
+import database.VisitTableGateway;
+import database.VisitTableGatewaySQLite;
 
 public class Visit {
 	
@@ -28,21 +32,50 @@ public class Visit {
 //	private AScan myAScan; TODO implement
 //	private Keratometry myK; TODO implement
 	
-	private Sketches sketches;
+	private Sketches mySketches;
 	
 	
 	private File sketchTemp;
+	
+	private VisitTableGateway myGateway;
 	
 	
 
 	public Visit(Long id, Long pid, String chiefComplaint, String assessment, String plan, String dateCreated) {
 		//this.masterModel = masterModel;
+		
+//		try {
+//			myGateway = new VisitTableGatewaySQLite();
+//		} catch (GatewayException e) {
+//			System.err.println("From Visit, cannot connect to DB");
+//			// e.printStackTrace();
+//		} catch (IOException e) {
+//			System.err.println("From Visit, IO error");
+//			// e.printStackTrace();
+//		}
+		
 		this.id = id;
 		this.pid = pid;
 		this.chiefComplaint = chiefComplaint;
 		this.assessment = assessment;
 		this.plan = plan;
 		this.dateCreated = dateCreated;
+		
+		
+		
+		myAC = new AnteriorChamber();
+		System.err.println("");
+		myDV = new DistanceVision();
+		myFE = new FundusExam();
+		myGlsRx = new GlassesRx();
+		myGonio = new Gonio();
+		myIOPList = new IOPList();
+		myLens = new Lens();
+		myPupils = new Pupils();
+		myRefraction = new Refraction();
+		mySketches = new Sketches();
+		
+//		this.loadVisitFromPatient();
 	}
 
 
@@ -208,25 +241,29 @@ public class Visit {
 	public void loadVisitFromPatient() {
 		//TODO load all the stuff
 		//TODO how it know the visit id if it not created before??
-		this.myAC = myAC.loadAC(id);
-		this.myDV = myDV.loadDV(id);
-		this.myFE = myFE.loadFE(id);
-		this.myGlsRx = myGlsRx.loadGlsRx(id);
-		this.myGonio = myGonio.loadGonio(id);
-		this.myLens = myLens.loadLens(id);
-		this.myPupils = myPupils.loadPupils(id);
-		this.myRefraction = myRefraction.loadRefraction(id);
-		try {
-			this.myIOPList.loadMyListForVisit(id);
-		} catch (GatewayException e) {
-			System.err.println("From Visit, load a model fail");
-		}
 		
-		sketches.loadSketches(id);
+		
+		
+		myAC = myAC.loadAC(id);
+		myDV = myDV.loadDV(id);
+		myFE = myFE.loadFE(id);
+		myGlsRx = myGlsRx.loadGlsRx(id);
+		myGonio = myGonio.loadGonio(id);
+		myLens = myLens.loadLens(id);
+		myPupils=myPupils.loadPupils(id);
+		myRefraction =myRefraction.loadRefraction(id);
+		
+//		try {
+//			this.myIOPList.loadMyListForVisit(id);
+//		} catch (GatewayException e) {
+//			System.err.println("From Visit, load a model fail");
+//		}
+		
+		mySketches.loadSketches(id);
 	}
 
 		
 	public Sketches getSketches() {
-		return sketches;
+		return mySketches;
 	}
 }

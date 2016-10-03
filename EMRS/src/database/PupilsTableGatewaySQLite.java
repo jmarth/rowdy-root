@@ -5,16 +5,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
+
 import models.Pupils;
 
 public class PupilsTableGatewaySQLite implements PupilsTableGateway {
-	
-	/**
-	 * external DB connection
-	 */
+
 	private Connection conn = null;
 	
 	/**
@@ -28,6 +24,7 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
 			
 		} catch (SQLException e) {
+			System.err.println("From Pupils TG, no db connection.");
 			e.printStackTrace();
 		}
 	}
@@ -156,7 +153,6 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 			
 			//get the generated key
 			rs = st.getGeneratedKeys();
-//			System.out.println("GeneratedKeys: " + rs.getCl);
 			
 			if(rs != null && rs.next()) {
 			    newId = rs.getLong(1);
@@ -178,54 +174,13 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 		
 		return newId;
 	}
-	public ArrayList<Object> fetchPupilsColsForVisit(long id) throws GatewayException {
 
-	    ArrayList<Object> row = new ArrayList<Object>();
+	@Override
+	public void updatePupilsForVisit(long vid) throws GatewayException {
+		// TODO Auto-generated method stub
 		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from pupils where vid=?");
-			st.setLong(1, id);
-			
-			rs = st.executeQuery();
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		    
-		    int colCount = meta.getColumnCount();
-//		    System.out.println("====PUPILS======" + colCount);
-//		    System.out.println("META: " + colCount);
-			
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-//					System.out.println("column #"+ i + " : " + rs.getObject(i));
-				}
-			}
-//			System.out.println("\n****************\n PUPILS ROW:"+row.toString());
-			
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return row;
 	}
-
+	
 	@Override
 	public void removePupils(Long vid) throws GatewayException {
 		// TODO Auto-generated method stub
@@ -236,6 +191,4 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 		// TODO Auto-generated method stub
 		
 	}
-
-
 }

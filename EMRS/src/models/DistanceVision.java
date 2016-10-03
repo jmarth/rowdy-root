@@ -16,6 +16,18 @@ public class DistanceVision {
 	
 	private DistanceVisionTableGateway myGateway;
 	
+	public DistanceVision() {
+		try {
+			myGateway = new DistanceVisionTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From  DistanceVision, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From  DistanceVision, IO error");
+			// e.printStackTrace();
+		}
+	}
+	
 	public DistanceVision(String dVODSC, String dVOSSC, String dVODCC, String dVOSCC) {
 		super();
 		try {

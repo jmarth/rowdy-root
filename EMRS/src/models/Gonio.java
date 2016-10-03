@@ -35,6 +35,18 @@ public class Gonio {
 	
 	private GonioTableGateway myGateway;
 	
+	public Gonio () {
+		try {
+			myGateway = new GonioTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From AnteriorChamber, IO error");
+			// e.printStackTrace();
+		}
+	}
+	
 	
 	public Gonio(long id, long vid, int isHxFHA, String fHASide, int isODNormal, String odABCDNon,
 			String odABCDComp, String odDegreeNon, String odDegreeComp, String odRSQNon, String odRSQComp, String odPigment, int isODAntPigLine,

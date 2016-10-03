@@ -1,5 +1,6 @@
 package views;
 
+import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -37,23 +38,25 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 	//public VitalsTabView(final Patient patient, final JTabbedPane tabbedPane, final HomeModel homeModel) {
 	public VitalsTabMasterView(){
 			
-		GridBagLayout gridBagLayout = new GridBagLayout();
+		/*GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
+		setLayout(gridBagLayout);*/
+		this.setLayout(new BorderLayout());
 		
-		JScrollPane scrollPane = new JScrollPane();
+		//JScrollPane scrollPane = new JScrollPane();
 		vldv = new VitalListView();
 		vscv = new VitalSCRUBView(-1);
-		scrollPane.add(this.vldv);
-		scrollPane.add(this.vscv);
-		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
-		gbc_scrollPane.fill = GridBagConstraints.BOTH;
-		gbc_scrollPane.gridx = 0;
-		gbc_scrollPane.gridy = 1;
-		add(scrollPane, gbc_scrollPane);
+		this.add(vldv, BorderLayout.CENTER);
+		//scrollPane.add(this.vldv);
+		//scrollPane.add(this.vscv);
+//		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
+//		gbc_scrollPane.fill = GridBagConstraints.BOTH;
+//		gbc_scrollPane.gridx = 0;
+//		gbc_scrollPane.gridy = 1;
+//		add(scrollPane, gbc_scrollPane);
 		
 	}
 	
@@ -178,21 +181,27 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 	}*/
 	public void ShowVitalListView(){
 		this.HideallView();
+		this.add(vldv,BorderLayout.CENTER);
 		this.vldv.ShowView();
+		this.validate();
+		this.repaint();
 	}
 	public void ShowVitalSCRUDView(){
 		this.HideallView();
+		this.add(vscv,BorderLayout.CENTER);
 		this.vscv.ShowView();
+		this.validate();
+		this.repaint();
 	}
 	@Override
 	public void HideallView() {
-		this.vldv.setVisible(false);
-		this.vscv.setVisible(false);
+		this.remove(vldv);
+		this.remove(vscv);
 	}
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((PatientRecordView)this.getParent()).getMasterModel();
+		return getHomeView().getMasterModel();
 	}
 
 	@Override
@@ -203,11 +212,10 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 
 	@Override
 	public void reload() {
-		// TODO Auto-generated method stub
-		
+		this.ShowVitalListView();
 	}
 	@Override
 	public HomeView getHomeView() {
-		return ((PatientRecordView)this.getParent().getParent()).getHomeView();
+		return ((PatientRecordView)this.getParent()).getHomeView();
 	}
 }

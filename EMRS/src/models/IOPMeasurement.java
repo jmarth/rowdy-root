@@ -15,6 +15,10 @@ public class IOPMeasurement {
 	private String OSNotes;
 	private String dateCreated;
 	
+	public IOPMeasurement () {
+		
+	}
+	
 	public IOPMeasurement(long id, long vid, String oDValue, String oDType, String oDNotes, String oSValue, String oSType,
 			String oSNotes, String dateCreated) {
 		super();

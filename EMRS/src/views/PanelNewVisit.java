@@ -63,7 +63,6 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 	
 	private JTabbedPane tabbedPane;
 	
-
 	private PanelDistanceVision panel_DV;
 	private PanelGlassesRx panel_GlassesRx;
 	private PanelRefraction panel_Refraction;
@@ -119,6 +118,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 		textArea_Plan.setText(myVisit.getPlan());*/
 	}
 
+	/*
 	public void populateDVPanel(ArrayList<Object> dvCols) {
 		
 		ArrayList<Component> clist = new ArrayList<Component>();
@@ -132,6 +132,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 			i++;
 		}
 	}
+	
 	
 	public void populateGlassesRxPanel(ArrayList<Object> rxCols) {
 		
@@ -148,6 +149,8 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 			
 		
 	}
+	
+	/*
 	
 	public void populateRefractionPanel(ArrayList<Object> refractCols) {
 		
@@ -208,7 +211,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 	        }
 	    }
 	}	
-	
+	*/
 	
 	private class SaveListener implements ActionListener {
 

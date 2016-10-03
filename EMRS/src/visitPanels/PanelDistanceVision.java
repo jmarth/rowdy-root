@@ -1,7 +1,6 @@
 package visitPanels;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.JLabel;
@@ -34,9 +33,9 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 		
 		this.index = index;
 		
+		setBackground(CL.turq);
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Distance Vision", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[grow]", "[][]"));
-		setBackground(CL.turq);
 		
 		JPanel panel_DVSC = new JPanel();
 		panel_DVSC.setBackground(new Color(238, 238, 238));
@@ -91,14 +90,6 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 		panel_DVCC.add(textField_DVOSCC, "cell 2 1,growx");
 	}
 	
-	public void disableFields() {
-		for (Component c : this.getComponents()) {
-			if (c instanceof JTextField) {
-				((JTextField) c).setEditable(false);
-			}
-		}
-	}
-	
 	public void setFields() {
 		DistanceVision dv = getMasterModel().getCurrentPatientVisitList().get(index).getMyDV();
 		textField_DVODSC.setText(dv.getDVODSC());
@@ -114,7 +105,7 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return getHomeView().getMasterModel();
 	}
 
 	@Override
@@ -124,12 +115,16 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 
 	@Override
 	public void reload() {
-		
+		DistanceVision dv = getMasterModel().getCurrentPatientVisitList().get(index).getMyDV();
+		textField_DVODSC.setText(dv.getDVODSC());
+		textField_DVOSSC.setText(dv.getDVOSSC());
+		textField_DVODCC.setText(dv.getDVODCC());
+		textField_DVOSCC.setText(dv.getDVOSCC());
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent());
+		return ((PanelVision)this.getParent()).getHomeView();
 	}
 
 }

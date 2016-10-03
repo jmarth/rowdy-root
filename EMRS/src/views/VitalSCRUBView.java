@@ -97,7 +97,6 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	private JCheckBox chckbxFasting;
 	private JLabel lblBGLevelUnit;
 	private JScrollPane scrollPane;
-
 	/**
 	 * Create the panel.
 	 */
@@ -111,83 +110,53 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 	public VitalSCRUBView(int index) {
 		this.index = index;
-
 		// uncomment to view in windowbuilder
 		createView();
-		this.setEnabled(false);
-
-
 	}
 
 	private void populateVital() {
-
-		Vital vitals = getMasterModel().getVitalsL().getMyList().get(index);
-
-		textField_BPS.setText("" + vitals.getBps());
-		textField_BPD.setText("" + vitals.getBpd());
-
-		if (vitals.getBpUnit().equals(Vital.MMHG)) {
-
-			rdbtnMmhg.setSelected(true);
-
-		} else {
-
-			rdbtnPa.setSelected(true);
+		if(index!=-1){
+			Vital vitals = getMasterModel().getVitalsL().getMyList().get(index);
+			textField_BPS.setText("" + vitals.getBps());
+			textField_BPD.setText("" + vitals.getBpd());
+			if (vitals.getBpUnit().equals(Vital.MMHG)) {
+				rdbtnMmhg.setSelected(true);
+			} else {
+				rdbtnPa.setSelected(true);
+			}
+			if (vitals.isFasting()) {
+				chckbxFasting.setSelected(true);
+			}
+			textField_BGLevel.setText(String.valueOf(vitals.getBg()));
+			if (vitals.getBgUnit().equals(Vital.mmolL)) {
+				rdbtnMmoll.setSelected(true);
+			} else {
+				rdbtnMgdl.setSelected(true);
+			}
+			textField_O2Sat.setText(String.valueOf(vitals.getO2sat()));
+			textField_Hb.setText(String.valueOf(vitals.getHb()));
+			if (vitals.getHUnit().equals(Vital.FTIN)) {
+				textField_Ft.setText(String.valueOf(vitals.getHFeet()));
+				textField_In.setText(String.valueOf(vitals.getHInches()));
+				rdbtnFtin.setSelected(true);
+			} else if (vitals.getHUnit().equals(Vital.IN)) {
+				textField_In.setText(String.valueOf(vitals.getHInches()));
+				rdbtnIn.setSelected(true);
+			} else {
+				textField_Cm.setText(String.valueOf(vitals.getHCm()));
+				rdbtnCm.setSelected(true);
+			}
+			textField_Weight.setText(String.valueOf(vitals.getWeight()));
+			if (vitals.getWUnit().equals(Vital.LBS)) {
+				rdbtnLbs.setSelected(true);
+			} else {
+				rdbtnKg.setSelected(true);
+			}
+			textArea_Notes.setText(vitals.getNotes());
 		}
-
-		if (vitals.isFasting()) {
-			chckbxFasting.setSelected(true);
-		}
-
-		textField_BGLevel.setText(String.valueOf(vitals.getBg()));
-		;
-
-		if (vitals.getBgUnit().equals(Vital.mmolL)) {
-
-			rdbtnMmoll.setSelected(true);
-
-		} else {
-
-			rdbtnMgdl.setSelected(true);
-		}
-
-		textField_O2Sat.setText(String.valueOf(vitals.getO2sat()));
-		textField_Hb.setText(String.valueOf(vitals.getHb()));
-
-		if (vitals.getHUnit().equals(Vital.FTIN)) {
-
-			textField_Ft.setText(String.valueOf(vitals.getHFeet()));
-			textField_In.setText(String.valueOf(vitals.getHInches()));
-			rdbtnFtin.setSelected(true);
-
-		} else if (vitals.getHUnit().equals(Vital.IN)) {
-
-			textField_In.setText(String.valueOf(vitals.getHInches()));
-			rdbtnIn.setSelected(true);
-
-		} else {
-
-			textField_Cm.setText(String.valueOf(vitals.getHCm()));
-			rdbtnCm.setSelected(true);
-		}
-
-		textField_Weight.setText(String.valueOf(vitals.getWeight()));
-
-		if (vitals.getWUnit().equals(Vital.LBS)) {
-
-			rdbtnLbs.setSelected(true);
-
-		} else {
-
-			rdbtnKg.setSelected(true);
-		}
-
-		textArea_Notes.setText(vitals.getNotes());
-
 	}
-
+	//disable component
 	private void prepareExistingVitalView() {
-
 		chckbxFasting.setEnabled(false);
 		for (Component c : panel_VitalsForm.getComponents()) {
 			if (c instanceof JPanel) {
@@ -204,7 +173,6 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 				}
 			}
 		}
-
 		textArea_Notes.setEditable(false);
 		btnConfirm.setVisible(false);
 	}
@@ -219,32 +187,23 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	 */
 
 	private class ConfirmVitalListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			save();
-
 			int index = tabbedPane.indexOfTab(Tabs.vitals);
 			tabbedPane.setComponentAt(index, null);
 			tabbedPane.setComponentAt(index, vitalsTabView);
 		}
-
 	}
-
 	private class CancelVitalListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			int index = tabbedPane.indexOfTab(Tabs.vitals);
 			tabbedPane.setComponentAt(index, null);
 			tabbedPane.setComponentAt(index, vitalsTabView);
 		}
-
 	}
 	private class UpdateVitalListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO
@@ -264,7 +223,6 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	}
 
 	private class BGListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals(Vital.mmolL)) {
 				lblBGLevelUnit.setText(Vital.mmolL);
@@ -274,57 +232,37 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		}
 	}
 	private class HeightListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent e) {
-
 			if (e.getActionCommand().equals(Vital.FTIN)) {
-
 				textField_Ft.setEnabled(true);
 				textField_In.setEnabled(true);
 				textField_In.setText("");
-
 				textField_Cm.setEnabled(false);
 				textField_Cm.setText("");
-
 				heightUnit = Vital.FTIN;
-
 			} else if (e.getActionCommand().equals(Vital.IN)) {
-
 				textField_Ft.setEnabled(false);
 				textField_Ft.setText("");
-
 				textField_In.setEnabled(true);
-
 				textField_Cm.setEnabled(false);
 				textField_Cm.setText("");
-
 				heightUnit = Vital.IN;
-
 			} else {
-
 				textField_Ft.setEnabled(false);
 				textField_Ft.setText("");
-
 				textField_In.setEnabled(false);
 				textField_In.setText("");
-
 				textField_Cm.setEnabled(true);
-
 				heightUnit = Vital.CM;
 			}
 		}
 	}
 
 	private class WeightListener implements ActionListener {
-
 		public void actionPerformed(ActionEvent e) {
-
 			if (e.getActionCommand().equals(Vital.LBS)) {
-
 				lblWeightUnit.setText(Vital.LBS);
-
 			} else {
-
 				lblWeightUnit.setText(Vital.KG);
 			}
 		}
@@ -340,26 +278,21 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	public String getSelectedButtonText(ButtonGroup buttonGroup) {
 		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
 			AbstractButton button = buttons.nextElement();
-
 			if (button.isSelected()) {
 				return button.getText();
 			}
 		}
-
 		return null;
 	}
 
 	// TODO use as many final static strings from Vitals as possible
 
 	private void save() {
-
 		StringBuilder sb = new StringBuilder(128);
-
 		/**
 		 * Create new Vitals object with correct parameters Insert the vitals to
 		 * the DB through the Gateway
 		 */
-
 		// getSelectedButtonText(buttonGroupHeight) to get unit for DB
 		Vital vitals = new Vital(0, this.getMasterModel().getCurrPatient().getId(),
 				Float.parseFloat(textField_BPS.getText()), Float.parseFloat(textField_BPD.getText()), lblBP.getText(),
@@ -384,7 +317,6 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		if (vitals.getHUnit() == null) {
 
 		} else if (vitals.getHUnit().equals(Vital.FTIN)) {
-
 			sb.append(vitals.getHFeet());
 			sb.append('\'');
 			sb.append(vitals.getHInches());
@@ -695,13 +627,14 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	@Override
 	public void ShowView() {
 		// TODO Auto-generated method stub
+		this.reload();
 		this.setVisible(true);
 	}
 
 	@Override
 	public void reload() {
 		// TODO Auto-generated method stub
-
+		this.createView();
 	}
 
 	@Override
