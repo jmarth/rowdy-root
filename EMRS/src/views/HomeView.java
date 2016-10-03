@@ -46,7 +46,6 @@ public class HomeView extends JFrame implements viewinterface{
 	private FindPatientsView fpview;
 	private PatientRecordView prview;
 	private SlideShowPanel ssview;
-	//private MasterVisit mvisitview;
 	
 	
 	private final JButton btnHome;
