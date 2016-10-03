@@ -2,6 +2,7 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -30,20 +31,11 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 	
 	private int index;
 	
-//	private PanelVision panel_Vision;
-//	private PanelSLE panel_SLE;
-//	private PanelGonio panel_Gonio;
-//	private PanelFundus panel_Fundus;
-//	private PanelIOP panel_IOP;
-//	
-//	private JTextArea textArea_CC;
-//	private JTextArea textArea_Assessment;
-//	private JTextArea textArea_Plan;
 	
 	private JPanel panel_Buttons;
 	private JButton btnEdit;
-//	private JButton btnCancel;
-	VisitDetailView vdv;
+	private JButton btnCancel;
+	private VisitDetailView vdv;
 	
 	/*
 	 * Creates a detail view for the JXTask
@@ -54,9 +46,7 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 		//create panels TODO
 				
 		vdv = new VisitDetailView(index);
-		
 		add(vdv);
-		//TODO can't call reload, no add to listview yet
 		
 //		createView();
 	}
@@ -188,7 +178,7 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 	//TODO Get parent of parent, parent above is JScrollPane
 	@Override
 	public MasterModel getMasterModel() {
-		return ((VisitListView)this.getParent()).getMasterModel();
+		return getHomeView().getMasterModel();
 	}
 
 	@Override
@@ -199,16 +189,22 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 
 	@Override
 	public void reload() {
-		MasterModel mm;
-		mm = (MasterModel)this.getMasterModel();
-		mm.getCurrentPatientVisitList().get(index);
+//		MasterModel mm;
+//		mm = (MasterModel)this.getMasterModel();
+//		mm.getCurrentPatientVisitList().get(index);
 		vdv.reload();
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent()).getHomeView();
+		return ((VisitListView)this.getParent()).getHomeView();
 	}
-	
+//	
+//	@Override
+//	public void setEnabled(boolean enabled) {
+//		
+////		this.setEnabled(enabled);
+//		this.vdv.setEnabled(enabled);
+//	}
 	
 }

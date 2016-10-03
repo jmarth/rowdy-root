@@ -2,6 +2,7 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -14,6 +15,7 @@ import javax.swing.border.TitledBorder;
 
 import models.CL;
 import models.MasterModel;
+import models.Visit;
 import net.miginfocom.swing.MigLayout;
 import visitPanels.PanelFundus;
 import visitPanels.PanelGonio;
@@ -52,6 +54,9 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		
 		createView();
 		panel_Buttons.setVisible(false);
+//		panel_Vision.setEnabled(false);\
+		
+		
 	}
 	
 	public void createView() {
@@ -75,7 +80,6 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		textArea_CC.setWrapStyleWord(true);
 		textArea_CC.setLineWrap(true);
 		scrollPane_CC.setViewportView(textArea_CC);
-		
 		
 		
 		// VISION PANEL
@@ -180,7 +184,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((JXTaskPaneVisitDetailView)this.getParent().getParent().getParent().getParent()).getMasterModel();
+		return getHomeView().getMasterModel();
 	}
 
 	@Override
@@ -191,13 +195,16 @@ public class VisitDetailView extends JPanel implements viewinterface {
 
 	@Override
 	public void reload() {
-		MasterModel mm;
-		mm = (MasterModel)this.getMasterModel();
-		mm.getvL().getMyList().get(index);
+//		MasterModel mm;
+//		mm = (MasterModel)this.getMasterModel();
+//		
+//		Visit v = mm.getvL().getMyList().get(index);
+		
+		panel_Vision.reload();
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent()).getHomeView();
+		return ((JXTaskPaneVisitDetailView)this.getParent().getParent().getParent().getParent()).getHomeView();
 	}
 }

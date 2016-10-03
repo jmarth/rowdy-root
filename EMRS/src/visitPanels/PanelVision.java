@@ -4,21 +4,23 @@ import javax.swing.JPanel;
 
 import models.CL;
 import models.MasterModel;
+import models.Visit;
 import net.miginfocom.swing.MigLayout;
 import views.HomeView;
+import views.VisitDetailView;
 import views.viewinterface;
 
 @SuppressWarnings("serial")
 public class PanelVision extends JPanel implements viewinterface {
 
-//	private int index;
+	private int index;
 	
 	private PanelDistanceVision panelDV;
 	private PanelGlassesRx panelGlsRx;
 	private PanelRefraction panelRefrac;
 	
 	public PanelVision (int index) {
-//		this.index = index;
+		this.index = index;
 
 		setBackground(CL.turq);
 		setLayout(new MigLayout("", "[grow,fill]", "[][][]"));
@@ -37,19 +39,21 @@ public class PanelVision extends JPanel implements viewinterface {
 	}
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return getHomeView().getMasterModel();
 	}
 	@Override
 	public void ShowView() {
 		
 	}
 	@Override
-	public void reload() {
-		
+	public void reload() {		
+		panelDV.reload();
+		panelGlsRx.reload();
+		panelRefrac.reload();
 	}
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent());
+		return ((VisitDetailView)this.getParent()).getHomeView();
 	}
 	
 	
