@@ -44,8 +44,8 @@ public class SafeSurgery extends JPanel implements viewinterface {
 	 * @param body 
 	 * @param title 
 	 */
-	public SafeSurgery(final Surgery surgery, final LabsAndProceduresTabView parent, final NewProcedureView newProcedureView) {
-		
+	//public SafeSurgery(final Surgery surgery, final LabsAndProceduresTabView parent, final NewProcedureView newProcedureView) {
+	public SafeSurgery(final Surgery surgery){	
 		this.title = surgery.getTitle();
 		this.body = surgery.getBody();
 		
@@ -139,21 +139,11 @@ public class SafeSurgery extends JPanel implements viewinterface {
 			public void actionPerformed(ActionEvent e) {
 				long newID = 0;
 				try {
-					newID = SafeSurgery.this.getMasterModel().getsL().insert(surgery);
+					SafeSurgery.this.getMasterModel().getsL().insert(surgery);
 				} catch (GatewayException e1) {
 					e1.printStackTrace();
 				}
-				
-				surgery.setId(newID);
-				
-				
-				int index = parent.prv.indexOfTab(Tabs.labs);
-				parent.prv.setComponentAt(index, null);
-				parent.prv.setComponentAt(index, parent);
-				
-				//TODO parent.resetAndUpdate();
-
-				
+				((LabsAndProceduresTabView)(SafeSurgery.this.getParent().getParent())).reload();;	
 			}
 			
 		});
@@ -164,9 +154,11 @@ public class SafeSurgery extends JPanel implements viewinterface {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int index = parent.prv.indexOfTab(Tabs.labs);
-				parent.prv.setComponentAt(index, null);
-				parent.prv.setComponentAt(index, newProcedureView);
+				LabsAndProceduresTabView lpview =((LabsAndProceduresTabView)(SafeSurgery.this.getParent().getParent()));
+				lpview.getProceduresParentPanel().removeAll();
+				lpview.getProceduresParentPanel().add(lpview.getPdview(), BorderLayout.CENTER);
+				lpview.validate();
+				lpview.repaint();
 			}
 			
 		});
@@ -198,8 +190,7 @@ public class SafeSurgery extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.getHomeView().getMasterModel();
 	}
 
 	@Override
@@ -216,7 +207,6 @@ public class SafeSurgery extends JPanel implements viewinterface {
 
 	@Override
 	public HomeView getHomeView() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((LabsAndProceduresTabView)(this.getParent().getParent())).getHomeView();
 	}
 }
