@@ -78,8 +78,8 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		lab6.setPreferredSize(new Dimension(145, 30));
 		lab6.setHorizontalAlignment(JLabel.CENTER);
 		
-		//TODOlpv = new LabsAndProceduresTabView();
-		this.addTab(Tabs.labs, null,null, null);//TODO this.addTab(Tabs.labs, null,lpv, null);
+		lpv = new LabsAndProceduresTabView();
+		this.addTab(Tabs.labs, null,lpv, null);
 		this.setTabComponentAt(4, lab6);
 		
 		// create documents tab

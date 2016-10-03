@@ -164,7 +164,7 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((PatientRecordView)this.getParent()).getMasterModel();
+		return this.getHomeView().getMasterModel();
 	}
 
 	@Override

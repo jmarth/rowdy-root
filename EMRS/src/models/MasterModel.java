@@ -30,16 +30,18 @@ public class MasterModel {
 		sL = new SurgeryList();
 		vL = new VisitList();
 		vitalsL = new VitalsList();
+		stll = new SurgeryTemplatesList();
 	}
 	public void loadmaster(Patient patient){
 		try {
 			this.currPatient=patient;
-			//TODO aL.loadMyListForPatient(currPatient);
-			//mL.loadMyListForPatient(currPatient);
+			aL.loadMyListForPatient(currPatient);
+			mL.loadMyListForPatient(currPatient);
 			dL.loadMyListForPatient(currPatient);
 			sL.loadMyListForPatient(currPatient);
-			//vL.loadMyListForPatient(currPatient);
-			//vitalsL.loadMyListForPatient(currPatient);
+			vL.loadMyListForPatient(currPatient);
+			vitalsL.loadMyListForPatient(currPatient);
+			stll.loadMyListForPatient();
 		} catch (GatewayException e) {
 			System.err.println("from MasterModel, can not fetch from database");
 		}
