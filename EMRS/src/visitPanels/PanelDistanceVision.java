@@ -105,7 +105,7 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return getHomeView().getMasterModel();
 	}
 
 	@Override
@@ -115,12 +115,16 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 
 	@Override
 	public void reload() {
-		
+		DistanceVision dv = getMasterModel().getCurrentPatientVisitList().get(index).getMyDV();
+		textField_DVODSC.setText(dv.getDVODSC());
+		textField_DVOSSC.setText(dv.getDVOSSC());
+		textField_DVODCC.setText(dv.getDVODCC());
+		textField_DVOSCC.setText(dv.getDVOSCC());
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent());
+		return ((PanelVision)this.getParent()).getHomeView();
 	}
 
 }

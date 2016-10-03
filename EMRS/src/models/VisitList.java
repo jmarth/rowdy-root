@@ -50,7 +50,6 @@ public class VisitList {
 		
 		try {
 			myList = myGateway.fetchVisitsForPatient(p.getId());
-			System.out.println(this.toStringTest());
 
 			for(Visit e:myList){
 				e.loadVisitFromPatient();
@@ -83,12 +82,6 @@ public class VisitList {
 
 	public void delete(long id) throws GatewayException {
 		myGateway.removeVisit(id);
-	}
-	public String toStringTest() {
-		String n = "";
-		for (Visit v: myList)
-			n += "pid: "+v.getPid()+"| vid="+v.getId()+" ";
-		return n;
 	}
 
 }
