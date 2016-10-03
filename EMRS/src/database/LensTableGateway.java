@@ -1,12 +1,14 @@
 package database;
 
-import java.util.ArrayList;
-
 import models.Lens;
 
 public interface LensTableGateway {
-	public long insertLens(Lens dv) throws GatewayException;
+	
+	public long insertLensForVisit(Lens dv) throws GatewayException;
+
+	public Lens fetchLensForVisit(long vid) throws GatewayException;
+
+	public void updateLensForVisit(Lens l) throws GatewayException;
+
 	public void removeLens(Long vid) throws GatewayException;
-	public abstract ArrayList<Object> fetchLensColsForVisit(long id) throws GatewayException;
-	public Lens fetchLensForVisit(long vid)throws GatewayException;
 }

@@ -49,7 +49,7 @@ public class VisitList {
 		myVidMap = new HashMap<Long, Visit>();
 		
 		try {
-			myList = myGateway.fetchVisitsForPatient(p);
+			myList = myGateway.fetchVisitsForPatient(p.getId());
 			
 			for(Visit e:myList){
 				e.loadVisitFromPatient();

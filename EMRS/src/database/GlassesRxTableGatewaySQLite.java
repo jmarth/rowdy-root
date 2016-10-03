@@ -5,17 +5,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import models.GlassesRx;
 
 public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 	
-	/**
-	 * external DB connection
-	 */
 	private Connection conn = null;
 	
 	/**
@@ -29,24 +24,24 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 			conn = DriverManager.getConnection("jdbc:sqlite:emrs.db");
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.err.println("From GlsRx TG, no connection.");
+//			e.printStackTrace();
 		}
 	}
 	
 	/**
-	 * Fetch visits from DB for patient
-	 * @return list of visits for patient
+	 * Fetch GlassesRx from DB for Visit
+	 * @return GlassesRx for Visit
 	 * @throws GatewayException
 	 */
-	public GlassesRx fetchGlassesRxsForVisit(long vid) throws GatewayException {
-		
+	public GlassesRx fetchGlassesRxForVisit(long vid) throws GatewayException {
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from glasses_rxs where vid=?");
+			//fetch GlassesRx
+			st = conn.prepareStatement("SELECT * FROM glasses_rxs WHERE vid=?");
 			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
@@ -90,7 +85,7 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 	}
 	
 	/**
-	 * Inserts visit into visits table
+	 * Inserts GlassesRx into glasses_rxs table
 	 */
 	public long insertGlassesRx(GlassesRx glsRx) throws GatewayException {
 		
@@ -156,53 +151,13 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 		
 		return newId;
 	}
+	
 	@Override
-	public ArrayList<Object> fetchGlassesRxColsForVisit(long id) throws GatewayException {
-
-	    ArrayList<Object> row = new ArrayList<Object>();
+	public void updateGlassesRxForVisit(long vid) throws GatewayException {
+		// TODO Auto-generated method stub
 		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from glasses_rxs where vid=?");
-			st.setLong(1, id);
-			
-			rs = st.executeQuery();
-			
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		   
-		    int colCount = meta.getColumnCount();
-//		    System.out.println("==== RX ======" + colCount);
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-					//System.out.println(i + " : " + rs.getObject(i));
-				}
-			}
-//			System.out.println("\n****************\nGLS RX ROW:"+row.toString());
-			
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return row;
 	}
+	
 	@Override
 	public void removeGlassesRx(Long vid) throws GatewayException {
 		// TODO Auto-generated method stub
@@ -213,12 +168,4 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public GlassesRx fetchGlassesRxForVisit(long vid) throws GatewayException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 }

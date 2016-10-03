@@ -34,6 +34,12 @@ public class MasterModel {
 	public void loadmaster(Patient patient){
 		try {
 			this.currPatient=patient;
+			try {
+				this.vL.loadMyListForPatient(patient);
+			} catch (GatewayException e) {
+				System.err.println("From MasterModel: Connect to DB failed");
+//				e.printStackTrace();
+			}
 			//TODO aL.loadMyListForPatient(currPatient);
 			//mL.loadMyListForPatient(currPatient);
 			dL.loadMyListForPatient(currPatient);

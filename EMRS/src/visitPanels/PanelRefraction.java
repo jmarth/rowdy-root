@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
+import models.CL;
 import models.MasterModel;
 import models.Refraction;
 import net.miginfocom.swing.MigLayout;
@@ -55,10 +56,9 @@ public class PanelRefraction extends JPanel implements viewinterface {
 		
 		this.index = index;
 		
+		setBackground(CL.turq);
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Refraction", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
-				
 		setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][][][][][][][][][]"));
-		
 		
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
@@ -154,27 +154,6 @@ public class PanelRefraction extends JPanel implements viewinterface {
 		textField_ARCC_OS_Axis = new JTextField();
 		textField_ARCC_OS_Axis.setColumns(8);
 		add(textField_ARCC_OS_Axis, "cell 3 9,growx");
-	}
-
-	public Refraction createNewRefraction() {
-		Refraction r = new Refraction(
-				(
-				rdbtn_ManifestRefraction.isSelected() ? 1 : rdbtn_AutoRefraction.isSelected() ? 0 : -1),
-				textField_ARSC_OD_Sphere.getText(),
-				textField_ARSC_OD_Cyl.getText(),
-				textField_ARSC_OD_Axis.getText(),
-				textField_ARSC_OS_Sphere.getText(),
-				textField_ARSC_OS_Cyl.getText(),
-				textField_ARSC_OS_Axis.getText(),
-				textField_ARCC_OD_Sphere.getText(),
-				textField_ARCC_OD_Cyl.getText(),
-				textField_ARCC_OD_Axis.getText(),
-				textField_ARCC_OS_Sphere.getText(),
-				textField_ARCC_OS_Cyl.getText(),
-				textField_ARCC_OS_Axis.getText()
-				);
-		
-		return r;
 	}
 	
 	/**

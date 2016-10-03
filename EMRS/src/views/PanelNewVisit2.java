@@ -2,54 +2,30 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
-import org.jdesktop.swingx.JXTaskPane;
-
 import database.GatewayException;
-import models.AnteriorChamber;
 import models.CL;
-import models.DistanceVision;
-import models.FundusExam;
-import models.GlassesRx;
-import models.Gonio;
-import models.IOPMeasurement;
-import models.Lens;
 import models.MasterModel;
-import models.Pupils;
-import models.Refraction;
-import models.Tabs;
 import models.Visit;
 import net.miginfocom.swing.MigLayout;
-import visitPanels.PanelDistanceVision;
 import visitPanels.PanelFundus;
-import visitPanels.PanelGlassesRx;
 import visitPanels.PanelGonio;
 import visitPanels.PanelIOP;
-import visitPanels.PanelRefraction;
 import visitPanels.PanelSLE;
+import visitPanels.PanelVision;
 
 @SuppressWarnings("serial")
-public class PanelNewVisit extends JPanel implements viewinterface {
+public class PanelNewVisit2 extends JPanel implements viewinterface {
 	
 	private int index;
 	
@@ -61,14 +37,8 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 	private JButton btnSave;
 	private JButton btnCancel;
 	
-	private JTabbedPane tabbedPane;
-	
-	private PanelDistanceVision panel_DV;
-	private PanelGlassesRx panel_GlassesRx;
-	private PanelRefraction panel_Refraction;
-	
+	private PanelVision panel_Vision;
 	private PanelSLE panel_SLE;
-
 	private PanelIOP panel_IOP;
 	private PanelGonio panel_Gonio;
 	private PanelFundus panel_Fundus;
@@ -77,11 +47,15 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 	
 //	private , image_Gonio, image_Fundus; TODO
 	
+	/*
+	 * For creating a brand new Visit.
+	 * Not for editing
+	 */
 	/**
 	 * Constructor for an existing model
 	 * @wbp.parser.constructor
 	 */
-	public PanelNewVisit(int index) {
+	public PanelNewVisit2(int index) {
 		
 		this.index = index;
 		
@@ -89,23 +63,24 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 		
 		createView();
 		
-		setVisitFields();
-		panel_DV.setFields();
-		panel_GlassesRx.setFields();
-		panel_Refraction.setFields();
+//		setVisitFields();
 		
-		panel_SLE.setFields();
+//		panel_Vision.setFields();
+//		panel_SLE.setFields();
+//		panel_IOP.setFields();
+//		panel_Gonio.setFields();
+//		panel_Fundus.setFields();
 		
 		panel_Buttons.setVisible(false);
 		
-		disableFields(this); // TODO Don't make it look ugly and grey
+//		disableFields(this); // TODO Don't make it look ugly and grey
 			
 	}
 	
 	/**
 	 * For a completely new Visit
 	 */
-	public PanelNewVisit(int index, boolean isNew) {
+	public PanelNewVisit2(int index, boolean isNew) {
 		this.index = index;
 		
 		createView();
@@ -117,101 +92,6 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 		textArea_Assessment.setText(myVisit.getAssessment());
 		textArea_Plan.setText(myVisit.getPlan());*/
 	}
-
-	/*
-	public void populateDVPanel(ArrayList<Object> dvCols) {
-		
-		ArrayList<Component> clist = new ArrayList<Component>();
-		setFields(panel_DV, clist);
-		
-		int i = 0;
-		for (Component c : clist) {
-			if (c instanceof JTextField) {
-				((JTextField)c).setText(dvCols.get(i).toString());
-			}
-			i++;
-		}
-	}
-	
-	
-	public void populateGlassesRxPanel(ArrayList<Object> rxCols) {
-		
-		ArrayList<Component> clist = new ArrayList<Component>();
-		setFields(panel_GlassesRx, clist);
-		
-		int i = 0;
-		for (Component c : clist) {
-			if (c instanceof JTextField) {
-				((JTextField)c).setText(rxCols.get(i).toString());
-			}
-			i++;
-		}
-			
-		
-	}
-	
-	/*
-	
-	public void populateRefractionPanel(ArrayList<Object> refractCols) {
-		
-		ArrayList<Component> clist = new ArrayList<Component>();
-		setFields(panel_Refraction, clist);
-		
-		int i = 0;
-		for (Iterator<Component> iter = clist.iterator(); iter.hasNext(); ) {
-			Component c = iter.next();
-//			System.out.println("\t i = " +i+": c ="+c.getClass()+" and refractCols = "+refractCols.get(i).toString());
-			if (i == 0) {
-				//TODO panel_Refraction.setFields(refractCols);
-				iter.next();//skip
-			}
-//			System.out.println("xxx"+c.getClass());
-			if (c instanceof JTextField) {
-//				System.out.println("HELLO??"+refractCols.get(i).getClass());
-				((JTextField)c).setText(refractCols.get(i).toString());
-			}
-			i++;
-		}
-			
-		
-	}
-
-	
-	public void populateVisitPanel(ArrayList<Object> visitCols) {
-		String temp; int i = -1;
-		
-		temp = visitCols.get(++i).toString();
-		textArea_CC.setText(temp);
-		temp = visitCols.get(++i).toString();
-		textArea_Assessment.setText(temp);
-		temp = visitCols.get(++i).toString();
-		textArea_Plan.setText(temp);
-	}
-	
-	void setFields(Container container, ArrayList<Component> cl) {
-		
-	    for (Component c : container.getComponents()) {
-	        if (c instanceof JTextField) {
-	           cl.add(c);
-	        } 
-	        else if (c instanceof JTextArea) {
-	        	cl.add(c);
-		    }
-	        else if (c instanceof JRadioButton) {
-	        	cl.add(c);
-	        }
-	        else if (c instanceof JCheckBox) {
-	        	cl.add(c);
-	        }
-	        else if (c instanceof JComboBox) {
-	        	cl.add(c);
-	        }
-	        else if (c instanceof Container) {
-	        	setFields((Container)c, cl);
-	        }
-	    }
-	}	
-	*/
 	
 	private class SaveListener implements ActionListener {
 
@@ -225,7 +105,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 			// but get the vid first.
 			
 			visit = new Visit((long)0,
-					PanelNewVisit.this.getMasterModel().getCurrPatient().getId(),
+					PanelNewVisit2.this.getMasterModel().getCurrPatient().getId(),
 					textArea_CC.getText(),
 					textArea_Assessment.getText(),
 					textArea_Plan.getText(),
@@ -235,7 +115,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 			
 			try {
 				
-				visit.setId(PanelNewVisit.this.getMasterModel().getvL().insert(visit));
+				visit.setId(PanelNewVisit2.this.getMasterModel().getvL().insert(visit));
 				
 				//TODO DistanceVision dv = panel_DV.createNewDistanceVision();
 				//TODO dv.setVid(vid);
@@ -313,71 +193,21 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			showVisitTabView();
+			//TODO
 		}
 	}
-	
-	void disableFields (Container container) {
-	    for (Component c : container.getComponents()) {
-	        if (c instanceof JTextField) {
-	           ((JTextField)c).setEditable(false);
-	        } 
-	        else if (c instanceof JTextArea) {
-		           ((JTextArea)c).setEditable(false);
-		    }
-	        else if (c instanceof JRadioButton) {
-	        	((JRadioButton)c).setEnabled(false);
-	        }
-	        else if (c instanceof JCheckBox) {
-	        	((JCheckBox)c).setEnabled(false);
-	        }
-	        else if (c instanceof JComboBox) {
-	        	((JComboBox)c).setEnabled(false);
-	        }
-	        else if (c instanceof JButton) {
-	        	((JButton)c).setVisible(false);
-	        }
-	        else if (c instanceof Container) {
-	        	disableFields((Container)c);
-	        }
-	    }
-	}	
-	
-	/**
-	 * sets Visit tab to VisitsTabView
-	 */
-	public void showVisitTabView() {
-		int index = tabbedPane.indexOfTab(Tabs.ped);
-		tabbedPane.setComponentAt(index, null);
-		//TODO tabbedPane.setComponentAt(index, new VisitsTabView(patient, tabbedPane, masterModel));
-	}	
-	
+
 	public void createView() {
 		
 		setBackground(CL.turq);
-		setLayout(new MigLayout("", "[grow]", "[grow]"));
-		
-		/*
-		 * 
-		// was for testing, wraps everything in a JScrollPane
-		//JScrollPane scrollPane = new JScrollPane(); // for test wrapper
-		//scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS); // for test wrapper
-		//add(scrollPane, "cell 0 0,grow"); // for test wrapper
-		 * 
-		 */
-		
-		JPanel panel_Everything = new JPanel();
-		panel_Everything.setBackground(CL.turq);
-		//scrollPane.setViewportView(panel_Everything); // for test wrapper
-		panel_Everything.setLayout(new MigLayout("", "[grow]", "[grow][grow][grow][grow][]"));
-		add(panel_Everything, "cell 0 0,grow");
+		setLayout(new MigLayout("", "[grow]", "[grow][][grow][grow][grow][grow][grow][grow][grow]"));
 		
 		
 		
 		// CC
 		JPanel panel_CC = new JPanel();
 		panel_CC.setBackground(CL.turq);
-		panel_Everything.add(panel_CC, "cell 0 0,grow");
+		add(panel_CC, "cell 0 0,grow");
 		panel_CC.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Chief Complaint", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_CC.setLayout(new BorderLayout(0, 0));
 		
@@ -390,63 +220,31 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 		scrollPane_CC.setViewportView(textArea_CC);
 		
 		
-		// PED === TODO Similar to below, needs to be restructured, there was confusion early in terms
-		JPanel panel_PED = new JPanel();
-		panel_PED.setBackground(CL.turq);
-		panel_Everything.add(panel_PED, "cell 0 1,grow");
-		panel_PED.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Physical Exam Detail", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
-		panel_PED.setLayout(new MigLayout("", "[grow]", "[grow]"));
 		
-		
-		// VISION === TODO Unfortunately, holds everything...need to be reworked later
-		JPanel panel_Vision = new JPanel();
+		// VISION PANEL
+		panel_Vision = new PanelVision(index);
 		panel_Vision.setBackground(CL.turq);
-		panel_PED.add(panel_Vision, "cell 0 0,grow");
-		panel_Vision.setLayout(new MigLayout("", "[grow]", "[][][][grow][][grow][grow]"));
-		
-		
-		
-		// DV
-		panel_DV = new PanelDistanceVision(index);
-		panel_Vision.add(panel_DV, "cell 0 0,growx");
-		
-		// GLASSES RX
-		panel_GlassesRx = new PanelGlassesRx(index);
-		panel_GlassesRx.setBackground(CL.turq);
-		panel_Vision.add(panel_GlassesRx, "cell 0 1,growx");
-		
-		// Refraction
-		panel_Refraction = new PanelRefraction(index);
-		panel_Refraction.setBackground(CL.turq);
-		panel_Vision.add(panel_Refraction, "cell 0 2,growx");
-		
-		
-		
-		// SLE ==
-		// TODO Make SLE panel contain all the others...maybe need separate objects for SLE?
+		add(panel_Vision, "cell 0 1,grow");
+
+		// SLE PANEL
 		panel_SLE = new PanelSLE(index);
-		panel_Vision.add(panel_SLE, "cell 0 3,grow");
+		panel_SLE.setBackground(CL.turq);
+		add(panel_SLE, "cell 0 2,grow");
 
-
-		
-		//IOP
+		// IOP PANEL
 		panel_IOP = new PanelIOP(index);
 		panel_IOP.setBackground(CL.turq);
-		panel_Vision.add(panel_IOP, "cell 0 4,grow");
+		add(panel_IOP, "cell 0 3,grow");
 		
-		
-		
-		//GONIO
+		// GONIO PANEL
 		panel_Gonio = new PanelGonio(index);
 		panel_Gonio.setBackground(CL.turq);
-		panel_Vision.add(panel_Gonio, "cell 0 5,grow");
+		add(panel_Gonio, "cell 0 4,grow");
 		
-		
-		
-		//FUNDUS
+		// FUNDUS PANEL
 		panel_Fundus = new PanelFundus(index);
 		panel_Fundus.setBackground(CL.turq);
-		panel_Vision.add(panel_Fundus, "cell 0 6,grow");
+		add(panel_Fundus, "cell 0 5,grow");
 
 		
 		
@@ -455,7 +253,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 		JPanel panel_Assessment = new JPanel();
 		panel_Assessment.setBackground(CL.turq);
 		panel_Assessment.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Assesment", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
-		panel_Everything.add(panel_Assessment, "cell 0 2,grow");
+		add(panel_Assessment, "cell 0 6,grow");
 		panel_Assessment.setLayout(new BorderLayout(0, 0));
 
 		JScrollPane scrollPane_Assessment = new JScrollPane();
@@ -470,7 +268,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 		JPanel panel_Plan = new JPanel();
 		panel_Plan.setBackground(CL.turq);
 		panel_Plan.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Plan", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
-		panel_Everything.add(panel_Plan, "cell 0 3,grow");
+		add(panel_Plan, "cell 0 7,grow");
 		panel_Plan.setLayout(new BorderLayout(0, 0));
 				
 		JScrollPane scrollPane_Plan = new JScrollPane();
@@ -485,7 +283,7 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 		
 		// Buttons at bottom
 		panel_Buttons = new JPanel();
-		panel_Everything.add(panel_Buttons, "cell 0 4,alignx right");
+		add(panel_Buttons, "cell 0 8,alignx right");
 		
 		btnSave = new JButton("Save");
 		btnSave.addActionListener(new SaveListener());

@@ -403,6 +403,7 @@ public class HomeView extends JFrame implements viewinterface{
 		this.validate();
 		this.repaint();
 	}
+	
 	@Override
 	public MasterModel getMasterModel() {
 		return this.model;

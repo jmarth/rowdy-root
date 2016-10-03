@@ -5,13 +5,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import models.AnteriorChamber;
-import models.Patient;
 
 public  class ACTableGatewaySQLite implements ACTableGateway {
 	
@@ -47,7 +43,7 @@ public  class ACTableGatewaySQLite implements ACTableGateway {
 		ResultSet rs = null;
 		
 		try {
-			//fetch parts
+			//fetch ACs
 			st = conn.prepareStatement("select * from anterior_chambers where vid=?");
 			st.setLong(1, vid);
 			
@@ -55,7 +51,8 @@ public  class ACTableGatewaySQLite implements ACTableGateway {
 			
 			while(rs.next()) {
 				
-				// Should not have a gateway
+				// TODO Model should not have a gateway???
+				// TODO Consider connection limit
 				AnteriorChamber ac = new AnteriorChamber(
 						rs.getLong("id"),
 						rs.getLong("vid"),
@@ -117,7 +114,7 @@ public  class ACTableGatewaySQLite implements ACTableGateway {
 	}
 	
 	/**
-	 * Inserts visit into visits table
+	 * Inserts AC into AC table
 	 */
 	public long insertAnteriorChamber(AnteriorChamber p) throws GatewayException {
 		
@@ -244,54 +241,6 @@ public  class ACTableGatewaySQLite implements ACTableGateway {
 	public void updateAnteriorChamber(AnteriorChamber ac) {
 		// TODO Auto-generated method stub
 		
-	}
-	@Override
-	public ArrayList<Object> fetchACColsForVisit(long id) throws GatewayException {
-
-	    ArrayList<Object> row = new ArrayList<Object>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			//fetch parts
-			st = conn.prepareStatement("select * from anterior_chambers where vid=?");
-			st.setLong(1, id);
-			
-			rs = st.executeQuery();
-			
-			//get metadata
-		    ResultSetMetaData meta = null;
-		    meta = rs.getMetaData();
-		    
-		    int colCount = meta.getColumnCount();
-		    //System.out.println("====AC======" + colCount);
-			
-			while(rs.next()) {
-				for (int i = 3; i <= colCount; i++) {
-					row.add(rs.getObject(i));
-//					System.out.println("column #"+ i + " : " + rs.getObject(i));
-				}
-			}
-			//System.out.println("\n****************\n AC ROW:"+row.toString());
-			
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return row;
 	}
 
 	public void close() {

@@ -14,7 +14,6 @@ import javax.sql.DataSource;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
-import models.Allergy;
 import models.Drug;
 
 public class DrugTableGatewayMySQL implements DrugTableGateway {

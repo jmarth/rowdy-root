@@ -230,4 +230,10 @@ public void updateHx(Hx hx) throws GatewayException{
 		
 	}
 
+	@Override
+	public void removeHx(long pid) throws GatewayException {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

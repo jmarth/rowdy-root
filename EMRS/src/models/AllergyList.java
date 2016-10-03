@@ -38,7 +38,7 @@ public class AllergyList {
 	public void loadMyListForPatient(Patient p) throws GatewayException {
 
 		try {
-			myList = myGateway.fetchAllergiesForPatient(p);
+			myList = myGateway.fetchAllergiesForPatient(p.getId());
 
 		} catch (GatewayException e) {
 			System.err.println("AllergyList failed to load from its gateway. In AllergyList Model");
