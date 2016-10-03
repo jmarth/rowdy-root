@@ -48,9 +48,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		
 		this.index = index;
 		
-		MasterModel mm;
-		mm = (MasterModel)this.getMasterModel();
-		mm.getvL().getMyList().get(index);
+		
 		
 		createView();
 		panel_Buttons.setVisible(false);
@@ -182,7 +180,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((JXTaskPaneVisitDetailView)this.getParent().getParent().getParent().getParent()).getMasterModel();
 	}
 
 	@Override
@@ -193,7 +191,9 @@ public class VisitDetailView extends JPanel implements viewinterface {
 
 	@Override
 	public void reload() {
-		
+		MasterModel mm;
+		mm = (MasterModel)this.getMasterModel();
+		mm.getvL().getMyList().get(index);
 	}
 
 	@Override

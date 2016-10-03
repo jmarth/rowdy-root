@@ -32,10 +32,14 @@ public class MasterModel {
 		vitalsL = new VitalsList();
 	}
 	public void loadmaster(Patient patient){
+		
 		try {
+			
 			this.currPatient=patient;
+			
 			try {
 				this.vL.loadMyListForPatient(patient);
+				System.out.println(vL.toStringTest());
 			} catch (GatewayException e) {
 				System.err.println("From MasterModel: Connect to DB failed");
 //				e.printStackTrace();

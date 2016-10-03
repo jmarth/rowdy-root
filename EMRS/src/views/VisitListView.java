@@ -48,7 +48,8 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 	// Is added to a JScrollPane, so get parent's parent.
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)(this.getParent()).getParent()).getMasterModel();
+		//TODO
+		return ((MasterVisit)(this.getParent().getParent().getParent())).getMasterModel();
 	}
 
 	@Override
@@ -61,8 +62,6 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 	public void reload() {
 		
 		VisitList vl = getMasterModel().getvL();
-		
-		System.out.println(vl.toString());
 		
 		//TODO Server should return the list backwards
 		int i = 0;
@@ -86,6 +85,7 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 			jxtp.setScrollOnExpand(true);
 			
 			add(jxtp);
+			jxtp.reload();
 		}
 		
 		iconLabel.setText("\t\t" + i+1 + " visits");
@@ -95,7 +95,7 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 	// Is added to a JScrollPane, so get parent's parent.
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)(this.getParent()).getParent());
+		return ((HomeView)(this.getParent()).getParent().getParent().getParent());
 	}
 
 }

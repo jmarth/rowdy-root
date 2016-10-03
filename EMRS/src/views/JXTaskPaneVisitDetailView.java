@@ -43,6 +43,7 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 	private JPanel panel_Buttons;
 	private JButton btnEdit;
 //	private JButton btnCancel;
+	VisitDetailView vdv;
 	
 	/*
 	 * Creates a detail view for the JXTask
@@ -51,14 +52,11 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 	public JXTaskPaneVisitDetailView(int index) {
 		
 		//create panels TODO
-		
-		MasterModel mm;
-		mm = (MasterModel)this.getMasterModel();
-		mm.getCurrentPatientVisitList().get(index);
-		
-		VisitDetailView vdv = new VisitDetailView(index);
+				
+		vdv = new VisitDetailView(index);
 		
 		add(vdv);
+		//TODO can't call reload, no add to listview yet
 		
 //		createView();
 	}
@@ -190,18 +188,21 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 	//TODO Get parent of parent, parent above is JScrollPane
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((VisitListView)this.getParent()).getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
 		reload();
-		this.setVisible(true);		
+		this.setVisible(true);
 	}
 
 	@Override
 	public void reload() {
-		
+		MasterModel mm;
+		mm = (MasterModel)this.getMasterModel();
+		mm.getCurrentPatientVisitList().get(index);
+		vdv.reload();
 	}
 
 	@Override

@@ -25,6 +25,18 @@ public class Refraction {
 	private String CC_OS_Axis;
 	private RefractionTableGateway myGateway;
 	
+	public Refraction() {
+		try {
+			myGateway = new RefractionTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From Refraction, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From Refraction, IO error");
+			// e.printStackTrace();
+		}
+	}
+	
 	public Refraction(long id, long vid, int isManifest, String sC_OD_Sphere, String sC_OD_Cyl, String sC_OD_Axis,
 			String sC_OS_Sphere, String sC_OS_Cyl, String sC_OS_Axis, String cC_OD_Sphere, String cC_OD_Cyl,
 			String cC_OD_Axis, String cC_OS_Sphere, String cC_OS_Cyl, String cC_OS_Axis) {
@@ -57,7 +69,8 @@ public class Refraction {
 		} catch (IOException e) {
 			System.err.println("From Refraction, IO error");
 			// e.printStackTrace();
-		}		this.isManifest = isManifest;
+		}
+		this.isManifest = isManifest;
 		SC_OD_Sphere = sC_OD_Sphere;
 		SC_OD_Cyl = sC_OD_Cyl;
 		SC_OD_Axis = sC_OD_Axis;

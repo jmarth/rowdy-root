@@ -23,6 +23,18 @@ public class GlassesRx {
 	
 	private GlassesRxTableGateway myGateway;
 	
+	public GlassesRx () {
+		try {
+			myGateway = new GlassesRxTableGatewaySQLite();
+		} catch (GatewayException e) {
+			System.err.println("From GlassesRx, cannot connect to DB");
+			// e.printStackTrace();
+		} catch (IOException e) {
+			System.err.println("From GlassesRx, IO error");
+			// e.printStackTrace();
+		}
+	}
+	
 	public GlassesRx(long id, long vid, String rx_OD_Sphere, String rx_OD_Cyl, String rx_OD_Axis, String rx_OD_Add,
 			String rx_OS_Sphere, String rx_OS_Cyl, String rx_OS_Axis, String rx_OS_Add, String glassesRxNotes) {
 		super();
@@ -49,7 +61,8 @@ public class GlassesRx {
 		} catch (IOException e) {
 			System.err.println("From GlassesRx, IO error");
 			// e.printStackTrace();
-		}		this.rx_OD_Sphere = rx_OD_Sphere;
+		}
+		this.rx_OD_Sphere = rx_OD_Sphere;
 		this.rx_OD_Cyl = rx_OD_Cyl;
 		this.rx_OD_Axis = rx_OD_Axis;
 		this.rx_OD_Add = rx_OD_Add;

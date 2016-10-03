@@ -68,8 +68,9 @@ public class HomeView extends JFrame implements viewinterface{
 	 * 
 	 */
 	public HomeView() {
-		// Models should be independent; a view should grab from a model.
+
 		super();
+		
 		this.model = new MasterModel();
 		paview = new AddPatientView();
 		fpview = new FindPatientsView();

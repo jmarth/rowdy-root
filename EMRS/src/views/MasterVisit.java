@@ -40,7 +40,7 @@ public class MasterVisit extends JPanel implements viewinterface {
 		
 		add(btnNewVisit, BorderLayout.SOUTH);
 		
-		btnNewVisit.addActionListener(new NewVisitListener());
+		btnNewVisit.addActionListener(new NewVisitListener());//TODO
 	}
 	
 	private class NewVisitListener implements ActionListener {
@@ -81,7 +81,7 @@ public class MasterVisit extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((PatientRecordView)this.getParent()).getMasterModel();
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class MasterVisit extends JPanel implements viewinterface {
 
 	@Override
 	public void reload() {
-		
+		vlv.reload();
 	}
 
 	@Override
