@@ -86,7 +86,8 @@ public class MasterVisit extends JPanel implements viewinterface {
 
 	@Override
 	public void ShowView() {
-		
+		reload();
+		this.setVisible(true);
 	}
 
 	@Override

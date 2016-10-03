@@ -64,7 +64,8 @@ public class PatientList {
 
 	public void update(Patient a) throws GatewayException {
 		this.myGateway.updatePatient(a);
-		this.myIdMap.replace(a.getId(),a);
+//		this.myIdMap.replace(a.getId(),a); not in java 6
+		this.myIdMap.put(a.getId(),a); // will replace if exist in java 6
 	}
 
 	// TODO

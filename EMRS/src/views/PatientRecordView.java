@@ -28,7 +28,8 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	
 	private DemographicView dgv;
 	private hxView hxv;
-	private VitalsTabMasterView vsv;
+	private MasterVisit mv;
+//	private VitalsTabMasterView vsv;
 	private VitalsTabMasterView vtv;
 	private LabsAndProceduresTabView lpv;
 	private DocumentsTabView dtv;
@@ -54,14 +55,14 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		hxv = new hxView();
 		this.addTab(Tabs.hx, null,hxv, null);
 		this.setTabComponentAt(1, lab2);
-		
+		*/
 		// Create visits tab
 		JLabel lab3 = new JLabel(Tabs.ped);
 		lab3.setPreferredSize(new Dimension(145, 30));
 		lab3.setHorizontalAlignment(JLabel.CENTER);
-		vsv = new VitalsTabMasterView();
-		this.addTab(Tabs.ped, null,vsv, null);
-		this.setTabComponentAt(2, lab3);*/
+		mv = new MasterVisit();
+		this.addTab(Tabs.ped, null,mv, null);
+		this.setTabComponentAt(1, lab3);
 		
 		
 		// create vitals tab
@@ -105,7 +106,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 			        	//TODO
 			        }
 			        else if (selectedTab.equals(Tabs.ped)) {
-			        	vsv.reload();
+			        	mv.reload();
 			        }
 			        else if (selectedTab.equals(Tabs.vitals)) {
 			        	vtv.reload();
@@ -142,8 +143,8 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	
 	public void ShowVisitsView(){
 		this.ShowView();
-		this.setSelectedIndex(2);
-		this.vsv.ShowView();
+		this.setSelectedIndex(1); //TODO changed for test
+		this.mv.ShowView();
 	}
 
 	public void ShowVitalsView(){

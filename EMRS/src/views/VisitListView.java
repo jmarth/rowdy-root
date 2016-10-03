@@ -13,10 +13,14 @@ import org.jdesktop.swingx.JXTaskPaneContainer;
 import models.CL;
 import models.MasterModel;
 import models.Visit;
+import models.VisitList;
 
 @SuppressWarnings("serial")
 public class VisitListView extends JXTaskPaneContainer implements viewinterface {
 
+	JLabel iconLabel;
+	
+	
 	public VisitListView () {
 		
 		super();
@@ -24,7 +28,7 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 		setLayout(new BorderLayout(0, 0));
 		setBackground(CL.blueGrey);
 
-		JLabel iconLabel = new JLabel();
+		iconLabel = new JLabel();
 		iconLabel.setIcon(new ImageIcon("medical_history_icon.jpg"));
 		iconLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
 		
@@ -33,9 +37,36 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 		
 		removeAll();
 		
+		
+	}
+
+	@Override
+	public void HideallView() {
+		
+	}
+
+	// Is added to a JScrollPane, so get parent's parent.
+	@Override
+	public MasterModel getMasterModel() {
+		return ((HomeView)(this.getParent()).getParent()).getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		reload();
+		this.setVisible(true);
+	}
+
+	@Override
+	public void reload() {
+		
+		VisitList vl = getMasterModel().getvL();
+		
+		System.out.println(vl.toString());
+		
 		//TODO Server should return the list backwards
 		int i = 0;
-		for (Visit v : getMasterModel().getvL().getMyList()) {
+		for (Visit v : vl.getMyList()) {
 			
 			JXTaskPaneVisitDetailView jxtp = new JXTaskPaneVisitDetailView(i++);
 			
@@ -61,31 +92,10 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 		add(iconLabel, BorderLayout.NORTH);
 	}
 
-	@Override
-	public void HideallView() {
-		
-	}
-
-	// Is added to a JScrollPane, so get parent's parent.
-	@Override
-	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent().getParent()).getMasterModel();
-	}
-
-	@Override
-	public void ShowView() {
-		
-	}
-
-	@Override
-	public void reload() {
-		
-	}
-
 	// Is added to a JScrollPane, so get parent's parent.
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent().getParent());
+		return ((HomeView)(this.getParent()).getParent());
 	}
 
 }

@@ -426,6 +426,7 @@ public class HomeView extends JFrame implements viewinterface{
 		this.HideallView();
 		this.prview.ShowView();
 	}
+	
 	@Override
 	public MasterModel getMasterModel() {
 		return this.model;
