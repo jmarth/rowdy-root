@@ -28,9 +28,10 @@ public class VitalListView extends JPanel implements viewinterface {
 	
 	public VitalListView() {
 		super();
-		selectedRow=0;
+		selectedRow=-1;
 		vitalsTable = new JTable();
-		vitalsTable.setEnabled(false);
+		
+		//vitalsTable.setEnabled(false);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0};
@@ -55,6 +56,7 @@ public class VitalListView extends JPanel implements viewinterface {
 		panelButtons.add(btnNewVital, BorderLayout.WEST);
 		btnNewVital.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				selectedRow =-1;
 				VitalListView.this.ShowVitalSCRUDView();
 			}
 		});		
@@ -73,7 +75,19 @@ public class VitalListView extends JPanel implements viewinterface {
 			}
 		});
 		
+		JButton btnUpdateVital = new JButton("Edit Vital");
+		panelButtons.add(btnUpdateVital, BorderLayout.CENTER);
+		btnUpdateVital.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(selectedRow!=-1){
+					VitalListView.this.ShowVitalSCRUDView();
+				}
+			}
+		});		
+		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.add(this.vitalsTable);
+		scrollPane.setViewportView(vitalsTable);
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.fill = GridBagConstraints.BOTH;
 		gbc_scrollPane.gridx = 0;
@@ -139,7 +153,14 @@ public class VitalListView extends JPanel implements viewinterface {
 	public void reload() {
 		// Get model of VitalsTable in order to add rows
 				// Declare variables
-				DefaultTableModel dtm = (DefaultTableModel) vitalsTable.getModel();
+				//DefaultTableModel dtm = (DefaultTableModel) vitalsTable.getModel();
+				DefaultTableModel dtm = new DefaultTableModel(
+						new Object[][] {
+						},
+						new String[] {
+							"Date", "BP", "BG", "O2", "Hb", "Height", "Weight", "Notes"
+						}
+					);
 				// Find all allergies for the given patient
 				List<Vital> myVitalsList = this.getMasterModel().getVitalsL().getMyList();
 				
@@ -189,12 +210,18 @@ public class VitalListView extends JPanel implements viewinterface {
 							vitals.getNotes()	
 						});
 				}
-		
+				this.vitalsTable.setModel(dtm);
 	}
-
+	
+	public int getSelectedRow() {
+		return selectedRow;
+	}
+	public void setSelectedRow(int selectedRow) {
+		this.selectedRow = selectedRow;
+	}
 	@Override
 	public HomeView getHomeView() {
 		return ((VitalsTabMasterView)(this.getParent())).getHomeView();
 	}
-
+	
 }

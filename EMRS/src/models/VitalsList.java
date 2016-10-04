@@ -48,10 +48,8 @@ public class VitalsList {
 	}
 
 	public long insert(Vital a) throws GatewayException {
-
 		a.setId(myGateway.insertVitals(a));
 		this.myList.add(a);
-
 		return a.getId();
 	}
 
