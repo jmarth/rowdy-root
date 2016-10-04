@@ -12,12 +12,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
-import database.GatewayException;
-import models.AnteriorChamber;
 import models.CL;
-import models.DistanceVision;
 import models.MasterModel;
-import models.Visit;
 import net.miginfocom.swing.MigLayout;
 import visitPanels.PanelFundus;
 import visitPanels.PanelGonio;
@@ -26,9 +22,9 @@ import visitPanels.PanelSLE;
 import visitPanels.PanelVision;
 
 @SuppressWarnings("serial")
-public class VisitDetailView extends JPanel implements viewinterface {
-		
-	private int index; // index of the patient's visit in their visit list
+public class VisitNewView extends JPanel implements viewinterface {
+
+	private int index;
 	
 	private PanelVision panel_Vision;
 	private PanelSLE panel_SLE;
@@ -44,66 +40,27 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	private JButton btnSave;
 	private JButton btnCancel;
 	
-	
-	
-	/*
-	 * Creates a detail view for the JXTask
-	 * Can be edited or deleted.
-	 */
-	public VisitDetailView(int index) {
-		
-
+	public VisitNewView(int index) {
 		this.index = index;
-		
 		createView();
-		panel_Buttons.setVisible(false);
 	}
 	
 	private class SaveListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			MasterModel mm = VisitDetailView.this.getVisitTabMasterView().getMasterModel();
-			try {
-				mm.getvL().insert(new Visit(
-						-1,
-						mm.getCurrPatient().getId(),
-						textArea_CC.getText(),
-						textArea_Assessment.getText(),
-						textArea_Plan.getText(),
-						null
-						));
-				Visit v = mm.getvL().getMyList().get(0); // the one we just inserted
-				
-				DistanceVision dv = panel_Vision.getPDV().newDV();
-				dv.setVid(v.getId());
-				dv.insertDV(dv);
-				v.setMyDV(dv);
-				
-				
-				
-				
-			} catch (GatewayException e) {
-				System.err.println("From VisitDetailView: Could not insert new Visit into DB.");
-//				e.printStackTrace();
-			}
-					
-//					new Visit(
-//					-1,
-//					mm.getCurrPatient().getId(),
-//					
-//					));
+		public void actionPerformed(ActionEvent e) {
+			
 		}
-				
+		
 	}
 	
 	private class CancelListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			VisitTabMasterView parent = getVisitTabMasterView();
-			parent.showListVisitView();
+		public void actionPerformed(ActionEvent e) {
+			
 		}
+		
 	}
 	
 	public void createView() {
@@ -200,16 +157,13 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new CancelListener());
 		panel_Buttons.add(btnCancel);
-		
 	}
 	
-	public VisitTabMasterView getVisitTabMasterView() {
-		return (VisitTabMasterView)VisitDetailView.this.getParent().getParent().getParent();
-	}
 
+	
 	@Override
 	public void HideallView() {
-		//TODO		
+		// TODO
 	}
 
 	@Override
@@ -219,37 +173,18 @@ public class VisitDetailView extends JPanel implements viewinterface {
 
 	@Override
 	public void ShowView() {
-		//TODO
+		// TODO
 	}
 
 	@Override
 	public void reload() {
-		
-		Visit v = getMasterModel().getvL().getMyList().get(index); // the one we just inserted
-		textArea_CC.setText(v.getChiefComplaint());
-		textArea_Assessment.setText(v.getAssessment());
-		textArea_Plan.setText(v.getPlan());
-
-		panel_Vision.reload();
-		panel_SLE.reload();
-		panel_Gonio.reload();
-		panel_Fundus.reload();
-		panel_IOP.reload();
+		// TODO
 	}
-	
-	// Have to go up a bunch through the JX wrappers
+
+	// Goes through the JScrollPane, view port, etc
 	@Override
 	public HomeView getHomeView() {
-		return ((JXTaskPaneVisitDetailView)this.getParent().getParent().getParent().getParent()).getHomeView();
+		return ((PatientRecordView)(this.getParent()).getParent().getParent().getParent()).getHomeView();
 	}
-	
-	public void showEditView() {
-		
-	}
-	
-	public void showNewView() {
-		panel_Buttons.setVisible(true);
-	}
-	
-	
+
 }

@@ -21,6 +21,7 @@ public class MasterModel {
 	
 	
 	public MasterModel () {
+		
 		currPatient=null;
 		hx=null;
 		aL = new AllergyList();

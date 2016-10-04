@@ -18,14 +18,15 @@ import models.VisitList;
 @SuppressWarnings("serial")
 public class VisitListView extends JXTaskPaneContainer implements viewinterface {
 
-	JLabel iconLabel;
-	
+	private JLabel iconLabel;
 	
 	public VisitListView () {
 		
 		super();
 		
+		
 		setLayout(new BorderLayout(0, 0));
+		
 		setBackground(CL.blueGrey);
 
 		iconLabel = new JLabel();
@@ -40,21 +41,18 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 
 	@Override
 	public void HideallView() {
-		
+		//TODO
 	}
 
-	// Is added to a JScrollPane, so get parent's parent.
 	@Override
 	public MasterModel getMasterModel() {
-		//TODO
 		return this.getHomeView().getMasterModel();
-		//return ((HomeView)(this.getParent().getParent().getParent())).getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
-		reload();
 		this.setVisible(true);
+		reload();
 	}
 
 	@Override
@@ -62,14 +60,11 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 		
 		VisitList vl = getMasterModel().getvL();
 		
-		//TODO Server should return the list backwards
-		
-		
-		for (int i = 0; i < vl.getMyList().size(); i++) {
+		for (int index = 0; index < vl.getMyList().size(); index++) {
 			
-			Visit v = vl.getMyList().get(i);
+			Visit v = vl.getMyList().get(index);
 			
-			JXTaskPaneVisitDetailView jxtp = new JXTaskPaneVisitDetailView(i);
+			JXTaskPaneVisitDetailView jxtp = new JXTaskPaneVisitDetailView(index);
 
 			String date = v.getDateCreated();
 			date = date.substring(0, date.length() - 3);
@@ -94,10 +89,11 @@ public class VisitListView extends JXTaskPaneContainer implements viewinterface 
 		add(iconLabel, BorderLayout.NORTH);
 	}
 
-	// Is added to a JScrollPane, so get parent's parent.
+	// Is added to a JScrollPane, so have to go up quite a bit
 	@Override
 	public HomeView getHomeView() {
-		return ((PatientRecordView)(this.getParent()).getParent().getParent().getParent()).getHomeView();
+//		if(this.getParent().getParent().getParent() instanceof VisitTabMasterView)
+		return ((VisitTabMasterView)this.getParent().getParent()).getHomeView();
 	}
 
 }

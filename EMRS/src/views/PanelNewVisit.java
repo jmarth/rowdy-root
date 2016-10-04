@@ -73,10 +73,6 @@ public class PanelNewVisit extends JPanel implements viewinterface {
 	private PanelGonio panel_Gonio;
 	private PanelFundus panel_Fundus;
 	
-	
-	
-//	private , image_Gonio, image_Fundus; TODO
-	
 	/**
 	 * Constructor for an existing model
 	 * @wbp.parser.constructor

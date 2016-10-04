@@ -57,7 +57,7 @@ public class VitalListView extends JPanel implements viewinterface {
 			public void actionPerformed(ActionEvent e) {
 				VitalListView.this.ShowVitalSCRUDView();
 			}
-		});		
+		});
 		// remove vital button
 		
 		JButton btnRemoveVital = new JButton("Remove Vital");

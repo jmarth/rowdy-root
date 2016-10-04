@@ -1,17 +1,9 @@
 package models;
 
 import java.io.File;
-import java.io.IOException;
-
-import database.ACTableGatewaySQLite;
-import database.GatewayException;
-import database.VisitTableGateway;
-import database.VisitTableGatewaySQLite;
 
 public class Visit {
 	
-	//final private MasterModel masterModel; // have call to parent to get mastermodel, parent's parent call , etc.
-	// easier to change
 	private long id;
 	private long pid;
 	
@@ -37,22 +29,7 @@ public class Visit {
 	
 	private File sketchTemp;
 	
-	private VisitTableGateway myGateway;
-	
-	
-
-	public Visit(Long id, Long pid, String chiefComplaint, String assessment, String plan, String dateCreated) {
-		//this.masterModel = masterModel;
-		
-//		try {
-//			myGateway = new VisitTableGatewaySQLite();
-//		} catch (GatewayException e) {
-//			System.err.println("From Visit, cannot connect to DB");
-//			// e.printStackTrace();
-//		} catch (IOException e) {
-//			System.err.println("From Visit, IO error");
-//			// e.printStackTrace();
-//		}
+	public Visit(long id, long pid, String chiefComplaint, String assessment, String plan, String dateCreated) {
 		
 		this.id = id;
 		this.pid = pid;
@@ -64,7 +41,6 @@ public class Visit {
 		
 		
 		myAC = new AnteriorChamber();
-		System.err.println("");
 		myDV = new DistanceVision();
 		myFE = new FundusExam();
 		myGlsRx = new GlassesRx();
@@ -74,8 +50,6 @@ public class Visit {
 		myPupils = new Pupils();
 		myRefraction = new Refraction();
 		mySketches = new Sketches();
-		
-//		this.loadVisitFromPatient();
 	}
 
 
@@ -260,6 +234,11 @@ public class Visit {
 //		}
 		
 		mySketches.loadSketches(id);
+	}
+	
+	public void insertX() {
+		myAC.insertAC(myAC);
+		
 	}
 
 		

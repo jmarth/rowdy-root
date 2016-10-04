@@ -435,27 +435,26 @@ public class PanelPupils extends JPanel implements viewinterface {
 
 	@Override
 	public void HideallView() {
-		
+		//TODO
 	}
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((HomeView)this.getHomeView()).getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
+		//TODO
 	}
 
 	@Override
 	public void reload() {
-		
+		this.setFields();
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent());
-
+		return ((PanelSLE)this.getParent()).getHomeView();
 	}
-
 }

@@ -64,12 +64,9 @@ public class VisitList {
 		}
 	}
 
-	public long insert(Visit a) throws GatewayException {
-
+	public void insert(Visit a) throws GatewayException {
 		a.setId(myGateway.insertVisit(a));
-		this.myList.add(a);
-
-		return a.getId();
+		this.myList.add(0, a); // insert at beginning
 	}
 	
 	public Visit getVisitById(long id) {

@@ -26,6 +26,7 @@ import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
 import views.FrameNewSketch;
 import views.HomeView;
+import views.VisitDetailView;
 import views.viewinterface;
 
 @SuppressWarnings("serial")
@@ -260,27 +261,29 @@ public class PanelFundus extends JPanel implements viewinterface {
 		
 		temp = f.getMaculaOSNotes();
 		textField_Macula_Notes_OS.setText(temp);
+		
+		setSketch();
 	}
 	
 	@Override
 	public void HideallView() {
-		
+		//TODO
 	}
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((HomeView)this.getHomeView()).getMasterModel();
 	}
 	@Override
 	public void ShowView() {
-		
+		//TODO
 	}
 	@Override
 	public void reload() {
-		
+		this.setFields();
 	}
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent());
+		return ((VisitDetailView)this.getParent()).getHomeView();
 	}
 
 }

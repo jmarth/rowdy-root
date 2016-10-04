@@ -48,7 +48,7 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		
 		try {
 			//fetch parts
-			st = conn.prepareStatement("SELECT * FROM visits WHERE pid=?");
+			st = conn.prepareStatement("SELECT * FROM visits WHERE pid=? ORDER BY id DESC");
 			st.setLong(1, pid);
 			
 			rs = st.executeQuery();
@@ -98,7 +98,7 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		
 		try {
 			st = conn.prepareStatement(
-					"insert INTO visits"
+					"INSERT INTO visits"
 					+ "(pid,"
 					+ " chiefComplaint,"
 					+ " assessment,"
@@ -108,7 +108,6 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 			
 			st.setLong(1, v.getPid());
 			st.setString(2, v.getChiefComplaint());
-			
 			st.setString(3, v.getAssessment());
 			st.setString(4, v.getPlan());
 	

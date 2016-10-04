@@ -441,7 +441,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 		JPanel panel_BloodPressure = new JPanel();
 		panel_BloodPressure.setBorder(new TitledBorder(null, "Blood Pressure", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_VitalsForm.add(panel_BloodPressure, "cell 0 0,alignx left,aligny center");
+		panel_VitalsForm.add(panel_BloodPressure, "cell 0 0,alignx left");
 		panel_BloodPressure.setLayout(new MigLayout("", "[][grow][][][][grow]", "[grow]"));
 
 		// BP form
@@ -537,7 +537,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		JPanel panel_BloodGlucose = new JPanel();
 		panel_BloodGlucose.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null),
 				"Blood Glucose", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_VitalsForm.add(panel_BloodGlucose, "cell 0 1,alignx left,aligny center");
+		panel_VitalsForm.add(panel_BloodGlucose, "cell 0 1,growx,aligny center");
 		panel_BloodGlucose.setLayout(new MigLayout("", "[][][grow][][grow]", "[grow]"));
 
 		chckbxFasting = new JCheckBox("Fasting");
@@ -851,7 +851,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 		JPanel panel_Weight = new JPanel();
 		panel_Weight.setBorder(new TitledBorder(null, "Weight", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_VitalsForm.add(panel_Weight, "cell 0 5,alignx left,aligny center");
+		panel_VitalsForm.add(panel_Weight, "cell 0 5,growx ,aligny center");
 		panel_Weight.setLayout(new MigLayout("", "[][grow][grow]", "[grow]"));
 
 		JLabel lblWeight = new JLabel("Weight");

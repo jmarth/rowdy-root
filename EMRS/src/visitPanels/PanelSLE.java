@@ -20,16 +20,12 @@ import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
 import views.FrameNewSketch;
 import views.HomeView;
+import views.VisitDetailView;
 import views.viewinterface;
 
 @SuppressWarnings("serial")
 public class PanelSLE extends JPanel implements viewinterface {
 
-//	private final MasterModel masterModel;
-//	private Patient patient;
-	
-//	private Visit myVisit;
-	
 	private int index;
 	
 	private PanelPupils panel_Pupils;
@@ -66,18 +62,12 @@ public class PanelSLE extends JPanel implements viewinterface {
 		panel_SLE_Diagram.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_SLE_Diagram.setLayout(new BoxLayout(panel_SLE_Diagram, BoxLayout.Y_AXIS));
 	
-		
-		//TODO Set that sketch yooooo
-		
 		JButton btnSLESketch = new JButton("Sketch");
 		btnSLESketch.addActionListener(new CreateSketchListener());
 		panel_SLE_Diagram.add(btnSLESketch);
 	
-		
-		//TODO Not sure how this works
 		label_SLE_Sketch = new JLabel("");
 		panel_SLE_Diagram.add(label_SLE_Sketch);
-		
 		
 	}
 	
@@ -88,12 +78,7 @@ public class PanelSLE extends JPanel implements viewinterface {
 	}
 	
 	public void setFields() {
-		
-		panel_Pupils.setFields();
-		panel_AC.setFields();
-		panel_Lens.setFields();
 		setSketch();
-
 	}
 
 	private class CreateSketchListener implements ActionListener  {
@@ -115,26 +100,29 @@ public class PanelSLE extends JPanel implements viewinterface {
 
 	@Override
 	public void HideallView() {
-		
+		//TODO
 	}
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((HomeView)this.getHomeView()).getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
-		
+		//TODO
 	}
 
 	@Override
 	public void reload() {
-		
+		this.setFields();
+		panel_Pupils.reload();
+		panel_AC.reload();
+		panel_Lens.reload();
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent());
+		return ((VisitDetailView)this.getParent()).getHomeView();
 	}
 }
