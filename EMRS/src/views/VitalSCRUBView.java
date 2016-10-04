@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Enumeration;
@@ -42,9 +44,14 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.BoxLayout;
 
 public class VitalSCRUBView extends JPanel implements viewinterface {
+	public static final String[] BloodPressure_unit = {"mm/Hg","Pa"};
+	public static final String[] BloodGlucose_unit = {"mmol/L","mg/dL"};
+	public static final String[] Weight_unit = {"lbs","kg"};
+	public static final String[] Height_unit = {"ft/in","in","cm"};
 
 	private JButton btnAppendNote;
 	private JButton btnConfirm;
@@ -67,7 +74,11 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	private JLabel lblWeightUnit;
 
 	private JTextArea textArea_Notes;
-
+	
+	private JComboBox cbBP_unit;
+	private JComboBox cbBG_unit;
+	private JComboBox cbHeight_unit;
+	private JComboBox cbWeight_unit;
 	/*
 	 * private JScrollPane scrollPane_Comments; private JTextArea
 	 * textArea_Comment; private JButton btnAppendComment;
@@ -190,17 +201,22 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			save();
-			int index = tabbedPane.indexOfTab(Tabs.vitals);
+			/*int index = tabbedPane.indexOfTab(Tabs.vitals);
 			tabbedPane.setComponentAt(index, null);
-			tabbedPane.setComponentAt(index, vitalsTabView);
+			tabbedPane.setComponentAt(index, vitalsTabView);*/
+			VitalsTabMasterView parent = (VitalsTabMasterView)VitalSCRUBView.this.getParent();
+			parent.ShowVitalListView();
 		}
 	}
 	private class CancelVitalListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int index = tabbedPane.indexOfTab(Tabs.vitals);
+			/*int index = tabbedPane.indexOfTab(Tabs.vitals);
 			tabbedPane.setComponentAt(index, null);
-			tabbedPane.setComponentAt(index, vitalsTabView);
+			tabbedPane.setComponentAt(index, vitalsTabView);*/
+			VitalsTabMasterView parent = (VitalsTabMasterView)VitalSCRUBView.this.getParent();
+			parent.ShowVitalListView();
+			
 		}
 	}
 	private class UpdateVitalListener implements ActionListener {
@@ -211,7 +227,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 	}
 
-	private class BPListener implements ActionListener {
+	/*private class BPListener implements ActionListener {
 
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand().equals(Vital.MMHG)) {
@@ -266,7 +282,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 				lblWeightUnit.setText(Vital.KG);
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Gets the selected button's name from a button group.
@@ -275,7 +291,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	 * @return The string of the name of the selected radio button of the
 	 *         buttonGroup
 	 */
-	public String getSelectedButtonText(ButtonGroup buttonGroup) {
+	/*public String getSelectedButtonText(ButtonGroup buttonGroup) {
 		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
 			AbstractButton button = buttons.nextElement();
 			if (button.isSelected()) {
@@ -283,7 +299,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	// TODO use as many final static strings from Vitals as possible
 
@@ -293,25 +309,63 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		 * Create new Vitals object with correct parameters Insert the vitals to
 		 * the DB through the Gateway
 		 */
+		float bps,bpd,bg,o2,hb,w;
+		int ft,in,cm;
+		try{
+			bps = Float.parseFloat(textField_BPS.getText());
+		}catch (Exception ex){
+			bps=0;
+		}
+		try{
+			bpd= Float.parseFloat(textField_BPD.getText());
+		}catch (Exception ex){
+			bpd=0;
+		}
+		try{
+			bg= Float.parseFloat(textField_BGLevel.getText());
+		}catch (Exception ex){
+			bg=0;
+		}
+		try{
+			o2= Float.parseFloat(textField_O2Sat.getText());
+		}catch (Exception ex){
+			o2=0;
+		}
+		try{
+			hb= Float.parseFloat(textField_Hb.getText());
+		}catch (Exception ex){
+			hb=0;
+		}
+		try{
+			w= Float.parseFloat(textField_Weight.getText());
+		}catch (Exception ex){
+			w=0;
+		}
+		try{
+			ft=Integer.parseInt(textField_Ft.getText());
+		}catch (Exception ex){
+			ft=0;
+		}
+		try{
+			in=Integer.parseInt(textField_In.getText());
+		}catch (Exception ex){
+			in=0;
+		}
+		try{
+			cm=Integer.parseInt(textField_Cm.getText());
+		}catch (Exception ex){
+			cm=0;
+		}
 		// getSelectedButtonText(buttonGroupHeight) to get unit for DB
 		Vital vitals = new Vital(0, this.getMasterModel().getCurrPatient().getId(),
-				Float.parseFloat(textField_BPS.getText()), Float.parseFloat(textField_BPD.getText()), lblBP.getText(),
-				chckbxFasting.isSelected(), Float.parseFloat(textField_BGLevel.getText()), lblBGLevelUnit.getText(),
-				Float.parseFloat(textField_O2Sat.getText()), Float.parseFloat(textField_Hb.getText()),
-				Integer.parseInt(((textField_Ft.getText().equals("")) ? "-1"
-						: textField_Ft.getText())),
-				Integer.parseInt(((textField_In.getText().equals("")) ? "-1"
-						: textField_In.getText())),
-				Integer.parseInt(((textField_Cm.getText().equals("")) ? "-1"
-						: textField_Cm.getText())),
-				getSelectedButtonText(buttonGroupHeight),
-				Float.parseFloat(((textField_Weight.getText().equals("")) ? "-1"
-						: textField_Weight.getText())),
-				lblWeightUnit.getText(), textArea_Notes.getText());
+				bps, bpd,cbBP_unit.getSelectedItem().toString(),chckbxFasting.isSelected(),
+				bg, cbBG_unit.getSelectedItem().toString(),o2,hb,
+				ft, in,cm,"ft:in:cm",w,cbWeight_unit.getSelectedItem().toString(),
+				textArea_Notes.getText());
 		// need to make a method for this...
-		boolean isString = false;
+		//boolean isString = false;
 
-		String height_ftin_String = null;
+		/*String height_ftin_String = null;
 		int heightInt = -1;
 
 		if (vitals.getHUnit() == null) {
@@ -335,24 +389,25 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		} else {
 
 			heightInt = vitals.getHCm();
-		}
+		}*/
 
 		// TODO needs the date from the DB...
 
 		// Add the vitals to the JTable
 		// Get model of VitalsTable in order to add rows
-		DefaultTableModel model = (DefaultTableModel) vitalsTable.getModel();
+		//DefaultTableModel model = (DefaultTableModel) vitalsTable.getModel();
 
-		// Add row
-		model.addRow(new Object[] { vitals.getDateCreated(),
-				vitals.getBps() + "/" + vitals.getBps() + " " + vitals.getBpUnit(),
-				vitals.getBg() + " " + vitals.getBgUnit(), vitals.getO2sat() + "%", vitals.getHb() + " " + Vital.gdL,
-				(isString ? height_ftin_String : heightInt + " " + vitals.getHUnit()),
-				vitals.getWeight() + " " + vitals.getWUnit(), vitals.getNotes() });
-
-		// vitalsList.add(vitals);
 		try {
 			vitals.setId(this.getMasterModel().getVitalsL().insert(vitals));
+			// Add row
+			//TODO
+			/*model.addRow(new Object[] { vitals.getDateCreated(),
+					vitals.getBps() + "/" + vitals.getBps() + " " + vitals.getBpUnit(),
+					vitals.getBg() + " " + vitals.getBgUnit(), vitals.getO2sat() + "%", vitals.getHb() + " " + Vital.gdL,
+					(isString ? height_ftin_String : heightInt + " " + vitals.getHUnit()),
+					vitals.getWeight() + " " + vitals.getWUnit(), vitals.getNotes() });*/
+
+			// vitalsList.add(vitals);
 
 		} catch (GatewayException e) {
 			System.err.println("from VitalNewView, can not insert to DB.");
@@ -361,7 +416,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	}
 
 	private void createView() {
-		setLayout(new BorderLayout(0, 0));
+		setLayout(new BorderLayout());
 		JPanel panel_ConfirmCancel = new JPanel();
 		add(panel_ConfirmCancel, BorderLayout.SOUTH);
 
@@ -373,45 +428,95 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 		// Main panels where all the fun stuff is
 
-		JPanel panel_CenterMain = new JPanel();
-		// add(panel_CenterMain, BorderLayout.CENTER);
-		panel_CenterMain.setLayout(new BorderLayout(0, 0));
+		//JPanel panel_CenterMain = new JPanel(new BorderLayout());
+		//add(panel_CenterMain, BorderLayout.CENTER);
+		//panel_CenterMain.setLayout(new BorderLayout(0, 0));
 
 		//
 		panel_VitalsForm = new JPanel();
-		panel_VitalsForm
-				.setBorder(new TitledBorder(null, "Vitals", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_CenterMain.add(panel_VitalsForm, BorderLayout.CENTER);
+		panel_VitalsForm.setBorder(new TitledBorder(null, "Vitals", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		//panel_CenterMain.add(panel_VitalsForm, BorderLayout.CENTER);
+		this.add(panel_VitalsForm, BorderLayout.CENTER);
 		panel_VitalsForm.setLayout(new MigLayout("", "[grow]", "[grow][grow][grow][grow][grow][grow][grow][grow]"));
 
 		JPanel panel_BloodPressure = new JPanel();
-		panel_BloodPressure.setBorder(
-				new TitledBorder(null, "Blood Pressure", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_BloodPressure.setBorder(new TitledBorder(null, "Blood Pressure", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_VitalsForm.add(panel_BloodPressure, "cell 0 0,alignx left,aligny center");
 		panel_BloodPressure.setLayout(new MigLayout("", "[][grow][][][][grow]", "[grow]"));
 
 		// BP form
 
-		JLabel lblBpSys = new JLabel("BP Sys/Dia");
+		JLabel lblBpSys = new JLabel("BP Sys/Dia: ");
 		panel_BloodPressure.add(lblBpSys, "cell 0 0,alignx right");
 
-		textField_BPS = new JTextField();
+		textField_BPS = new JTextField("0");
 		panel_BloodPressure.add(textField_BPS, "cell 1 0,alignx left");
 		textField_BPS.setColumns(5);
+		textField_BPS.addKeyListener(new KeyListener(){
 
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				try{
+					Float.parseFloat(textField_BPS.getText().trim());
+				}catch(Exception ex){
+					textField_BPS.setText("0");
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		JLabel label_Slash = new JLabel("/");
 		panel_BloodPressure.add(label_Slash, "cell 2 0,alignx trailing");
 
-		textField_BPD = new JTextField();
+		textField_BPD = new JTextField("0");
 		panel_BloodPressure.add(textField_BPD, "cell 3 0,alignx left");
 		textField_BPD.setColumns(5);
+		textField_BPD.addKeyListener(new KeyListener(){
 
-		lblBP = new JLabel(Vital.MMHG);
-		panel_BloodPressure.add(lblBP, "cell 4 0,alignx left");
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
 
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				try{
+					Float.parseFloat(textField_BPD.getText().trim());
+				}catch(Exception ex){
+					textField_BPD.setText("0");
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		//TODO change to combobox
+		/*lblBP = new JLabel(Vital.MMHG);
+		panel_BloodPressure.add(lblBP, "cell 4 0,alignx left");*/
+		cbBP_unit = new JComboBox(this.BloodPressure_unit);
+		cbBP_unit.setSelectedIndex(0);
+		panel_BloodPressure.add(cbBP_unit, "cell 4 0,alignx left");
 		// BP radio buttons
 
-		JPanel panel_BPUnit = new JPanel();
+		/*JPanel panel_BPUnit = new JPanel();
 		panel_BPUnit.setBorder(new TitledBorder(null, "BP Unit", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_BloodPressure.add(panel_BPUnit, "cell 5 0,alignx center,aligny center");
 
@@ -425,7 +530,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		panel_BPUnit.add(rdbtnPa);
 
 		rdbtnMmhg.addActionListener(new BPListener());
-		rdbtnPa.addActionListener(new BPListener());
+		rdbtnPa.addActionListener(new BPListener());*/
 
 		// Blood glucose
 
@@ -441,14 +546,42 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		JLabel lblBgLevel = new JLabel("BG Level");
 		panel_BloodGlucose.add(lblBgLevel, "cell 1 0,alignx right");
 
-		textField_BGLevel = new JTextField();
+		textField_BGLevel = new JTextField("0");
 		panel_BloodGlucose.add(textField_BGLevel, "cell 2 0,alignx left");
 		textField_BGLevel.setColumns(5);
+		textField_BGLevel.addKeyListener(new KeyListener(){
 
-		lblBGLevelUnit = new JLabel("mmol/L");
-		panel_BloodGlucose.add(lblBGLevelUnit, "cell 3 0,alignx left");
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
 
-		JPanel panel_BGLevelUnit = new JPanel();
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				try{
+					Float.parseFloat(textField_BGLevel.getText().trim());
+				}catch(Exception ex){
+					textField_BGLevel.setText("0");
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		// TODO chang to combobox
+		/*lblBGLevelUnit = new JLabel("mmol/L");
+		panel_BloodGlucose.add(lblBGLevelUnit, "cell 3 0,alignx left");*/
+		cbBG_unit = new JComboBox(this.BloodGlucose_unit);
+		cbBG_unit.setSelectedIndex(0);
+		panel_BloodGlucose.add(cbBG_unit, "cell 3 0,alignx left");
+		
+		/*JPanel panel_BGLevelUnit = new JPanel();
 		panel_BGLevelUnit.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null),
 				"BG Level Unit", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panel_BloodGlucose.add(panel_BGLevelUnit, "cell 4 0,alignx center,aligny center");
@@ -463,22 +596,46 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		panel_BGLevelUnit.add(rdbtnMgdl);
 
 		rdbtnMmoll.addActionListener(new BGListener());
-		rdbtnMgdl.addActionListener(new BGListener());
+		rdbtnMgdl.addActionListener(new BGListener());*/
 
 		// O2 saturation
 
 		JPanel panel_O2Saturation = new JPanel();
-		panel_O2Saturation
-				.setBorder(new TitledBorder(null, "O2 Saturation", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_O2Saturation.setBorder(new TitledBorder(null, "O2 Saturation", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_VitalsForm.add(panel_O2Saturation, "cell 0 2,alignx left,aligny center");
 		panel_O2Saturation.setLayout(new MigLayout("", "[][][][grow]", "[]"));
 
 		JLabel lblOSaturation = new JLabel("O2 Saturation");
 		panel_O2Saturation.add(lblOSaturation, "cell 0 0,alignx trailing");
 
-		textField_O2Sat = new JTextField();
+		textField_O2Sat = new JTextField("0");
 		panel_O2Saturation.add(textField_O2Sat, "cell 1 0,alignx left");
 		textField_O2Sat.setColumns(5);
+		textField_O2Sat.addKeyListener(new KeyListener(){
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				try{
+					Float.parseFloat(textField_O2Sat.getText().trim());
+				}catch(Exception ex){
+					textField_O2Sat.setText("0");
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 
 		JLabel label = new JLabel("%");
 		panel_O2Saturation.add(label, "cell 2 0,alignx left");
@@ -486,18 +643,41 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		// Hemoglobin
 
 		JPanel panel_Hemoglobin = new JPanel();
-		panel_Hemoglobin
-				.setBorder(new TitledBorder(null, "Hemogobin", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_Hemoglobin.setBorder(new TitledBorder(null, "Hemogobin", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_VitalsForm.add(panel_Hemoglobin, "cell 0 3,alignx left,aligny center");
 		panel_Hemoglobin.setLayout(new MigLayout("", "[][grow]", "[]"));
 
 		JLabel lblHb = new JLabel("Hb");
 		panel_Hemoglobin.add(lblHb, "cell 0 0,alignx trailing");
 
-		textField_Hb = new JTextField();
+		textField_Hb = new JTextField("0");
 		panel_Hemoglobin.add(textField_Hb, "flowx,cell 1 0,alignx left,aligny center");
 		textField_Hb.setColumns(5);
+		textField_Hb.addKeyListener(new KeyListener(){
 
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				try{
+					Float.parseFloat(textField_Hb.getText().trim());
+				}catch(Exception ex){
+					textField_Hb.setText("0");
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 		JLabel lblGmdl = new JLabel("gm/dL");
 		panel_Hemoglobin.add(lblGmdl, "cell 1 0");
 
@@ -511,33 +691,142 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		JLabel lblHeight = new JLabel("Height");
 		panel_Height.add(lblHeight, "cell 0 0,alignx right");
 
-		textField_Ft = new JTextField();
-		panel_Height.add(textField_Ft, "flowx,cell 1 0,alignx left");
+		textField_Ft = new JTextField("0");
+		panel_Height.add(textField_Ft, "flowx,cell 1 0,alignx right");
 		textField_Ft.setColumns(5);
+		textField_Ft.addKeyListener(new KeyListener(){
 
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				int ft=0,in=0,cm=0;
+				try{
+					ft = Integer.parseInt(textField_Ft.getText().trim());
+				}catch (Exception exft){
+					ft=0;
+				}
+				try{
+					in = Integer.parseInt(textField_In.getText().trim());
+				}catch(Exception exin){
+					in=0;
+				}
+				
+				cm = Math.round((float)2.54*(ft*12+in));
+				textField_Ft.setText(""+ft);
+				textField_In.setText(""+in);
+				textField_Cm.setText(""+cm);
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		/*cbHeight_unit = new JComboBox(this.Height_unit);
+		cbHeight_unit.setSelectedIndex(0);
+		panel_Height.add(cbHeight_unit, "cell 1 0");*/
+		
+		//TODO change to combobox
 		lblFt = new JLabel("ft");
-		panel_Height.add(lblFt, "cell 1 0");
+		panel_Height.add(lblFt, "cell 2 0");
 
-		textField_In = new JTextField();
-		panel_Height.add(textField_In, "flowx,cell 1 1,alignx left");
+		textField_In = new JTextField("0");
+		panel_Height.add(textField_In, "flowx,cell 3 0");
 		textField_In.setColumns(5);
+		textField_In.addKeyListener(new KeyListener(){
 
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				int ft=0,in=0,cm=0;
+				try{
+					in = Integer.parseInt(textField_In.getText().trim());
+				}catch (Exception exft){
+					in=0;
+				}
+				try{
+					ft = Integer.parseInt(textField_Ft.getText().trim());
+				}catch(Exception exin){
+					ft=0;
+				}
+				cm = Math.round((float)2.54*(ft*12+in));
+				ft+=in/12;
+				in=in%12;
+				textField_Ft.setText(""+ft);
+				textField_In.setText(""+in);
+				textField_Cm.setText(""+cm);
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
 		lblIn = new JLabel(Vital.IN);
-		panel_Height.add(lblIn, "cell 1 1");
+		panel_Height.add(lblIn, "cell 4 0, alignx left");
 
-		textField_Cm = new JTextField();
-		textField_Cm.setEnabled(false);
+		textField_Cm = new JTextField("0");
+		//textField_Cm.setEnabled(false);
 		panel_Height.add(textField_Cm, "flowx,cell 1 2,alignx left");
 		textField_Cm.setColumns(5);
+		textField_Cm.addKeyListener(new KeyListener(){
 
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				int ft=0,in=0,cm=0;
+				try{
+					cm = Integer.parseInt(textField_Cm.getText().trim());
+					in =(int) Math.round((float)cm*0.393701);
+					ft = in/12;
+					in = in%12;	
+					System.out.println(cm);
+				}catch (Exception exft){
+					cm=0;in=0;ft=0;
+				}		
+				textField_Ft.setText(""+ft);
+				textField_In.setText(""+in);
+				textField_Cm.setText(""+cm);
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		
 		lblCm = new JLabel(Vital.CM);
 		panel_Height.add(lblCm, "cell 1 2");
 
 		// Height radio buttons
 
-		JPanel panel_HeightUnit = new JPanel();
-		panel_HeightUnit
-				.setBorder(new TitledBorder(null, "Height Unit", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		/*JPanel panel_HeightUnit = new JPanel();
+		panel_HeightUnit.setBorder(new TitledBorder(null, "Height Unit", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_Height.add(panel_HeightUnit, "cell 2 0 1 3,alignx center,aligny center");
 
 		rdbtnFtin = new JRadioButton(Vital.FTIN);
@@ -556,7 +845,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 		rdbtnFtin.addActionListener(new HeightListener());
 		rdbtnIn.addActionListener(new HeightListener());
-		rdbtnCm.addActionListener(new HeightListener());
+		rdbtnCm.addActionListener(new HeightListener());*/
 
 		// Weight form
 
@@ -568,18 +857,46 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		JLabel lblWeight = new JLabel("Weight");
 		panel_Weight.add(lblWeight, "cell 0 0,alignx right");
 
-		textField_Weight = new JTextField();
+		textField_Weight = new JTextField("0");
 		panel_Weight.add(textField_Weight, "flowx,cell 1 0,alignx left");
 		textField_Weight.setColumns(5);
+		textField_Weight.addKeyListener(new KeyListener(){
 
-		lblWeightUnit = new JLabel("lbs");
-		panel_Weight.add(lblWeightUnit, "cell 1 0");
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				try{
+					Float.parseFloat(textField_Weight.getText().trim());
+				}catch(Exception ex){
+					textField_Weight.setText("0");
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
+		//TODO change to combobox
+		cbWeight_unit = new JComboBox(this.Weight_unit);
+		cbWeight_unit.setSelectedIndex(0);
+		panel_Weight.add(cbWeight_unit, "cell 1 0");
+		
+		/*lblWeightUnit = new JLabel("lbs");
+		panel_Weight.add(lblWeightUnit, "cell 1 0");*/
 
 		// Weight radio buttons
 
-		JPanel panel_WeightUnit = new JPanel();
-		panel_WeightUnit
-				.setBorder(new TitledBorder(null, "Weight Unit", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		/*JPanel panel_WeightUnit = new JPanel();
+		panel_WeightUnit.setBorder(new TitledBorder(null, "Weight Unit", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_Weight.add(panel_WeightUnit, "cell 2 0,alignx center,aligny center");
 
 		rdbtnLbs = new JRadioButton("lbs");
@@ -593,7 +910,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		rdbtnLbs.setSelected(true);
 
 		rdbtnLbs.addActionListener(new WeightListener());
-		rdbtnKg.addActionListener(new WeightListener());
+		rdbtnKg.addActionListener(new WeightListener());*/
 
 		// Note form
 
@@ -621,7 +938,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((PatientRecordView) this.getParent()).getMasterModel();
+		return this.getHomeView().getMasterModel();
 	}
 
 	@Override
@@ -639,7 +956,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 	@Override
 	public HomeView getHomeView() {
-		return ((PatientRecordView) this.getParent()).getHomeView();
+		return ((VitalsTabMasterView) this.getParent()).getHomeView();
 	}
 
 }

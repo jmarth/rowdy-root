@@ -188,6 +188,7 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 	}
 	public void ShowVitalSCRUDView(){
 		this.HideallView();
+		vscv=new VitalSCRUBView(-1);
 		this.add(vscv,BorderLayout.CENTER);
 		this.vscv.ShowView();
 		this.validate();

@@ -89,7 +89,7 @@ public class SlideShowPanel extends JPanel implements viewinterface {
 	protected void paintComponent(Graphics g) {
 		// TODO Auto-generated method stub
 		super.paintComponent(g);
-		g.drawImage(currentimage,SlideShowPanel.this.getX(),SlideShowPanel.this.getY(),
+		g.drawImage(currentimage,0,0,
 				SlideShowPanel.this.getWidth(),SlideShowPanel.this.getHeight(),null);
 	}
 	 

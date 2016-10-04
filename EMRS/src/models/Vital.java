@@ -1,5 +1,9 @@
 package models;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Vital {
 
 	public static final String MMHG = "mm/Hg";
@@ -93,6 +97,9 @@ public class Vital {
 		this.weight = weight;
 		this.wUnit = wUnit;
 		this.notes = notes;
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		Date date = new Date();
+		this.dateCreated = dateFormat.format(date);
 
 	}
 
