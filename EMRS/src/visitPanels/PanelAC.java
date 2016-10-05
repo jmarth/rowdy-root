@@ -522,7 +522,9 @@ public class PanelAC extends JPanel implements viewinterface {
 		chkbx_ACOSNormal.setSelected(a.isACOSNormal() == 1? true:false);
 		
 		temp = a.getACDepthOD();
-		if (temp.equals("+1")) {
+		if (temp == null) {
+			
+		} else if (temp.equals("+1")) {
 			rdbtn_ACDepthOD1.setSelected(true);
 		} else if (temp.equals("+2")) {
 			rdbtn_ACDepthOD2.setSelected(true);
@@ -533,7 +535,9 @@ public class PanelAC extends JPanel implements viewinterface {
 		}
 		
 		temp = a.getACDepthOS();
-		if (temp.equals("+1")) {
+		if (temp == null) {
+			
+		} else if (temp.equals("+1")) {
 			rdbtn_ACDepthOS1.setSelected(true);
 		} else if (temp.equals("+2")) {
 			rdbtn_ACDepthOS2.setSelected(true);
@@ -546,7 +550,9 @@ public class PanelAC extends JPanel implements viewinterface {
 		
 		
 		temp = a.getACAngleOD();
-		if (temp.equals("Open"))
+		if (temp == null) {
+			
+		} else if (temp.equals("Open"))
 			rdbtn_ACAngleODOpen.setSelected(true);
 		else if (temp.equals("Closed"))
 			rdbtn_ACAngleODClosed.setSelected(true);
@@ -554,7 +560,9 @@ public class PanelAC extends JPanel implements viewinterface {
 		
 		
 		temp = a.getACAngleOS();
-		if (temp.equals("Open"))
+		if (temp == null) {
+			
+		} else if (temp.equals("Open"))
 			rdbtn_ACAngleOSOpen.setSelected(true);
 		else if (temp.equals("Closed"))
 			rdbtn_ACAngleOSClosed.setSelected(true);
@@ -562,7 +570,9 @@ public class PanelAC extends JPanel implements viewinterface {
 		
 		
 		temp = a.getPASOD();
-		if (temp.equals("Absent"))
+		if (temp == null) {
+			
+		} else if (temp.equals("Absent"))
 			rdbtn_N_PASOD.setSelected(true);
 		else if (temp.equals("Present"))
 			rdbtn_Y_PASOD.setSelected(true);
@@ -570,7 +580,9 @@ public class PanelAC extends JPanel implements viewinterface {
 		
 		
 		temp = a.getPASOS();
-		if (temp.equals("Absent"))
+		if (temp == null) {
+			
+		} else if (temp.equals("Absent"))
 			rdbtn_N_PASOS.setSelected(true);
 		else if (temp.equals("Present"))
 			rdbtn_Y_PASOS.setSelected(true);
@@ -578,7 +590,9 @@ public class PanelAC extends JPanel implements viewinterface {
 		
 		
 		temp = a.getACODKP();
-		if (temp.equals("+1")) {
+		if (temp == null) {
+			
+		} else if (temp.equals("+1")) {
 			rdbtn_ACODKP1.setSelected(true);
 		} else if (temp.equals("+2")) {
 			rdbtn_ACODKP2.setSelected(true);
@@ -591,7 +605,9 @@ public class PanelAC extends JPanel implements viewinterface {
 		
 		
 		temp = a.getACOSKP();
-		if (temp.equals("+1")) {
+		if (temp == null) {
+			
+		} else if (temp.equals("+1")) {
 			rdbtn_ACOSKP1.setSelected(true);
 		} else if (temp.equals("+2")) {
 			rdbtn_ACOSKP2.setSelected(true);
@@ -621,7 +637,9 @@ public class PanelAC extends JPanel implements viewinterface {
 		
 		
 		temp = a.getBlebOD_Num();
-		if (temp.equals("+1")) {
+		if (temp == null) {
+			
+		} else if (temp.equals("+1")) {
 			rdbtn_BlebOD1.setSelected(true);
 		} else if (temp.equals("+2")) {
 			rdbtn_BlebOD2.setSelected(true);
@@ -639,7 +657,9 @@ public class PanelAC extends JPanel implements viewinterface {
 		
 		
 		temp = a.getBlebOS_Num();
-		if (temp.equals("+1")) {
+		if (temp == null) {
+			
+		} else if (temp.equals("+1")) {
 			rdbtn_BlebOS1.setSelected(true);
 		} else if (temp.equals("+2")) {
 			rdbtn_BlebOS2.setSelected(true);
