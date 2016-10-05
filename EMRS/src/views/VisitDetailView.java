@@ -86,13 +86,9 @@ public class VisitDetailView extends JPanel implements viewinterface {
 				
 				Visit v = mm.getvL().getMyList().get(0); // the one we just inserted
 				
-				System.err.println(v.getId() + " vid: ");
 				DistanceVision dv = panel_Vision.getPDV().newDV();
-				System.err.println("dv " + dv.toString());
 				dv.setVid(v.getId());
-				System.err.println("dv vid " + dv.getVid());
 				dv.setId(dv.insertDV(dv));
-				System.err.println("dv id " + dv.getId());
 				v.setMyDV(dv);
 				
 				GlassesRx g = panel_Vision.getPGRx().newGRx();

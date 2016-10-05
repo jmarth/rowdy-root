@@ -117,7 +117,6 @@ public class DistanceVision {
 		long id= -1;
 		
 		try {
-			System.err.println(dv.getId() + " vid: " + dv.getVid());
 			id = myGateway.insertDistanceVision(dv);
 		} catch (GatewayException e) {
 			System.err.println("From DistanceVision: cannot insert to DB.");

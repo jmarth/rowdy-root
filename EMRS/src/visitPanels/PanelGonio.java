@@ -519,8 +519,11 @@ public class PanelGonio extends JPanel implements viewinterface {
 
 	public void setSketch() {
 		Image image_Gonio = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageGonio();
-		ImageIcon iconGonio = new ImageIcon(image_Gonio);
-		lblGonioSketch.setIcon(iconGonio);
+		
+		if (image_Gonio != null) {
+			ImageIcon iconGonio = new ImageIcon(image_Gonio);
+			lblGonioSketch.setIcon(iconGonio);
+		}
 	}
 	
 	// also, sets the sketch at end

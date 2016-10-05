@@ -210,8 +210,10 @@ public class PanelFundus extends JPanel implements viewinterface {
 	
 	public void setSketch() {
 		Image image_Fundus = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageFundus();
-		ImageIcon iconFundus = new ImageIcon(image_Fundus);
-		lblFundusSketch.setIcon(iconFundus);
+		if (image_Fundus != null) {
+			ImageIcon iconFundus = new ImageIcon(image_Fundus);
+			lblFundusSketch.setIcon(iconFundus);
+		}
 	}
 	
 	public void setFields() {
