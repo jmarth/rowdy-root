@@ -48,15 +48,15 @@ public class VitalsList {
 	}
 
 	public long insert(Vital a) throws GatewayException {
-
 		a.setId(myGateway.insertVitals(a));
 		this.myList.add(a);
-
 		return a.getId();
 	}
 
-	public void update(Vital a) throws GatewayException {
+	public void update(Vital a,int index) throws GatewayException {
 		myGateway.updateVitals(a);
+		this.myList.remove(index);
+		this.myList.add(index, a);
 	}
 
 	public void delete(int index) throws GatewayException {

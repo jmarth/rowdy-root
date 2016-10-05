@@ -130,10 +130,7 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 			rs = st.getGeneratedKeys();
 			
 			if(rs != null && rs.next()) {
-				
 			    newId = rs.getLong(1);
-			    System.out.println("Vitals is ID: " + newId + "");
-			    
 			} else {
 				
 				throw new GatewayException("Could not insert new record.");
