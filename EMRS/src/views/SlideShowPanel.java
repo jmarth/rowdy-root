@@ -49,12 +49,9 @@ public class SlideShowPanel extends JPanel implements viewinterface {
 	public SlideShowPanel(){
 	    super();
 	    x=0;
-	    //pic = new JLabel();
-	    //pic.setBounds(0, 0, 1139, 1124);
-	    
+	
 	    //Call The Function SetImageSize
         //SetImageSize(0);
-        
        //set a timer 550000
 	    Timer tm;
         tm = new Timer(10000,new ActionListener() {
@@ -75,14 +72,8 @@ public class SlideShowPanel extends JPanel implements viewinterface {
                 SlideShowPanel.this.repaint();
             }
         });
-        tm.setInitialDelay(600);
-        //setLayout(new BorderLayout(0, 0));
-        //add(pic);
-        tm.start();
-        //setSize(pic.getWidth(), pic.getHeight());
-        //setVisible(true);
-       // this.revalidate();
-       // this.repaint();
+        tm.setInitialDelay(0);
+        tm.start();     
     }
 	
 	 @Override

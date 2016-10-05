@@ -145,6 +145,8 @@ public class VitalListView extends JPanel implements viewinterface {
 	@Override
 	public void ShowView() {
 		reload();
+		if(selectedRow!=-1)
+			this.vitalsTable.setRowSelectionInterval(selectedRow, selectedRow);
 		this.setVisible(true);
 		
 	}

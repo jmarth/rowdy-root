@@ -3,61 +3,37 @@ package views;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.sql.Timestamp;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 import net.miginfocom.swing.MigLayout;
-
 import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-
 import database.GatewayException;
-import models.Comment;
 import models.MasterModel;
-import models.Patient;
-import models.Tabs;
-import models.Vital;
 import models.Vital;
 
 import javax.swing.JTextField;
-import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.BoxLayout;
 
+@SuppressWarnings("serial")
 public class VitalSCRUBView extends JPanel implements viewinterface {
-	public enum BloodPressure_unit {mm_Hg,Pa}
-	public enum BloodGlucose_unit{mmol_L,mg_dL}
-	public enum Weight_unit{lbs,kg}	
-	//public enum Height_unit{ft_in,in,cm}
-	//public static final String[] BloodPressure_unit = {"mm/Hg","Pa"};
-//	public static final String[] BloodGlucose_unit = {"mmol/L","mg/dL"};
-//	public static final String[] Weight_unit = {"lbs","kg"};
-//	public static final String[] Height_unit = {"ft/in","in","cm"};
+	
+	public static final String[] BloodPressure_unit = {"mm/Hg","Pa"};
+	public static final String[] BloodGlucose_unit = {"mmol/L","mg/dL"};
+	public static final String[] Weight_unit = {"lbs","kg"};
+	public static final String[] Height_unit = {"ft/in","in","cm"};
 
-	private JButton btnAppendNote;
 	private JButton btnConfirm;
 	private JButton btnCancel;
 
@@ -75,43 +51,20 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	private JLabel lblIn;
 	private JLabel lblCm;
 	private JLabel lblBP;
-	private JLabel lblWeightUnit;
 
 	private JTextArea textArea_Notes;
 	
 	private JComboBox cbBP_unit;
 	private JComboBox cbBG_unit;
-	private JComboBox cbHeight_unit;
 	private JComboBox cbWeight_unit;
 	/*
 	 * private JScrollPane scrollPane_Comments; private JTextArea
 	 * textArea_Comment; private JButton btnAppendComment;
 	 */
-	private JButton btnAppendCancel;
-
-/*	private JRadioButton rdbtnKg;
-	private JRadioButton rdbtnLbs;
-	private JRadioButton rdbtnCm;
-	private JRadioButton rdbtnIn;
-	private JRadioButton rdbtnFtin;
-	private JRadioButton rdbtnMgdl;
-	private JRadioButton rdbtnMmoll;
-	private JRadioButton rdbtnPa;
-	private JRadioButton rdbtnMmhg;*/
-	/*private ButtonGroup buttonGroupBP = new ButtonGroup();
-	private ButtonGroup buttonGroupHeight = new ButtonGroup();
-	private ButtonGroup buttonGroupWeight = new ButtonGroup();
-	private ButtonGroup buttonGroupBloodGlucose = new ButtonGroup();*/
-
-	private JTabbedPane tabbedPane;
-	private JPanel vitalsTabView;
 
 	public String heightUnit;
-	private JTable vitalsTable;
-	private JPanel panel_VitalsForm;// we don't need it anymore
+	//private JPanel panel_VitalsForm;// we don't need it anymore
 	private JCheckBox chckbxFasting;
-	private JLabel lblBGLevelUnit;
-	private JScrollPane scrollPane;
 	/**
 	 * Create the panel.
 	 */
@@ -135,72 +88,31 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 			Vital vitals = getMasterModel().getVitalsL().getMyList().get(index);
 			textField_BPS.setText("" + vitals.getBps());
 			textField_BPD.setText("" + vitals.getBpd());
-			if (vitals.getBpUnit().equals(Vital.MMHG)) {
-				rdbtnMmhg.setSelected(true);
-			} else {
-				rdbtnPa.setSelected(true);
+			for(int i =0;i<this.BloodPressure_unit.length;i++){
+				if(BloodPressure_unit[i].equals(vitals.getBgUnit()))
+					this.cbBP_unit.setSelectedIndex(i);
 			}
 			if (vitals.isFasting()) {
 				chckbxFasting.setSelected(true);
 			}
 			textField_BGLevel.setText(String.valueOf(vitals.getBg()));
-			if (vitals.getBgUnit().equals(Vital.mmolL)) {
-				rdbtnMmoll.setSelected(true);
-			} else {
-				rdbtnMgdl.setSelected(true);
+			for(int i =0;i<this.BloodGlucose_unit.length;i++){
+				if(BloodGlucose_unit[i].equals(vitals.getBgUnit()))
+					this.cbBG_unit.setSelectedIndex(i);
 			}
 			textField_O2Sat.setText(String.valueOf(vitals.getO2sat()));
 			textField_Hb.setText(String.valueOf(vitals.getHb()));
-			if (vitals.getHUnit().equals(Vital.FTIN)) {
-				textField_Ft.setText(String.valueOf(vitals.getHFeet()));
-				textField_In.setText(String.valueOf(vitals.getHInches()));
-				rdbtnFtin.setSelected(true);
-			} else if (vitals.getHUnit().equals(Vital.IN)) {
-				textField_In.setText(String.valueOf(vitals.getHInches()));
-				rdbtnIn.setSelected(true);
-			} else {
-				textField_Cm.setText(String.valueOf(vitals.getHCm()));
-				rdbtnCm.setSelected(true);
-			}
+			textField_Ft.setText(String.valueOf(vitals.getHFeet()));
+			textField_In.setText(String.valueOf(vitals.getHInches()));
+			textField_Cm.setText(String.valueOf(vitals.getHCm()));
 			textField_Weight.setText(String.valueOf(vitals.getWeight()));
-			if (vitals.getWUnit().equals(Vital.LBS)) {
-				rdbtnLbs.setSelected(true);
-			} else {
-				rdbtnKg.setSelected(true);
+			for(int i =0;i<this.Weight_unit.length;i++){
+				if(Weight_unit[i].equals(vitals.getBgUnit()))
+					this.cbWeight_unit.setSelectedIndex(i);
 			}
 			textArea_Notes.setText(vitals.getNotes());
 		}
 	}
-	//disable component
-	private void prepareExistingVitalView() {
-		chckbxFasting.setEnabled(false);
-		for (Component c : panel_VitalsForm.getComponents()) {
-			if (c instanceof JPanel) {
-				for (Component c2 : ((JPanel) c).getComponents()) {
-					if (c2 instanceof JTextField) {
-						((JTextField) c2).setEditable(false);
-					} else if (c2 instanceof JPanel) {
-						for (Component c3 : ((JPanel) c2).getComponents()) {
-							if (c3 instanceof JRadioButton) {
-								((JRadioButton) c3).setEnabled(false);
-							}
-						}
-					}
-				}
-			}
-		}
-		textArea_Notes.setEditable(false);
-		btnConfirm.setVisible(false);
-	}
-
-	/*
-	 * private class AppendListener implements ActionListener {
-	 * 
-	 * @Override public void actionPerformed(ActionEvent e) {
-	 * btnAppendNote.setVisible(false); panel_CommentForm.setVisible(true); }
-	 * 
-	 * }
-	 */
 
 	private class ConfirmVitalListener implements ActionListener {
 		@Override
@@ -221,12 +133,10 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	private class UpdateVitalListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO
+			//TODO
 		}
 
 	}
-
-	// TODO use as many final static strings from Vitals as possible
 
 	private void save() {
 		StringBuilder sb = new StringBuilder(128);
@@ -288,7 +198,12 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 				ft, in,cm,"ft:in:cm",w,cbWeight_unit.getSelectedItem().toString(),
 				textArea_Notes.getText());
 		try {
-			vitals.setId(this.getMasterModel().getVitalsL().insert(vitals));
+			if(index==-1)
+				vitals.setId(this.getMasterModel().getVitalsL().insert(vitals));
+			else{
+				vitals.setId(this.getMasterModel().getVitalsL().getMyList().get(index).getId());
+				this.getMasterModel().getVitalsL().update(vitals,this.index);
+			}
 		} catch (GatewayException e) {
 			System.err.println("from VitalNewView, can not insert to DB.");
 		}
@@ -299,8 +214,10 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		setLayout(new BorderLayout());
 		JPanel panel_ConfirmCancel = new JPanel();
 		add(panel_ConfirmCancel, BorderLayout.SOUTH);
-
-		btnConfirm = new JButton("Save");
+		if(this.index==-1)
+			btnConfirm = new JButton("Insert");
+		else
+			btnConfirm = new JButton("Update");
 		panel_ConfirmCancel.add(btnConfirm);
 
 		btnCancel = new JButton("Cancel");
@@ -308,7 +225,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 		// Main panels where all the fun stuff is
 
-		panel_VitalsForm = new JPanel();
+		JPanel panel_VitalsForm = new JPanel();
 		panel_VitalsForm.setBorder(new TitledBorder(null, "Vitals", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		//panel_CenterMain.add(panel_VitalsForm, BorderLayout.CENTER);
 		this.add(panel_VitalsForm, BorderLayout.CENTER);
@@ -327,28 +244,21 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		textField_BPS = new JTextField("0");
 		panel_BloodPressure.add(textField_BPS, "cell 1 0,alignx left");
 		textField_BPS.setColumns(5);
-		textField_BPS.addKeyListener(new KeyListener(){
+		textField_BPS.addFocusListener(new FocusListener(){
 
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void focusGained(FocusEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+			public void focusLost(FocusEvent arg0) {
 				try{
-					Float.parseFloat(textField_BPS.getText().trim());
+					textField_BPS.setText(""+Float.parseFloat(textField_BPS.getText().trim()));
 				}catch(Exception ex){
 					textField_BPS.setText("0");
 				}
-			}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 		});
@@ -358,33 +268,26 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		textField_BPD = new JTextField("0");
 		panel_BloodPressure.add(textField_BPD, "cell 3 0,alignx left");
 		textField_BPD.setColumns(5);
-		textField_BPD.addKeyListener(new KeyListener(){
+		textField_BPD.addFocusListener(new FocusListener(){
 
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void focusGained(FocusEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+			public void focusLost(FocusEvent arg0) {
 				try{
-					Float.parseFloat(textField_BPD.getText().trim());
+					textField_BPD.setText(""+Float.parseFloat(textField_BPD.getText().trim()));
 				}catch(Exception ex){
 					textField_BPD.setText("0");
 				}
 			}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
 			
 		});
 		//TODO change to combobox
-		cbBP_unit = new JComboBox(BloodPressure_unit.values());
+		cbBP_unit = new JComboBox(BloodPressure_unit);
 		cbBP_unit.setSelectedIndex(0);
 		panel_BloodPressure.add(cbBP_unit, "cell 4 0,alignx left");
 
@@ -405,33 +308,26 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		textField_BGLevel = new JTextField("0");
 		panel_BloodGlucose.add(textField_BGLevel, "cell 2 0,alignx left");
 		textField_BGLevel.setColumns(5);
-		textField_BGLevel.addKeyListener(new KeyListener(){
+		textField_BGLevel.addFocusListener(new FocusListener(){
 
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void focusGained(FocusEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+			public void focusLost(FocusEvent arg0) {
 				try{
-					Float.parseFloat(textField_BGLevel.getText().trim());
+					textField_BGLevel.setText(""+Float.parseFloat(textField_BGLevel.getText().trim()));
 				}catch(Exception ex){
 					textField_BGLevel.setText("0");
 				}
 			}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
 			
 		});
 		// TODO chang to combobox
-		cbBG_unit = new JComboBox(BloodGlucose_unit.values());
+		cbBG_unit = new JComboBox(BloodGlucose_unit);
 		cbBG_unit.setSelectedIndex(0);
 		panel_BloodGlucose.add(cbBG_unit, "cell 3 0,alignx left");
 		
@@ -448,28 +344,21 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		textField_O2Sat = new JTextField("0");
 		panel_O2Saturation.add(textField_O2Sat, "cell 1 0,alignx left");
 		textField_O2Sat.setColumns(5);
-		textField_O2Sat.addKeyListener(new KeyListener(){
+		textField_O2Sat.addFocusListener(new FocusListener(){
 
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void focusGained(FocusEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+			public void focusLost(FocusEvent arg0) {
 				try{
-					Float.parseFloat(textField_O2Sat.getText().trim());
+					textField_O2Sat.setText(""+Float.parseFloat(textField_O2Sat.getText().trim()));
 				}catch(Exception ex){
 					textField_O2Sat.setText("0");
 				}
-			}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 		});
@@ -490,28 +379,21 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		textField_Hb = new JTextField("0");
 		panel_Hemoglobin.add(textField_Hb, "flowx,cell 1 0,alignx left,aligny center");
 		textField_Hb.setColumns(5);
-		textField_Hb.addKeyListener(new KeyListener(){
+		textField_Hb.addFocusListener(new FocusListener(){
 
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void focusGained(FocusEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+			public void focusLost(FocusEvent arg0) {
 				try{
-					Float.parseFloat(textField_Hb.getText().trim());
+					textField_Hb.setText(""+Float.parseFloat(textField_Hb.getText().trim()));
 				}catch(Exception ex){
 					textField_Hb.setText("0");
 				}
-			}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
 			}
 			
 		});
@@ -535,13 +417,13 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
+				
 				int ft=0,in=0,cm=0;
 				try{
 					ft = Integer.parseInt(textField_Ft.getText().trim());
@@ -562,12 +444,12 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 			
 		});
-		//TODO change to combobox
+	
 		lblFt = new JLabel("ft");
 		panel_Height.add(lblFt, "cell 2 0");
 
@@ -578,14 +460,13 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				int ft=0,in=0,cm=0;
+								int ft=0,in=0,cm=0;
 				try{
 					in = Integer.parseInt(textField_In.getText().trim());
 				}catch (Exception exft){
@@ -606,8 +487,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
+								
 			}
 			
 		});
@@ -623,13 +503,12 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
+				
 				
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
 				int ft=0,in=0,cm=0;
 				try{
 					cm = Integer.parseInt(textField_Cm.getText().trim());
@@ -647,8 +526,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
+							
 			}
 			
 		});
@@ -669,32 +547,27 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		textField_Weight = new JTextField("0");
 		panel_Weight.add(textField_Weight, "flowx,cell 1 0,alignx left");
 		textField_Weight.setColumns(5);
-		textField_Weight.addKeyListener(new KeyListener(){
+		textField_Weight.addFocusListener(new FocusListener(){
 
 			@Override
-			public void keyPressed(KeyEvent arg0) {
+			public void focusGained(FocusEvent arg0) {
 				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
-			public void keyReleased(KeyEvent arg0) {
-				// TODO Auto-generated method stub
+			public void focusLost(FocusEvent arg0) {
 				try{
-					Float.parseFloat(textField_Weight.getText().trim());
+					textField_Weight.setText(""+Float.parseFloat(textField_Weight.getText().trim()));
 				}catch(Exception ex){
 					textField_Weight.setText("0");
 				}
 			}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
+			
 		});
-		//TODO change to combobox
-		cbWeight_unit = new JComboBox(Weight_unit.values());
+		
+		
+		cbWeight_unit = new JComboBox(Weight_unit);
 		cbWeight_unit.setSelectedIndex(0);
 		panel_Weight.add(cbWeight_unit, "cell 1 0");
 		
@@ -718,8 +591,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 	@Override
 	public void HideallView() {
-		// TODO Auto-generated method stub
-
+	
 	}
 
 	@Override
@@ -729,8 +601,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 	@Override
 	public void ShowView() {
-		// TODO Auto-generated method stub
-		this.reload();
+				this.reload();
 		this.setVisible(true);
 	}
 
