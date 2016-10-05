@@ -34,10 +34,11 @@ public class PanelSLE extends JPanel implements viewinterface {
 	
 	private JPanel panel_SLE_Sketch;
 	private JLabel label_SLE_Sketch;
+	private boolean hasImage;
 	
 	
 	public PanelSLE(int index) {
-				
+		hasImage = false;
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Slit Lamp Exam", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[grow]", "[grow][][grow]"));
 		setBackground(CL.turq);
@@ -124,5 +125,25 @@ public class PanelSLE extends JPanel implements viewinterface {
 	@Override
 	public HomeView getHomeView() {
 		return ((VisitDetailView)this.getParent()).getHomeView();
+	}
+
+	public PanelPupils getPanelPupils() {
+		return panel_Pupils;
+	}
+
+	public PanelLens getPanelLens() {
+		return panel_Lens;
+	}
+
+	public JPanel getPanelSLESketch() {
+		return panel_SLE_Sketch;
+	}
+
+	public PanelAC getPanelAC() {
+		return panel_AC;
+	}
+	
+	public boolean hasImage() {
+		return hasImage;
 	}
 }

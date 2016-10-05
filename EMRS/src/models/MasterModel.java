@@ -18,8 +18,9 @@ public class MasterModel {
 	private VisitList vL;
 	private VitalsList vitalsL;
 	private SurgeryTemplatesList stll;
-	
-	
+
+
+		
 	public MasterModel () {
 		
 		currPatient=null;
@@ -32,7 +33,10 @@ public class MasterModel {
 		vL = new VisitList();
 		vitalsL = new VitalsList();
 		stll = new SurgeryTemplatesList();
+		
+		
 	}
+	
 	public void loadmaster(Patient patient){
 		
 		try {
@@ -48,6 +52,7 @@ public class MasterModel {
 		} catch (GatewayException e) {
 			System.err.println("from MasterModel, can not fetch from database");
 		}
+		
 			
 	}
 	public Patient getCurrPatient() {
@@ -131,4 +136,6 @@ public class MasterModel {
 	public void setStll(SurgeryTemplatesList stll) {
 		this.stll = stll;
 	}
+	
+
 }

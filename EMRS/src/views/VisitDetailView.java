@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -16,7 +17,14 @@ import database.GatewayException;
 import models.AnteriorChamber;
 import models.CL;
 import models.DistanceVision;
+import models.FundusExam;
+import models.GlassesRx;
+import models.Gonio;
+import models.Lens;
 import models.MasterModel;
+import models.Pupils;
+import models.Refraction;
+import models.Sketches;
 import models.Visit;
 import net.miginfocom.swing.MigLayout;
 import visitPanels.PanelFundus;
@@ -43,7 +51,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	private JPanel panel_Buttons;
 	private JButton btnSave;
 	private JButton btnCancel;
-	
+
 	
 	
 	/*
@@ -52,7 +60,6 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	 */
 	public VisitDetailView(int index) {
 		
-
 		this.index = index;
 		
 		createView();
@@ -63,8 +70,11 @@ public class VisitDetailView extends JPanel implements viewinterface {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			
 			MasterModel mm = VisitDetailView.this.getVisitTabMasterView().getMasterModel();
+			
 			try {
+				
 				mm.getvL().insert(new Visit(
 						-1,
 						mm.getCurrPatient().getId(),
@@ -73,26 +83,70 @@ public class VisitDetailView extends JPanel implements viewinterface {
 						textArea_Plan.getText(),
 						null
 						));
+				
 				Visit v = mm.getvL().getMyList().get(0); // the one we just inserted
 				
+				System.err.println(v.getId() + " vid: ");
 				DistanceVision dv = panel_Vision.getPDV().newDV();
+				System.err.println("dv " + dv.toString());
 				dv.setVid(v.getId());
-				dv.insertDV(dv);
+				System.err.println("dv vid " + dv.getVid());
+				dv.setId(dv.insertDV(dv));
+				System.err.println("dv id " + dv.getId());
 				v.setMyDV(dv);
 				
+				GlassesRx g = panel_Vision.getPGRx().newGRx();
+				g.setVid(v.getId());
+				g.setId(g.insertGRx(g));
+				v.setMyGlsRx(g);
 				
+				Refraction r = panel_Vision.getPanelRefrac().newRefrac();
+				r.setVid(v.getId());
+				r.setId(r.insertRefrac(r));
+				v.setMyRefraction(r);
 				
+				Pupils p = panel_SLE.getPanelPupils().createNewPupils();
+				p.setVid(v.getId());
+				p.setId(p.insertPupils(p));
+				v.setMyPupils(p);
 				
+				AnteriorChamber ac = panel_SLE.getPanelAC().createNewAC();
+				ac.setVid(v.getId());
+				ac.setId(ac.insertAC(ac));
+				
+				Lens l = panel_SLE.getPanelLens().createNewLens();
+				l.setVid(v.getId());
+				l.setId(l.insertLens(l));
+				v.setMyLens(l);
+				
+				Gonio go = panel_Gonio.createNewGonio();
+				go.setVid(v.getId());
+				go.setId(go.insertGonio(go));
+				v.setMyGonio(go);
+				
+				FundusExam fe = panel_Fundus.createNewFundusExam();
+				fe.setVid(v.getId());
+				fe.setId(fe.insertFundus(fe));
+				v.setMyFE(fe);
+				
+				//TODO IOP
+				
+				Sketches s = new Sketches();
+				// TODO: need to delete files after adding them...so not add wrong ones!
+				s.insertSLESketch(new File("firstSketch.png"), v.getId());
+				s.insertFundusSketch(new File("FundusTempSketch.png"), v.getId());
+				s.insertGonioSketch(new File("GonioTempSketch.png"), v.getId());
+				
+				v.setSketches(s);
+				
+								
 			} catch (GatewayException e) {
 				System.err.println("From VisitDetailView: Could not insert new Visit into DB.");
-//				e.printStackTrace();
+				e.printStackTrace();
 			}
-					
-//					new Visit(
-//					-1,
-//					mm.getCurrPatient().getId(),
-//					
-//					));
+
+			VisitTabMasterView parent = getVisitTabMasterView();
+			parent.showListVisitView();
 		}
 				
 	}
@@ -250,6 +304,5 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	public void showNewView() {
 		panel_Buttons.setVisible(true);
 	}
-	
-	
+
 }

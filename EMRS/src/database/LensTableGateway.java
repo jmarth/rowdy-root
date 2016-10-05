@@ -4,7 +4,7 @@ import models.Lens;
 
 public interface LensTableGateway {
 	
-	public long insertLensForVisit(Lens dv) throws GatewayException;
+	public long insertLens(Lens dv) throws GatewayException;
 
 	public Lens fetchLensForVisit(long vid) throws GatewayException;
 

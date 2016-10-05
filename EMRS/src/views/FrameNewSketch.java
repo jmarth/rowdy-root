@@ -62,7 +62,7 @@ public class FrameNewSketch extends JFrame {
 		// create draw area
 		drawArea = new DrawArea();
 		
-		// add drawArea to scrollpane
+		// add drawArea to scroll pane
 		scrollPane.add(drawArea);
 		scrollPane.setViewportView(drawArea);
 		
@@ -197,6 +197,8 @@ public class FrameNewSketch extends JFrame {
 	public class SaveListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {
+			
+			
 			
 			BufferedImage im = new BufferedImage(drawArea.getWidth(), drawArea.getHeight(),
 					BufferedImage.TYPE_INT_ARGB);

@@ -92,7 +92,7 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		
 		//init new id to invalid
 		long newId = 0;
-		
+		System.err.println("1");
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
@@ -110,17 +110,16 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 			st.setString(2, v.getChiefComplaint());
 			st.setString(3, v.getAssessment());
 			st.setString(4, v.getPlan());
-	
+			System.err.println("1");
 			st.executeUpdate();
-			
+			System.err.println("1");
 			//get the generated key
 			rs = st.getGeneratedKeys();
-			
 			if(rs != null && rs.next()) {
 			    newId = rs.getLong(1);
 			} else {
 				throw new GatewayException("Could not insert new record.");
-			}
+			}		    
 			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());

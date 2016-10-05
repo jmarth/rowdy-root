@@ -773,4 +773,42 @@ public class PanelGonio extends JPanel implements viewinterface {
 	public HomeView getHomeView() {
 		return ((VisitDetailView)this.getParent()).getHomeView();
 	}
+	
+public Gonio createNewGonio() {
+		
+		String ODDegreeN = (String)comboBox_GonioODN.getSelectedItem();
+		String ODDegreeC = (String)comboBox_GonioODC.getSelectedItem();
+		String OSDegreeN = (String)comboBox_GonioOSN.getSelectedItem();
+		String OSDegreeC = (String)comboBox_GonioOSC.getSelectedItem();
+		
+		Gonio g = new Gonio(
+				
+				rdbtnYHFHA.isSelected() ? 1 : rdbtnNHFHA.isSelected() ? 0 : -1,
+				getSelectedButtonText(bgSide) == null ? "" : getSelectedButtonText(bgSide),
+				
+				chckbxNormalGonioOD.isSelected() ? 1 : 0,
+				getSelectedButtonText(bgODNonABCD) == null ? "" : getSelectedButtonText(bgODNonABCD),
+				getSelectedButtonText(bgODCompABCD) == null ? "" : getSelectedButtonText(bgODCompABCD),
+				ODDegreeN,
+				ODDegreeC,
+				getSelectedButtonText(bgODNonRSQ) == null ? "" : getSelectedButtonText(bgODNonRSQ),
+				getSelectedButtonText(bgODCompRSQ) == null ? "" : getSelectedButtonText(bgODCompRSQ),
+				getSelectedButtonText(bgODPig) == null ? "" : getSelectedButtonText(bgODPig),
+				rdbtn_Y_AntPigLineOD.isSelected() ? 1 : rdbtn_N_AntPigLineOD.isSelected() ? 0 : -1,
+
+				
+				chckbxNormalGonioOS.isSelected() ? 1 : 0,
+				getSelectedButtonText(bgOSNonABCD) == null ? "" : getSelectedButtonText(bgOSNonABCD),
+				getSelectedButtonText(bgOSCompABCD) == null ? "" : getSelectedButtonText(bgOSCompABCD),
+				OSDegreeN,
+				OSDegreeC,
+				getSelectedButtonText(bgOSNonRSQ) == null ? "" : getSelectedButtonText(bgOSNonRSQ),
+				getSelectedButtonText(bgOSCompRSQ) == null ? "" : getSelectedButtonText(bgOSCompRSQ),
+				getSelectedButtonText(bgOSPig) == null ? "" : getSelectedButtonText(bgOSPig),
+				rdbtn_Y_AntPigLineOS.isSelected() ? 1 : rdbtn_N_AntPigLineOS.isSelected() ? 0 : -1
+				
+				);
+		
+		return g;
+	}
 }

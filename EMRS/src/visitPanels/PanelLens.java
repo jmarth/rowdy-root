@@ -245,4 +245,40 @@ public class PanelLens extends JPanel implements viewinterface {
 	public HomeView getHomeView() {
 		return ((PanelSLE)this.getParent()).getHomeView();
 	}
+
+	public Lens createNewLens() {
+		
+		
+		Lens l = new Lens(
+				String.valueOf(comboBox_SLE_NS_OD.getSelectedItem()),
+				textField_SLE_NS_OD.getText(),
+				
+				String.valueOf(comboBox_SLE_NS_OS.getSelectedItem()),
+				textField_SLE_NS_OS.getText(),
+				
+				chckbxStableLensOD.isSelected() ? 1 : 0,
+				chckbxStableLensOS.isSelected() ? 1 : 0,
+				
+				chckbx_SLE_Pseudophakia_OD.isSelected() ? 1 : 0,
+				chckbx_SLE_Pseudophakia_OS.isSelected() ? 1 : 0,
+				
+				chckbx_SLE_PCO_OD.isSelected() ? 1 : 0,
+				chckbx_SLE_PCO_OS.isSelected() ? 1 : 0,
+				
+				String.valueOf(comboBox_SLE_Coritcal_OD.getSelectedItem()),
+				textField_SLE_Cortical_OD.getText(),
+				
+				String.valueOf(comboBox_SLE_Coritcal_OS.getSelectedItem()),
+				textField_SLE_Cortical_OS.getText(),
+				
+				String.valueOf(comboBox_SLE_PSC_OD.getSelectedItem()),
+				textField_SLE_PSC_OD.getText(),
+				
+				String.valueOf(comboBox_SLE_PSC_OS.getSelectedItem()),
+				textField_SLE_PSC_OS.getText()
+				
+				);
+		
+		return l;
+	}
 }

@@ -58,4 +58,12 @@ public class PanelVision extends JPanel implements viewinterface {
 	public PanelDistanceVision getPDV() {
 		return panelDV;
 	}
+
+	public PanelGlassesRx getPGRx() {
+		return panelGlsRx;
+	}
+
+	public PanelRefraction getPanelRefrac() {
+		return panelRefrac;
+	}
 }

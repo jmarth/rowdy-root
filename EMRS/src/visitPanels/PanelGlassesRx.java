@@ -137,4 +137,19 @@ public class PanelGlassesRx extends JPanel implements viewinterface {
 	public HomeView getHomeView() {
 		return ((PanelVision)this.getParent()).getHomeView();
 	}
+
+	public GlassesRx newGRx() {
+		GlassesRx g = new GlassesRx(
+				textField_Rx_OD_Sphere.getText(),
+				textField_Rx_OD_Cyl.getText(),
+				textField_Rx_OD_Axis.getText(),
+				textField_Rx_OD_Add.getText(),
+				textField_Rx_OS_Sphere.getText(),
+				textField_Rx_OS_Cyl.getText(),
+				textField_Rx_OS_Axis.getText(),
+				textField_Rx_OS_Add.getText(),
+				textField_GlassesRxNotes.getText()
+				);
+		return g;
+	}
 }

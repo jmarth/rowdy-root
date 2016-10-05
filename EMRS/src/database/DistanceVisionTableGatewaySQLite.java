@@ -41,7 +41,6 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 		DistanceVision dv = null;
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		
 		try {
 			
 			//fetch DistanceVision for Visit
@@ -62,7 +61,6 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 					rs.getString("DVODCC"),
 					rs.getString("DVOSCC")
 					);
-					
 				return dv;
 			}
 		
@@ -111,7 +109,7 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 					+ " DVOSCC)"
 					+ " values ( ?, ?, ?, ?, ? ) ",
 					PreparedStatement.RETURN_GENERATED_KEYS);
-			
+			System.err.println(dv.getVid());
 			st.setLong(1, dv.getVid());
 			st.setString(2, dv.getDVODSC());
 			st.setString(3, dv.getDVOSSC());

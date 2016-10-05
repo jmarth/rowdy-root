@@ -25,8 +25,7 @@ public class Visit {
 //	private Keratometry myK; TODO implement
 	
 	private Sketches mySketches;
-	
-	
+		
 	private File sketchTemp;
 	
 	public Visit(long id, long pid, String chiefComplaint, String assessment, String plan, String dateCreated) {
@@ -50,6 +49,7 @@ public class Visit {
 		myPupils = new Pupils();
 		myRefraction = new Refraction();
 		mySketches = new Sketches();
+		
 	}
 
 
@@ -217,7 +217,6 @@ public class Visit {
 		//TODO how it know the visit id if it not created before??
 		
 		
-		
 		myAC = myAC.loadAC(id);
 		myDV = myDV.loadDV(id);
 		myFE = myFE.loadFE(id);
@@ -236,13 +235,11 @@ public class Visit {
 		mySketches.loadSketches(id);
 	}
 	
-	public void insertX() {
-		myAC.insertAC(myAC);
-		
+	public void setSketches(Sketches s) {
+		mySketches =s;
 	}
-
-		
 	public Sketches getSketches() {
 		return mySketches;
 	}
+
 }

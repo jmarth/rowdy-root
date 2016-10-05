@@ -285,5 +285,37 @@ public class PanelFundus extends JPanel implements viewinterface {
 	public HomeView getHomeView() {
 		return ((VisitDetailView)this.getParent()).getHomeView();
 	}
-
+	
+	public FundusExam createNewFundusExam() {
+		
+		String cdOD = (String)comboBox_CD_OD.getSelectedItem();
+		String cdOS = (String)comboBox_CD_OS.getSelectedItem();
+ 		
+		FundusExam fe = new FundusExam(
+			chckbxDialated.isSelected() ? 1:0,
+			textField_Dial_Notes.getText(),
+			
+			chckbxAbnormal_CD_OD.isSelected() ? 1:0,
+			cdOD,
+			textField_CD_OD.getText(),
+			
+			chckbxAbnormal_CD_OS.isSelected() ? 1:0,
+			cdOS,
+			textField_CD_OS.getText(),
+			
+			checkBox_Retina_OD.isSelected() ? 1:0,
+			textField_Retina_OD.getText(),
+			
+			checkBox_Retina_OS.isSelected() ? 1:0,
+			textField_Retina_OS.getText(),
+			
+			checkBox_Macula_OD.isSelected() ? 1:0,
+			textField_Macula_Notes_OD.getText(),
+			
+			checkBox_Macula_OS.isSelected() ? 1:0,
+			textField_Macula_Notes_OS.getText()
+			);
+		
+		return fe;
+	}
 }

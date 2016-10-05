@@ -107,7 +107,11 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 
 	@Override
 	public void reload() {
-		DistanceVision dv = getMasterModel().getCurrentPatientVisitList().get(index).getMyDV();
+//		System.err.println("List: " + getMasterModel().getvL().getMyList() +"\nIndex: "+index);
+		DistanceVision dv = getMasterModel().getvL().getMyList().get(index).getMyDV();
+		
+		if (dv == null)
+			System.out.println("Null?");
 		textField_DVODSC.setText(dv.getDVODSC());
 		textField_DVOSSC.setText(dv.getDVOSSC());
 		textField_DVODCC.setText(dv.getDVODCC());

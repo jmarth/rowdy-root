@@ -50,9 +50,11 @@ public class VisitList {
 		
 		try {
 			myList = myGateway.fetchVisitsForPatient(p.getId());
-
+			
 			for(Visit e:myList){
+				
 				e.loadVisitFromPatient();
+//				System.err.println("visit e: " + e.getMyDV().getId());
 				myVidMap.put(e.getId(), e);
 			}
 

@@ -170,6 +170,18 @@ public class GlassesRx {
 		}
 		return null;
 	}
-	
-	
+
+	public long insertGRx(GlassesRx g) {
+		long id= -1;
+		
+		try {
+			id = myGateway.insertGlassesRx(g);
+		} catch (GatewayException e) {
+			System.err.println("From GlassesRx: cannot insert to DB.");
+//			e.printStackTrace();
+		}
+		
+		
+		return id;
+	}	
 }

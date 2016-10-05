@@ -234,6 +234,20 @@ public class Lens {
 		}
 		return null;
 	}
+
+	public long insertLens(Lens l) {
+		long id= -1;
+		
+		try {
+			id = myGateway.insertLens(l);
+		} catch (GatewayException e) {
+			System.err.println("From Lens: cannot insert to DB.");
+//			e.printStackTrace();
+		}
+		
+		
+		return id;
+	}
 }
 	
 	

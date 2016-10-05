@@ -17,7 +17,7 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 
 	private JScrollPane scrollPane;
 	private VisitDetailView visitNewView;
-	private VisitListView visitListView;
+	private VisitListView visit_ListView;
 	private JButton btnNewVisit;
 	private JButton btnCancelVisit;
 
@@ -28,9 +28,9 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 
 		scrollPane = new JScrollPane();
 		
-		visitListView = new VisitListView();
-		
-		scrollPane.add(visitListView);
+		visit_ListView = new VisitListView();
+//		
+		scrollPane.add(visit_ListView);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
 		add(scrollPane, BorderLayout.CENTER);
@@ -86,22 +86,29 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 	
 	public void showListVisitFromNewView() {
 		this.HideallView();
-		scrollPane.setViewportView(visitListView); //reload
+		scrollPane.setViewportView(visit_ListView); //reload
 		scrollPane.validate();
 		scrollPane.repaint();
-		visitListView.ShowView();
-		this.showNewButton();
+		visit_ListView.ShowView();
+//		this.showNewButton();
 	}
 	
 	public void showListVisitView() {
 		this.HideallView();
-		visitListView.reload(); // returns patient record view
-		scrollPane.setViewportView(visitListView); //reload
+		if(visit_ListView != null) {
+			scrollPane.remove(visit_ListView);
+		}
+		visit_ListView = new VisitListView();
+		scrollPane.add(visit_ListView);
+		
+		visit_ListView.reload(); // returns patient record view
+		
+		scrollPane.setViewportView(visit_ListView); //reload
 		scrollPane.validate();
 		scrollPane.repaint();
 
-		visitListView.ShowView();
-		this.showNewButton();
+//		visitListView.ShowView();
+//		this.showNewButton();
 	}
 	
 	public void showNewVisitView() {
@@ -116,22 +123,22 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 		scrollPane.setViewportView(visitNewView);
 		
 		visitNewView.showNewView();//for save button
-		this.showCancelButton();
+//		this.showCancelButton();
 	}
 	
-	public void showCancelButton() {
-		this.remove(btnNewVisit);
-		this.add(btnCancelVisit, BorderLayout.SOUTH);
-		this.validate();
-		this.repaint();
-	}
+//	public void showCancelButton() {
+//		this.remove(btnNewVisit);
+//		this.add(btnCancelVisit, BorderLayout.SOUTH);
+//		this.validate();
+//		this.repaint();
+//	}
 	
-	public void showNewButton() {
-		this.remove(btnCancelVisit);
-		this.add(btnNewVisit, BorderLayout.SOUTH);
-		this.validate();
-		this.repaint();
-	}
+//	public void showNewButton() {
+//		this.remove(btnCancelVisit);
+//		this.add(btnNewVisit, BorderLayout.SOUTH);
+//		this.validate();
+//		this.repaint();
+//	}
 
 	@Override
 	public void reload() {
