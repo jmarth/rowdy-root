@@ -91,7 +91,6 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	@Override
 	public void ShowView() {
 		this.reload();
-		//scrollPane.setBounds(this.getBounds());
 		this.setVisible(true);
 	}
 	@Override

@@ -690,8 +690,8 @@ public class AddPatientView extends JPanel implements viewinterface  {
 			public void actionPerformed(ActionEvent e)
 			{
 				hideBalloonTips();
-				if(AddPatientView.this.updateorinsert==AddPatientView.this.UPDATEPATIENT){
-					AddPatientView.this.getHomeView().getPrview().ShowDemographicsView();
+				if(AddPatientView.this.updateorinsert==AddPatientView.this.UPDATEPATIENT || AddPatientView.this.getMasterModel().getCurrPatient()!=null){
+					AddPatientView.this.getHomeView().ShowPatientRecode();
 				}else{
 					AddPatientView.this.getHomeView().ShowHomeView();
 				}
@@ -755,7 +755,8 @@ public class AddPatientView extends JPanel implements viewinterface  {
 						}
 						model.setCurrPatient(patient);
 						HomeView hv =AddPatientView.this.getHomeView();
-						hv.getPrview().ShowDemographicsView();
+						//hv.getPrview().ShowDemographicsView();
+						hv.ShowPatientRecode();
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -960,10 +961,8 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	@Override
 	public void ShowView() {
 		if(this.updateorinsert==this.UPDATEPATIENT){
-			this.reload();
 			this.btnNewButton.setText("Update");
 		}else{
-			this.clearinput();
 			this.btnNewButton.setText("Insert");
 		}
 		this.setVisible(true);

@@ -478,8 +478,7 @@ public class DemographicView extends JPanel implements viewinterface {
 		editbutton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				DemographicView.this.getHomeView().getPview().setUpdateorinsert(AddPatientView.UPDATEPATIENT);
-				DemographicView.this.getHomeView().ShowAddPatientView();
+				DemographicView.this.getHomeView().ShowUpdatePatientView();
 			}
 		});
 	}
