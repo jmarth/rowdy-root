@@ -142,7 +142,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 			}
 
 			VisitTabMasterView parent = getVisitTabMasterView();
-			parent.showListVisitView();
+			parent.showList_VisitView();
 		}
 				
 	}
@@ -152,7 +152,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			VisitTabMasterView parent = getVisitTabMasterView();
-			parent.showListVisitView();
+			parent.showList_VisitView();
 		}
 	}
 	
