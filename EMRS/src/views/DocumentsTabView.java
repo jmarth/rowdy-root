@@ -71,22 +71,20 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	private final JFileChooser fc = new JFileChooser();
 	
 	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Files", "pdf", "jpg");
-	
-	private File filePath;
+
 	private JPanel filesPanel;
 	private JList fileList;
 	private Document selectedDocument;
-	private DocumentListController docListController;
 	private JScrollPane docScrollPane;
 	private JButton btnRemoveDocument;
 	
 	public DocumentsTabView(){
-		docListController = new DocumentListController();
 		this.setLayout(new BorderLayout());
+		selectedDocument=null;
 		docPane = new JPanel();
 		docPane.setLayout(new BoxLayout(docPane, BoxLayout.Y_AXIS));
 		docPane.setBackground(CL.antiqueWhite);
-		scroller = new JScrollPane(docPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scroller = new JScrollPane(docPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		fc.setFileFilter(filter);
 		uploadButton = new JButton("Upload");
 		uploadButton.addActionListener(new ActionListener() {
@@ -94,17 +92,17 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 			public void actionPerformed(ActionEvent e) {
 				// Add and insert into DB.. update JList
 				int retval = fc.showOpenDialog(null);
-				
+				File file;
 				if (retval == JFileChooser.APPROVE_OPTION) {
 					docPane.removeAll();
-					filePath = fc.getSelectedFile();
+					file = fc.getSelectedFile();
 				} else {
 					return;
 				}
 				
-				String ext = FilenameUtils.getExtension(filePath.getAbsolutePath());
+				String ext = FilenameUtils.getExtension(file.getAbsolutePath());
 				Document tmpDoc = new Document(DocumentsTabView.this.getMasterModel().getCurrPatient().getId(),
-						filePath.getName(), filePath.getAbsolutePath(), ext);
+						file.getName(), file.getAbsolutePath(), ext);
 				try {
 					DocumentsTabView.this.getMasterModel().getdL().insert(tmpDoc);
 					reload();
@@ -145,19 +143,8 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 			public void mouseClicked(MouseEvent evt) {
 				if(evt.getClickCount() > 1){
 					int index = fileList.locationToIndex(evt.getPoint());
-					selectedDocument = docListController.getElementAt(index);
-					
-					docPane.removeAll();
-					
-					// Open the selected Document onto the screen
-					File file = new File(selectedDocument.getPath());
-					
-					if(selectedDocument.getType().equalsIgnoreCase("pdf")){
-						loadPDF(file);
-					} else if(selectedDocument.getType().equalsIgnoreCase("jpg")){
-						loadJPG(file);
-					}
-					
+					selectedDocument = (Document)fileList.getSelectedValue();
+					loadDocpane();
 					// Calls to recreate the pane after selected file
 					docPane.updateUI();
 					docPane.validate();
@@ -176,26 +163,19 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 			public void actionPerformed(ActionEvent evt) {
 				// Do the removing part
 				int selectedIndex = fileList.getSelectedIndex();
-				//Document selectedDocument = docListController.getElementAt(selectedIndex);
-				
 				try {
-					//dtg.removeDocument(selectedDocument.getId())
-					DocumentsTabView.this.getMasterModel().getdL().delete(selectedIndex);
+					Document rvd = (Document)fileList.getSelectedValue();
+					if(selectedDocument!=null && rvd.getPath().equals(selectedDocument.getPath())){
+						DocumentsTabView.this.getMasterModel().getdL().delete(selectedIndex);
+						selectedDocument=null;
+					}else{
+						DocumentsTabView.this.getMasterModel().getdL().delete(selectedIndex);
+					}
+					System.out.println(selectedDocument);
 					reload();
 				} catch (GatewayException e) {
 					System.out.println(e.getMessage());
 				}
-				//dl.removeDocumentFromList(selectedDocument);
-				//docListController.setList(dl);
-				
-				// Calls to clear pane after deletion of file
-				/*docPane.removeAll();
-				docPane.updateUI();
-				docPane.validate();
-				docPane.repaint();
-				
-				fileList.repaint();
-				fileList.updateUI();*/
 			}
 		});
 		
@@ -222,6 +202,18 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	 * 
 	 * @param filePath
 	 */
+	private void loadDocpane(){
+		if(selectedDocument!=null){
+			File filePath = new File(selectedDocument.getPath());
+			if(selectedDocument.getType().equalsIgnoreCase("pdf")){
+				loadPDF(filePath);
+			} else if(selectedDocument.getType().equalsIgnoreCase("jpg")){
+				loadJPG(filePath);
+			}
+		}
+		docPane.getParent().validate();
+		this.repaint();
+	}
 	private void loadPDF(File file) {
 		int numPages, i;
 		JLabel label = null;
@@ -282,10 +274,7 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        
-        
-        
-        ImageIcon imageIcon = new ImageIcon(scaled);
+          ImageIcon imageIcon = new ImageIcon(scaled);
         JLabel jLabel = new JLabel();
         jLabel.setIcon(imageIcon);
         jLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -317,11 +306,10 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 
 	@Override
 	public void reload() {
-		//TODO
-		System.out.println(this.getMasterModel().getdL().getMyList().size());
-		docListController.setList(this.getMasterModel().getdL());
 		fileList.removeAll();
 		fileList.setListData(this.getMasterModel().getdL().getMyList().toArray());
+		docPane.removeAll();
+		loadDocpane();
 	}
 
 	@Override

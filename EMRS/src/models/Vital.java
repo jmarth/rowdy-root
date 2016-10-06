@@ -97,9 +97,9 @@ public class Vital {
 		this.weight = weight;
 		this.wUnit = wUnit;
 		this.notes = notes;
-		/*DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 		Date date = new Date();
-		this.dateCreated = dateFormat.format(date);*/
+		this.dateCreated = dateFormat.format(date);
 
 	}
 

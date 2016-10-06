@@ -1,28 +1,20 @@
 package views;
-import java.awt.Color;
+
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
-
 import models.MasterModel;
-
-import java.awt.BorderLayout;
-
-
 
 public class SlideShowPanel extends JPanel implements viewinterface {
 	//JLabel pic;
 	//Timer tm;
 	private int x = 0;
 	private BufferedImage currentimage;
-
 	//Images Path In Array
 	String[] list = {
 			"home-screen-images/100_4104.jpg",
@@ -40,26 +32,19 @@ public class SlideShowPanel extends JPanel implements viewinterface {
 			"home-screen-images/2010-08-10 13.17.28.jpg",
 			"home-screen-images/IMG_0593.jpg",
 			"home-screen-images/IMG_1107.jpg",
-			"home-screen-images/IMG_2349.jpg",
-
-			// image list
-		
+			"home-screen-images/IMG_2349.jpg"
     };
 	
 	public SlideShowPanel(){
 	    super();
-	    x=0;
-	
+	    x=0;	
 	    //Call The Function SetImageSize
         //SetImageSize(0);
-       //set a timer 550000
+	    //set a timer 550000
 	    Timer tm;
         tm = new Timer(10000,new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
-            	//System.out.println("switching");
-                //SetImageSize(x);
                 x += 1;
                 if(x >= list.length )
                     x = 0;

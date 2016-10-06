@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -59,7 +60,12 @@ public class HomeView extends JFrame implements viewinterface{
 	
 	private JButton btnAllergyAlert;
 	
-	private JPanel center;
+	//connection status
+	private JLabel lbhost;
+	private JLabel lbconnect;
+	private JLabel lbip;
+	private JButton btnft;
+	
 	/**
 	 * Home constructor.
 	 * 
@@ -81,9 +87,11 @@ public class HomeView extends JFrame implements viewinterface{
 		setTitle("EMRS");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		// set up contentPane panel
+		// set up homeview
 		this.setLayout(new BorderLayout());
 		this.setBackground(CL.cararra);
+		
+		//set up content panel
 		this.add(ssview,BorderLayout.CENTER);
 		btnHome = new JButton("");
 		btnAddPatient = new JButton("Add Patient");
@@ -91,6 +99,20 @@ public class HomeView extends JFrame implements viewinterface{
 		lblPatientSearch= new JLabel("Patient Search");
 		textFieldSearch = new JTextField();
 		btnLogout = new JButton("Logout");
+		
+		 //set up notification panel
+		JPanel npane = new JPanel(new GridLayout(1,4));
+		this.add(npane,BorderLayout.SOUTH);
+		lbip = new JLabel("Current IP: N/A");
+		npane.add(lbip);
+		lbhost = new JLabel("Host: N/A");
+		npane.add(lbhost);
+		lbconnect = new JLabel("Connection: N/A");
+		npane.add(lbconnect);
+		btnft = new JButton("Show Notification");
+		btnft.setBorderPainted(false);
+		npane.add(btnft);
+		btnft.setEnabled(false);
 		
 		//set up top bar panel
 		
@@ -172,7 +194,7 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		btnAddPatient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				paview.setUpdateorinsert(paview.INSERTPATIENT);
+				paview.clearinput();
 				HomeView.this.ShowAddPatientView();
 				
 			}
@@ -292,12 +314,7 @@ public class HomeView extends JFrame implements viewinterface{
 		northPanel.setLayout(gl_panel);
 		this.pack();
 	}
-//	private void updatecomponentsize(){
-//		paview.setBounds(0, 0, center.getWidth(), center.getHeight());
-//		ssview.setBounds(0, 0, center.getWidth(), center.getHeight());
-//		fpview.setBounds(0, 0, center.getWidth(), center.getHeight());
-//		prview.setBounds(0, 0, center.getWidth(), center.getHeight());
-//	}
+
 	/**
 	 *  Called by LoginView to show HomeView
 	 */
@@ -349,7 +366,7 @@ public class HomeView extends JFrame implements viewinterface{
 	public void ShowHomeView(){
 		this.HideallView();
 		this.add(ssview,BorderLayout.CENTER);
-		ssview.reload();
+		ssview.ShowView();
 		this.validate();
 		this.repaint();
 	}
@@ -357,20 +374,30 @@ public class HomeView extends JFrame implements viewinterface{
 		this.HideallView();
 		this.add(paview,BorderLayout.CENTER);
 		paview.clearinput();
+		paview.ShowView();
+		this.validate();
+		this.repaint();
+	}
+	public void ShowUpdatePatientView(){
+		this.HideallView();
+		this.add(paview,BorderLayout.CENTER);
+		paview.reload();
+		paview.ShowView();
 		this.validate();
 		this.repaint();
 	}
 	public void ShowFindPatientsView(){
 		this.HideallView();
 		this.add(fpview,BorderLayout.CENTER);
-		fpview.reload();
+		fpview.ShowView();
 		this.validate();
 		this.repaint();
 	}
 	public void ShowPatientRecode(){
 		this.HideallView();
 		this.add(prview,BorderLayout.CENTER);
-		prview.reload();
+		//prview.reload();
+		this.prview.ShowView();
 		this.validate();
 		this.validate();
 		this.repaint();

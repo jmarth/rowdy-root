@@ -188,7 +188,8 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 
 	@Override
 	public void reload() {
-		//TODO
+		viewinterface temp = (viewinterface) this.getComponentAt(this.getSelectedIndex());
+		temp.reload();
 	}
 
 	@Override
