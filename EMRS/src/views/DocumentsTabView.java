@@ -49,27 +49,16 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	//private DocumentTableGateway dtg;
 	
 	private JScrollPane scroller;
-	
 	private JScrollPane fileScroller;
-	
 	private JSplitPane splitPane;
-	
 	private JPanel docPane;
-	
 	private JPanel buttonPanel;
-	
 	private JPanel parentPane;
-	
 	private JPanel removeButtonPane;
-	
 	private static PDDocument doc;
-	
 	private static PDFRenderer docRenderer;
-	
 	private static JButton uploadButton;
-	
 	private final JFileChooser fc = new JFileChooser();
-	
 	private final FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Files", "pdf", "jpg");
 
 	private JPanel filesPanel;
@@ -109,8 +98,6 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 				} catch (GatewayException e1) {
 					System.out.println(e1.getMessage());
 				}
-				/*fileList.repaint();
-				fileList.updateUI();*/
 			}
 		});
 		
@@ -141,8 +128,10 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 		fileList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent evt) {
-				if(evt.getClickCount() > 1){
+				if(evt.getClickCount() > 0){
 					int index = fileList.locationToIndex(evt.getPoint());
+					if(index>-1)
+						fileList.setSelectedIndex(index);
 					selectedDocument = (Document)fileList.getSelectedValue();
 					loadDocpane();
 					// Calls to recreate the pane after selected file
@@ -203,6 +192,7 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	 * @param filePath
 	 */
 	private void loadDocpane(){
+		docPane.removeAll();
 		if(selectedDocument!=null){
 			File filePath = new File(selectedDocument.getPath());
 			if(selectedDocument.getType().equalsIgnoreCase("pdf")){
@@ -308,7 +298,6 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 	public void reload() {
 		fileList.removeAll();
 		fileList.setListData(this.getMasterModel().getdL().getMyList().toArray());
-		docPane.removeAll();
 		loadDocpane();
 	}
 
