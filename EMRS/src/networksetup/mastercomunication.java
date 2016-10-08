@@ -20,6 +20,9 @@ public class mastercomunication {
 	final static String ACCESS_CODE = "emr5187";
 	final static String INET_ADDR = "255.255.255.255";
     final static int PORT = 5187;
+    final static int SERVER = 1;
+    final static int CLIENT = 2;
+    final static int UNKNOWN=0;
     private MulticastSocket mSocket;
     private Thread listener;
     private Timer askserver;
@@ -34,9 +37,9 @@ public class mastercomunication {
     	InetAddress addr = InetAddress.getByName(INET_ADDR);
     	System.out.println("creating socket");
     	mSocket = new MulticastSocket(PORT);
-    	mSocket.setLoopbackMode(false);
+    	mSocket.setLoopbackMode(true);
     	mSocket.setTimeToLive(2);
-    	hosttype = 0;
+    	hosttype = this.UNKNOWN;
     	activeadd ="";
     	serveradd ="";
     	numberofclient=0;
@@ -71,7 +74,16 @@ public class mastercomunication {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				AskExistServer();
+				if(askcount<3){
+					AskExistServer();
+					askcount++;
+				}else{
+					askcount=0;
+					hosttype = SERVER;
+					
+				}
+				
+				
 			}	
     	});
     	askserver.start();
@@ -79,7 +91,7 @@ public class mastercomunication {
     private void AskExistServer(){
     	try {
 			message msg = new message(this.ACCESS_CODE,message.ASK_SERVER,InetAddress.getLocalHost());
-			HostSend(msg,InetAddress.getLocalHost());
+			HostSend(msg,InetAddress.getByName(INET_ADDR));
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -115,6 +127,7 @@ public class mastercomunication {
         ObjectInputStream input = new ObjectInputStream(in);
         try {
         	msg = (message)input.readObject();
+        	AnalizeMSG(msg);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -123,7 +136,13 @@ public class mastercomunication {
     
     public void AnalizeMSG(message msg){
     	//TODO
-    	System.out.println(msg.toString());
+    	try {
+			if(InetAddress.getLocalHost().getHostName().equals(((InetAddress)msg.getData()).getHostName())==false)
+				System.out.println(msg.toString());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     public void close() throws UnknownHostException, IOException{
 		mSocket.leaveGroup(InetAddress.getByName(INET_ADDR));
