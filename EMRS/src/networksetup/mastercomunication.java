@@ -32,6 +32,7 @@ public class mastercomunication {
     
     public mastercomunication() throws IOException{
     	InetAddress addr = InetAddress.getByName(INET_ADDR);
+    	System.out.println("creating socket");
     	mSocket = new MulticastSocket(PORT);
     	mSocket.setLoopbackMode(false);
     	mSocket.setTimeToLive(2);
@@ -42,10 +43,13 @@ public class mastercomunication {
     	priority = -1;
     	askcount = 0;
     	try{
+    		System.out.println("setup broadcasting network......");
     		mSocket.setBroadcast(true);
+    		System.out.println("setup successful!");
     	}catch(Exception ex){
     		ex.printStackTrace();
     	}
+    	System.out.println("start listenning income message.....");
     	listener = new Thread(new Runnable(){
 			@Override
 			public void run() {
@@ -61,6 +65,7 @@ public class mastercomunication {
 			}	
     	});
     	listener.start();
+    	System.out.println("asking server.....");
     	askserver = new Timer(3000,new ActionListener(){
 
 			@Override
