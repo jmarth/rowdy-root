@@ -214,6 +214,20 @@ public class Refraction {
 		}
 		return null;
 	}
+
+	public long  insertRefrac(Refraction r) {
+		long id= -1;
+		
+		try {
+			id = myGateway.insertRefraction(r);
+		} catch (GatewayException e) {
+			System.err.println("From Refraction: cannot insert to DB.");
+//			e.printStackTrace();
+		}
+		
+		
+		return id;
+	}
 	
 	
 	

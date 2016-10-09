@@ -210,4 +210,18 @@ public class Pupils {
 		}
 		return null;
 	}
+
+	public long insertPupils(Pupils p) {
+		long id= -1;
+		
+		try {
+			id = myGateway.insertPupils(p);
+		} catch (GatewayException e) {
+			System.err.println("From Pupils: cannot insert to DB.");
+//			e.printStackTrace();
+		}
+		
+		
+		return id;
+	}
 }

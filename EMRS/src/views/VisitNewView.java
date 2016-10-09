@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -13,10 +12,8 @@ import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
-import database.GatewayException;
 import models.CL;
 import models.MasterModel;
-import models.Visit;
 import net.miginfocom.swing.MigLayout;
 import visitPanels.PanelFundus;
 import visitPanels.PanelGonio;
@@ -25,180 +22,49 @@ import visitPanels.PanelSLE;
 import visitPanels.PanelVision;
 
 @SuppressWarnings("serial")
-public class PanelNewVisit2 extends JPanel implements viewinterface {
-	
+public class VisitNewView extends JPanel implements viewinterface {
+
 	private int index;
+	
+	private PanelVision panel_Vision;
+	private PanelSLE panel_SLE;
+	private PanelGonio panel_Gonio;
+	private PanelFundus panel_Fundus;
+	private PanelIOP panel_IOP;
 	
 	private JTextArea textArea_CC;
 	private JTextArea textArea_Assessment;
 	private JTextArea textArea_Plan;
-
+	
 	private JPanel panel_Buttons;
 	private JButton btnSave;
 	private JButton btnCancel;
 	
-	private PanelVision panel_Vision;
-	private PanelSLE panel_SLE;
-	private PanelIOP panel_IOP;
-	private PanelGonio panel_Gonio;
-	private PanelFundus panel_Fundus;
-	
-	
-	
-//	private , image_Gonio, image_Fundus; TODO
-	
-	/*
-	 * For creating a brand new Visit.
-	 * Not for editing
-	 */
-	/**
-	 * Constructor for an existing model
-	 * @wbp.parser.constructor
-	 */
-	public PanelNewVisit2(int index) {
-		
+	public VisitNewView(int index) {
 		this.index = index;
-		
-		setBackground(CL.turq);
-		
 		createView();
-		
-//		setVisitFields();
-		
-//		panel_Vision.setFields();
-//		panel_SLE.setFields();
-//		panel_IOP.setFields();
-//		panel_Gonio.setFields();
-//		panel_Fundus.setFields();
-		
-		panel_Buttons.setVisible(false);
-		
-//		disableFields(this); // TODO Don't make it look ugly and grey
-			
-	}
-	
-	/**
-	 * For a completely new Visit
-	 */
-	public PanelNewVisit2(int index, boolean isNew) {
-		this.index = index;
-		
-		createView();
-	}
-	
-	public void setVisitFields() {
-		//TODO
-		/*textArea_CC.setText(myVisit.getChiefComplaint());
-		textArea_Assessment.setText(myVisit.getAssessment());
-		textArea_Plan.setText(myVisit.getPlan());*/
 	}
 	
 	private class SaveListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			//TODO: error checks handled by the panels themselves?
-						
-			Visit visit = null;
+		public void actionPerformed(ActionEvent e) {
 			
-			// Parse ALL the things!
-			// but get the vid first.
-			
-			visit = new Visit((long)0,
-					PanelNewVisit2.this.getMasterModel().getCurrPatient().getId(),
-					textArea_CC.getText(),
-					textArea_Assessment.getText(),
-					textArea_Plan.getText(),
-					new Date().toString());
-			
-			long vid = 0;
-			
-			try {
-				
-				visit.setId(PanelNewVisit2.this.getMasterModel().getvL().insert(visit));
-				
-				//TODO DistanceVision dv = panel_DV.createNewDistanceVision();
-				//TODO dv.setVid(vid);
-				//TODO
-				/*GlassesRx glsRx = panel_GlassesRx.createNewGlassesRx();
-				glsRx.setVid(vid);
-				
-				Refraction r = panel_Refraction.createNewRefraction();
-				r.setVid(vid);
-				
-				Pupils p = panel_Pupils.createNewPupils();
-				p.setVid(vid);
-				
-				AnteriorChamber ac = panel_AC.createNewAC();
-				ac.setVid(vid);
-				
-				Lens l = panel_Lens.createNewLens();
-				l.setVid(vid);
-				
-				IOPMeasurement iop = panel_IOP.createNewIOP();
-				iop.setVid(vid);
-				
-				Gonio g = panel_Gonio.createNewGonio();
-				g.setVid(vid);
-				
-				FundusExam f = panel_Fundus.createNewFundusExam();
-				f.setVid(vid);
-				
-				
-				if (label_SLE_Sketch.getIcon() != null){
-					masterModel.getStg().insertSketchToTable(new File("firstSketch.png"), vid, "sketches_sle");
-				}
-				if (panel_Gonio.getSketchLabel().getIcon() != null){
-					masterModel.getStg().insertSketchToTable(new File("GonioTempSketch.png"), vid, "sketches_gonio");
-				}
-				if (panel_Fundus.getSketchLabel().getIcon() != null){
-					masterModel.getStg().insertSketchToTable(new File("FundusTempSketch.png"), vid, "sketches_fundus");
-				}
-				
-				long dv_id = masterModel.getDvtg().insertDistanceVision(dv);
-				long glsRx_id = masterModel.getGlsRxTG().insertGlassesRx(glsRx);
-				long r_id = masterModel.getRefractionTG().insertRefraction(r);
-				long p_id = masterModel.getPupilsTG().insertPupils(p);
-				long ac_id = masterModel.getaCTG().insertAnteriorChamber(ac);
-				long lens_id = masterModel.getLensTG().insertLens(l);
-				long iop_id = masterModel.getIopTG().insertIOPMeasurement(iop);
-				long g_id = masterModel.getGonioTG().insertGonio(g);
-				long fun_id = masterModel.getFundusTG().insertFundusExam(f);
-				
-				//set its id to what the DB gave us
-				dv.setId(dv_id);
-				glsRx.setId(glsRx_id);
-				r.setId(r_id);
-				p.setId(p_id);
-				ac.setId(ac_id);
-				l.setId(lens_id);
-				iop.setId(iop_id);
-				g.setId(g_id);
-				f.setId(fun_id);
-				
-				//dunno what we doing with these lists
-				
-				masterModel.getVl().loadFromGateway();
-				showVisitTabView();*/
-				
-			} catch (GatewayException e1) {
-				e1.printStackTrace();
-			}
-						
 		}
-				
+		
 	}
 	
 	private class CancelListener implements ActionListener {
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			//TODO
+		public void actionPerformed(ActionEvent e) {
+			
 		}
-	}
-
-	public void createView() {
 		
+	}
+	
+	public void createView() {
+
 		setBackground(CL.turq);
 		setLayout(new MigLayout("", "[grow]", "[grow][][grow][grow][grow][grow][grow][grow][grow]"));
 		
@@ -218,7 +84,6 @@ public class PanelNewVisit2 extends JPanel implements viewinterface {
 		textArea_CC.setWrapStyleWord(true);
 		textArea_CC.setLineWrap(true);
 		scrollPane_CC.setViewportView(textArea_CC);
-		
 		
 		
 		// VISION PANEL
@@ -293,30 +158,33 @@ public class PanelNewVisit2 extends JPanel implements viewinterface {
 		btnCancel.addActionListener(new CancelListener());
 		panel_Buttons.add(btnCancel);
 	}
+	
 
+	
 	@Override
 	public void HideallView() {
-		
+		// TODO
 	}
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
-
+		return getHomeView().getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
-		
+		// TODO
 	}
 
 	@Override
 	public void reload() {
-		
+		// TODO
 	}
 
+	// Goes through the JScrollPane, view port, etc
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent()).getHomeView();
+		return ((PatientRecordView)(this.getParent()).getParent().getParent().getParent()).getHomeView();
 	}
+
 }

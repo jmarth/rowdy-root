@@ -59,7 +59,7 @@ public class VitalListView extends JPanel implements viewinterface {
 				selectedRow =-1;
 				VitalListView.this.ShowVitalSCRUDView();
 			}
-		});		
+		});
 		// remove vital button
 		
 		JButton btnRemoveVital = new JButton("Remove Vital");

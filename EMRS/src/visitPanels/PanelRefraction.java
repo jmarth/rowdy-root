@@ -197,26 +197,47 @@ public class PanelRefraction extends JPanel implements viewinterface {
 
 	@Override
 	public void HideallView() {
-		
+		//TODO
 	}
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((HomeView)this.getHomeView()).getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
-		
+		//TODO
 	}
 
 	@Override
 	public void reload() {
-		
+		this.setFields();
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent());
+		return ((PanelVision)this.getParent()).getHomeView();
+	}
+	
+	public Refraction newRefrac() {
+		
+		Refraction r = new Refraction(
+				rdbtn_AutoRefraction.isSelected() ? 0 : 1,
+				textField_ARSC_OD_Sphere.getText(),
+				textField_ARSC_OD_Cyl.getText(),
+				textField_ARSC_OD_Axis.getText(),
+				textField_ARSC_OS_Sphere.getText(),
+				textField_ARSC_OS_Cyl.getText(),
+				textField_ARSC_OS_Axis.getText(),
+				textField_ARCC_OD_Sphere.getText(),
+				textField_ARCC_OD_Cyl.getText(),
+				textField_ARCC_OD_Axis.getText(),
+				textField_ARCC_OS_Sphere.getText(),
+				textField_ARCC_OS_Cyl.getText(),
+				textField_ARCC_OS_Axis.getText()
+				);
+		
+		return r;
 	}
 }

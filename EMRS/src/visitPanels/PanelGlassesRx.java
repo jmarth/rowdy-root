@@ -100,7 +100,6 @@ public class PanelGlassesRx extends JPanel implements viewinterface {
 	}
 	
 	public void setFields() {
-		
 		GlassesRx g = getMasterModel().getCurrentPatientVisitList().get(index).getMyGlsRx();
 		
 		textField_Rx_OD_Sphere.setText(g.getRx_OD_Sphere());
@@ -116,26 +115,41 @@ public class PanelGlassesRx extends JPanel implements viewinterface {
 
 	@Override
 	public void HideallView() {
-		
+		//TODO
 	}
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((HomeView)this.getHomeView()).getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
-		
+		//TODO
 	}
 
 	@Override
 	public void reload() {
-		
+		this.setFields();
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent());
+		return ((PanelVision)this.getParent()).getHomeView();
+	}
+
+	public GlassesRx newGRx() {
+		GlassesRx g = new GlassesRx(
+				textField_Rx_OD_Sphere.getText(),
+				textField_Rx_OD_Cyl.getText(),
+				textField_Rx_OD_Axis.getText(),
+				textField_Rx_OD_Add.getText(),
+				textField_Rx_OS_Sphere.getText(),
+				textField_Rx_OS_Cyl.getText(),
+				textField_Rx_OS_Axis.getText(),
+				textField_Rx_OS_Add.getText(),
+				textField_GlassesRxNotes.getText()
+				);
+		return g;
 	}
 }

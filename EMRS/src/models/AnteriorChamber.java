@@ -133,19 +133,21 @@ public class AnteriorChamber {
 		KSpindleOS = kSpindleOS;
 	}
 
-	public void insertAC(AnteriorChamber ac) {
+	public long insertAC(AnteriorChamber ac) {
 
 		long id = -1;
 		
 		try {
 			
 			id = myGateway.insertAnteriorChamber(ac);
-			ac.setId(id);
+			//ac.setId(id);
 			
 		} catch (GatewayException e) {
 			System.err.println("From AnteriorChamber, cannot insert to DB");
 //			e.printStackTrace();
 		}
+		
+		return id;
 	}
 	
 	public void updateAC(AnteriorChamber ac){

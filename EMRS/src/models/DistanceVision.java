@@ -113,6 +113,19 @@ public class DistanceVision {
 		return null;
 	}
 	
+	public long insertDV(DistanceVision dv) {
+		long id= -1;
+		
+		try {
+			id = myGateway.insertDistanceVision(dv);
+		} catch (GatewayException e) {
+			System.err.println("From DistanceVision: cannot insert to DB.");
+//			e.printStackTrace();
+		}
+		
+		
+		return id;
+	}
 
 	
 }

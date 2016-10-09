@@ -100,7 +100,7 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 	/**
 	 * Inserts visit into visits table
 	 */
-	public long insertLensForVisit(Lens p) throws GatewayException {
+	public long insertLens(Lens p) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;

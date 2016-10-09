@@ -264,6 +264,21 @@ public class Gonio {
 		}
 		return null;
 	}
+
+
+	public long insertGonio(Gonio go) {
+		long id= -1;
+		
+		try {
+			id = myGateway.insertGonioForVisit(go);
+		} catch (GatewayException e) {
+			System.err.println("From Gonio: cannot insert to DB.");
+//			e.printStackTrace();
+		}
+		
+		
+		return id;
+	}
 	
 	
 }

@@ -26,6 +26,7 @@ import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
 import views.FrameNewSketch;
 import views.HomeView;
+import views.VisitDetailView;
 import views.viewinterface;
 
 @SuppressWarnings("serial")
@@ -209,8 +210,10 @@ public class PanelFundus extends JPanel implements viewinterface {
 	
 	public void setSketch() {
 		Image image_Fundus = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageFundus();
-		ImageIcon iconFundus = new ImageIcon(image_Fundus);
-		lblFundusSketch.setIcon(iconFundus);
+		if (image_Fundus != null) {
+			ImageIcon iconFundus = new ImageIcon(image_Fundus);
+			lblFundusSketch.setIcon(iconFundus);
+		}
 	}
 	
 	public void setFields() {
@@ -260,27 +263,61 @@ public class PanelFundus extends JPanel implements viewinterface {
 		
 		temp = f.getMaculaOSNotes();
 		textField_Macula_Notes_OS.setText(temp);
+		
+		setSketch();
 	}
 	
 	@Override
 	public void HideallView() {
-		
+		//TODO
 	}
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((HomeView)this.getHomeView()).getMasterModel();
 	}
 	@Override
 	public void ShowView() {
-		
+		//TODO
 	}
 	@Override
 	public void reload() {
-		
+		this.setFields();
 	}
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent());
+		return ((VisitDetailView)this.getParent()).getHomeView();
 	}
-
+	
+	public FundusExam createNewFundusExam() {
+		
+		String cdOD = (String)comboBox_CD_OD.getSelectedItem();
+		String cdOS = (String)comboBox_CD_OS.getSelectedItem();
+ 		
+		FundusExam fe = new FundusExam(
+			chckbxDialated.isSelected() ? 1:0,
+			textField_Dial_Notes.getText(),
+			
+			chckbxAbnormal_CD_OD.isSelected() ? 1:0,
+			cdOD,
+			textField_CD_OD.getText(),
+			
+			chckbxAbnormal_CD_OS.isSelected() ? 1:0,
+			cdOS,
+			textField_CD_OS.getText(),
+			
+			checkBox_Retina_OD.isSelected() ? 1:0,
+			textField_Retina_OD.getText(),
+			
+			checkBox_Retina_OS.isSelected() ? 1:0,
+			textField_Retina_OS.getText(),
+			
+			checkBox_Macula_OD.isSelected() ? 1:0,
+			textField_Macula_Notes_OD.getText(),
+			
+			checkBox_Macula_OS.isSelected() ? 1:0,
+			textField_Macula_Notes_OS.getText()
+			);
+		
+		return fe;
+	}
 }

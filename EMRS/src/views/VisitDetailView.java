@@ -2,9 +2,9 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -13,8 +13,18 @@ import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
+import database.GatewayException;
+import models.AnteriorChamber;
 import models.CL;
+import models.DistanceVision;
+import models.FundusExam;
+import models.GlassesRx;
+import models.Gonio;
+import models.Lens;
 import models.MasterModel;
+import models.Pupils;
+import models.Refraction;
+import models.Sketches;
 import models.Visit;
 import net.miginfocom.swing.MigLayout;
 import visitPanels.PanelFundus;
@@ -41,6 +51,8 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	private JPanel panel_Buttons;
 	private JButton btnSave;
 	private JButton btnCancel;
+
+	
 	
 	/*
 	 * Creates a detail view for the JXTask
@@ -50,13 +62,98 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		
 		this.index = index;
 		
-		
-		
 		createView();
 		panel_Buttons.setVisible(false);
-//		panel_Vision.setEnabled(false);\
-		
-		
+	}
+	
+	private class SaveListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+			MasterModel mm = VisitDetailView.this.getVisitTabMasterView().getMasterModel();
+			
+			try {
+				
+				mm.getvL().insert(new Visit(
+						-1,
+						mm.getCurrPatient().getId(),
+						textArea_CC.getText(),
+						textArea_Assessment.getText(),
+						textArea_Plan.getText(),
+						null
+						));
+				
+				Visit v = mm.getvL().getMyList().get(0); // the one we just inserted
+				
+				DistanceVision dv = panel_Vision.getPDV().newDV();
+				dv.setVid(v.getId());
+				dv.setId(dv.insertDV(dv));
+				v.setMyDV(dv);
+				
+				GlassesRx g = panel_Vision.getPGRx().newGRx();
+				g.setVid(v.getId());
+				g.setId(g.insertGRx(g));
+				v.setMyGlsRx(g);
+				
+				Refraction r = panel_Vision.getPanelRefrac().newRefrac();
+				r.setVid(v.getId());
+				r.setId(r.insertRefrac(r));
+				v.setMyRefraction(r);
+				
+				Pupils p = panel_SLE.getPanelPupils().createNewPupils();
+				p.setVid(v.getId());
+				p.setId(p.insertPupils(p));
+				v.setMyPupils(p);
+				
+				AnteriorChamber ac = panel_SLE.getPanelAC().createNewAC();
+				ac.setVid(v.getId());
+				ac.setId(ac.insertAC(ac));
+				
+				Lens l = panel_SLE.getPanelLens().createNewLens();
+				l.setVid(v.getId());
+				l.setId(l.insertLens(l));
+				v.setMyLens(l);
+				
+				Gonio go = panel_Gonio.createNewGonio();
+				go.setVid(v.getId());
+				go.setId(go.insertGonio(go));
+				v.setMyGonio(go);
+				
+				FundusExam fe = panel_Fundus.createNewFundusExam();
+				fe.setVid(v.getId());
+				fe.setId(fe.insertFundus(fe));
+				v.setMyFE(fe);
+				
+				//TODO IOP
+				
+				Sketches s = new Sketches();
+				// TODO: need to delete files after adding them...so not add wrong ones!
+				s.insertSLESketch(new File("firstSketch.png"), v.getId());
+				s.insertFundusSketch(new File("FundusTempSketch.png"), v.getId());
+				s.insertGonioSketch(new File("GonioTempSketch.png"), v.getId());
+				
+				v.setSketches(s);
+				
+								
+			} catch (GatewayException e) {
+				System.err.println("From VisitDetailView: Could not insert new Visit into DB.");
+				e.printStackTrace();
+			}
+
+			VisitTabMasterView parent = getVisitTabMasterView();
+			parent.showListVisitView();
+		}
+				
+	}
+	
+	private class CancelListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			VisitTabMasterView parent = getVisitTabMasterView();
+			parent.showListVisitView();
+		}
 	}
 	
 	public void createView() {
@@ -153,33 +250,16 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new CancelListener());
 		panel_Buttons.add(btnCancel);
+		
 	}
 	
-	
-	private class SaveListener implements ActionListener {
+	public VisitTabMasterView getVisitTabMasterView() {
+		return (VisitTabMasterView)VisitDetailView.this.getParent().getParent().getParent();
+	}
 
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			//TODO: error checks handled by the panels themselves?
-						
-//			Visit visit = null;
-						
-		}
-				
-	}
-	
-	private class CancelListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			
-		}
-	}
-	
 	@Override
 	public void HideallView() {
-		// TODO Auto-generated method stub
-		
+		//TODO		
 	}
 
 	@Override
@@ -189,22 +269,36 @@ public class VisitDetailView extends JPanel implements viewinterface {
 
 	@Override
 	public void ShowView() {
-		// TODO Auto-generated method stub
-		
+		//TODO
 	}
 
 	@Override
 	public void reload() {
-//		MasterModel mm;
-//		mm = (MasterModel)this.getMasterModel();
-//		
-//		Visit v = mm.getvL().getMyList().get(index);
 		
-		panel_Vision.reload();
-	}
+		Visit v = getMasterModel().getvL().getMyList().get(index); // the one we just inserted
+		textArea_CC.setText(v.getChiefComplaint());
+		textArea_Assessment.setText(v.getAssessment());
+		textArea_Plan.setText(v.getPlan());
 
+		panel_Vision.reload();
+		panel_SLE.reload();
+		panel_Gonio.reload();
+		panel_Fundus.reload();
+		panel_IOP.reload();
+	}
+	
+	// Have to go up a bunch through the JX wrappers
 	@Override
 	public HomeView getHomeView() {
 		return ((JXTaskPaneVisitDetailView)this.getParent().getParent().getParent().getParent()).getHomeView();
 	}
+	
+	public void showEditView() {
+		
+	}
+	
+	public void showNewView() {
+		panel_Buttons.setVisible(true);
+	}
+
 }

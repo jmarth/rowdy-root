@@ -3,33 +3,26 @@ package views;
 import java.awt.Dimension;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import models.CL;
 import models.MasterModel;
-import models.Patient;
 import models.Tabs;
-import models.VisitList;
 
 /**
  * Patient record view is a JTabbedPane
  * It allows users to view specific patient info
  * This view ONLY contains tabs that consist of other views
  */
+@SuppressWarnings("serial")
 public class PatientRecordView extends JTabbedPane implements viewinterface {
 	
 	private DemographicView dgv;
 	private hxView hxv;
-	private MasterVisit mv;
-//	private VitalsTabMasterView vsv;
+	private VisitTabMasterView visitTab;
 	private VitalsTabMasterView vtv;
 	private LabsAndProceduresTabView lpv;
 	private DocumentsTabView dtv;
@@ -39,7 +32,10 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	 */
 	//public PatientRecordView(final HomeModel homeModel, Patient patient) {
 	public PatientRecordView() {
+		
 		setBounds(100, 100, 987, 1105);
+		
+		
 		// Create demographics tab
 		JLabel lab1 = new JLabel(Tabs.demographics);
 		lab1.setPreferredSize(new Dimension(145, 30));
@@ -47,6 +43,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		dgv = new DemographicView();
 		this.addTab("", null, dgv, null);
 		this.setTabComponentAt(0, lab1);
+		
 		
 		// Create allergies & meds tab
 		JLabel lab2 = new JLabel(Tabs.hx);
@@ -56,15 +53,13 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		this.addTab(Tabs.hx, null,null, null);//TODO this.addTab(Tabs.hx, null,hxv, null);
 		this.setTabComponentAt(1, lab2);
 		
-		// Create visits tab
+		
+		// create visits tab
 		JLabel lab3 = new JLabel(Tabs.ped);
 		lab3.setPreferredSize(new Dimension(145, 30));
 		lab3.setHorizontalAlignment(JLabel.CENTER);
-		//TODO vsv = new VitalsTabMasterView();
-		//this.addTab(Tabs.ped, null,null, null);//TODO this.addTab(Tabs.ped, null,vsv, null);
-		//this.setTabComponentAt(2, lab3);
-		mv = new MasterVisit();
-		this.addTab(Tabs.ped, null,mv, null);
+		visitTab = new VisitTabMasterView();
+		this.addTab(Tabs.ped, null,visitTab, null);
 		this.setTabComponentAt(2, lab3);
 		
 		
@@ -72,30 +67,33 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		JLabel lab4 = new JLabel(Tabs.vitals);
 		lab4.setPreferredSize(new Dimension(145, 30));
 		lab4.setHorizontalAlignment(JLabel.CENTER);
-				
 		vtv = new VitalsTabMasterView();
 		this.addTab(Tabs.vitals, null,vtv, null);//TODO this.addTab(Tabs.vitals, null, vtv, null);
 		this.setTabComponentAt(3, lab4);
+		
 		
 		// create labs tab
 		JLabel lab6 = new JLabel(Tabs.labs);
 		lab6.setPreferredSize(new Dimension(145, 30));
 		lab6.setHorizontalAlignment(JLabel.CENTER);
-		
 		lpv = new LabsAndProceduresTabView();
 		this.addTab(Tabs.labs, null,lpv, null);
 		this.setTabComponentAt(4, lab6);
+		
 		
 		// create documents tab
 		JLabel lab7 = new JLabel(Tabs.docs);
 		lab7.setPreferredSize(new Dimension(145, 30));
 		lab7.setHorizontalAlignment(JLabel.CENTER);
-		
 		dtv = new DocumentsTabView();
 		this.addTab(Tabs.docs, null,dtv, null);
 		this.setTabComponentAt(5, lab7);//TODO
 		
+		
+		
 		this.setBackground(CL.porcelian);
+		
+		
 		
 		ChangeListener changeListener = new ChangeListener() {
 		      public void stateChanged(ChangeEvent changeEvent) {
@@ -106,10 +104,10 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 			        	dgv.reload();
 			        }
 			        else if (selectedTab.equals(Tabs.allergiesAndMeds)) {
-			        	//TODO
+			        	//TODO but allergies/meds belong to hx
 			        }
 			        else if (selectedTab.equals(Tabs.ped)) {
-			        	mv.reload();
+			        	visitTab.reload();
 			        }
 			        else if (selectedTab.equals(Tabs.vitals)) {
 			        	vtv.reload();
@@ -123,7 +121,9 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 			        }
 		      }
 		};
+		
 		addChangeListener(changeListener);
+		
 		
 		
 	}
@@ -132,6 +132,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	public void HideallView() {
 //		dgv.setVisible(false);
 //		hxv.HideallView();
+//		mvv.HideallView();
 //		vsv.HideallView();
 //		vtv.HideallView();
 //		lpv.HideallView();
@@ -146,8 +147,8 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 	
 	public void ShowVisitsView(){
 		this.ShowView();
-		this.setSelectedIndex(2); //TODO changed for test
-		this.mv.ShowView();
+		this.setSelectedIndex(2);
+		this.visitTab.ShowView();
 	}
 
 	public void ShowVitalsView(){

@@ -48,7 +48,7 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		
 		try {
 			//fetch parts
-			st = conn.prepareStatement("SELECT * FROM visits WHERE pid=?");
+			st = conn.prepareStatement("SELECT * FROM visits WHERE pid=? ORDER BY id DESC");
 			st.setLong(1, pid);
 			
 			rs = st.executeQuery();
@@ -92,13 +92,13 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		
 		//init new id to invalid
 		long newId = 0;
-		
+		System.err.println("1");
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			st = conn.prepareStatement(
-					"insert INTO visits"
+					"INSERT INTO visits"
 					+ "(pid,"
 					+ " chiefComplaint,"
 					+ " assessment,"
@@ -108,20 +108,18 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 			
 			st.setLong(1, v.getPid());
 			st.setString(2, v.getChiefComplaint());
-			
 			st.setString(3, v.getAssessment());
 			st.setString(4, v.getPlan());
-	
+			System.err.println("1");
 			st.executeUpdate();
-			
+			System.err.println("1");
 			//get the generated key
 			rs = st.getGeneratedKeys();
-			
 			if(rs != null && rs.next()) {
 			    newId = rs.getLong(1);
 			} else {
 				throw new GatewayException("Could not insert new record.");
-			}
+			}		    
 			
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());

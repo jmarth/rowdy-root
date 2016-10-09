@@ -29,6 +29,7 @@ import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
 import views.FrameNewSketch;
 import views.HomeView;
+import views.VisitDetailView;
 import views.viewinterface;
 
 @SuppressWarnings("serial")
@@ -518,8 +519,11 @@ public class PanelGonio extends JPanel implements viewinterface {
 
 	public void setSketch() {
 		Image image_Gonio = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageGonio();
-		ImageIcon iconGonio = new ImageIcon(image_Gonio);
-		lblGonioSketch.setIcon(iconGonio);
+		
+		if (image_Gonio != null) {
+			ImageIcon iconGonio = new ImageIcon(image_Gonio);
+			lblGonioSketch.setIcon(iconGonio);
+		}
 	}
 	
 	// also, sets the sketch at end
@@ -750,26 +754,64 @@ public class PanelGonio extends JPanel implements viewinterface {
 
 	@Override
 	public void HideallView() {
-		
+		//TODO
 	}
 
 	@Override
 	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
+		return ((HomeView)this.getHomeView()).getMasterModel();
 	}
 
 	@Override
 	public void ShowView() {
-		
+		//TODO
 	}
 
 	@Override
 	public void reload() {
-		
+		this.setFields();
 	}
 
 	@Override
 	public HomeView getHomeView() {
-		return ((HomeView)this.getParent());
+		return ((VisitDetailView)this.getParent()).getHomeView();
+	}
+	
+public Gonio createNewGonio() {
+		
+		String ODDegreeN = (String)comboBox_GonioODN.getSelectedItem();
+		String ODDegreeC = (String)comboBox_GonioODC.getSelectedItem();
+		String OSDegreeN = (String)comboBox_GonioOSN.getSelectedItem();
+		String OSDegreeC = (String)comboBox_GonioOSC.getSelectedItem();
+		
+		Gonio g = new Gonio(
+				
+				rdbtnYHFHA.isSelected() ? 1 : rdbtnNHFHA.isSelected() ? 0 : -1,
+				getSelectedButtonText(bgSide) == null ? "" : getSelectedButtonText(bgSide),
+				
+				chckbxNormalGonioOD.isSelected() ? 1 : 0,
+				getSelectedButtonText(bgODNonABCD) == null ? "" : getSelectedButtonText(bgODNonABCD),
+				getSelectedButtonText(bgODCompABCD) == null ? "" : getSelectedButtonText(bgODCompABCD),
+				ODDegreeN,
+				ODDegreeC,
+				getSelectedButtonText(bgODNonRSQ) == null ? "" : getSelectedButtonText(bgODNonRSQ),
+				getSelectedButtonText(bgODCompRSQ) == null ? "" : getSelectedButtonText(bgODCompRSQ),
+				getSelectedButtonText(bgODPig) == null ? "" : getSelectedButtonText(bgODPig),
+				rdbtn_Y_AntPigLineOD.isSelected() ? 1 : rdbtn_N_AntPigLineOD.isSelected() ? 0 : -1,
+
+				
+				chckbxNormalGonioOS.isSelected() ? 1 : 0,
+				getSelectedButtonText(bgOSNonABCD) == null ? "" : getSelectedButtonText(bgOSNonABCD),
+				getSelectedButtonText(bgOSCompABCD) == null ? "" : getSelectedButtonText(bgOSCompABCD),
+				OSDegreeN,
+				OSDegreeC,
+				getSelectedButtonText(bgOSNonRSQ) == null ? "" : getSelectedButtonText(bgOSNonRSQ),
+				getSelectedButtonText(bgOSCompRSQ) == null ? "" : getSelectedButtonText(bgOSCompRSQ),
+				getSelectedButtonText(bgOSPig) == null ? "" : getSelectedButtonText(bgOSPig),
+				rdbtn_Y_AntPigLineOS.isSelected() ? 1 : rdbtn_N_AntPigLineOS.isSelected() ? 0 : -1
+				
+				);
+		
+		return g;
 	}
 }

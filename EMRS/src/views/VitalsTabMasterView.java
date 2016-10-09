@@ -12,7 +12,7 @@ import models.MasterModel;
 @SuppressWarnings("serial")
 public class VitalsTabMasterView extends JPanel implements viewinterface {
 	private VitalListView vldv;
-	private VitalSCRUBView vscv;
+	private VitalCRUDView vscv;
 	/**
 	 * Create the panel.
 	 */
@@ -22,7 +22,7 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 		
 		this.setLayout(new BorderLayout());
 		vldv = new VitalListView();
-		vscv = new VitalSCRUBView(-1);
+		vscv = new VitalCRUDView(-1);
 		this.add(vldv, BorderLayout.CENTER);
 	}
 	
@@ -43,7 +43,7 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 	public void ShowVitalSCRUDView(){
 		this.HideallView();
 		int index = this.vldv.getSelectedRow();
-		vscv=new VitalSCRUBView(index);
+		vscv=new VitalCRUDView(index);
 		this.add(vscv,BorderLayout.CENTER);
 		this.vscv.ShowView();
 		this.validate();

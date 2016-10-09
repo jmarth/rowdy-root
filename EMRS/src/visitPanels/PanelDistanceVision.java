@@ -89,18 +89,10 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 		textField_DVOSCC.setColumns(20);
 		panel_DVCC.add(textField_DVOSCC, "cell 2 1,growx");
 	}
-	
-	public void setFields() {
-		DistanceVision dv = getMasterModel().getCurrentPatientVisitList().get(index).getMyDV();
-		textField_DVODSC.setText(dv.getDVODSC());
-		textField_DVOSSC.setText(dv.getDVOSSC());
-		textField_DVODCC.setText(dv.getDVODCC());
-		textField_DVOSCC.setText(dv.getDVOSCC());
-	}
 
 	@Override
 	public void HideallView() {
-		
+		//TODO
 	}
 
 	@Override
@@ -110,12 +102,16 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 
 	@Override
 	public void ShowView() {
-		
+		//TODO
 	}
 
 	@Override
 	public void reload() {
-		DistanceVision dv = getMasterModel().getCurrentPatientVisitList().get(index).getMyDV();
+//		System.err.println("List: " + getMasterModel().getvL().getMyList() +"\nIndex: "+index);
+		DistanceVision dv = getMasterModel().getvL().getMyList().get(index).getMyDV();
+		
+		if (dv == null)
+			System.out.println("Null?");
 		textField_DVODSC.setText(dv.getDVODSC());
 		textField_DVOSSC.setText(dv.getDVOSSC());
 		textField_DVODCC.setText(dv.getDVODCC());
@@ -125,6 +121,16 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 	@Override
 	public HomeView getHomeView() {
 		return ((PanelVision)this.getParent()).getHomeView();
+	}
+
+	public DistanceVision newDV() {
+		DistanceVision dv = new DistanceVision (
+				textField_DVODSC.getText(),
+				textField_DVODSC.getText(),
+				textField_DVODSC.getText(),
+				textField_DVODSC.getText()
+				);
+		return dv;
 	}
 
 }

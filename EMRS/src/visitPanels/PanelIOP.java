@@ -107,7 +107,7 @@ public class PanelIOP extends JPanel implements viewinterface {
 
 	@Override
 	public void HideallView() {
-		
+		//TODO
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class PanelIOP extends JPanel implements viewinterface {
 
 	@Override
 	public void ShowView() {
-		
+		//TODO
 	}
 
 	@Override

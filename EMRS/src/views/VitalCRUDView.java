@@ -1,33 +1,31 @@
 package views;
 
-import javax.swing.JPanel;
-import javax.swing.JButton;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import net.miginfocom.swing.MigLayout;
+
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
 import database.GatewayException;
 import models.MasterModel;
 import models.Vital;
-
-import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTable;
-import javax.swing.border.EtchedBorder;
-import java.awt.Color;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
+import net.miginfocom.swing.MigLayout;
 
 @SuppressWarnings("serial")
-public class VitalSCRUBView extends JPanel implements viewinterface {
+public class VitalCRUDView extends JPanel implements viewinterface {
 	
 	public static final String[] BloodPressure_unit = {"mm/Hg","Pa"};
 	public static final String[] BloodGlucose_unit = {"mmol/L","mg/dL"};
@@ -76,7 +74,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 	 */
 	private int index;
 
-	public VitalSCRUBView(int index) {
+	public VitalCRUDView(int index) {
 	
 		this.index = index;
 		// uncomment to view in windowbuilder
@@ -118,14 +116,14 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			save();
-			VitalsTabMasterView parent = (VitalsTabMasterView)VitalSCRUBView.this.getParent();
+			VitalsTabMasterView parent = (VitalsTabMasterView)VitalCRUDView.this.getParent();
 			parent.ShowVitalListView();
 		}
 	}
 	private class CancelVitalListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			VitalsTabMasterView parent = (VitalsTabMasterView)VitalSCRUBView.this.getParent();
+			VitalsTabMasterView parent = (VitalsTabMasterView)VitalCRUDView.this.getParent();
 			parent.ShowVitalListView();
 			
 		}
@@ -466,7 +464,7 @@ public class VitalSCRUBView extends JPanel implements viewinterface {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-								int ft=0,in=0,cm=0;
+				int ft=0,in=0,cm=0;
 				try{
 					in = Integer.parseInt(textField_In.getText().trim());
 				}catch (Exception exft){

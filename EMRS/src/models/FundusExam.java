@@ -215,10 +215,24 @@ public class FundusExam {
 		try {
 			return myGateway.fetchFundusExamForVisit(vid);
 		} catch (GatewayException e) {
-			System.err.println("From AnteriorChamber, could not fetch from DB");
+			System.err.println("From FundusExam, could not fetch from DB");
 //			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public long insertFundus(FundusExam fe) {
+		long id= -1;
+		
+		try {
+			id = myGateway.insertFundusExam(fe);
+		} catch (GatewayException e) {
+			System.err.println("From FundusExam: cannot insert to DB.");
+//			e.printStackTrace();
+		}
+		
+		
+		return id;
 	}
 	
 }
