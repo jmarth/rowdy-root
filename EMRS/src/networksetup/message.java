@@ -1,7 +1,7 @@
 package networksetup;
 
 import java.io.Serializable;
-
+//for all network communication
 public class message implements Serializable {
 	
 	private String acceptcode;

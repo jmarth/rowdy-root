@@ -21,7 +21,7 @@ import java.util.List;
 import javax.swing.Timer;
 
 public class mastercomunication {
-	//network address
+	//network address default
 	final static String ACCESS_CODE = "emr5187";
 	final static String INET_ADDR = "255.255.255.255";
     final static int PORT = 5187;

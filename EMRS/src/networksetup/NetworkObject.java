@@ -3,7 +3,7 @@ package networksetup;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
-
+//for client and server info
 public class NetworkObject {
 	private InetAddress ipaddrr;
 	private Date createddate;
