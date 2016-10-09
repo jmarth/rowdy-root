@@ -3,13 +3,7 @@ package networksetup;
 import java.io.Serializable;
 
 public class message implements Serializable {
-	public static final transient int ASK_SERVER = 1;
-	public static final transient int SERVER_CLOSE = 2;
-	public static final transient int NEW_SERVER = 3;
-	public static final transient int LEAVE_SERVER = 4;
-	public static final transient int SERVER_RESPONSE = 5;
-	public static final transient int CLIENT_RESPONSE = 6;
-	public static final transient int CURRENT_SERVER = 7;
+	
 	private String acceptcode;
 	private int command;
 	private Object data;
