@@ -13,25 +13,46 @@ import java.net.MulticastSocket;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 import javax.swing.Timer;
 
 public class mastercomunication {
+	//network address
 	final static String ACCESS_CODE = "emr5187";
 	final static String INET_ADDR = "255.255.255.255";
     final static int PORT = 5187;
     final static int SERVER = 1;
     final static int CLIENT = 2;
+    //network setup
     final static int UNKNOWN=0;
+    final static int CLIENT_CONNECTED = 1;
+    final static int CLIENT_WAITTING = 2;
+    final static int CLIENT_NOACTION = 3;
+    //date time format
+    final static DateFormat DATE_FORMAT =  new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    //message
+    public static final transient int ASK_SERVER = 1;
+	public static final transient int SERVER_CLOSE = 2;
+	public static final transient int NEW_SERVER = 3;
+	public static final transient int LEAVE_SERVER = 4;
+	public static final transient int SERVER_RESPONSE = 5;
+	public static final transient int CLIENT_REQUEST_JOIN = 6;
+	public static final transient int SERVER_ACCEPT_JOIN = 7;
+	
     private MulticastSocket mSocket;
+    
     private Thread listener;
+    boolean islisten;//for stopping the thread
     private Timer askserver;
-    private int hosttype;//server 1, client 2, unknown 0;
-    private int numberofclient;
-    private String activeadd;
-    private String serveradd;
-    private int priority;
+    
+    private NetworkObject owner;
+    private List<NetworkObject> guests;
     private int askcount;
+	private int clientstatus;
     
     public mastercomunication() throws IOException{
     	InetAddress addr = InetAddress.getByName(INET_ADDR);
@@ -39,12 +60,9 @@ public class mastercomunication {
     	mSocket = new MulticastSocket(PORT);
     	mSocket.setLoopbackMode(true);
     	mSocket.setTimeToLive(2);
-    	hosttype = this.UNKNOWN;
-    	activeadd ="";
-    	serveradd ="";
-    	numberofclient=0;
-    	priority = -1;
     	askcount = 0;
+    	islisten=true;
+    	clientstatus = this.CLIENT_NOACTION;
     	try{
     		System.out.println("setup broadcasting network......");
     		mSocket.setBroadcast(true);
@@ -56,8 +74,9 @@ public class mastercomunication {
     	listener = new Thread(new Runnable(){
 			@Override
 			public void run() {
+				
 				// TODO Auto-generated method stub
-				while(true){
+				while(islisten==true){
 					try {
 						HostListener();
 					} catch (IOException e) {
@@ -77,10 +96,19 @@ public class mastercomunication {
 				if(askcount<3){
 					AskExistServer();
 					askcount++;
-				}else{
+				}else if(owner == null) {
+					//askcount=0;
+					try {
+						owner = new NetworkObject(SERVER,0);
+						System.out.println("Server Created!");
+					} catch (UnknownHostException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+				}else if(owner.getType() == SERVER && guests.size()==0){
+					System.out.println("No client so continue asking");
+					askserver.setDelay(10000);
 					askcount=0;
-					hosttype = SERVER;
-					
 				}
 				
 				
@@ -90,7 +118,8 @@ public class mastercomunication {
     }
     private void AskExistServer(){
     	try {
-			message msg = new message(this.ACCESS_CODE,message.ASK_SERVER,InetAddress.getLocalHost());
+    		//input: accesscode, command code, data
+			message msg = new message(ACCESS_CODE,ASK_SERVER,null);
 			HostSend(msg,InetAddress.getByName(INET_ADDR));
 			
 		} catch (UnknownHostException e) {
@@ -127,24 +156,52 @@ public class mastercomunication {
         ObjectInputStream input = new ObjectInputStream(in);
         try {
         	msg = (message)input.readObject();
-        	AnalizeMSG(msg);
+        	AnalizeMSG(msg,msgPacket.getAddress());
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
     
-    public void AnalizeMSG(message msg){
+    public void AnalizeMSG(message msg,InetAddress ipfrom){
     	//TODO
     	try {
-			if(InetAddress.getLocalHost().getHostName().equals(((InetAddress)msg.getData()).getHostName())==false)
+			if(InetAddress.getLocalHost().getHostName().equals(((InetAddress)msg.getData()).getHostName())==false){
 				System.out.println(msg.toString());
+			}else{
+				switch(msg.getCommand()){
+					case ASK_SERVER:
+						if(owner.getType()==this.SERVER){
+							
+						}
+						break;
+					case NEW_SERVER:
+						break;
+					case LEAVE_SERVER:
+						break;
+					case SERVER_RESPONSE:
+						break;
+					case CLIENT_REQUEST_JOIN:
+						break;
+					case SERVER_ACCEPT_JOIN:
+						break;
+					case SERVER_CLOSE:
+						break;
+				}
+			}
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
-    public void close() throws UnknownHostException, IOException{
+    @SuppressWarnings("deprecation")
+	public void close() throws UnknownHostException, IOException{
+    	try {
+			this.listener.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mSocket.leaveGroup(InetAddress.getByName(INET_ADDR));
     }
 }
