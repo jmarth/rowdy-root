@@ -1,1 +1,7 @@
 /EMRS/bin/*.*
+/EMRS/bin/controller/*.*
+/EMRS/bin/database/*.*
+/EMRS/bin/models/*.*
+/EMRS/bin/networksetup/*.*
+/EMRS/bin//views/*.*
+/EMRS/bin/visitPanels/*.*
