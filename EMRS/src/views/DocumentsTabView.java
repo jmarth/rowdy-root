@@ -96,7 +96,7 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 					DocumentsTabView.this.getMasterModel().getdL().insert(tmpDoc);
 					reload();
 				} catch (GatewayException e1) {
-					System.out.println(e1.getMessage());
+					System.err.println(e1.getMessage());
 				}
 			}
 		});
@@ -160,10 +160,9 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
 					}else{
 						DocumentsTabView.this.getMasterModel().getdL().delete(selectedIndex);
 					}
-					System.out.println(selectedDocument);
 					reload();
 				} catch (GatewayException e) {
-					System.out.println(e.getMessage());
+					System.err.println(e.getMessage());
 				}
 			}
 		});
@@ -254,7 +253,7 @@ public class DocumentsTabView extends JPanel implements viewinterface  {
         catch (Exception e)
         {
           e.printStackTrace();
-          System.exit(1);
+          //System.exit(1);
         }
         
         BufferedImage scaled = null;
