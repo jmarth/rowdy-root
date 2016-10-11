@@ -17,6 +17,13 @@ public class NetworkObject {
 		this.priority = priority;
 	}
 
+	public NetworkObject () throws UnknownHostException{
+		ipaddrr = InetAddress.getLocalHost();
+		createddate = new Date();
+		this.type = mastercomunication.UNKNOWN;
+		this.priority = -1;
+	}
+	
 	public NetworkObject(InetAddress ipaddrr, Date createddate, int type, int priority) {
 		super();
 		this.ipaddrr = ipaddrr;

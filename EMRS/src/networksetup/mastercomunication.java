@@ -23,7 +23,7 @@ import javax.swing.Timer;
 public class mastercomunication {
 	//network address default
 	final static String ACCESS_CODE = "emr5187";
-	final static String INET_ADDR = "255.255.255.255";
+	final static String  BROADCAST_ADDR = "255.255.255.255";
     final static int PORT = 5187;
     final static int SERVER = 1;
     final static int CLIENT = 2;
@@ -51,11 +51,12 @@ public class mastercomunication {
     
     private NetworkObject owner;
     private List<NetworkObject> guests;
+    private NetworkObject server;
     private int askcount;
 	private int clientstatus;
     
     public mastercomunication() throws IOException{
-    	InetAddress addr = InetAddress.getByName(INET_ADDR);
+    	InetAddress addr = InetAddress.getByName(this.BROADCAST_ADDR);
     	System.out.println("creating socket");
     	mSocket = new MulticastSocket(PORT);
     	mSocket.setLoopbackMode(true);
@@ -63,6 +64,7 @@ public class mastercomunication {
     	askcount = 0;
     	islisten=true;
     	clientstatus = this.CLIENT_NOACTION;
+    	owner = new NetworkObject();
     	try{
     		System.out.println("setup broadcasting network......");
     		mSocket.setBroadcast(true);
@@ -96,7 +98,7 @@ public class mastercomunication {
 				if(askcount<3){
 					AskExistServer();
 					askcount++;
-				}else if(owner == null) {
+				}else if(owner.getType() == UNKNOWN) {
 					//askcount=0;
 					try {
 						owner = new NetworkObject(SERVER,0);
@@ -120,7 +122,7 @@ public class mastercomunication {
     	try {
     		//input: accesscode, command code, data
 			message msg = new message(ACCESS_CODE,ASK_SERVER,null);
-			HostSend(msg,InetAddress.getByName(INET_ADDR));
+			HostSend(msg,InetAddress.getByName(this.BROADCAST_ADDR));
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -167,29 +169,73 @@ public class mastercomunication {
     	//TODO
     	try {
 			if(InetAddress.getLocalHost().getHostName().equals(((InetAddress)msg.getData()).getHostName())==false){
-				System.out.println(msg.toString());
-			}else{
-				switch(msg.getCommand()){
-					case ASK_SERVER:
-						if(owner.getType()==this.SERVER){
-							
-						}
-						break;
-					case NEW_SERVER:
-						break;
-					case LEAVE_SERVER:
-						break;
-					case SERVER_RESPONSE:
-						break;
-					case CLIENT_REQUEST_JOIN:
-						break;
-					case SERVER_ACCEPT_JOIN:
-						break;
-					case SERVER_CLOSE:
-						break;
+				if(msg.getAcceptcode().equals(this.ACCESS_CODE)==true){
+					switch(msg.getCommand()){
+						case ASK_SERVER:
+							if(owner.getType()==this.SERVER){
+								int isexistclient=0;
+								for(NetworkObject e: this.guests){
+									if(e.getIpaddrr().getHostName().equals(ipfrom.getHostName())){
+										isexistclient = 1;
+										break;
+									}
+								}
+								if(isexistclient == 0)
+										this.HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,this.owner),InetAddress.getByName(this.BROADCAST_ADDR));
+							}
+							break;
+						case NEW_SERVER:
+							this.owner.setType(this.UNKNOWN);
+							askserver.start();
+							break;
+						case LEAVE_SERVER:
+							if(owner.getType()==this.SERVER){
+								NetworkObject in = (NetworkObject) msg.getData();
+								for(NetworkObject e : this.guests){
+									if(e.getPriority()== in.getPriority()){
+										this.guests.remove(e);
+										//TODO
+										break;
+									}
+								}
+							}
+							break;
+						case SERVER_RESPONSE:
+							if(owner.getType()==this.UNKNOWN){
+								this.server=(NetworkObject)msg.getData();
+								this.HostSend(new message(this.ACCESS_CODE, this.CLIENT_REQUEST_JOIN,this.owner),ipfrom);
+							}
+							break;
+						case CLIENT_REQUEST_JOIN:
+							if(owner.getType()==this.SERVER){
+								NetworkObject in = (NetworkObject) msg.getData();
+								this.guests.add(in);
+								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,this.guests.size()),ipfrom);
+								this.askserver.stop();
+							}
+							break;
+						case SERVER_ACCEPT_JOIN:
+							if(owner.getType()==this.UNKNOWN){
+								this.owner.setType(this.CLIENT);
+								this.owner.setPriority((Integer)msg.getData());
+								this.HostSend(new message(this.ACCESS_CODE, this.CLIENT_REQUEST_JOIN,this.owner),ipfrom);
+								this.askserver.stop();
+							}
+							break;
+						case SERVER_CLOSE:
+							if(owner.getType()==this.CLIENT && owner.getPriority()==1){
+								owner.setType(this.SERVER);
+								owner.setPriority(0);
+								this.server=null;
+							}
+							break;
+					}
 				}
 			}
 		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -197,11 +243,11 @@ public class mastercomunication {
     @SuppressWarnings("deprecation")
 	public void close() throws UnknownHostException, IOException{
     	try {
+    		islisten=false;
 			this.listener.join();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mSocket.leaveGroup(InetAddress.getByName(INET_ADDR));
     }
 }
