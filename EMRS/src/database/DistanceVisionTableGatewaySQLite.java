@@ -109,7 +109,6 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 					+ " DVOSCC)"
 					+ " values ( ?, ?, ?, ?, ? ) ",
 					PreparedStatement.RETURN_GENERATED_KEYS);
-			System.err.println(dv.getVid());
 			st.setLong(1, dv.getVid());
 			st.setString(2, dv.getDVODSC());
 			st.setString(3, dv.getDVOSSC());
@@ -155,7 +154,43 @@ public class DistanceVisionTableGatewaySQLite implements DistanceVisionTableGate
 
 	@Override
 	public void updateDistanceVision(DistanceVision dv) throws GatewayException {
-		// TODO Auto-generated method stub
 		
+		PreparedStatement st = null;
+		
+		try {
+			conn.setAutoCommit(false);
+			st = conn.prepareStatement(
+					"UPDATE distance_visions SET"
+					+ " vid = ?,"
+					+ " DVODSC = ?,"
+					+ " DVOSSC = ?,"
+					+ " DVODCC = ?,"
+					+ " DVOSCC = ?"
+					+ " WHERE id = ?");
+			
+			st.setLong(1, dv.getVid());
+			st.setString(2, dv.getDVODSC());
+			st.setString(3, dv.getDVOSSC());
+			st.setString(4, dv.getDVODCC());
+			st.setString(5, dv.getDVOSCC());
+			
+			st.setLong(6, dv.getId());
+
+			st.executeUpdate();
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+			
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}		
 	}
 }

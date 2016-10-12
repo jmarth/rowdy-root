@@ -15,6 +15,7 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 	public JXTaskPaneVisitDetailView(int index) {
 		
 		vdv = new VisitDetailView(index);
+		vdv.showEditView();
 		add(vdv);
 	}	
 	
@@ -41,7 +42,7 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 
 	@Override
 	public HomeView getHomeView() {
-		return ((VisitListView)this.getParent()).getHomeView();
+		return ((VisitListContainer)this.getParent()).getHomeView();
 	}
 	
 	// TODO Need to disable a visit for just simple view, but need smart way to.

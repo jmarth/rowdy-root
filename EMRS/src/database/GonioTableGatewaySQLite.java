@@ -123,9 +123,82 @@ public class GonioTableGatewaySQLite implements GonioTableGateway {
 	}
 	
 	@Override
-	public void updateGonioForVisit(long vid) throws GatewayException {
-		// TODO Auto-generated method stub
-		// auto commit false then true after
+	public void updateGonio(Gonio g) throws GatewayException {
+		PreparedStatement st = null;
+		
+		try {
+			conn.setAutoCommit(false);
+			st = conn.prepareStatement(
+					"UPDATE gonios SET"
+					+ " vid = ?,"
+					+ " isHxFHA = ?,"
+					+ " FHASide = ?,"
+					
+					+ " isODNormal = ?,"
+					+ " odABCDNon = ?,"
+					+ " odABCDComp = ?,"
+					+ " odDegreeNon = ?,"
+					+ " odDegreeComp = ?,"
+					+ " odRSQNon = ?,"
+					+ " odRSQComp = ?,"
+					+ " odPigment = ?,"
+					+ " isODAntPigLine = ?,"
+					
+					+ " isOSNormal = ?,"
+					+ " osABCDNon = ?,"
+					+ " osABCDComp = ?,"
+					+ " osDegreeNon = ?,"
+					+ " osDegreeComp = ?,"
+					+ " osRSQNon = ?,"
+					+ " osRSQComp = ?,"
+					+ " osPigment = ?,"
+					+ " isOSAntPigLine = ?"
+					+ " WHERE id = ?"
+					);
+			
+			st.setLong(1, g.getVid());
+			
+			st.setInt(2, g.isHxFHA());
+			st.setString(3, g.getFHASide());
+			
+			st.setInt(4, g.isODNormal());
+			st.setString(5, g.getOdABCDNon());
+			st.setString(6, g.getOdABCDComp());
+			st.setString(7, g.getOdDegreeNon());
+			st.setString(8, g.getOdDegreeComp());
+			st.setString(9, g.getOdRSQNon());
+			st.setString(10, g.getOdRSQComp());
+			st.setString(11, g.getOdPigment());
+			st.setInt(12, g.isODAntPigLine());
+			
+			st.setInt(13, g.isOSNormal());
+			st.setString(14, g.getOsABCDNon());
+			st.setString(15, g.getOsABCDComp());
+			st.setString(16, g.getOsDegreeNon());
+			st.setString(17, g.getOsDegreeComp());
+			st.setString(18, g.getOsRSQNon());
+			st.setString(19, g.getOsRSQComp());
+			st.setString(20, g.getOsPigment());
+			st.setInt(21, g.isOSAntPigLine());
+			
+			st.setLong(22, g.getId());
+			
+			st.executeUpdate();
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
 	}
 
 	@Override

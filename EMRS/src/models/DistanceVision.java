@@ -127,5 +127,14 @@ public class DistanceVision {
 		return id;
 	}
 
+	public void updateDV(DistanceVision dv) {
+		try {
+			myGateway.updateDistanceVision(dv);
+		} catch (GatewayException e) {
+			System.err.println("From DistanceVision: cannot update to DB.");
+			e.printStackTrace();
+		}
+	}
+
 	
 }

@@ -5,6 +5,9 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -51,6 +54,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	private JPanel panel_Buttons;
 	private JButton btnSave;
 	private JButton btnCancel;
+	private JButton btnEdit;
 
 	
 	
@@ -63,7 +67,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		this.index = index;
 		
 		createView();
-		panel_Buttons.setVisible(false);
+//		panel_Buttons.setVisible(false);
 	}
 	
 	private class SaveListener implements ActionListener {
@@ -129,6 +133,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 				
 				Sketches s = new Sketches();
 				// TODO: need to delete files after adding them...so not add wrong ones!
+//				if ()
 				s.insertSLESketch(new File("firstSketch.png"), v.getId());
 				s.insertFundusSketch(new File("FundusTempSketch.png"), v.getId());
 				s.insertGonioSketch(new File("GonioTempSketch.png"), v.getId());
@@ -142,17 +147,117 @@ public class VisitDetailView extends JPanel implements viewinterface {
 			}
 
 			VisitTabMasterView parent = getVisitTabMasterView();
-			parent.showListVisitView();
+			parent.showList_VisitView();
 		}
 				
+	}
+	
+	private class EditListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			MasterModel mm = VisitDetailView.this.getVisitTabMasterViewForEditView().getMasterModel();
+			
+			try {
+				
+				// get index
+				
+				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				Date date = new Date();
+				String dateUpdated = dateFormat.format(date);
+				
+				Visit vOld = mm.getvL().getMyList().get(index);
+				
+				Visit vUpdate = new Visit(
+						vOld.getId(),
+						mm.getCurrPatient().getId(),
+						textArea_CC.getText(),
+						textArea_Assessment.getText(),
+						textArea_Plan.getText(),
+						dateUpdated
+						);
+				
+				
+				mm.getvL().update(vUpdate, index);
+				
+				DistanceVision dv = panel_Vision.getPDV().newDV();
+				dv.setVid(vOld.getId());
+				dv.setId(vOld.getMyDV().getId());
+				dv.updateDV(dv);
+				vUpdate.setMyDV(dv);
+				
+				GlassesRx g = panel_Vision.getPGRx().newGRx();
+				g.setVid(vOld.getId());
+				g.setId(vOld.getMyGlsRx().getId());
+				g.updateGlxRx(g);
+				vUpdate.setMyGlsRx(g);
+				
+				Refraction r = panel_Vision.getPanelRefrac().newRefrac();
+				r.setVid(vOld.getId());
+				r.setId(vOld.getMyRefraction().getId());
+				r.updateRefraction(r);
+				vUpdate.setMyRefraction(r);
+				
+				Pupils p = panel_SLE.getPanelPupils().createNewPupils();
+				p.setVid(vOld.getId());
+				p.setId(vOld.getMyPupils().getId());
+				p.updatePupils(p);
+				vUpdate.setMyPupils(p);
+				
+				AnteriorChamber ac = panel_SLE.getPanelAC().createNewAC();
+				ac.setVid(vOld.getId());
+				ac.setId(vOld.getMyAC().getId());
+				ac.updateAC(ac);
+				vUpdate.setMyAC(ac);
+				
+				Lens l = panel_SLE.getPanelLens().createNewLens();
+				l.setVid(vOld.getId());
+				l.setId(vOld.getMyLens().getId());
+				l.updateLens(l);
+				vUpdate.setMyLens(l);
+				
+				Gonio go = panel_Gonio.createNewGonio();
+				go.setVid(vOld.getId());
+				go.setId(vOld.getMyGonio().getId());
+				go.updateGonio(go);
+				vUpdate.setMyGonio(go);
+				
+				FundusExam fe = panel_Fundus.createNewFundusExam();
+				fe.setVid(vOld.getId());
+				fe.setId(vOld.getMyFE().getId());
+				fe.updateFundusExam(fe);
+				vUpdate.setMyFE(fe);
+				
+				//TODO IOP
+				
+				Sketches s = new Sketches();
+				// TODO: need to delete files after adding them...so not add wrong ones!
+				s.insertSLESketch(new File("firstSketch.png"), vUpdate.getId());
+				s.insertFundusSketch(new File("FundusTempSketch.png"), vUpdate.getId());
+				s.insertGonioSketch(new File("GonioTempSketch.png"), vUpdate.getId());
+				
+				vUpdate.setSketches(s);
+				
+								
+			} catch (GatewayException e1) {
+				System.err.println("From VisitDetailView: Could not update the Visit into DB.");
+				e1.printStackTrace();
+			}
+
+			VisitTabMasterView parent = getVisitTabMasterViewForEditView();
+			parent.showList_VisitView();
+			
+		}
+		
 	}
 	
 	private class CancelListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			VisitTabMasterView parent = getVisitTabMasterView();
-			parent.showListVisitView();
+			VisitTabMasterView parent = getVisitTabMasterViewForEditView();
+			parent.showList_VisitView();
 		}
 	}
 	
@@ -243,6 +348,10 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		panel_Buttons = new JPanel();
 		add(panel_Buttons, "cell 0 8,alignx right");
 		
+		btnEdit = new JButton("Update");
+		btnEdit.addActionListener(new EditListener());
+		panel_Buttons.add(btnEdit);
+		
 		btnSave = new JButton("Save");
 		btnSave.addActionListener(new SaveListener());
 		panel_Buttons.add(btnSave);
@@ -257,6 +366,10 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		return (VisitTabMasterView)VisitDetailView.this.getParent().getParent().getParent();
 	}
 
+	public VisitTabMasterView getVisitTabMasterViewForEditView() {
+		return (VisitTabMasterView)VisitDetailView.this.getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent().getParent();
+	}
+	
 	@Override
 	public void HideallView() {
 		//TODO		
@@ -276,6 +389,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	public void reload() {
 		
 		Visit v = getMasterModel().getvL().getMyList().get(index); // the one we just inserted
+		
 		textArea_CC.setText(v.getChiefComplaint());
 		textArea_Assessment.setText(v.getAssessment());
 		textArea_Plan.setText(v.getPlan());
@@ -294,11 +408,20 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	}
 	
 	public void showEditView() {
-		
+		panel_Buttons.remove(btnSave);
+		panel_Buttons.remove(btnCancel);
+		panel_Buttons.add(btnEdit);
+		panel_Buttons.add(btnCancel);
+
 	}
 	
 	public void showNewView() {
-		panel_Buttons.setVisible(true);
+		panel_Buttons.remove(btnEdit);
+		panel_Buttons.remove(btnCancel);
+		panel_Buttons.add(btnSave);
+		panel_Buttons.add(btnCancel);
+
+//		panel_Buttons.setVisible(true);
 	}
 
 }

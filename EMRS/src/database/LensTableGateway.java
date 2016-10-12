@@ -8,7 +8,7 @@ public interface LensTableGateway {
 
 	public Lens fetchLensForVisit(long vid) throws GatewayException;
 
-	public void updateLensForVisit(Lens l) throws GatewayException;
+	public void updateLens(Lens l) throws GatewayException;
 
 	public void removeLens(Long vid) throws GatewayException;
 }

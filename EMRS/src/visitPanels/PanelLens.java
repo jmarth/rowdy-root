@@ -189,8 +189,9 @@ public class PanelLens extends JPanel implements viewinterface {
 		temp = l.getCoritcal_OD();
 		if (temp !=null)
 			comboBox_SLE_Coritcal_OD.setSelectedItem(temp);
-		else
+		else {
 			//TODO need null value for combo box
+		}
 		textField_SLE_Cortical_OD.setText(l.getCortical_OD_Notes());
 		
 		
@@ -198,7 +199,9 @@ public class PanelLens extends JPanel implements viewinterface {
 		temp = l.getCoritcal_OS();
 		if (temp !=null)
 			comboBox_SLE_Coritcal_OS.setSelectedItem(temp);
-		else
+		else {
+			
+		}
 			//TODO need null value for combo box
 		textField_SLE_Cortical_OS.setText(l.getCortical_OS_Notes());
 		
@@ -207,7 +210,9 @@ public class PanelLens extends JPanel implements viewinterface {
 		temp = l.getPSC_OD();
 		if (temp !=null)
 			comboBox_SLE_PSC_OD.setSelectedItem(temp);
-		else 
+		else {
+			
+		}
 			//TODO need null value for combo box
 		textField_SLE_PSC_OD.setText(l.getPSC_OD_Notes());
 		
@@ -216,7 +221,9 @@ public class PanelLens extends JPanel implements viewinterface {
 		temp = l.getPSC_OS();
 		if (temp !=null)
 			comboBox_SLE_PSC_OS.setSelectedItem(temp);
-		else
+		else {
+			
+		}
 			//TODO need null value for combo box
 		textField_SLE_PSC_OS.setText(l.getPSC_OS_Notes());
 	}

@@ -153,9 +153,60 @@ public class GlassesRxTableGatewaySQLite implements GlassesRxTableGateway {
 	}
 	
 	@Override
-	public void updateGlassesRxForVisit(long vid) throws GatewayException {
-		// TODO Auto-generated method stub
+	public void updateGlassesRx(GlassesRx glsRx) throws GatewayException {
 		
+		PreparedStatement st = null;
+		
+		try {
+			
+			conn.setAutoCommit(false);
+			
+			st = conn.prepareStatement(
+					"UPDATE glasses_rxs SET"
+					+ " vid = ?,"
+					+ " OD_Sphere = ?,"
+					+ " OD_Cyl = ?,"
+					+ " OD_Axis = ?,"
+					+ " OD_Add = ?,"
+					
+					+ " OS_Sphere = ?,"
+					+ " OS_Cyl = ?,"
+					+ " OS_Axis = ?,"
+					+ " OS_Add = ?,"
+					+ " GlassesRxNotes = ?"
+					+ " WHERE id = ?");
+			
+			st.setLong(1, glsRx.getVid());
+			
+			st.setString(2, glsRx.getRx_OD_Sphere());
+			st.setString(3, glsRx.getRx_OD_Cyl());
+			st.setString(4, glsRx.getRx_OD_Axis());
+			st.setString(5, glsRx.getRx_OD_Add());
+			
+			st.setString(6, glsRx.getRx_OS_Sphere());
+			st.setString(7, glsRx.getRx_OS_Cyl());
+			st.setString(8, glsRx.getRx_OS_Axis());
+			st.setString(9, glsRx.getRx_OS_Add());
+			
+			st.setString(10, glsRx.getGlassesRxNotes());
+			
+			st.setLong(11, glsRx.getId());
+
+			st.executeUpdate();
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
 	}
 	
 	@Override

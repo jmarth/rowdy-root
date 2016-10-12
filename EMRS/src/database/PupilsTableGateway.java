@@ -8,7 +8,7 @@ public interface PupilsTableGateway {
 
 	public abstract Pupils fetchPupilsForVisit(long vid) throws GatewayException;
 
-	public void updatePupilsForVisit(long vid) throws GatewayException;
+	public void updatePupils(Pupils p) throws GatewayException;
 
 	public void removePupils(Long vid) throws GatewayException;
 }

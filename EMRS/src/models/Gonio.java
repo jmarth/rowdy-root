@@ -279,6 +279,17 @@ public class Gonio {
 		
 		return id;
 	}
+
+
+	public void updateGonio(Gonio go) {
+		try {
+			myGateway.updateGonio(go);
+		} catch (GatewayException e) {
+			System.err.println("From Gonio: cannot update to DB.");
+//			e.printStackTrace();
+		}
+		
+	}
 	
 	
 }

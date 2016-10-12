@@ -8,7 +8,7 @@ public interface RefractionTableGateway {
 
 	public Refraction fetchRefractionForVisit(long vid) throws GatewayException;
 
-	public void updateRefractionForVisit(Refraction r) throws GatewayException;
+	public void updateRefraction(Refraction r) throws GatewayException;
 
 	public void removeRefraction(Long vid) throws GatewayException;
 }

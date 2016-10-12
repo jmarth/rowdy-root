@@ -48,8 +48,10 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		
 		try {
 			//fetch parts
+			
 			st = conn.prepareStatement("SELECT * FROM visits WHERE pid=? ORDER BY id DESC");
 			st.setLong(1, pid);
+			
 			
 			rs = st.executeQuery();
 			
@@ -92,7 +94,6 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 		
 		//init new id to invalid
 		long newId = 0;
-		System.err.println("1");
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
@@ -146,8 +147,46 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 	}
 
 	@Override
-	public void updateVisit(Visit a) {
-		// TODO Auto-generated method stub
+	public void updateVisit(Visit v) throws GatewayException {
+		
+		PreparedStatement st = null;
+		
+		try {
+			conn.setAutoCommit(false);
+			
+			st = conn.prepareStatement(
+					"UPDATE visits SET"
+					+ " pid = ?,"
+					+ " chiefComplaint = ?,"
+					+ " assessment = ?,"
+					+ " plan = ?"
+					+ " WHERE id = ?");
+			
+			st.setLong(1, v.getPid());
+			st.setString(2, v.getChiefComplaint());
+			st.setString(3, v.getAssessment());
+			st.setString(4, v.getPlan());
+			st.setLong(5, v.getId());
+			
+			st.executeUpdate();
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+			
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
+		
+		
 		
 	}
 

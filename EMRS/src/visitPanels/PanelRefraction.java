@@ -179,7 +179,16 @@ public class PanelRefraction extends JPanel implements viewinterface {
 		
 		Refraction r = getMasterModel().getCurrentPatientVisitList().get(index).getMyRefraction();
 		
-		rdbtn_ManifestRefraction.setSelected(r.isManifest() == 1? true : false);
+		int i = -1;
+		i = r.isManifest();
+		
+		if (i == 1) {
+			rdbtn_ManifestRefraction.setSelected(true);
+		} else if ( i == 0 ) {
+			rdbtn_AutoRefraction.setSelected(true);
+		} else { 
+			// do nothing
+		}
 		
 		textField_ARSC_OD_Sphere.setText(r.getSC_OD_Sphere());
 		textField_ARSC_OD_Cyl.setText(r.getSC_OD_Cyl());

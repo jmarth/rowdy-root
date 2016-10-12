@@ -183,5 +183,14 @@ public class GlassesRx {
 		
 		
 		return id;
+	}
+
+	public void updateGlxRx(GlassesRx g) {
+		try {
+			myGateway.updateGlassesRx(g);
+		} catch (GatewayException e) {
+			System.err.println("From GlassesRx: cannot update to DB.");
+//			e.printStackTrace();
+		}
 	}	
 }

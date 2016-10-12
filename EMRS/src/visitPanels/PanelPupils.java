@@ -269,7 +269,6 @@ public class PanelPupils extends JPanel implements viewinterface {
 				comboBox_PupilsDiameterBoth.setSelectedIndex(2);
 				rdbtn_N_RAPDBoth.setSelected(true);
 				rdbtn_N_SynechiaBoth.setSelected(true);
-				System.out.println("LOL");
 			}
 
 		}

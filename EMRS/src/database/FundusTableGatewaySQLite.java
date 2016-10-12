@@ -191,21 +191,90 @@ public class FundusTableGatewaySQLite implements FundusTableGateway {
 
 	
 	@Override
-	public void updateFundusExamForVisit(long vid) throws GatewayException {
-		// TODO Auto-generated method stub
-		// set autocommit false, then back again.
+	public void updateFundusExam(FundusExam fe) throws GatewayException {
+		PreparedStatement st = null;
+		
+		try {
+			conn.setAutoCommit(false);
+			st = conn.prepareStatement(
+					"UPDATE fundus_exams SET"
+					+ " vid = ?,"
+					+ " isDialated = ?,"
+					+ " dialNotes = ?,"
+					
+					+ " isCDODAb = ?,"
+					+ " CDOD = ?,"
+					+ " CDODNotes = ?,"
+					
+					+ " isCDOSAb = ?,"
+					+ " CDOS = ?,"
+					+ " CDOSNotes = ?,"
+					
+					+ " isMaculaODAb = ?,"
+					+ " MaculaODNotes = ?,"
+					
+					+ " isMaculaOSAb = ?,"
+					+ " MaculaOSNotes = ?,"
+					
+					+ " isRetinaODAb = ?,"
+					+ " RetinaODNotes = ?,"
+					
+					+ " isRetinaOSAb = ?,"
+					+ " RetinaOSNotes = ?"
+					+ " WHERE id = ?");
+	
+			st.setLong(1, fe.getVid());
+			
+			st.setInt(2, fe.getDialated());
+			st.setString(3, fe.getDialNotes());
+			
+			st.setInt(4, fe.getCDODAb());
+			st.setString(5, fe.getCDOD());
+			st.setString(6, fe.getCDODNotes());
+			
+			st.setInt(7, fe.getCDOSAb());
+			st.setString(8, fe.getCDOS());
+			st.setString(9, fe.getCDOSNotes());
+			
+			st.setInt(10, fe.getMaculaODAb());
+			st.setString(11, fe.getMaculaODNotes());
+			
+			st.setInt(12, fe.getMaculaOSAb());
+			st.setString(13, fe.getMaculaOSNotes());
+			
+			st.setInt(14, fe.getRetinaODAb());
+			st.setString(15, fe.getRetinaODNotes());
+			
+			st.setInt(16, fe.getRetinaOSAb());
+			st.setString(17, fe.getRetinaOSNotes());
+			
+			st.setLong(18, fe.getId());
+	
+			st.executeUpdate();
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
 	}
 	
 	@Override
 	public void removeFundusExam(Long vid) throws GatewayException {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	public void close() {
-		// TODO Auto-generated method stub
 		
 	}
-
 
 }

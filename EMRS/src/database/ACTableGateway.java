@@ -8,7 +8,7 @@ public interface ACTableGateway {
 
 	public AnteriorChamber fetchAnteriorChamberForVisit(long vid) throws GatewayException;
 
-	public abstract void updateAnteriorChamber(AnteriorChamber ac);
+	public abstract void updateAnteriorChamber(AnteriorChamber ac) throws GatewayException;
 
 	public void removeAnteriorChamber(Long vid) throws GatewayException;
 }

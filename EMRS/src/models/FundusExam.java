@@ -234,5 +234,14 @@ public class FundusExam {
 		
 		return id;
 	}
+
+	public void updateFundusExam(FundusExam fe) {
+		try {
+			myGateway.updateFundusExam(fe);
+		} catch (GatewayException e) {
+			System.err.println("From FundusExam: cannot update to DB.");
+//			e.printStackTrace();
+		}
+	}
 	
 }

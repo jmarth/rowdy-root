@@ -248,6 +248,15 @@ public class Lens {
 		
 		return id;
 	}
+
+	public void updateLens(Lens l) {
+		try {
+			myGateway.updateLens(l);
+		} catch (GatewayException e) {
+			System.err.println("From Lens: cannot update to DB.");
+//			e.printStackTrace();
+		}		
+	}
 }
 	
 	

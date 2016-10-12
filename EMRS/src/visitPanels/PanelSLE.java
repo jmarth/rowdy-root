@@ -86,11 +86,11 @@ public class PanelSLE extends JPanel implements viewinterface {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+			//System.err.println(label_SLE_Sketch);
 			FrameNewSketch firstSketch = new FrameNewSketch(label_SLE_Sketch, "firstSketch");
 			firstSketch.setContentPane(firstSketch.getContentPane());
 			firstSketch.setSize(new Dimension(600,600));
-			firstSketch.setResizable(false);
+			firstSketch.setResizable(true);
 			
 			panel_SLE_Sketch = (JPanel) firstSketch.getContentPane();
 			panel_SLE_Sketch.setVisible(true);

@@ -18,9 +18,6 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 	private JScrollPane scrollPane;
 	private VisitDetailView visitNewView;
 	private VisitListView visit_ListView;
-	private JButton btnNewVisit;
-	private JButton btnCancelVisit;
-
 	
 	public VisitTabMasterView() {
 		
@@ -29,44 +26,13 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 		scrollPane = new JScrollPane();
 		
 		visit_ListView = new VisitListView();
-//		
+//		visitNewView = new VisitDetailView(); for New Visit
+		
 		scrollPane.add(visit_ListView);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
 		add(scrollPane, BorderLayout.CENTER);
 		
-		btnNewVisit = new JButton("Add A New Visit");
-		btnNewVisit.setBackground(CL.cararra);
-		btnNewVisit.setOpaque(true);
-		btnNewVisit.setBorderPainted(false);
-		btnNewVisit.setForeground(CL.colorBlue);
-		btnNewVisit.setFont(new Font("Tahoma", Font.BOLD, 16));		
-		
-		add(btnNewVisit, BorderLayout.SOUTH);
-		
-		btnCancelVisit = new JButton("Cancel Creating New Visit");
-		btnCancelVisit.setBackground(CL.cararra);
-		btnCancelVisit.setOpaque(true);
-		btnCancelVisit.setBorderPainted(false);
-		btnCancelVisit.setForeground(CL.colorBlue);
-		btnCancelVisit.setFont(new Font("Tahoma", Font.BOLD, 16));	
-		
-		btnNewVisit.addActionListener(new NewVisitListener());//TODO
-		btnCancelVisit.addActionListener(new CancelVisitListener());
-	}
-	
-	private class NewVisitListener implements ActionListener {
-		
-		public void actionPerformed(ActionEvent e) {
-			VisitTabMasterView.this.showNewVisitView();
-		}
-	}
-	
-	private class CancelVisitListener implements ActionListener {
-		
-		public void actionPerformed(ActionEvent e) {
-			VisitTabMasterView.this.showListVisitFromNewView();
-		}
 	}
 
 	@Override
@@ -81,64 +47,54 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 
 	@Override
 	public void ShowView() {
-		showListVisitView();
+		showList_VisitView();
 	}
 	
 	public void showListVisitFromNewView() {
+		
 		this.HideallView();
+		
 		scrollPane.setViewportView(visit_ListView); //reload
+		
 		scrollPane.validate();
 		scrollPane.repaint();
 		visit_ListView.ShowView();
-//		this.showNewButton();
 	}
 	
-	public void showListVisitView() {
+	public void showList_VisitView() {
+		
 		this.HideallView();
+		
 		if(visit_ListView != null) {
 			scrollPane.remove(visit_ListView);
+			
 		}
+		
 		visit_ListView = new VisitListView();
 		scrollPane.add(visit_ListView);
 		
-		visit_ListView.reload(); // returns patient record view
+		scrollPane.setViewportView(visit_ListView);
+		visit_ListView.reload();
 		
-		scrollPane.setViewportView(visit_ListView); //reload
 		scrollPane.validate();
 		scrollPane.repaint();
-
-//		visitListView.ShowView();
-//		this.showNewButton();
 	}
 	
 	public void showNewVisitView() {
+		
 		this.HideallView();
 
 		if(visitNewView != null) {
 			scrollPane.remove(visitNewView);
 		}
-		visitNewView = new VisitDetailView(-1);
-		scrollPane.add(visitNewView);
 		
+		visitNewView = new VisitDetailView(-1);
+		
+		scrollPane.add(visitNewView);
 		scrollPane.setViewportView(visitNewView);
 		
 		visitNewView.showNewView();//for save button
-//		this.showCancelButton();
 	}
-	
-//	public void showCancelButton() {
-//		this.remove(btnNewVisit);
-//		this.add(btnCancelVisit, BorderLayout.SOUTH);
-//		this.validate();
-//		this.repaint();
-//	}
-	
-//	public void showNewButton() {
-//		this.remove(btnCancelVisit);
-//		this.add(btnNewVisit, BorderLayout.SOUTH);
-//		this.validate();
-//		this.repaint();
-//	}
 
 	@Override
 	public void reload() {
