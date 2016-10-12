@@ -8,7 +8,7 @@ public interface GonioTableGateway {
 	
 	public Gonio fetchGonioForVisit(long vid) throws GatewayException;
 	
-	public void updateGonioForVisit(long vid) throws GatewayException;
+	public void updateGonio(Gonio g) throws GatewayException;
 
 	public void removeGonio(Long vid) throws GatewayException;
 

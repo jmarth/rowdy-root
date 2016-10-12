@@ -10,7 +10,7 @@ public interface VisitTableGateway {
 
 	public List<Visit> fetchVisitsForPatient(long vid) throws GatewayException;
 
-	public abstract void updateVisit(Visit v);
+	public abstract void updateVisit(Visit v) throws GatewayException;
 
 	public abstract void removeVisit(long id);
 }

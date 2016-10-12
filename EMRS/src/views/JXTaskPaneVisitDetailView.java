@@ -15,6 +15,7 @@ public class JXTaskPaneVisitDetailView extends JXTaskPane implements viewinterfa
 	public JXTaskPaneVisitDetailView(int index) {
 		
 		vdv = new VisitDetailView(index);
+		vdv.showEditView();
 		add(vdv);
 	}	
 	

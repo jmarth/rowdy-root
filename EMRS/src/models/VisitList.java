@@ -75,8 +75,10 @@ public class VisitList {
 		return myVidMap.get(id);
 	}
 
-	public void update(Visit a) throws GatewayException {
-		myGateway.updateVisit(a);
+	public void update(Visit v, int index) throws GatewayException {
+		this.myList.remove(index);
+		this.myList.add(index, v);
+		myGateway.updateVisit(v);
 	}
 
 	public void delete(long id) throws GatewayException {

@@ -151,7 +151,12 @@ public class AnteriorChamber {
 	}
 	
 	public void updateAC(AnteriorChamber ac){
-		myGateway.updateAnteriorChamber(ac);
+		try {
+			myGateway.updateAnteriorChamber(ac);
+		} catch (GatewayException e) {
+			System.err.println("From AnteriorChamber, cannot update to DB");
+//			e.printStackTrace();
+		}
 	}
 
 	public long getId() {

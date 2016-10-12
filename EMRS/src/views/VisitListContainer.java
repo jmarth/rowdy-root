@@ -49,6 +49,8 @@ public class VisitListContainer extends JXTaskPaneContainer implements viewinter
 	@Override
 	public void reload() {
 		
+		this.removeAll();
+		
 		VisitList vl = getMasterModel().getvL();
 		
 		for (size = 0; size < vl.getMyList().size(); size++) {
@@ -81,11 +83,13 @@ public class VisitListContainer extends JXTaskPaneContainer implements viewinter
 			}
 				
 			
+			
 			jxtp.setAnimated(false);
 			jxtp.setCollapsed(true);
 			jxtp.setScrollOnExpand(true);
 			
 			add(jxtp);
+			
 			jxtp.reload();
 		}
 		
@@ -93,11 +97,11 @@ public class VisitListContainer extends JXTaskPaneContainer implements viewinter
 		this.repaint();
 	}
 
-	// Is added to a JScrollPane, so have to go up quite a bit
+	// have to go up quite a bit
 	@Override
 	public HomeView getHomeView() {
 //		if(this.getParent().getParent().getParent() instanceof VisitTabMasterView)
-		return ((VisitTabMasterView)this.getParent().getParent()).getHomeView();
+		return ((VisitTabMasterView)this.getParent().getParent().getParent().getParent()).getHomeView();
 	}
 	
 	public int getCount() {

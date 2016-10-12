@@ -194,9 +194,84 @@ public class LensTableGatewaySQLite implements LensTableGateway {
 	}
 	
 	@Override
-	public void updateLensForVisit(Lens l) throws GatewayException {
-		// TODO Auto-generated method stub
+	public void updateLens(Lens l) throws GatewayException {
+		PreparedStatement st = null;
 		
+		try {
+			conn.setAutoCommit(false);
+			st = conn.prepareStatement(
+					"UPDATE lenses SET"
+					+ " vid = ?,"
+							
+					+ " NS_OD = ?,"
+					+ " NS_OD_Notes = ?,"
+					+ " NS_OS = ?,"
+					+ " NS_OS_Notes = ?,"
+					
+					+ " isStableLensOD = ?,"
+					+ " isStableLensOS = ?,"
+					
+					+ " isPseudophakia_OD = ?,"
+					+ " isPseudophakia_OS = ?,"
+					
+					+ " isPCO_OD = ?,"
+					+ " isPCO_OS = ?,"
+					
+					+ " Coritcal_OD = ?,"
+					+ " Cortical_OD_Notes = ?,"
+					+ " Coritcal_OS = ?,"
+					+ " Cortical_OS_Notes = ?,"
+					
+					+ " PSC_OD = ?,"
+					+ " PSC_OD_Notes = ?,"
+					+ " PSC_OS = ?,"
+					+ " PSC_OS_Notes = ?"
+					+ " WHERE id = ?"
+					);
+			
+			st.setLong(1, l.getVid());
+			
+			st.setString(2, l.getNS_OD());
+			st.setString(3, l.getNS_OD_Notes());
+			st.setString(4, l.getNS_OS());
+			st.setString(5, l.getNS_OS_Notes());
+			
+			st.setInt(6, l.isStableLensOD());
+			st.setInt(7, l.isStableLensOS());
+			
+			st.setInt(8, l.isPseudophakia_OD());
+			st.setInt(9, l.isPseudophakia_OS());
+			
+			st.setInt(10, l.isPCO_OD());
+			st.setInt(11, l.isPCO_OS());
+			
+			st.setString(12, l.getCoritcal_OD());
+			st.setString(13, l.getCortical_OD_Notes());
+			st.setString(14, l.getCoritcal_OS());
+			st.setString(15, l.getCortical_OS_Notes());
+			
+			st.setString(16, l.getPSC_OD());
+			st.setString(17, l.getPSC_OD_Notes());
+			st.setString(18, l.getPSC_OS());
+			st.setString(19, l.getPSC_OS_Notes());
+			
+			st.setLong(20, l.getId());
+			
+			st.executeUpdate();
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
 	}
 	
 	@Override

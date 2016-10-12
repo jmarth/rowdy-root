@@ -25,7 +25,7 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 			
 		} catch (SQLException e) {
 			System.err.println("From Pupils TG, no db connection.");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 	
@@ -176,9 +176,71 @@ public class PupilsTableGatewaySQLite implements PupilsTableGateway {
 	}
 
 	@Override
-	public void updatePupilsForVisit(long vid) throws GatewayException {
-		// TODO Auto-generated method stub
+	public void updatePupils(Pupils p) throws GatewayException {
+		PreparedStatement st = null;
 		
+		try {
+			conn.setAutoCommit(false);
+			st = conn.prepareStatement(
+					"UPDATE pupils SET"
+					+ " vid = ?,"
+							
+					+ " isBothPupilsNormal = ?,"
+					+ " bothShape = ?,"
+					+ " bothDiameter = ?,"
+					+ " isBothRAPD = ?,"
+					+ " isBothSynechia = ?,"
+					
+					+ " isRightPupilNormal = ?,"
+					+ " rightShape = ?,"
+					+ " rightDiameter = ?,"
+					+ " isRightRAPD = ?,"
+					+ " isRightSynechia = ?,"
+					
+					+ " isLeftPupilNormal = ?,"
+					+ " leftShape = ?,"
+					+ " leftDiameter = ?,"
+					+ " isLeftRAPD = ?,"
+					+ " isLeftSynechia = ?"
+					+ " WHERE id = ?");
+			
+			st.setLong(1, p.getVid());
+			
+			st.setInt(2, p.isBothPupilsNormal());
+			st.setString(3, p.getBothShape());
+			st.setString(4, p.getBothDiameter());
+			st.setInt(5, p.isBothRAPD());
+			st.setInt(6, p.isBothSynechia());
+			
+			st.setInt(7, p.isRightPupilNormal());
+			st.setString(8, p.getRightShape());
+			st.setString(9, p.getRightDiameter());
+			st.setInt(10, p.isRightRAPD());
+			st.setInt(11, p.isRightSynechia());
+			
+			st.setInt(12, p.isLeftPupilNormal());
+			st.setString(13, p.getLeftShape());
+			st.setString(14, p.getLeftDiameter());
+			st.setInt(15, p.isLeftRAPD());
+			st.setInt(16, p.isLeftSynechia());
+			
+			st.setLong(17, p.getId());
+			
+			st.executeUpdate();
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
 	}
 	
 	@Override

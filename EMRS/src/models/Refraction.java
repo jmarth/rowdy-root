@@ -228,6 +228,15 @@ public class Refraction {
 		
 		return id;
 	}
+
+	public void updateRefraction(Refraction r) {
+		try {
+			myGateway.updateRefraction(r);
+		} catch (GatewayException e) {
+			System.err.println("From Refraction: cannot update to DB.");
+			e.printStackTrace();
+		}
+	}
 	
 	
 	

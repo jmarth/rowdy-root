@@ -50,6 +50,8 @@ public class FrameNewSketch extends JFrame {
 
 	public FrameNewSketch (final JLabel sketchLabel, final String filename) {
 		
+		this.sketchLabel = sketchLabel;
+		
 		ActionListener paintController = new PaintListener();
 		
 		this.setMaximumSize(new Dimension(500, 500));
@@ -206,7 +208,15 @@ public class FrameNewSketch extends JFrame {
 			
 			try {
 				ImageIO.write(im, "PNG", new File(filename + ".png"));
-				BufferedImage bufImg = ImageIO.read(new File(filename + ".png"));
+				BufferedImage bufImg = ImageIO.read(new File(filename + ".png"));//TODO jpg
+				if (bufImg == null) {
+					System.err.println("null");
+				}
+				if (sketchLabel == null) {
+					System.err.println("null lab");
+				}
+				
+				
 				sketchLabel.setIcon(new ImageIcon(bufImg));
 
 				dispose();

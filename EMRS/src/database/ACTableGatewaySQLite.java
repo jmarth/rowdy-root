@@ -238,9 +238,106 @@ public  class ACTableGatewaySQLite implements ACTableGateway {
 
 
 	@Override
-	public void updateAnteriorChamber(AnteriorChamber ac) {
-		// TODO Auto-generated method stub
+	public void updateAnteriorChamber(AnteriorChamber ac) throws GatewayException {
+		PreparedStatement st = null;
 		
+		try {
+			conn.setAutoCommit(false);
+			st = conn.prepareStatement(
+					"UPDATE anterior_chambers SET"
+					+ " vid = ?,"
+							
+					+ " isACODNormal = ?,"
+					+ " isACOSNormal = ?,"
+					
+					+ " ACDepthOD = ?,"
+					+ " ACDepthOS = ?,"
+					
+					+ " ACAngleOD = ?,"
+					+ " ACAngleOS = ?,"
+					
+					+ " PASOD = ?,"
+					+ " PASOS = ?,"
+					
+					+ " ACODKP = ?,"
+					+ " ACOSKP = ?,"
+					
+					+ " isShuntOD = ?,"
+					+ " isScarringOD = ?,"
+					+ " isTraumaOD = ?,"
+					+ " isBlebOD = ?,"
+					
+					+ " isShuntOS = ?,"
+					+ " isScarringOS = ?,"
+					+ " isTraumaOS = ?,"
+					+ " isBlebOS = ?,"
+					
+					+ " isVascularOD = ?,"
+					+ " BlebOD_Num = ?,"
+					
+					+ " isVascularOS = ?,"
+					+ " BlebOS_Num = ?,"
+					
+					+ " isKSpindleOD = ?,"
+					+ " isKSpindleOS = ?"
+					
+					+ " WHERE id = ?"
+					);
+			
+			st.setLong(1, ac.getVid());
+			
+			st.setInt(2, ac.isACODNormal());
+			st.setInt(3, ac.isACOSNormal());
+			
+			st.setString(4, ac.getACDepthOD());
+			st.setString(5, ac.getACDepthOS());
+			
+			st.setString(6, ac.getACAngleOD());
+			st.setString(7, ac.getACAngleOS());
+			
+			st.setString(8, ac.getPASOD());
+			st.setString(9, ac.getPASOS());
+			
+			st.setString(10, ac.getACODKP());
+			st.setString(11, ac.getACOSKP());
+			
+			st.setInt(12, ac.isShuntOD());
+			st.setInt(13, ac.isScarringOD());
+			st.setInt(14, ac.isTraumaOD());
+			st.setInt(15, ac.isBlebOD());
+			
+			st.setInt(16, ac.isShuntOS());
+			st.setInt(17, ac.isScarringOS());
+			st.setInt(18, ac.isTraumaOS());
+			st.setInt(19, ac.isBlebOS());
+			
+			st.setInt(20, ac.isVascularOD());
+			st.setString(21, ac.getBlebOD_Num());
+			
+			st.setInt(22, ac.isVascularOS());
+			st.setString(23, ac.getBlebOS_Num());
+			
+			st.setInt(24, ac.isKSpindleOD());
+			st.setInt(25, ac.isKSpindleOS());
+			
+			st.setLong(26, ac.getId());
+			
+			st.executeUpdate();
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			//clean up
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}		
 	}
 
 	public void close() {

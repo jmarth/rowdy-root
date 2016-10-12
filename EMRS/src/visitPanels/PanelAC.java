@@ -517,6 +517,7 @@ public class PanelAC extends JPanel implements viewinterface {
 		AnteriorChamber a = getMasterModel().getCurrentPatientVisitList().get(index).getMyAC();
 
 		String temp;
+		int i  = -1;
 		
 		chkbx_ACODNormal.setSelected(a.isACODNormal() == 1? true:false);
 		chkbx_ACOSNormal.setSelected(a.isACOSNormal() == 1? true:false);
@@ -532,6 +533,8 @@ public class PanelAC extends JPanel implements viewinterface {
 			rdbtn_ACDepthOD3.setSelected(true);
 		} else if (temp.equals("+4")) {
 			rdbtn_ACDepthOD4.setSelected(true);
+		} else {
+			
 		}
 		
 		temp = a.getACDepthOS();
@@ -545,6 +548,8 @@ public class PanelAC extends JPanel implements viewinterface {
 			rdbtn_ACDepthOS3.setSelected(true);
 		} else if (temp.equals("+4")) {
 			rdbtn_ACDepthOS4.setSelected(true);
+		} else {
+			
 		}
 
 		
@@ -556,7 +561,7 @@ public class PanelAC extends JPanel implements viewinterface {
 			rdbtn_ACAngleODOpen.setSelected(true);
 		else if (temp.equals("Closed"))
 			rdbtn_ACAngleODClosed.setSelected(true);
-		
+		else
 		
 		
 		temp = a.getACAngleOS();
@@ -629,7 +634,15 @@ public class PanelAC extends JPanel implements viewinterface {
 		rdbtn_TraumaOS.setSelected(a.isTraumaOS() == 1? true:false );
 		rdbtn_BlebOS.setSelected(a.isBlebOS() == 1? true:false);
 
-		
+		i = -1; // better safe than sorry
+		i = a.isVascularOD();
+		if (i == 1) {
+			rdbtn_VascularOD.setSelected(true);
+		} else if ( i == 0) {
+			rdbtn_AvascularOD.setSelected(true);
+		} else {
+			// nothing
+		}
 		
 		rdbtn_VascularOD.setSelected(a.isVascularOD() ==1? true:false);
 		rdbtn_AvascularOD.setSelected(a.isVascularOD() == 0? true:false);
@@ -647,12 +660,17 @@ public class PanelAC extends JPanel implements viewinterface {
 			rdbtn_BlebOD3.setSelected(true);
 		} else if (temp.equals("+4")) {
 			rdbtn_BlebOD4.setSelected(true);
-		}
+		} else
 
-		
-		
-		rdbtn_VascularOS.setSelected(a.isVascularOS() ==1? true:false);
-		rdbtn_AvascularOS.setSelected(a.isVascularOS() == 0? true:false);
+		i = -1;
+		i = a.isVascularOS();
+		if (i == 1) {
+			rdbtn_VascularOS.setSelected(true);
+		} else if ( i == 0) {
+			rdbtn_AvascularOS.setSelected(true);
+		} else {
+			// nothing
+		}
 
 		
 		
@@ -667,18 +685,28 @@ public class PanelAC extends JPanel implements viewinterface {
 			rdbtn_BlebOS3.setSelected(true);
 		} else if (temp.equals("+4")) {
 			rdbtn_BlebOS4.setSelected(true);
-		}
+		} else
 
+		i = -1; // better safe than sorry
+		i = a.isKSpindleOD();
+		if (i == 1) {
+			rdbtn_Y_KSpindleOD.setSelected(true);
+		} else if ( i == 0) {
+			rdbtn_N_KSpindleOD.setSelected(true);
+		} else {
+			// nothing
+		}
 		
-		
-		rdbtn_Y_KSpindleOD.setSelected(a.isKSpindleOD() ==1? true:false);
-		rdbtn_N_KSpindleOD.setSelected(a.isKSpindleOD() ==0? true:false);
-		
-		rdbtn_Y_KSpindleOS.setSelected(a.isKSpindleOS() ==1? true:false);
-		rdbtn_N_KSpindleOS.setSelected(a.isKSpindleOS() ==0? true:false);
-		
-		
-		
+		i = -1;
+		i = a.isKSpindleOS();
+		if (i == 1) {
+			rdbtn_Y_KSpindleOS.setSelected(true);
+		} else if ( i == 0) {
+			rdbtn_N_KSpindleOS.setSelected(true);
+		} else {
+			// nothing
+		}
+			
 	}
 
 	@Override

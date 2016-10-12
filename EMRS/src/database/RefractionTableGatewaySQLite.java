@@ -96,7 +96,7 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 	/**
 	 * Inserts visit into visits table
 	 */
-	public long insertRefraction(Refraction glsRx) throws GatewayException {
+	public long insertRefraction(Refraction r) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;
@@ -127,25 +127,25 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 					+ " values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			
-			st.setLong(1, glsRx.getVid());
+			st.setLong(1, r.getVid());
 			
-			st.setInt(2, glsRx.isManifest());
+			st.setInt(2, r.isManifest());
 			
-			st.setString(3, glsRx.getSC_OD_Sphere());
-			st.setString(4, glsRx.getSC_OD_Cyl());
-			st.setString(5, glsRx.getSC_OD_Axis());
+			st.setString(3, r.getSC_OD_Sphere());
+			st.setString(4, r.getSC_OD_Cyl());
+			st.setString(5, r.getSC_OD_Axis());
 			
-			st.setString(6, glsRx.getSC_OS_Sphere());
-			st.setString(7, glsRx.getSC_OS_Cyl());
-			st.setString(8, glsRx.getSC_OS_Axis());
+			st.setString(6, r.getSC_OS_Sphere());
+			st.setString(7, r.getSC_OS_Cyl());
+			st.setString(8, r.getSC_OS_Axis());
 			
-			st.setString(9, glsRx.getCC_OD_Sphere());
-			st.setString(10, glsRx.getCC_OD_Cyl());
-			st.setString(11, glsRx.getCC_OD_Axis());
+			st.setString(9, r.getCC_OD_Sphere());
+			st.setString(10, r.getCC_OD_Cyl());
+			st.setString(11, r.getCC_OD_Axis());
 			
-			st.setString(12, glsRx.getCC_OS_Sphere());
-			st.setString(13, glsRx.getCC_OS_Cyl());
-			st.setString(14, glsRx.getCC_OS_Axis());
+			st.setString(12, r.getCC_OS_Sphere());
+			st.setString(13, r.getCC_OS_Cyl());
+			st.setString(14, r.getCC_OS_Axis());
 			
 			st.executeUpdate();
 			
@@ -174,9 +174,70 @@ public class RefractionTableGatewaySQLite implements RefractionTableGateway {
 	}
 	
 	@Override
-	public void updateRefractionForVisit(Refraction r) throws GatewayException {
-		// TODO Auto-generated method stub
+	public void updateRefraction(Refraction r) throws GatewayException {
+		PreparedStatement st = null;
 		
+		try {
+			conn.setAutoCommit(false);
+			st = conn.prepareStatement(
+					"UPDATE refractions SET"
+					+ " vid = ?,"
+							
+					+ " isManifest = ?,"
+					
+					+ " SC_OD_Sphere = ?,"
+					+ " SC_OD_Cyl = ?,"
+					+ " SC_OD_Axis = ?,"
+					+ " SC_OS_Sphere = ?,"
+					+ " SC_OS_Cyl = ?,"
+					+ " SC_OS_Axis = ?,"
+					
+					+ " CC_OD_Sphere = ?,"
+					+ " CC_OD_Cyl = ?,"
+					+ " CC_OD_Axis = ?,"
+					+ " CC_OS_Sphere = ?,"
+					+ " CC_OS_Cyl = ?,"
+					+ " CC_OS_Axis = ?"
+					+ " WHERE id = ?"
+					);
+			
+			st.setLong(1, r.getVid());
+			
+			st.setInt(2, r.isManifest());
+			
+			st.setString(3, r.getSC_OD_Sphere());
+			st.setString(4, r.getSC_OD_Cyl());
+			st.setString(5, r.getSC_OD_Axis());
+			
+			st.setString(6, r.getSC_OS_Sphere());
+			st.setString(7, r.getSC_OS_Cyl());
+			st.setString(8, r.getSC_OS_Axis());
+			
+			st.setString(9, r.getCC_OD_Sphere());
+			st.setString(10, r.getCC_OD_Cyl());
+			st.setString(11, r.getCC_OD_Axis());
+			
+			st.setString(12, r.getCC_OS_Sphere());
+			st.setString(13, r.getCC_OS_Cyl());
+			st.setString(14, r.getCC_OS_Axis());
+			
+			st.setLong(15, r.getId());
+			
+			st.executeUpdate();
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+			
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			try {
+				if(st != null)
+					st.close();
+			} catch (SQLException e) {
+				throw new GatewayException("SQL Error: " + e.getMessage());
+			}
+		}
 	}
 	
 	@Override

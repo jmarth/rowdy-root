@@ -224,4 +224,13 @@ public class Pupils {
 		
 		return id;
 	}
+
+	public void updatePupils(Pupils p) {
+		try {
+			myGateway.updatePupils(p);
+		} catch (GatewayException e) {
+			System.err.println("From Pupils: cannot update to DB.");
+//			e.printStackTrace();
+		}
+	}
 }

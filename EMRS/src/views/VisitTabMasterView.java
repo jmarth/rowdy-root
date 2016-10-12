@@ -26,11 +26,13 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 		scrollPane = new JScrollPane();
 		
 		visit_ListView = new VisitListView();
+//		visitNewView = new VisitDetailView(); for New Visit
 		
 		scrollPane.add(visit_ListView);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
 		add(scrollPane, BorderLayout.CENTER);
+		
 	}
 
 	@Override
@@ -53,6 +55,7 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 		this.HideallView();
 		
 		scrollPane.setViewportView(visit_ListView); //reload
+		
 		scrollPane.validate();
 		scrollPane.repaint();
 		visit_ListView.ShowView();
@@ -66,13 +69,12 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 			scrollPane.remove(visit_ListView);
 			
 		}
+		
 		visit_ListView = new VisitListView();
-
 		scrollPane.add(visit_ListView);
 		
-		visit_ListView.reload();
-		
 		scrollPane.setViewportView(visit_ListView);
+		visit_ListView.reload();
 		
 		scrollPane.validate();
 		scrollPane.repaint();

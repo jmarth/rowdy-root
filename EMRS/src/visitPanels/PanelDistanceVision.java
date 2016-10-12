@@ -126,9 +126,9 @@ public class PanelDistanceVision extends JPanel implements viewinterface {
 	public DistanceVision newDV() {
 		DistanceVision dv = new DistanceVision (
 				textField_DVODSC.getText(),
-				textField_DVODSC.getText(),
-				textField_DVODSC.getText(),
-				textField_DVODSC.getText()
+				textField_DVOSSC.getText(),
+				textField_DVODCC.getText(),
+				textField_DVOSCC.getText()
 				);
 		return dv;
 	}

@@ -8,7 +8,7 @@ public interface FundusTableGateway {
 
 	public FundusExam fetchFundusExamForVisit(long vid) throws GatewayException;
 
-	public void updateFundusExamForVisit(long vid) throws GatewayException;
+	public void updateFundusExam(FundusExam fe) throws GatewayException;
 
 	public void removeFundusExam(Long vid) throws GatewayException;
 }
