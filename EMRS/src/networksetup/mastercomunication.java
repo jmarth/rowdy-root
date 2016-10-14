@@ -11,10 +11,12 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 import java.net.NetworkInterface;
+import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,8 +46,9 @@ public class mastercomunication {
 	public static final transient int SERVER_ACCEPT_JOIN = 7;
 	
     private MulticastSocket mSocket;
+    private Socket tcpcom;
     
-    private Thread listener;
+    private Thread mlistener;
     boolean islisten;//for stopping the thread
     private Timer askserver;
     
@@ -65,6 +68,7 @@ public class mastercomunication {
     	islisten=true;
     	clientstatus = this.CLIENT_NOACTION;
     	owner = new NetworkObject();
+    	guests = new ArrayList<NetworkObject>();
     	try{
     		System.out.println("setup broadcasting network......");
     		mSocket.setBroadcast(true);
@@ -73,10 +77,9 @@ public class mastercomunication {
     		ex.printStackTrace();
     	}
     	System.out.println("start listenning income message.....");
-    	listener = new Thread(new Runnable(){
+    	mlistener = new Thread(new Runnable(){
 			@Override
 			public void run() {
-				
 				// TODO Auto-generated method stub
 				while(islisten==true){
 					try {
@@ -88,12 +91,13 @@ public class mastercomunication {
 				}
 			}	
     	});
-    	listener.start();
+    	mlistener.start();
     	System.out.println("asking server.....");
     	askserver = new Timer(3000,new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("asking server");
 				// TODO Auto-generated method stub
 				if(askcount<3){
 					AskExistServer();
@@ -121,7 +125,7 @@ public class mastercomunication {
     private void AskExistServer(){
     	try {
     		//input: accesscode, command code, data
-			message msg = new message(ACCESS_CODE,ASK_SERVER,null);
+			message msg = new message(ACCESS_CODE,ASK_SERVER,this.owner.getIpaddrr());
 			HostSend(msg,InetAddress.getByName(this.BROADCAST_ADDR));
 			
 		} catch (UnknownHostException e) {
@@ -172,6 +176,7 @@ public class mastercomunication {
 				if(msg.getAcceptcode().equals(this.ACCESS_CODE)==true){
 					switch(msg.getCommand()){
 						case ASK_SERVER:
+							System.out.println("receiving asking server");
 							if(owner.getType()==this.SERVER){
 								int isexistclient=0;
 								for(NetworkObject e: this.guests){
@@ -185,10 +190,12 @@ public class mastercomunication {
 							}
 							break;
 						case NEW_SERVER:
+							System.out.println("receiving new server");
 							this.owner.setType(this.UNKNOWN);
 							askserver.start();
 							break;
 						case LEAVE_SERVER:
+							System.out.println("receiving leaving server");
 							if(owner.getType()==this.SERVER){
 								NetworkObject in = (NetworkObject) msg.getData();
 								for(NetworkObject e : this.guests){
@@ -201,21 +208,25 @@ public class mastercomunication {
 							}
 							break;
 						case SERVER_RESPONSE:
+							System.out.println("receiving server response");
 							if(owner.getType()==this.UNKNOWN){
+								this.askserver.setDelay(10000);
 								this.server=(NetworkObject)msg.getData();
 								this.HostSend(new message(this.ACCESS_CODE, this.CLIENT_REQUEST_JOIN,this.owner),ipfrom);
 							}
 							break;
 						case CLIENT_REQUEST_JOIN:
+							System.out.println("receiving client request join");
 							if(owner.getType()==this.SERVER){
 								NetworkObject in = (NetworkObject) msg.getData();
 								this.guests.add(in);
 								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,this.guests.size()),ipfrom);
-								this.askserver.stop();
 							}
 							break;
 						case SERVER_ACCEPT_JOIN:
+							System.out.println("receiving server accept join");
 							if(owner.getType()==this.UNKNOWN){
+								//TODO connect to rmi later
 								this.owner.setType(this.CLIENT);
 								this.owner.setPriority((Integer)msg.getData());
 								this.HostSend(new message(this.ACCESS_CODE, this.CLIENT_REQUEST_JOIN,this.owner),ipfrom);
@@ -223,9 +234,11 @@ public class mastercomunication {
 							}
 							break;
 						case SERVER_CLOSE:
+							System.out.println("receiving server close");
 							if(owner.getType()==this.CLIENT && owner.getPriority()==1){
 								owner.setType(this.SERVER);
 								owner.setPriority(0);
+								this.HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,this.owner),InetAddress.getByName(this.BROADCAST_ADDR));
 								this.server=null;
 							}
 							break;
@@ -244,7 +257,7 @@ public class mastercomunication {
 	public void close() throws UnknownHostException, IOException{
     	try {
     		islisten=false;
-			this.listener.join();
+			this.mlistener.join();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

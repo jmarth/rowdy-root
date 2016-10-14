@@ -1,10 +1,11 @@
 package networksetup;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Date;
 //for client and server info
-public class NetworkObject {
+public class NetworkObject implements Serializable {
 	private InetAddress ipaddrr;
 	private Date createddate;
 	private int type;
