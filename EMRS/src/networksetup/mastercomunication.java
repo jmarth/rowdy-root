@@ -36,27 +36,30 @@ public class mastercomunication {
     final static int CLIENT_NOACTION = 3;
     //date time format
     final static DateFormat DATE_FORMAT =  new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    
     //message
     public static final transient int ASK_SERVER = 1;
 	public static final transient int SERVER_CLOSE = 2;
-	public static final transient int NEW_SERVER = 3;
+	public static final transient int OLDER_SERVER = 3;
 	public static final transient int LEAVE_SERVER = 4;
 	public static final transient int SERVER_RESPONSE = 5;
 	public static final transient int CLIENT_REQUEST_JOIN = 6;
 	public static final transient int SERVER_ACCEPT_JOIN = 7;
+	public static final transient int NO_ACTION=8;
+	protected static final int exspectresponse = 0;
+	
 	
     private MulticastSocket mSocket;
-    private Socket tcpcom;
     
     private Thread mlistener;
-    boolean islisten;//for stopping the thread
-    private Timer askserver;
+    private Timer askquestion;
     
     private NetworkObject owner;
-    private List<NetworkObject> guests;
-    private NetworkObject server;
+    private boolean islisten;
     private int askcount;
-	private int clientstatus;
+	private int expectresponse;
+	private InetAddress toip;
+	private message currentmsg;
     
     public mastercomunication() throws IOException{
     	InetAddress addr = InetAddress.getByName(this.BROADCAST_ADDR);
@@ -65,10 +68,8 @@ public class mastercomunication {
     	mSocket.setLoopbackMode(true);
     	mSocket.setTimeToLive(2);
     	askcount = 0;
-    	islisten=true;
-    	clientstatus = this.CLIENT_NOACTION;
-    	owner = new NetworkObject();
-    	guests = new ArrayList<NetworkObject>();
+    	owner = null;
+    	islisten = true;
     	try{
     		System.out.println("setup broadcasting network......");
     		mSocket.setBroadcast(true);
@@ -92,41 +93,41 @@ public class mastercomunication {
 			}	
     	});
     	mlistener.start();
-    	System.out.println("asking server.....");
-    	askserver = new Timer(3000,new ActionListener(){
+    	startsetup();
+    	askquestion = new Timer(3000,new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("asking server");
+				System.out.println("asking question code "+ currentmsg.getCommand());
 				// TODO Auto-generated method stub
-				if(askcount<3){
-					AskExistServer();
-					askcount++;
-				}else if(owner.getType() == UNKNOWN) {
-					//askcount=0;
-					try {
-						owner = new NetworkObject(SERVER,0);
-						System.out.println("Server Created!");
-					} catch (UnknownHostException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}	
-				}else if(owner.getType() == SERVER && guests.size()==0){
-					System.out.println("No client so continue asking");
-					askserver.setDelay(10000);
-					askcount=0;
+				AskQuesttion();
+				askcount++;
+				if(askcount >=3){
+					//create server because no server response
+					if(owner==null && exspectresponse == SERVER_RESPONSE) {
+						try {
+							owner = new server(SERVER,0);
+							askquestion.setDelay(10000);
+							System.out.println("Server Created!");
+						} catch (UnknownHostException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}	
+					// from client side, in the middle of setting connection, server not response anymore 	
+					}else if(exspectresponse == SERVER_ACCEPT_JOIN){
+						startsetup();
+					}
 				}
-				
-				
 			}	
     	});
-    	askserver.start();
+    	askquestion.start();
     }
-    private void AskExistServer(){
+    private void AskQuesttion(){
     	try {
     		//input: accesscode, command code, data
 			message msg = new message(ACCESS_CODE,ASK_SERVER,this.owner.getIpaddrr());
-			HostSend(msg,InetAddress.getByName(this.BROADCAST_ADDR));
+			//this.actionstatus=action;
+			HostSend(msg,toip);
 			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
@@ -172,74 +173,96 @@ public class mastercomunication {
     public void AnalizeMSG(message msg,InetAddress ipfrom){
     	//TODO
     	try {
-			if(InetAddress.getLocalHost().getHostName().equals(((InetAddress)msg.getData()).getHostName())==false){
+    		toip = ipfrom;
+    		System.out.println("receiving message from "+ ipfrom.getHostAddress());
+			if(InetAddress.getLocalHost().getHostName().equals(ipfrom.getHostAddress())==false){
+				//check the message is for the program
 				if(msg.getAcceptcode().equals(this.ACCESS_CODE)==true){
 					switch(msg.getCommand()){
-						case ASK_SERVER:
-							System.out.println("receiving asking server");
-							if(owner.getType()==this.SERVER){
-								int isexistclient=0;
-								for(NetworkObject e: this.guests){
-									if(e.getIpaddrr().getHostName().equals(ipfrom.getHostName())){
-										isexistclient = 1;
+						case ASK_SERVER://server will get this message
+							System.out.println("receiving asking server from "+ ipfrom.getHostName());
+							//only server proccess this message
+							if(owner!=null && owner.getType()==this.SERVER){
+								server sv = (server) owner;
+								int i;
+								for(i =0; i< sv.getClientlist().size();i++){
+									if(sv.getClientlist().get(i).getHostName().equals(ipfrom.getHostName())){
 										break;
 									}
 								}
-								if(isexistclient == 0)
-										this.HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,this.owner),InetAddress.getByName(this.BROADCAST_ADDR));
+								if(i==sv.getClientlist().size()){
+									HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,owner),ipfrom);
+								}
 							}
+							
 							break;
-						case NEW_SERVER:
-							System.out.println("receiving new server");
-							this.owner.setType(this.UNKNOWN);
-							askserver.start();
+						case OLDER_SERVER:
+							this.askquestion.stop();
+							System.out.println("receiving older server");
+							this.owner= new client((server)msg.getData());
+							setaction(this.SERVER_ACCEPT_JOIN,ipfrom,
+									new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom));
+							this.askquestion.start();
 							break;
-						case LEAVE_SERVER:
+						case LEAVE_SERVER://TODO
 							System.out.println("receiving leaving server");
-							if(owner.getType()==this.SERVER){
-								NetworkObject in = (NetworkObject) msg.getData();
-								for(NetworkObject e : this.guests){
-									if(e.getPriority()== in.getPriority()){
-										this.guests.remove(e);
-										//TODO
-										break;
-									}
-								}
-							}
+//							if(owner.getType()==this.SERVER){
+//								NetworkObject in = (NetworkObject) msg.getData();
+//								for(NetworkObject e : this.guests){
+//									if(e.getPriority()== in.getPriority()){
+//										//this.guests.remove(e);
+//										//TODO
+//										break;
+//									}
+//								}
+//							}
 							break;
+							//from client side
 						case SERVER_RESPONSE:
 							System.out.println("receiving server response");
-							if(owner.getType()==this.UNKNOWN){
-								this.askserver.setDelay(10000);
-								this.server=(NetworkObject)msg.getData();
-								this.HostSend(new message(this.ACCESS_CODE, this.CLIENT_REQUEST_JOIN,this.owner),ipfrom);
+							if(this.expectresponse == SERVER_RESPONSE && owner==null){
+								askquestion.stop();
+								this.owner = new client((server)msg.getData());
+								setaction(this.SERVER_ACCEPT_JOIN,ipfrom,
+										new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom));
+								askquestion.start();
+							}else if(owner.getType()==SERVER){
+								NetworkObject in = (NetworkObject) msg.getData();
+								if(owner.getCreateddate().before(in.getCreateddate())){
+									HostSend(new message(this.ACCESS_CODE,this.OLDER_SERVER,ipfrom),ipfrom);
+								}
 							}
 							break;
 						case CLIENT_REQUEST_JOIN:
 							System.out.println("receiving client request join");
 							if(owner.getType()==this.SERVER){
-								NetworkObject in = (NetworkObject) msg.getData();
-								this.guests.add(in);
-								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,this.guests.size()),ipfrom);
+								server sv = (server)owner;
+								owner.setIpaddrr((InetAddress)msg.getData());
+								sv.clientlist.add(ipfrom);
+								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,sv.getClientlist().size()),ipfrom);
+								if(this.askquestion.isRunning())
+									this.stopaskserver();
 							}
 							break;
 						case SERVER_ACCEPT_JOIN:
 							System.out.println("receiving server accept join");
-							if(owner.getType()==this.UNKNOWN){
+							if(owner.getType()==this.UNKNOWN && this.expectresponse==SERVER_ACCEPT_JOIN){
 								//TODO connect to rmi later
 								this.owner.setType(this.CLIENT);
+								this.owner.setIpaddrr(ipfrom);
 								this.owner.setPriority((Integer)msg.getData());
-								this.HostSend(new message(this.ACCESS_CODE, this.CLIENT_REQUEST_JOIN,this.owner),ipfrom);
-								this.askserver.stop();
+								//this.HostSend(new message(this.ACCESS_CODE, this.CLIENT_REQUEST_JOIN,this.owner),ipfrom);
+								this.stopaskserver();
+								
 							}
 							break;
 						case SERVER_CLOSE:
 							System.out.println("receiving server close");
 							if(owner.getType()==this.CLIENT && owner.getPriority()==1){
 								owner.setType(this.SERVER);
-								owner.setPriority(0);
-								this.HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,this.owner),InetAddress.getByName(this.BROADCAST_ADDR));
-								this.server=null;
+								owner.setPriority(0);	
+							}else{
+								this.askquestion.start();
 							}
 							break;
 					}
@@ -262,5 +285,21 @@ public class mastercomunication {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    }
+    private void stopaskserver(){
+    	this.askquestion.stop();
+    	this.askquestion.setDelay(3000);
+    	this.askcount=0;
+    }
+    private void startsetup(){
+    	this.expectresponse=this.SERVER_RESPONSE;
+    	this.currentmsg=new message(this.ACCESS_CODE,this.ASK_SERVER,null);
+    	owner=null;
+    }
+    private void setaction(int expectresponse, InetAddress toip, message cmsg){
+    	this.askcount=0;
+    	this.expectresponse=expectresponse;
+    	this.toip=toip;
+    	this.currentmsg=cmsg;
     }
 }

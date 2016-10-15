@@ -12,19 +12,12 @@ public class NetworkObject implements Serializable {
 	private int priority;
 	
 	public NetworkObject (int type, int priority) throws UnknownHostException{
+		super();
 		ipaddrr = InetAddress.getLocalHost();
 		createddate = new Date();
 		this.type = type;
 		this.priority = priority;
 	}
-
-	public NetworkObject () throws UnknownHostException{
-		ipaddrr = InetAddress.getLocalHost();
-		createddate = new Date();
-		this.type = mastercomunication.UNKNOWN;
-		this.priority = -1;
-	}
-	
 	public NetworkObject(InetAddress ipaddrr, Date createddate, int type, int priority) {
 		super();
 		this.ipaddrr = ipaddrr;
@@ -32,7 +25,21 @@ public class NetworkObject implements Serializable {
 		this.type = type;
 		this.priority = priority;
 	}
-
+	public NetworkObject (InetAddress ipaddr){
+		super();
+		this.ipaddrr = ipaddr;
+		createddate = null;
+		type = mastercomunication.UNKNOWN;
+		priority = -1;
+	}
+	
+	public NetworkObject (){
+		super();
+		this.ipaddrr = null;
+		createddate = null;
+		type = mastercomunication.UNKNOWN;
+		priority = -1;
+	}
 	public InetAddress getIpaddrr() {
 		return ipaddrr;
 	}
