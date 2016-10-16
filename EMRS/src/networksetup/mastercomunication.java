@@ -29,6 +29,7 @@ public class mastercomunication {
     final static int PORT = 5187;
     final static int SERVER = 1;
     final static int CLIENT = 2;
+    final static int UDP_DATA_SIZE = 1472;
     //network setup
     final static int UNKNOWN=0;
     final static int CLIENT_CONNECTED = 1;
@@ -62,7 +63,7 @@ public class mastercomunication {
 	private message currentmsg;
     
     public mastercomunication() throws IOException{
-    	InetAddress addr = InetAddress.getByName(this.BROADCAST_ADDR);
+    	//InetAddress addr = InetAddress.getByName(this.BROADCAST_ADDR);
     	System.out.println("creating socket");
     	mSocket = new MulticastSocket(PORT);
     	mSocket.setLoopbackMode(true);
@@ -154,7 +155,7 @@ public class mastercomunication {
         }
     }
     public void HostListener()throws IOException{
-        byte[] buf = new byte[512];
+        byte[] buf = new byte[this.UDP_DATA_SIZE];
         // Receive the information and print it.
         DatagramPacket msgPacket = new DatagramPacket(buf, buf.length);
         mSocket.receive(msgPacket);
@@ -183,18 +184,8 @@ public class mastercomunication {
 							System.out.println("receiving asking server from "+ ipfrom.getHostName());
 							//only server proccess this message
 							if(owner!=null && owner.getType()==this.SERVER){
-								server sv = (server) owner;
-								int i;
-								for(i =0; i< sv.getClientlist().size();i++){
-									if(sv.getClientlist().get(i).getHostName().equals(ipfrom.getHostName())){
-										break;
-									}
-								}
-								if(i==sv.getClientlist().size()){
-									HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,owner),ipfrom);
-								}
+								HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,owner),ipfrom);
 							}
-							
 							break;
 						case OLDER_SERVER:
 							this.askquestion.stop();
@@ -235,11 +226,13 @@ public class mastercomunication {
 							break;
 						case CLIENT_REQUEST_JOIN:
 							System.out.println("receiving client request join");
-							if(owner.getType()==this.SERVER){
+							if(owner.getType()==this.SERVER ){
 								server sv = (server)owner;
 								owner.setIpaddrr((InetAddress)msg.getData());
-								sv.clientlist.add(ipfrom);
-								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,sv.getClientlist().size()),ipfrom);
+								int prior = this.checkexistclient(ipfrom);
+								if(sv.getClientlist().size()> prior)
+									sv.clientlist.add(ipfrom);
+								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,prior),ipfrom);
 								if(this.askquestion.isRunning())
 									this.stopaskserver();
 							}
@@ -247,10 +240,10 @@ public class mastercomunication {
 						case SERVER_ACCEPT_JOIN:
 							System.out.println("receiving server accept join");
 							if(owner.getType()==this.UNKNOWN && this.expectresponse==SERVER_ACCEPT_JOIN){
-								//TODO connect to rmi later
 								this.owner.setType(this.CLIENT);
 								this.owner.setIpaddrr(ipfrom);
 								this.owner.setPriority((Integer)msg.getData());
+								//TODO create rmi client connection here
 								//this.HostSend(new message(this.ACCESS_CODE, this.CLIENT_REQUEST_JOIN,this.owner),ipfrom);
 								this.stopaskserver();
 								
@@ -301,5 +294,15 @@ public class mastercomunication {
     	this.expectresponse=expectresponse;
     	this.toip=toip;
     	this.currentmsg=cmsg;
+    }
+    private int checkexistclient(InetAddress in){
+    	server sv = (server) owner;
+		int i;
+		for(i =0; i< sv.getClientlist().size();i++){
+			if(sv.getClientlist().get(i).getHostName().equals(in.getHostName())){
+				return i;
+			}
+		}
+		return i;	
     }
 }
