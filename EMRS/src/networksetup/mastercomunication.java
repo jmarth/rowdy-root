@@ -75,6 +75,7 @@ public class mastercomunication {
     	askcount = 0;
     	owner = null;
     	islisten = true;
+    	expectresponse = NO_ACTION;
     	try{
     		System.out.println("setup broadcasting network......");
     		mSocket.setBroadcast(true);
@@ -103,7 +104,7 @@ public class mastercomunication {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("asking question code "+ (currentmsg!=null? currentmsg.getCommand():null) + askcount+" " + owner+ " "+ (owner!=null? owner.getType(): null));
 				AskQuesttion();
-				if(askcount >=3){
+				if(askcount >=3 && askquestion.getDelay()==3000){
 					askcount=0;
 						startsetup();
 						System.out.println("change delay to 10000");
@@ -209,14 +210,29 @@ public class mastercomunication {
 										new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom));
 								askquestion.start();
 							}else if(owner.getType()==SERVER){
-								NetworkObject in = (NetworkObject) msg.getData();
-								if(owner.getCreateddate().after(in.getCreateddate())){
-									HostSend(new message(this.ACCESS_CODE,this.SERVER_CLOSE,owner),InetAddress.getByName(this.BROADCAST_ADDR));
-									askquestion.stop();
-									this.owner = new client((server)msg.getData());
-									setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
-											new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom));
-									askquestion.start();
+								server svo = (server)owner;
+								server svi = (server)msg.getData();
+								if(svo.getClient_num()< svi.getClient_num()){
+									if(svo.getClient_num()==0){
+										askquestion.stop();
+										this.owner = new client((server)msg.getData());
+										setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
+												new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom));
+										askquestion.start();
+									}else{
+										//TODO rmi will take care of notify client cus reliable protocal
+									}
+									
+								}else if(svo.getCreateddate().after(svi.getCreateddate())){
+									if(svo.getClient_num()==0){
+										askquestion.stop();
+										this.owner = new client((server)msg.getData());
+										setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
+												new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom));
+										askquestion.start();
+									}else{
+										//TODO rmi will take care of notify client cus reliable protocal
+									}
 								}
 							}
 							break;
@@ -226,8 +242,11 @@ public class mastercomunication {
 								server sv = (server)owner;
 								owner.setIpaddrr((InetAddress)msg.getData());
 								int prior = this.checkexistclient(ipfrom);
-								if(sv.getClientlist().size()> prior)
-									sv.clientlist.add(ipfrom);
+								if(sv.getClient_num()==prior){
+									sv.getClientlist().add(ipfrom);
+									sv.increaseclientnum();
+									
+								}
 								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,prior),ipfrom);
 								if(this.askquestion.isRunning())
 									this.stopaskserver();

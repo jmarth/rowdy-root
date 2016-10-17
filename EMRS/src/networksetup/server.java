@@ -1,25 +1,26 @@
 package networksetup;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class server extends NetworkObject {
+public class server extends NetworkObject implements Serializable {
 	
-	List<InetAddress> clientlist;
-	int[] res_receive;
+	private int client_num;
+	private transient List<InetAddress> clientlist;
 	public server(int type, int priority) throws UnknownHostException {
 		super(type, priority);
-		res_receive = new int[mastercomunication.SERVER_NUM_RECEIVE];
 		clientlist = new ArrayList<InetAddress>();
+		client_num=0;
 		// TODO Auto-generated constructor stub
 	}
 
 	public server(InetAddress ipaddr) {
 		super(ipaddr);
-		res_receive = new int[mastercomunication.SERVER_NUM_RECEIVE];
 		clientlist = new ArrayList<InetAddress>();
+		client_num=0;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -31,15 +32,17 @@ public class server extends NetworkObject {
 		this.clientlist = clientlist;
 	}
 
-	public int[] getRes_receive() {
-		return res_receive;
+	public int getClient_num() {
+		return client_num;
 	}
 
-	public void setRes_receive(int[] res_receive) {
-		this.res_receive = res_receive;
+	public void setClient_num(int client_num) {
+		this.client_num = client_num;
 	}
-	private void resetcount(){
-		for(int i=0; i<mastercomunication.SERVER_NUM_RECEIVE;i++)
-			res_receive[i]=0;
+	public void increaseclientnum(){
+		client_num++;
+	}
+	public void decreaseclientnum(){
+		client_num--;
 	}
 }

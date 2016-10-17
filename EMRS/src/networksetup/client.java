@@ -1,8 +1,9 @@
 package networksetup;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 
-public class client extends NetworkObject {
+public class client extends NetworkObject implements Serializable {
 	
 	private transient NetworkObject server;
 
