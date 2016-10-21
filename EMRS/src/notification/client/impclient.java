@@ -6,16 +6,18 @@ import java.rmi.server.UnicastRemoteObject;
 import networksetup.NetworkObject;
 import networksetup.message;
 import notification.server.rmiserver;
+import views.HomeView;
 
 public class impclient extends UnicastRemoteObject implements rmiclient {
 	
-	private NetworkObject client;
-	private rmiserver rserver;
+	private transient NetworkObject client;
+	private transient rmiserver rserver;
+	private transient HomeView homeview;
 	
-	public impclient(rmiserver rs) throws RemoteException {
+	public impclient(rmiserver rs, HomeView hv) throws RemoteException {
 		super();
-		// TODO Auto-generated constructor stub
 		rserver =rs;
+		homeview=hv;
 	}
 
 
@@ -26,11 +28,19 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	@Override
 	public void messsagereaction(message msg) throws RemoteException {
 		// TODO Auto-generated method stub
+		System.out.println("receiving notification");
 		
 	}
+	
 	@Override
 	public NetworkObject getClient() throws RemoteException {
 		return client;
+	}
+
+	@Override
+	public void decreasepriority() throws RemoteException {
+		// TODO Auto-generated method stub
+		this.client.decreasepriority();
 	}
 	
 }

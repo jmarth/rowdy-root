@@ -71,7 +71,13 @@ public class NetworkObject implements Serializable {
 	public void setPriority(int priority) {
 		this.priority = priority;
 	}
-
+	
+	public void increasepriority(){
+		this.priority++;
+	}
+	public void decreasepriority(){
+		this.priority--;
+	}
 	
 	
 	

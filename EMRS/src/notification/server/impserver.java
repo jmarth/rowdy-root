@@ -12,16 +12,19 @@ import networksetup.message;
 import networksetup.server;
 import notification.client.impclient;
 import notification.client.rmiclient;
+import views.HomeView;
 
 public class impserver extends UnicastRemoteObject implements rmiserver {
 	
-	private List<rmiclient> clientlist;
-	private NetworkObject sv;
+	private transient List<rmiclient> clientlist;
+	private transient NetworkObject sv;
+	private transient HomeView homeview;
 	
-	public impserver(NetworkObject s) throws RemoteException {
+	public impserver(NetworkObject s, HomeView hv) throws RemoteException {
 		super();
 		clientlist = new ArrayList<rmiclient>();
 		this.sv=s;
+		this.homeview=hv;
 	}
 
 	@Override
@@ -36,6 +39,7 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 		int index = clientlist.indexOf(client);
 		clientlist.remove(index);
 		server s = (server)sv;
+		s.decreaseclientnum();
 		for(InetAddress e : s.getClientlist()){
 			if(e.getHostName().equals(client.getClient().getIpaddrr().getHostName())){
 				s.getClientlist().remove(e);
@@ -64,5 +68,4 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 	public void setSv(server sv) {
 		this.sv = sv;
 	}
-	
 }
