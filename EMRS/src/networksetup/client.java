@@ -3,9 +3,12 @@ package networksetup;
 import java.io.Serializable;
 import java.net.InetAddress;
 
+import views.HomeView;
+
 public class client extends NetworkObject implements Serializable {
 	
 	private transient NetworkObject server;
+	private transient HomeView hv;
 
 	public client(server sv) {
 		super();
@@ -19,6 +22,14 @@ public class client extends NetworkObject implements Serializable {
 
 	public void setServer(NetworkObject server) {
 		this.server = server;
+	}
+
+	public HomeView getHv() {
+		return hv;
+	}
+
+	public void setHv(HomeView hv) {
+		this.hv = hv;
 	}
 	
 }

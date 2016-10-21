@@ -19,22 +19,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.swing.Timer;
+
+import views.HomeView;
 
 public class mastercomunication {
 	//network address default
-	final static String ACCESS_CODE = "emr5187";
-	final static String  BROADCAST_ADDR = "255.255.255.255";
-    final static int PORT = 5187;
-    final static int SERVER = 1;
-    final static int CLIENT = 2;
-    final static int UDP_DATA_SIZE = 1472;
+	public final static String ACCESS_CODE = "emr5187";
+	public final static String  BROADCAST_ADDR = "255.255.255.255";
+	public final static int PORT = 5187;
+	public final static int SERVER = 1;
+	public final static int CLIENT = 2;
+	public final static int UDP_DATA_SIZE = 1472;
     //network setup
-    final static int UNKNOWN=0;
-    final static int CLIENT_CONNECTED = 1;
-    final static int CLIENT_WAITTING = 2;
-    final static int CLIENT_NOACTION = 3;
+	public final static int UNKNOWN=0;
+	public final static int CLIENT_CONNECTED = 1;
+	public final static int CLIENT_WAITTING = 2;
+	public final static int CLIENT_NOACTION = 3;
     //date time format
     final static DateFormat DATE_FORMAT =  new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     
@@ -65,9 +66,12 @@ public class mastercomunication {
 	private int expectresponse;
 	private InetAddress toip;
 	private message currentmsg;
+	
+	private HomeView homeview;
+	
     
-    public mastercomunication() throws IOException{
-    	//InetAddress addr = InetAddress.getByName(this.BROADCAST_ADDR);
+    public mastercomunication(HomeView homeview) throws IOException{
+    	this.homeview=homeview;
     	System.out.println("creating socket");
     	mSocket = new MulticastSocket(PORT);
     	mSocket.setLoopbackMode(true);
@@ -172,7 +176,7 @@ public class mastercomunication {
 							System.out.println("receiving asking server from "+ ipfrom.getHostName());
 							//only server proccess this message
 							if(owner!=null && owner.getType()==this.SERVER){
-								HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,owner),ipfrom);
+								HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,owner,owner.getPriority()),ipfrom);
 							}
 							break;
 						case OLDER_SERVER:
@@ -180,7 +184,7 @@ public class mastercomunication {
 								server sv = (server)msg.getData();
 								if(owner.getCreateddate().after(sv.getCreateddate())){
 									owner.setType(this.CLIENT);
-									HostSend(new message(this.ACCESS_CODE,this.SERVER_CLOSE,owner),InetAddress.getByName(this.BROADCAST_ADDR));
+									HostSend(new message(this.ACCESS_CODE,this.SERVER_CLOSE,owner,owner.getPriority()),InetAddress.getByName(this.BROADCAST_ADDR));
 									askquestion.stop();
 									startsetup();
 									askquestion.start();
@@ -207,7 +211,7 @@ public class mastercomunication {
 								askquestion.stop();
 								this.owner = new client((server)msg.getData());
 								setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
-										new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom));
+										new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom,owner.getPriority()));
 								askquestion.start();
 							}else if(owner.getType()==SERVER){
 								server svo = (server)owner;
@@ -217,7 +221,7 @@ public class mastercomunication {
 										askquestion.stop();
 										this.owner = new client((server)msg.getData());
 										setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
-												new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom));
+												new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom,owner.getPriority()));
 										askquestion.start();
 									}else{
 										//TODO rmi will take care of notify client cus reliable protocal
@@ -228,7 +232,7 @@ public class mastercomunication {
 										askquestion.stop();
 										this.owner = new client((server)msg.getData());
 										setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
-												new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom));
+												new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom,owner.getPriority()));
 										askquestion.start();
 									}else{
 										//TODO rmi will take care of notify client cus reliable protocal
@@ -247,7 +251,7 @@ public class mastercomunication {
 									sv.increaseclientnum();
 									
 								}
-								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,prior),ipfrom);
+								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,prior,owner.getPriority()),ipfrom);
 								if(this.askquestion.isRunning())
 									this.stopaskserver();
 							}
@@ -306,7 +310,7 @@ public class mastercomunication {
     	try {
 			this.toip=InetAddress.getByName(BROADCAST_ADDR);
 			this.expectresponse=this.SERVER_RESPONSE;
-	    	this.currentmsg=new message(this.ACCESS_CODE,this.ASK_SERVER,null);
+	    	this.currentmsg=new message(this.ACCESS_CODE,this.ASK_SERVER,null,-1);
 	    	owner = new server(SERVER,-1);
 	    	this.askquestion.setDelay(3000);
 	    	this.askcount=0;

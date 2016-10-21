@@ -7,17 +7,19 @@ public class message implements Serializable {
 	private String acceptcode;
 	private int command;
 	private Object data;
+	private int index;
 	
 	
 	public message() {
 		super();	
 	}
 	
-	public message(String acceptcode, int command, Object data) {
+	public message(String acceptcode, int command, Object data, int index) {
 		super();
 		this.acceptcode = acceptcode;
 		this.command = command;
 		this.data = data;
+		this.index=index;
 	}
 	public String getAcceptcode() {
 		return acceptcode;
@@ -42,4 +44,9 @@ public class message implements Serializable {
 		return result;
 		
 	}
+
+	public int getIndex() {
+		return index;
+	}
+	
 }
