@@ -20,6 +20,9 @@ import javax.swing.border.EmptyBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import controller.EMRS;
+import networksetup.mastercomunication;
+
 @SuppressWarnings("serial")
 public class LoginView extends JFrame {
 	
@@ -93,6 +96,12 @@ public class LoginView extends JFrame {
 				
 				//Create home view
 				HomeView home  = new HomeView();
+				try {
+					EMRS.notification = new mastercomunication(home);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				home.setBounds(100, 100, 1080,720);
 				home.launchUI();
 			}

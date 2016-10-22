@@ -14,9 +14,8 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	private transient rmiserver rserver;
 	private transient HomeView homeview;
 	
-	public impclient(rmiserver rs, HomeView hv) throws RemoteException {
+	public impclient(HomeView hv) throws RemoteException {
 		super();
-		rserver =rs;
 		homeview=hv;
 	}
 
@@ -41,6 +40,13 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	public void decreasepriority() throws RemoteException {
 		// TODO Auto-generated method stub
 		this.client.decreasepriority();
+	}
+
+
+	@Override
+	public void serverclose() throws RemoteException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

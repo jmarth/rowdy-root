@@ -29,35 +29,31 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 
 	@Override
 	public synchronized void registerclient(rmiclient client) throws RemoteException {
-		// TODO Auto-generated method stub
 		clientlist.add(client);
 	}
 
 	@Override
 	public synchronized void unregisterclient(rmiclient client) throws RemoteException {
-		// TODO Auto-generated method stub
 		int index = clientlist.indexOf(client);
 		clientlist.remove(index);
 		server s = (server)sv;
-		s.decreaseclientnum();
-		for(InetAddress e : s.getClientlist()){
-			if(e.getHostName().equals(client.getClient().getIpaddrr().getHostName())){
-				s.getClientlist().remove(e);
-				break;
-			}
-		}
-		message msg = new message(mastercomunication.ACCESS_CODE,mastercomunication.LEAVE_SERVER,null,index); 
-		for(int i =0;i< clientlist.size();i++){
-			clientlist.get(i).messsagereaction(msg);
+		s.getClientlist().remove(index);
+		s.decreaseclientnum(); 
+		for(rmiclient e:this.clientlist){
+			e.decreasepriority();
 		}
 	}
 
 	@Override
 	public synchronized void notifiedall(message msg) throws RemoteException {
 		// TODO Auto-generated method stub
-		for(int i=0;i< clientlist.size();i++){
-			if(i!=msg.getIndex())
-				clientlist.get(i).messsagereaction(msg);
+		int index = msg.getIndex();
+		server s = (server)sv;
+		for(int i=0;i<index;i++){
+			clientlist.get(i).messsagereaction(msg);
+		}
+		for(int i=index+1;i<s.getClient_num();i++){
+			clientlist.get(i).messsagereaction(msg);
 		}
 	}
 
@@ -67,5 +63,13 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 
 	public void setSv(server sv) {
 		this.sv = sv;
+	}
+
+	@Override
+	public void close() throws RemoteException {
+		// TODO Auto-generated method stub
+		for(rmiclient e: this.clientlist){
+			
+		}
 	}
 }

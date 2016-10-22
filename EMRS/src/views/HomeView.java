@@ -14,6 +14,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.rmi.RemoteException;
+
 import javax.swing.AbstractButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -31,6 +35,7 @@ import javax.swing.SwingUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import controller.EMRS;
 import models.CL;
 import models.MasterModel;
 
@@ -62,7 +67,7 @@ public class HomeView extends JFrame implements viewinterface{
 	
 	//connection status
 	private JLabel lbhost;
-	private JLabel lbconnect;
+	private JLabel lbhosttype;
 	private JLabel lbip;
 	private JButton btnft;
 	
@@ -107,8 +112,8 @@ public class HomeView extends JFrame implements viewinterface{
 		npane.add(lbip);
 		lbhost = new JLabel("Host: N/A");
 		npane.add(lbhost);
-		lbconnect = new JLabel("Connection: N/A");
-		npane.add(lbconnect);
+		lbhosttype = new JLabel("Connection: N/A");
+		npane.add(lbhosttype);
 		btnft = new JButton("Show Notification");
 		btnft.setBorderPainted(false);
 		npane.add(btnft);
@@ -313,6 +318,22 @@ public class HomeView extends JFrame implements viewinterface{
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		northPanel.setLayout(gl_panel);
 		this.pack();
+		
+		Runtime.getRuntime().addShutdownHook(new Thread(){
+			@Override
+			public void run() {
+				System.out.println("Unregistering observer...");
+				try {
+					EMRS.notification.close();
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	/**
@@ -422,4 +443,30 @@ public class HomeView extends JFrame implements viewinterface{
 	public HomeView getHomeView() {
 		return this;
 	}
+
+	public JLabel getLbhost() {
+		return lbhost;
+	}
+
+	public void setLbhost(JLabel lbhost) {
+		this.lbhost = lbhost;
+	}
+
+	public JLabel getLbhosttype() {
+		return lbhosttype;
+	}
+
+	public void setLbhosttype(JLabel lbhosttype) {
+		this.lbhosttype = lbhosttype;
+	}
+
+	public JLabel getLbip() {
+		return lbip;
+	}
+
+	public void setLbip(JLabel lbip) {
+		this.lbip = lbip;
+	}
+	
+	
 }

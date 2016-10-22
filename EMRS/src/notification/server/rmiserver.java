@@ -10,4 +10,5 @@ public interface rmiserver extends Remote {
 	public void registerclient(rmiclient client) throws RemoteException;
 	public void unregisterclient(rmiclient client) throws RemoteException;
 	public void notifiedall (message msg)throws RemoteException;
+	public void close() throws RemoteException;
 }

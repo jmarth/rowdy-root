@@ -14,6 +14,11 @@ import java.net.NetworkInterface;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,9 +26,17 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.Timer;
 
+import notification.client.impclient;
+import notification.client.rmiclient;
+import notification.server.impserver;
+import notification.server.rmiserver;
+
 import views.HomeView;
 
 public class mastercomunication {
+	
+	//rmi property
+	public final static int RMI_PORT = 1099;
 	//network address default
 	public final static String ACCESS_CODE = "emr5187";
 	public final static String  BROADCAST_ADDR = "255.255.255.255";
@@ -69,9 +82,14 @@ public class mastercomunication {
 	
 	private HomeView homeview;
 	
+	private Thread runserver;
+	private Registry reg;
+	
+	private rmiserver rserver;
+	private rmiclient rclient;
     
-    public mastercomunication(HomeView homeview) throws IOException{
-    	this.homeview=homeview;
+    public mastercomunication(HomeView hv) throws IOException{
+    	this.homeview=hv;
     	System.out.println("creating socket");
     	mSocket = new MulticastSocket(PORT);
     	mSocket.setLoopbackMode(true);
@@ -114,6 +132,25 @@ public class mastercomunication {
 						System.out.println("change delay to 10000");
 						askquestion.setDelay(10000);
 						System.out.println("Server Created!");
+						runserver = new Thread( new Runnable(){
+
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								try {
+									rserver = new impserver(owner,homeview);
+									reg = LocateRegistry.createRegistry(RMI_PORT);
+									reg.rebind("rmiemr", rserver);
+								} catch (AccessException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (RemoteException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							}
+							
+						});
 				}
 				
 				askcount++;
@@ -259,9 +296,23 @@ public class mastercomunication {
 						case SERVER_ACCEPT_JOIN:
 							System.out.println("receiving server accept join");
 							if(owner.getType()==this.UNKNOWN && this.expectresponse==SERVER_ACCEPT_JOIN){
-								this.owner.setType(this.CLIENT);
-								this.owner.setIpaddrr(ipfrom);
-								this.owner.setPriority((Integer)msg.getData());
+								
+								try {
+									client nclient = (client) owner;
+									this.rclient = new impclient(homeview);
+									Registry reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
+									rmiserver sv = (rmiserver) reg.lookup("serverchat");
+									sv.registerclient(rclient);
+									this.owner.setType(this.CLIENT);
+									this.owner.setIpaddrr(ipfrom);
+									this.owner.setPriority((Integer)msg.getData());
+								} catch (RemoteException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (NotBoundException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 								//TODO create rmi client connection here
 								this.stopaskserver();
 								
@@ -336,4 +387,29 @@ public class mastercomunication {
 		}
 		return i;	
     }
+    public void closecommunication() throws AccessException, RemoteException, NotBoundException, InterruptedException{
+    	if(owner.getType() == this.SERVER){
+			reg.unbind("rmiemr");	
+			this.runserver.join();
+    	}
+    }
+	public NetworkObject getOwner() {
+		return owner;
+	}
+	public void setOwner(NetworkObject owner) {
+		this.owner = owner;
+	}
+	public HomeView getHomeview() {
+		return homeview;
+	}
+	public void setHomeview(HomeView homeview) {
+		this.homeview = homeview;
+	}
+	public Thread getRunserver() {
+		return runserver;
+	}
+	public void setRunserver(Thread runserver) {
+		this.runserver = runserver;
+	}
+    
 }
