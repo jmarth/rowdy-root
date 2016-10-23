@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import javax.swing.AbstractButton;
@@ -38,6 +39,7 @@ import org.apache.logging.log4j.Logger;
 import controller.EMRS;
 import models.CL;
 import models.MasterModel;
+import networksetup.mastercomunication;
 
 @SuppressWarnings("serial")
 public class HomeView extends JFrame implements viewinterface{
@@ -227,6 +229,8 @@ public class HomeView extends JFrame implements viewinterface{
 				
 				if (response == JOptionPane.YES_OPTION) {
 					logger.info("User pressed 'YES' in logout dialogue");
+					System.out.println("closing communication");
+					EMRS.notification.setHomeview(null);
 					dispose();
 					LoginView login = new LoginView();
 					login.setVisible(true);
@@ -321,17 +325,9 @@ public class HomeView extends JFrame implements viewinterface{
 		
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			@Override
-			public void run() {
-				System.out.println("Unregistering observer...");
-				try {
-					EMRS.notification.close();
-				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			public void run()
+			{
+				EMRS.notification.close();
 			}
 		});
 	}
@@ -467,6 +463,10 @@ public class HomeView extends JFrame implements viewinterface{
 	public void setLbip(JLabel lbip) {
 		this.lbip = lbip;
 	}
-	
+	private void closehomeview(){
+		System.out.println("Unregistering observer...");
+		EMRS.notification.setHomeview(null);
+		
+	}
 	
 }

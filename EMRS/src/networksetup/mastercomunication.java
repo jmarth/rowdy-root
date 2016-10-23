@@ -88,8 +88,7 @@ public class mastercomunication {
 	private rmiserver rserver;
 	private rmiclient rclient;
     
-    public mastercomunication(HomeView hv) throws IOException{
-    	this.homeview=hv;
+    public mastercomunication() throws IOException{
     	System.out.println("creating socket");
     	mSocket = new MulticastSocket(PORT);
     	mSocket.setLoopbackMode(true);
@@ -124,7 +123,7 @@ public class mastercomunication {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("asking question code "+ (currentmsg!=null? currentmsg.getCommand():null) + askcount+" " + owner+ " "+ (owner!=null? owner.getType(): null));
+				System.out.println("asking question code "+ (currentmsg!=null? currentmsg.getCommand():null)+" " + askcount+" " + owner+ " "+ (owner!=null? owner.getType(): null));
 				AskQuesttion();
 				if(askcount >=3 && askquestion.getDelay()==3000){
 					askcount=0;
@@ -151,6 +150,7 @@ public class mastercomunication {
 							}
 							
 						});
+						runserver.start();
 				}
 				
 				askcount++;
@@ -299,10 +299,11 @@ public class mastercomunication {
 								
 								try {
 									client nclient = (client) owner;
-									this.rclient = new impclient(homeview);
 									Registry reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
-									rmiserver sv = (rmiserver) reg.lookup("serverchat");
-									sv.registerclient(rclient);
+									rserver = (rmiserver) reg.lookup("rmiemr");
+									
+									this.rclient = new impclient(homeview,rserver);
+									
 									this.owner.setType(this.CLIENT);
 									this.owner.setIpaddrr(ipfrom);
 									this.owner.setPriority((Integer)msg.getData());
@@ -341,16 +342,7 @@ public class mastercomunication {
 			e.printStackTrace();
 		}
     }
-    @SuppressWarnings("deprecation")
-	public void close() throws UnknownHostException, IOException{
-    	try {
-    		islisten=false;
-			this.mlistener.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
+  
     private void stopaskserver(){
     	this.askquestion.stop();
     	this.askquestion.setDelay(3000);
@@ -387,11 +379,18 @@ public class mastercomunication {
 		}
 		return i;	
     }
-    public void closecommunication() throws AccessException, RemoteException, NotBoundException, InterruptedException{
-    	if(owner.getType() == this.SERVER){
-			reg.unbind("rmiemr");	
-			this.runserver.join();
-    	}
+   
+    public void close() {
+    	
+    	try {
+    		if(owner.getType()== this.CLIENT){
+	    		rclient.leaveserver();
+	    	}
+			System.out.println("finish closing communication");
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
     }
 	public NetworkObject getOwner() {
 		return owner;

@@ -48,6 +48,12 @@ public class EMRS {
 		
 		
 		// init the login view
+		try {
+			notification = new mastercomunication();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		LoginView login = new LoginView();
 		
 		// set it visible

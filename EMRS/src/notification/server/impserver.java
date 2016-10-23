@@ -46,6 +46,7 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 
 	@Override
 	public synchronized void notifiedall(message msg) throws RemoteException {
+		System.out.println("server receive notification message");
 		// TODO Auto-generated method stub
 		int index = msg.getIndex();
 		server s = (server)sv;
@@ -69,7 +70,7 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 	public void close() throws RemoteException {
 		// TODO Auto-generated method stub
 		for(rmiclient e: this.clientlist){
-			
+			e.serverclose();
 		}
 	}
 }

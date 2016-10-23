@@ -96,12 +96,7 @@ public class LoginView extends JFrame {
 				
 				//Create home view
 				HomeView home  = new HomeView();
-				try {
-					EMRS.notification = new mastercomunication(home);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				EMRS.notification.setHomeview(home);
 				home.setBounds(100, 100, 1080,720);
 				home.launchUI();
 			}

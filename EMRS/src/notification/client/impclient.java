@@ -14,9 +14,10 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	private transient rmiserver rserver;
 	private transient HomeView homeview;
 	
-	public impclient(HomeView hv) throws RemoteException {
+	public impclient(HomeView hv,rmiserver rs) throws RemoteException {
 		super();
 		homeview=hv;
+		rs.registerclient(this);
 	}
 
 
@@ -47,6 +48,13 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	public void serverclose() throws RemoteException {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void leaveserver() throws RemoteException {
+		// TODO Auto-generated method stub
+		this.rserver.unregisterclient(this);
 	}
 	
 }
