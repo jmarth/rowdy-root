@@ -17,6 +17,7 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	public impclient(HomeView hv,rmiserver rs) throws RemoteException {
 		super();
 		homeview=hv;
+		rserver=rs;
 		rs.registerclient(this);
 	}
 
