@@ -20,8 +20,6 @@ import models.VisitList;
 public class VisitListContainer extends JXTaskPaneContainer implements viewinterface {
 
 	private int size;
-	private JLabel iconLabel;
-//	private JPanel jp;
 	
 	public VisitListContainer () {
 		

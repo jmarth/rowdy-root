@@ -2,9 +2,9 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,6 +46,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	private PanelGonio panel_Gonio;
 	private PanelFundus panel_Fundus;
 	private PanelIOP panel_IOP;
+//	private Sketches sketches;
 	
 	private JTextArea textArea_CC;
 	private JTextArea textArea_Assessment;
@@ -54,7 +55,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	private JPanel panel_Buttons;
 	private JButton btnSave;
 	private JButton btnCancel;
-	private JButton btnEdit;
+	private JButton btnUpdate;
 
 	
 	
@@ -132,11 +133,30 @@ public class VisitDetailView extends JPanel implements viewinterface {
 				//TODO IOP
 				
 				Sketches s = new Sketches();
-				// TODO: need to delete files after adding them...so not add wrong ones!
-//				if ()
-				s.insertSLESketch(new File("firstSketch.png"), v.getId());
-				s.insertFundusSketch(new File("FundusTempSketch.png"), v.getId());
-				s.insertGonioSketch(new File("GonioTempSketch.png"), v.getId());
+				
+				Image i = null;
+				
+				i = panel_SLE.getSketch();
+				if (i != null) {
+					s.setImageSLE(panel_SLE.getSketch());
+					s.insertSLESketch(v.getId());
+				}
+				
+				i = panel_Fundus.getSketch();
+				if (i != null) {
+					s.setImageFundus(panel_Fundus.getSketch());
+					s.insertFundusSketch(v.getId());
+				}
+				
+				i = panel_Gonio.getSketch();
+				if (i != null) {
+					s.setImageGonio(panel_Gonio.getSketch());
+					s.insertGonioSketch(v.getId());
+				}
+				
+//				s.insertSLESketch(v.getId());
+//				sketches.insertFundusSketch(new File("FundusTempSketch.png"), v.getId());
+//				sketches.insertGonioSketch(new File("GonioTempSketch.png"), v.getId());
 				
 				v.setSketches(s);
 				
@@ -232,10 +252,26 @@ public class VisitDetailView extends JPanel implements viewinterface {
 				//TODO IOP
 				
 				Sketches s = new Sketches();
-				// TODO: need to delete files after adding them...so not add wrong ones!
-				s.insertSLESketch(new File("firstSketch.png"), vUpdate.getId());
-				s.insertFundusSketch(new File("FundusTempSketch.png"), vUpdate.getId());
-				s.insertGonioSketch(new File("GonioTempSketch.png"), vUpdate.getId());
+				
+				Image i = null;
+				
+				i = panel_SLE.getSketch();
+				if (i != null) {
+					s.setImageSLE(panel_SLE.getSketch());
+					s.updateSLESketch(vOld.getId());
+				}
+				
+				i = panel_Fundus.getSketch();
+				if (i != null) {
+					s.setImageFundus(panel_Fundus.getSketch());
+					s.updateFundusSketch(vOld.getId());
+				}
+				
+				i = panel_Gonio.getSketch();
+				if (i != null) {
+					s.setImageGonio(panel_Gonio.getSketch());
+					s.updateGonioSketch(vOld.getId());
+				}
 				
 				vUpdate.setSketches(s);
 				
@@ -348,9 +384,9 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		panel_Buttons = new JPanel();
 		add(panel_Buttons, "cell 0 8,alignx right");
 		
-		btnEdit = new JButton("Update");
-		btnEdit.addActionListener(new EditListener());
-		panel_Buttons.add(btnEdit);
+		btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(new EditListener());
+		panel_Buttons.add(btnUpdate);
 		
 		btnSave = new JButton("Save");
 		btnSave.addActionListener(new SaveListener());
@@ -376,11 +412,6 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	}
 
 	@Override
-	public MasterModel getMasterModel() {
-		return getHomeView().getMasterModel();
-	}
-
-	@Override
 	public void ShowView() {
 		//TODO
 	}
@@ -401,6 +432,11 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		panel_IOP.reload();
 	}
 	
+	@Override
+	public MasterModel getMasterModel() {
+		return this.getHomeView().getMasterModel();
+	}
+	
 	// Have to go up a bunch through the JX wrappers
 	@Override
 	public HomeView getHomeView() {
@@ -410,18 +446,21 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	public void showEditView() {
 		panel_Buttons.remove(btnSave);
 		panel_Buttons.remove(btnCancel);
-		panel_Buttons.add(btnEdit);
+		panel_Buttons.add(btnUpdate);
 		panel_Buttons.add(btnCancel);
 
 	}
 	
+	// panels with sketches call showView() to hide the newSketch panel
 	public void showNewView() {
-		panel_Buttons.remove(btnEdit);
+		
+		panel_SLE.ShowView();
+		panel_Fundus.ShowView();
+		panel_Gonio.ShowView();
+		
+		panel_Buttons.remove(btnUpdate);
 		panel_Buttons.remove(btnCancel);
 		panel_Buttons.add(btnSave);
 		panel_Buttons.add(btnCancel);
-
-//		panel_Buttons.setVisible(true);
 	}
-
 }

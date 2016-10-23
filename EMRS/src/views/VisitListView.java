@@ -18,8 +18,8 @@ public class VisitListView extends JPanel implements viewinterface {
 
 	private JLabel iconLabel;
 	
-	private JButton btnNewVisit;
-	private JButton btnCancelVisit;
+	private JButton btnNewVisit; //TODO move to VTMV
+	private JButton btnCancelVisit; //TODO move to VTMV
 	
 	private VisitListContainer vlc;
 	
@@ -79,6 +79,7 @@ public class VisitListView extends JPanel implements viewinterface {
 		
 	}
 	
+	 //TODO move to VTMV
 	public void showCancelButton() {
 		this.remove(btnNewVisit);
 		this.add(btnCancelVisit, BorderLayout.SOUTH);
@@ -89,6 +90,7 @@ public class VisitListView extends JPanel implements viewinterface {
 //		btnCancelVisit.setVisible(true);
 	}
 	
+	 //TODO move to VTMV
 	public void showNewButton() {
 		this.remove(btnCancelVisit);
 		this.add(btnNewVisit, BorderLayout.SOUTH);
@@ -98,6 +100,7 @@ public class VisitListView extends JPanel implements viewinterface {
 //		btnNewVisit.setVisible(true);
 	}
 
+	 //TODO move to VTMV figure this out
 	@Override
 	public void reload() {
 		
@@ -117,6 +120,8 @@ public class VisitListView extends JPanel implements viewinterface {
 		this.repaint();
 	}
 	
+	
+	 //TODO move to VTMV
 	private class NewVisitListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {
@@ -124,6 +129,7 @@ public class VisitListView extends JPanel implements viewinterface {
 		}
 	}
 	
+	 //TODO move to VTMV
 	private class CancelVisitListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {

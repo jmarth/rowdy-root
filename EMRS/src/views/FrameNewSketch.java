@@ -205,8 +205,9 @@ public class FrameNewSketch extends JFrame {
 			BufferedImage im = new BufferedImage(drawArea.getWidth(), drawArea.getHeight(),
 					BufferedImage.TYPE_INT_ARGB);
 			drawArea.paint(im.getGraphics());
-			
+//			drawArea.getGraphics();
 			try {
+				
 				ImageIO.write(im, "PNG", new File(filename + ".png"));
 				BufferedImage bufImg = ImageIO.read(new File(filename + ".png"));//TODO jpg
 				if (bufImg == null) {
@@ -221,7 +222,7 @@ public class FrameNewSketch extends JFrame {
 
 				dispose();
 			} catch (IOException e1) {
-				System.err.println("From Paint, IO error during save");
+				System.err.println("From FrameNewSketch, IO error during save");
 //				e1.printStackTrace();
 			}
 		}

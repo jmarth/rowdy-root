@@ -1,15 +1,10 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import models.CL;
 import models.MasterModel;
 
 @SuppressWarnings("serial")
@@ -33,17 +28,11 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 
 		add(scrollPane, BorderLayout.CENTER);
 		
-	}
-
-	@Override
-	public void HideallView() {
+		//TODO have newButton Here, changes to Cancel to go back to showView()
 		
 	}
 
-	@Override
-	public MasterModel getMasterModel() {
-		return ((PatientRecordView)this.getParent()).getMasterModel();
-	}
+
 
 	@Override
 	public void ShowView() {
@@ -95,12 +84,22 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 		
 		visitNewView.showNewView();//for save button
 	}
+	
+	@Override
+	public void HideallView() {
+		
+	}	
 
 	@Override
 	public void reload() {
 		this.ShowView();
 	}
 
+	@Override
+	public MasterModel getMasterModel() {
+		return ((PatientRecordView)this.getParent()).getMasterModel();
+	}
+	
 	@Override
 	public HomeView getHomeView() {
 		return ((PatientRecordView)this.getParent()).getHomeView();
