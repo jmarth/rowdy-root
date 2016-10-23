@@ -298,7 +298,7 @@ public class mastercomunication {
 								
 								try {
 									client nclient = (client) owner;
-									nclient.setServer((NetworkObject)msg.getData());
+									nclient.setPriority((Integer)msg.getData());
 									Registry reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
 									rserver = (rmiserver) reg.lookup("rmiemr");
 									
