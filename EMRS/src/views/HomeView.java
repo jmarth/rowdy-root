@@ -322,14 +322,6 @@ public class HomeView extends JFrame implements viewinterface{
 		lblPatientSearch.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		northPanel.setLayout(gl_panel);
 		this.pack();
-		
-		Runtime.getRuntime().addShutdownHook(new Thread(){
-			@Override
-			public void run()
-			{
-				EMRS.notification.close();
-			}
-		});
 	}
 
 	/**

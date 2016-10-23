@@ -123,7 +123,6 @@ public class mastercomunication {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("asking question code "+ (currentmsg!=null? currentmsg.getCommand():null)+" " + askcount+" " + owner+ " "+ (owner!=null? owner.getType(): null));
 				AskQuesttion();
 				if(askcount >=3 && askquestion.getDelay()==3000){
 					askcount=0;
@@ -210,7 +209,7 @@ public class mastercomunication {
 				if(msg.getAcceptcode().equals(this.ACCESS_CODE)==true){
 					switch(msg.getCommand()){
 						case ASK_SERVER://server will get this message
-							System.out.println("receiving asking server from "+ ipfrom.getHostName());
+							System.out.println("receiving asking server from "+ ipfrom.getHostAddress());
 							//only server proccess this message
 							if(owner!=null && owner.getType()==this.SERVER){
 								HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,owner,owner.getPriority()),ipfrom);
@@ -243,7 +242,7 @@ public class mastercomunication {
 							break;
 							//from client side
 						case SERVER_RESPONSE:
-							System.out.println("receiving server response");
+							System.out.println("receiving server response "+ipfrom.getHostAddress() );
 							if(this.expectresponse == SERVER_RESPONSE && owner==null){
 								askquestion.stop();
 								this.owner = new client((server)msg.getData());
@@ -278,7 +277,7 @@ public class mastercomunication {
 							}
 							break;
 						case CLIENT_REQUEST_JOIN:
-							System.out.println("receiving client request join");
+							System.out.println("receiving client request join "+ipfrom.getHostAddress());
 							if(owner.getType()==this.SERVER ){
 								server sv = (server)owner;
 								owner.setIpaddrr((InetAddress)msg.getData());
@@ -294,7 +293,7 @@ public class mastercomunication {
 							}
 							break;
 						case SERVER_ACCEPT_JOIN:
-							System.out.println("receiving server accept join");
+							System.out.println("receiving server accept join "+ ipfrom.getHostAddress());
 							if(owner.getType()==this.UNKNOWN && this.expectresponse==SERVER_ACCEPT_JOIN){
 								
 								try {

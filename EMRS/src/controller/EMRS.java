@@ -30,7 +30,13 @@ public class EMRS {
 		 * Sets look and feel of the swing UI to that of the native operating system.
 		 * I.e. The tabs will either be Mac style or Windows style
 		 */
-		
+		Runtime.getRuntime().addShutdownHook(new Thread(){
+			@Override
+			public void run()
+			{
+				EMRS.notification.close();
+			}
+		});
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
