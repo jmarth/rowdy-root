@@ -285,12 +285,8 @@ public class mastercomunication {
 									nclient.setIpaddrr((InetAddress)msg.getData());
 									Registry reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
 									rserver = (rmiserver) reg.lookup("rmiemr");
-									
 									this.rclient = new impclient(rserver);
-									
 									this.owner.setType(this.CLIENT);
-									this.owner.setIpaddrr(ipfrom);
-									this.owner.setPriority((Integer)msg.getData());
 									if(this.homeview!=null){
 										homeview.getLbip().setText(owner.getIpaddrr().getHostAddress());
 										homeview.getLbhosttype().setText("Client");
