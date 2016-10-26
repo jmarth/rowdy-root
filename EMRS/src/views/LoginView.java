@@ -97,6 +97,7 @@ public class LoginView extends JFrame {
 				
 				//Create home view
 				HomeView home  = new HomeView();
+				EMRS.notification.setHomeview(home);
 				if(EMRS.notification.getOwner()!=null){
 					NetworkObject owner = EMRS.notification.getOwner();
 					home.getLbip().setText("" + owner.getIpaddrr().getHostAddress());
@@ -115,7 +116,7 @@ public class LoginView extends JFrame {
 					home.getLbpriority().setText(""+owner.getPriority());
 					home.getLbcreateddate().setText(""+mastercomunication.DATE_FORMAT.format(owner.getCreateddate()));
 				}
-				EMRS.notification.setHomeview(home);
+				
 				home.setBounds(100, 100, 1080,720);
 				home.launchUI();
 			}
