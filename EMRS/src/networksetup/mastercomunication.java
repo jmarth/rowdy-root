@@ -325,6 +325,7 @@ public class mastercomunication {
     public void startnewserversetup(){
     	
     	try {
+    		this.rclient=null;
     		this.askquestion.stop();
 			this.toip=InetAddress.getByName(BROADCAST_ADDR);
 			this.expectresponse=this.SERVER_RESPONSE;
