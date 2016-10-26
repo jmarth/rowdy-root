@@ -325,7 +325,7 @@ public class PanelFundus extends JPanel implements viewinterface {
 	
 	@Override
 	public HomeView getHomeView() {
-		return ((VisitDetailView)this.getParent()).getHomeView();
+		return ((VisitDetailView)this.getParent().getParent()).getHomeView();
 	}
 	
 	public FundusExam createNewFundusExam() {

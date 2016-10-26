@@ -67,6 +67,8 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		
 		this.index = index;
 		
+
+		
 		createView();
 //		panel_Buttons.setVisible(false);
 	}
@@ -299,15 +301,22 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	
 	public void createView() {
 
-		setBackground(CL.turq);
-		setLayout(new MigLayout("", "[grow]", "[grow][][grow][grow][grow][grow][grow][grow][grow]"));
+		this.setLayout(new BorderLayout(0, 0));
+		
+		JPanel centerPanel = new JPanel();
+		centerPanel.setLayout(new MigLayout("", "[grow]", "[grow][][grow][grow][grow][grow][grow][grow][grow]"));
+		centerPanel.setBackground(CL.turq);
+		this.add(centerPanel, BorderLayout.CENTER);
+		
+//		setBackground(CL.turq);
+//		setLayout(new MigLayout("", "[grow]", "[grow][][grow][grow][grow][grow][grow][grow][grow]"));
 		
 		
 		
 		// CC
 		JPanel panel_CC = new JPanel();
 		panel_CC.setBackground(CL.turq);
-		add(panel_CC, "cell 0 0,grow");
+		centerPanel.add(panel_CC, "cell 0 0,grow");
 		panel_CC.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Chief Complaint", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
 		panel_CC.setLayout(new BorderLayout(0, 0));
 		
@@ -323,27 +332,27 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		// VISION PANEL
 		panel_Vision = new PanelVision(index);
 		panel_Vision.setBackground(CL.turq);
-		add(panel_Vision, "cell 0 1,grow");
+		centerPanel.add(panel_Vision, "cell 0 1,grow");
 
 		// SLE PANEL
 		panel_SLE = new PanelSLE(index);
 		panel_SLE.setBackground(CL.turq);
-		add(panel_SLE, "cell 0 2,grow");
+		centerPanel.add(panel_SLE, "cell 0 2,grow");
 
 		// IOP PANEL
 		panel_IOP = new PanelIOP(index);
 		panel_IOP.setBackground(CL.turq);
-		add(panel_IOP, "cell 0 3,grow");
+		centerPanel.add(panel_IOP, "cell 0 3,grow");
 		
 		// GONIO PANEL
 		panel_Gonio = new PanelGonio(index);
 		panel_Gonio.setBackground(CL.turq);
-		add(panel_Gonio, "cell 0 4,grow");
+		centerPanel.add(panel_Gonio, "cell 0 4,grow");
 		
 		// FUNDUS PANEL
 		panel_Fundus = new PanelFundus(index);
 		panel_Fundus.setBackground(CL.turq);
-		add(panel_Fundus, "cell 0 5,grow");
+		centerPanel.add(panel_Fundus, "cell 0 5,grow");
 
 		
 		
@@ -352,7 +361,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		JPanel panel_Assessment = new JPanel();
 		panel_Assessment.setBackground(CL.turq);
 		panel_Assessment.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Assesment", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
-		add(panel_Assessment, "cell 0 6,grow");
+		centerPanel.add(panel_Assessment, "cell 0 6,grow");
 		panel_Assessment.setLayout(new BorderLayout(0, 0));
 
 		JScrollPane scrollPane_Assessment = new JScrollPane();
@@ -367,7 +376,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		JPanel panel_Plan = new JPanel();
 		panel_Plan.setBackground(CL.turq);
 		panel_Plan.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Plan", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
-		add(panel_Plan, "cell 0 7,grow");
+		centerPanel.add(panel_Plan, "cell 0 7,grow");
 		panel_Plan.setLayout(new BorderLayout(0, 0));
 				
 		JScrollPane scrollPane_Plan = new JScrollPane();
@@ -382,7 +391,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		
 		// Buttons at bottom
 		panel_Buttons = new JPanel();
-		add(panel_Buttons, "cell 0 8,alignx right");
+		centerPanel.add(panel_Buttons, "cell 0 8,alignx right");
 		
 		btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new EditListener());
@@ -395,6 +404,8 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new CancelListener());
 		panel_Buttons.add(btnCancel);
+
+		this.add(panel_Buttons, BorderLayout.SOUTH);
 		
 	}
 	
@@ -440,14 +451,14 @@ public class VisitDetailView extends JPanel implements viewinterface {
 	// Have to go up a bunch through the JX wrappers
 	@Override
 	public HomeView getHomeView() {
-		return ((JXTaskPaneVisitDetailView)this.getParent().getParent().getParent().getParent()).getHomeView();
+		return ((VisitListContainer)this.getParent().getParent().getParent().getParent().getParent()).getHomeView();
 	}
 	
 	public void showEditView() {
-		panel_Buttons.remove(btnSave);
-		panel_Buttons.remove(btnCancel);
-		panel_Buttons.add(btnUpdate);
-		panel_Buttons.add(btnCancel);
+		panel_Buttons.remove(btnSave);//TODO to North
+		panel_Buttons.remove(btnCancel);//TODO to North
+		panel_Buttons.add(btnUpdate);//TODO to North
+		panel_Buttons.add(btnCancel);//TODO to North
 
 	}
 	
@@ -458,9 +469,9 @@ public class VisitDetailView extends JPanel implements viewinterface {
 		panel_Fundus.ShowView();
 		panel_Gonio.ShowView();
 		
-		panel_Buttons.remove(btnUpdate);
-		panel_Buttons.remove(btnCancel);
-		panel_Buttons.add(btnSave);
-		panel_Buttons.add(btnCancel);
+		panel_Buttons.remove(btnUpdate);//TODO to North
+		panel_Buttons.remove(btnCancel);//TODO to North
+		panel_Buttons.add(btnSave);//TODO to North
+		panel_Buttons.add(btnCancel);//TODO to North
 	}
 }

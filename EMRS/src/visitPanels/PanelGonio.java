@@ -791,7 +791,7 @@ public class PanelGonio extends JPanel implements viewinterface {
 	
 	@Override
 	public HomeView getHomeView() {
-		return ((VisitDetailView)this.getParent()).getHomeView();
+		return ((VisitDetailView)this.getParent().getParent()).getHomeView();
 	}
 	
 	public Gonio createNewGonio() {

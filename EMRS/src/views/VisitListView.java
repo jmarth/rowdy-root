@@ -2,11 +2,8 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -17,21 +14,11 @@ import models.MasterModel;
 public class VisitListView extends JPanel implements viewinterface {
 
 	private JLabel iconLabel;
-	
-	private JButton btnNewVisit; //TODO move to VTMV
-	private JButton btnCancelVisit; //TODO move to VTMV
-	
 	private VisitListContainer vlc;
 	
-	private JPanel btnPanel;
-
 	public VisitListView () {
-		
-		super();
-		
+				
 		setLayout(new BorderLayout(0, 0));
-		
-//		btnPanel = new JPanel();
 		
 		setBackground(CL.blueGrey);
 
@@ -42,26 +29,6 @@ public class VisitListView extends JPanel implements viewinterface {
 
 		vlc = new VisitListContainer();
 		add(vlc, BorderLayout.CENTER);
-
-		btnNewVisit = new JButton("Add A New Visit");
-		btnNewVisit.setBackground(CL.cararra);
-		btnNewVisit.setOpaque(true);
-		btnNewVisit.setBorderPainted(false);
-		btnNewVisit.setForeground(CL.colorBlue);
-		btnNewVisit.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnNewVisit.addActionListener(new NewVisitListener());
-		add(btnNewVisit, BorderLayout.SOUTH);
-		
-		btnCancelVisit = new JButton("Cancel New Visit");
-		btnCancelVisit.setBackground(CL.cararra);
-		btnCancelVisit.setOpaque(true);
-		btnCancelVisit.setBorderPainted(false);
-		btnCancelVisit.setForeground(CL.colorBlue);
-		btnCancelVisit.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnCancelVisit.addActionListener(new CancelVisitListener());
-		add(btnCancelVisit, BorderLayout.SOUTH);
-		
-//		btnCancelVisit.setVisible(false);
 	}
 
 	@Override
@@ -69,42 +36,16 @@ public class VisitListView extends JPanel implements viewinterface {
 		//TODO
 	}
 
-	@Override
-	public MasterModel getMasterModel() {
-		return this.getHomeView().getMasterModel();
-	}
+
 
 	@Override
 	public void ShowView() {
 		
 	}
-	
-	 //TODO move to VTMV
-	public void showCancelButton() {
-		this.remove(btnNewVisit);
-		this.add(btnCancelVisit, BorderLayout.SOUTH);
-		
-		this.validate();
-		this.repaint();
-//		btnNewVisit.setVisible(false);
-//		btnCancelVisit.setVisible(true);
-	}
-	
-	 //TODO move to VTMV
-	public void showNewButton() {
-		this.remove(btnCancelVisit);
-		this.add(btnNewVisit, BorderLayout.SOUTH);
-		this.validate();
-		this.repaint();
-//		btnCancelVisit.setVisible(false);
-//		btnNewVisit.setVisible(true);
-	}
 
 	 //TODO move to VTMV figure this out
 	@Override
 	public void reload() {
-		
-		this.showNewButton();
 
 		vlc.reload();
 		
@@ -120,23 +61,10 @@ public class VisitListView extends JPanel implements viewinterface {
 		this.repaint();
 	}
 	
-	
-	 //TODO move to VTMV
-	private class NewVisitListener implements ActionListener {
-		
-		public void actionPerformed(ActionEvent e) {
-			((VisitTabMasterView) VisitListView.this.getParent().getParent().getParent()).showNewVisitView();
-		}
+	@Override
+	public MasterModel getMasterModel() {
+		return this.getHomeView().getMasterModel();
 	}
-	
-	 //TODO move to VTMV
-	private class CancelVisitListener implements ActionListener {
-		
-		public void actionPerformed(ActionEvent e) {
-			((VisitTabMasterView) VisitListView.this.getParent().getParent().getParent()).showListVisitFromNewView();
-		}
-	}
-
 	// get Viewport, then get ScrollPane, then get parent.
 	@Override
 	public HomeView getHomeView() {
