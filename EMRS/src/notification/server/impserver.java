@@ -6,6 +6,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.EMRS;
 import networksetup.NetworkObject;
 import networksetup.mastercomunication;
 import networksetup.message;
@@ -33,6 +34,7 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 	@Override
 	public synchronized void unregisterclient(rmiclient client) throws RemoteException {
 		System.out.println("client leave server");
+		EMRS.notification.backtoaskingsetup();
 		int index = clientlist.indexOf(client);
 		clientlist.remove(index);
 		server s = (server)sv;

@@ -334,24 +334,7 @@ public class mastercomunication {
 			}
 	    	this.askquestion.setDelay(10000);
 	    	this.askcount=4;
-	    	runserver = new Thread( new Runnable(){
-
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					try {
-						rserver = new impserver(owner);
-						creatermiserver();
-					} catch (AccessException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (RemoteException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-			runserver.start();
+	    	creatermiserver();
 	    	this.askquestion.start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
@@ -374,6 +357,22 @@ public class mastercomunication {
 			e.printStackTrace();
 		}
     }
+    
+    public void backtoaskingsetup(){//just server call this function
+    	try {
+    		this.askquestion.stop();
+			this.toip=InetAddress.getByName(BROADCAST_ADDR);
+			this.expectresponse=this.SERVER_RESPONSE;
+			this.currentmsg=new message(this.ACCESS_CODE,this.ASK_SERVER,null,-1);
+	    	this.askquestion.setDelay(10000);
+	    	this.askcount=4;
+	    	this.askquestion.start();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     private void setexpect(int expectresponse, InetAddress toip, message cmsg){
     	this.askcount=0;
     	this.askquestion.setDelay(3000);
@@ -412,10 +411,26 @@ public class mastercomunication {
 		} 
     }
     
-    private void creatermiserver() throws RemoteException {
-    	rserver = new impserver(owner);
-		reg = LocateRegistry.createRegistry(RMI_PORT);
-		reg.rebind("rmiemr", rserver);
+    private void creatermiserver(){
+    	runserver = new Thread( new Runnable(){
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				try {
+					rserver = new impserver(owner);
+					reg = LocateRegistry.createRegistry(RMI_PORT);
+					reg.rebind("rmiemr", rserver);
+				} catch (AccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		runserver.start();
+    	
 	}
     
     private void serverturnclient(InetAddress ipfrom, server in){
