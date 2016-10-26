@@ -32,6 +32,7 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 
 	@Override
 	public synchronized void unregisterclient(rmiclient client) throws RemoteException {
+		System.out.println("client leave server");
 		int index = clientlist.indexOf(client);
 		clientlist.remove(index);
 		server s = (server)sv;

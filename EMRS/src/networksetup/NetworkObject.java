@@ -28,7 +28,7 @@ public class NetworkObject implements Serializable {
 	public NetworkObject (InetAddress ipaddr){
 		super();
 		this.ipaddrr = ipaddr;
-		createddate = null;
+		createddate = new Date();
 		type = mastercomunication.UNKNOWN;
 		priority = -1;
 	}
@@ -36,7 +36,7 @@ public class NetworkObject implements Serializable {
 	public NetworkObject (){
 		super();
 		this.ipaddrr = null;
-		createddate = null;
+		createddate = new Date();
 		type = mastercomunication.UNKNOWN;
 		priority = -1;
 	}

@@ -264,7 +264,7 @@ public class mastercomunication {
 									sv.increaseclientnum();
 									
 								}
-								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,prior,owner.getPriority()),ipfrom);
+								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,ipfrom,prior),ipfrom);
 								if(this.askquestion.isRunning())
 									this.stopaskserver();
 								if(this.homeview!=null){
@@ -281,7 +281,8 @@ public class mastercomunication {
 								
 								try {
 									client nclient = (client) owner;
-									nclient.setPriority((Integer)msg.getData());
+									nclient.setPriority(msg.getIndex());
+									nclient.setIpaddrr((InetAddress)msg.getData());
 									Registry reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
 									rserver = (rmiserver) reg.lookup("rmiemr");
 									
@@ -292,7 +293,7 @@ public class mastercomunication {
 									this.owner.setPriority((Integer)msg.getData());
 									if(this.homeview!=null){
 										homeview.getLbip().setText(owner.getIpaddrr().getHostAddress());
-										homeview.getLbhosttype().setText("Server");
+										homeview.getLbhosttype().setText("Client");
 										homeview.getLbpriority().setText(""+owner.getPriority());
 										homeview.getLbcreateddate().setText(this.DATE_FORMAT.format(owner.getCreateddate()));
 									}
