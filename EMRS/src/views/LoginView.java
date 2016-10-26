@@ -100,7 +100,7 @@ public class LoginView extends JFrame {
 				EMRS.notification.setHomeview(home);
 				if(EMRS.notification.getOwner()!=null){
 					NetworkObject owner = EMRS.notification.getOwner();
-					home.getLbip().setText("" + (owner.getIpaddrr().getHostAddress()==null? "N/A":
+					home.getLbip().setText("" + (owner.getIpaddrr()==null? "N/A":
 						owner.getIpaddrr().getHostAddress()));
 					switch (owner.getType()){
 						case mastercomunication.CLIENT:
