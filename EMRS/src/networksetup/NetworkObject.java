@@ -13,7 +13,7 @@ public class NetworkObject implements Serializable {
 	
 	public NetworkObject (int type, int priority) throws UnknownHostException{
 		super();
-		ipaddrr = InetAddress.getLocalHost();
+		ipaddrr = null;
 		createddate = new Date();
 		this.type = type;
 		this.priority = priority;

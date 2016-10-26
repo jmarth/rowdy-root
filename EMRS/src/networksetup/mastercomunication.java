@@ -130,10 +130,9 @@ public class mastercomunication {
 				AskQuesttion();
 				if(askcount >=3 && askquestion.getDelay()==3000){
 					askcount=0;
-						startnewserversetup();
-						System.out.println("change delay to 10000");
-						askquestion.setDelay(10000);
-						System.out.println("Server Created!");
+					startnewserversetup();
+					System.out.println("change delay to 10000");
+					System.out.println("Server Created!");
 						
 				}
 				
@@ -279,16 +278,21 @@ public class mastercomunication {
 							break;
 						case SERVER_ACCEPT_JOIN:
 							System.out.println("receiving server accept join "+ ipfrom.getHostAddress());
+							
 							if(owner.getType()!=this.SERVER && this.expectresponse==SERVER_ACCEPT_JOIN){
-								
 								try {
 									client nclient = (client) owner;
 									nclient.setPriority(msg.getIndex());
 									nclient.setIpaddrr((InetAddress)msg.getData());
+									nclient.getServer().setIpaddrr(ipfrom);
+									System.out.println("creating rmi client and server: "+nclient.getServer().getIpaddrr().getHostAddress());
 									Registry reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
+									System.out.println("lookup object from rmiserver");
 									rserver = (rmiserver) reg.lookup("rmiemr");
+									System.out.println("register client to rmiserver");
 									this.rclient = new impclient(rserver);
 									this.owner.setType(this.CLIENT);
+									System.out.println("finish creating rmi client");
 									if(this.homeview!=null){
 										homeview.getLbip().setText(owner.getIpaddrr().getHostAddress());
 										homeview.getLbhosttype().setText("Client");
@@ -433,6 +437,7 @@ public class mastercomunication {
 			}
 		});
 		runserver.start();
+		System.out.println("rmi server start");
     	
 	}
     
