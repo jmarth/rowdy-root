@@ -232,12 +232,10 @@ public class HomeView extends JFrame implements viewinterface{
 				
 				if (response == JOptionPane.YES_OPTION) {
 					logger.info("User pressed 'YES' in logout dialogue");
-					System.out.println("closing communication");
 					EMRS.notification.setHomeview(null);
 					dispose();
 					LoginView login = new LoginView();
 					login.setVisible(true);
-					
 				}
 			}
 		});

@@ -50,7 +50,7 @@ public class mastercomunication {
 	public final static int CLIENT_WAITTING = 2;
 	public final static int CLIENT_NOACTION = 3;
     //date time format
-    final static DateFormat DATE_FORMAT =  new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    public final static DateFormat DATE_FORMAT =  new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     
     public static final transient int SERVER_NUM_RECEIVE = 4;
     //message
