@@ -361,7 +361,19 @@ public class mastercomunication {
 	    	this.askquestion.setDelay(3000);
 	    	this.askcount=0;
 	    	this.askquestion.start();
+	    	if(reg!=null){
+	    		reg.unbind("rmiemr");
+	    	}
 		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

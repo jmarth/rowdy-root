@@ -44,9 +44,7 @@ public class PatientList {
 	}
 	
 	public ArrayList<Patient> getMyList() {
-		ArrayList<Patient> temp = new ArrayList<Patient>();
-		temp.addAll(myIdMap.values());
-		return temp;
+		return new ArrayList<Patient>(myIdMap.values());
 	}
 
 	public Patient findById(long id) {
