@@ -279,7 +279,7 @@ public class mastercomunication {
 							break;
 						case SERVER_ACCEPT_JOIN:
 							System.out.println("receiving server accept join "+ ipfrom.getHostAddress());
-							if(owner.getType()==this.UNKNOWN && this.expectresponse==SERVER_ACCEPT_JOIN){
+							if(owner.getType()!=this.SERVER && this.expectresponse==SERVER_ACCEPT_JOIN){
 								
 								try {
 									client nclient = (client) owner;
