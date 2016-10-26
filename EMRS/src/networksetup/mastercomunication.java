@@ -278,7 +278,7 @@ public class mastercomunication {
 							break;
 						case SERVER_ACCEPT_JOIN:
 							System.out.println("receiving server accept join "+ ipfrom.getHostAddress());
-							
+							this.stopaskserver();
 							if(owner.getType()!=this.SERVER && this.expectresponse==SERVER_ACCEPT_JOIN){
 								try {
 									client nclient = (client) owner;
@@ -286,7 +286,8 @@ public class mastercomunication {
 									nclient.setIpaddrr((InetAddress)msg.getData());
 									nclient.getServer().setIpaddrr(ipfrom);
 									System.out.println("creating rmi client and server: "+nclient.getServer().getIpaddrr().getHostAddress());
-									Registry reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
+									reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
+									//reg = LocateRegistry.getRegistry("192.168.1.104", this.RMI_PORT);
 									System.out.println("lookup object from rmiserver");
 									rserver = (rmiserver) reg.lookup("rmiemr");
 									System.out.println("register client to rmiserver");
@@ -299,10 +300,11 @@ public class mastercomunication {
 										homeview.getLbpriority().setText(""+owner.getPriority());
 										homeview.getLbcreateddate().setText(this.DATE_FORMAT.format(owner.getCreateddate()));
 									}
-									this.stopaskserver();
+									
 								} catch (RemoteException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
+									this.startnewsetup();
 								} catch (NotBoundException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
