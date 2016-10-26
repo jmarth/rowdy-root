@@ -98,6 +98,8 @@ public class mastercomunication {
     	islisten = true;
     	expectresponse = NO_ACTION;
     	homeview = null;
+    	rserver=null;
+    	rclient=null;
     	try{
     		System.out.println("setup broadcasting network......");
     		mSocket.setBroadcast(true);
@@ -471,6 +473,18 @@ public class mastercomunication {
 	}
 	public void setRunserver(Thread runserver) {
 		this.runserver = runserver;
+	}
+	public rmiserver getRserver() {
+		return rserver;
+	}
+	public void setRserver(rmiserver rserver) {
+		this.rserver = rserver;
+	}
+	public rmiclient getRclient() {
+		return rclient;
+	}
+	public void setRclient(rmiclient rclient) {
+		this.rclient = rclient;
 	}
     
 }

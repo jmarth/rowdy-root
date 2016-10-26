@@ -13,4 +13,5 @@ public interface rmiclient extends Remote {
 	public void decreasepriority() throws RemoteException;
 	public void serverclose() throws RemoteException;
 	public void leaveserver() throws RemoteException;
+	public void notifychange(message msg) throws RemoteException;
 }

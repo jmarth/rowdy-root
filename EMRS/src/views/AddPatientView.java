@@ -14,6 +14,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +37,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import controller.EMRS;
 import database.GatewayException;
 import models.MasterModel;
 import models.Patient;
@@ -705,8 +707,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 		panel_14.add(btnNewButton, gbc_btnNewButton);
 		btnNewButton.addActionListener(new ActionListener()
 		{
-			public void actionPerformed(ActionEvent e)
-			  {
+			public void actionPerformed(ActionEvent e){
 				//check for fields errors
 				if(!checkForErrors()) {
 					//set default values
@@ -763,7 +764,22 @@ public class AddPatientView extends JPanel implements viewinterface  {
 					}
 					
 				}
-			  }
+				if(EMRS.notification.getRclient()!=null){
+					try {
+						EMRS.notification.getRclient().notifychange(null);
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else if(EMRS.notification.getRserver()!=null){
+					try {
+						EMRS.notification.getRserver().notifiedall(null);
+					} catch (RemoteException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			 }
 		});
 	}
 	/**

@@ -123,7 +123,15 @@ public class HomeView extends JFrame implements viewinterface{
 		btnft.setBorderPainted(false);
 		npane.add(btnft);
 		btnft.setEnabled(false);
-		
+		btnft.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				btnft.setEnabled(false);
+			}
+			
+		});
 		//set up top bar panel
 		
 		JPanel northPanel = new JPanel();
@@ -476,6 +484,14 @@ public class HomeView extends JFrame implements viewinterface{
 		System.out.println("Unregistering observer...");
 		EMRS.notification.setHomeview(null);
 		
+	}
+
+	public JButton getBtnft() {
+		return btnft;
+	}
+
+	public void setBtnft(JButton btnft) {
+		this.btnft = btnft;
 	}
 	
 }

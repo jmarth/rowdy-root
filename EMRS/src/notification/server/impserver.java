@@ -49,6 +49,7 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 	public synchronized void notifiedall(message msg) throws RemoteException {
 		System.out.println("server receive notification message");
 		// TODO Auto-generated method stub
+		EMRS.notification.getHomeview().getBtnft().setEnabled(true);
 		int index = msg.getIndex();
 		server s = (server)sv;
 		for(int i=0;i<index;i++){

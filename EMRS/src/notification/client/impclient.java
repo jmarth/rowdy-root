@@ -29,7 +29,9 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	public void messsagereaction(message msg) throws RemoteException {
 		// TODO Auto-generated method stub
 		System.out.println("receiving notification");
-		
+		if(EMRS.notification.getHomeview()!=null){
+			EMRS.notification.getHomeview().getBtnft().setEnabled(true);
+		}
 	}
 	
 	@Override
@@ -65,5 +67,12 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	public void leaveserver() throws RemoteException {
 		// TODO Auto-generated method stub
 		this.rserver.unregisterclient(this);
+	}
+
+
+	@Override
+	public void notifychange(message msg) throws RemoteException {
+		// TODO Auto-generated method stub
+		this.rserver.notifiedall(msg);
 	}
 }
