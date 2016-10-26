@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 
 import networksetup.NetworkObject;
 import networksetup.message;
+import views.HomeView;
 
 public interface rmiclient extends Remote {
 	public void messsagereaction(message msg) throws RemoteException;

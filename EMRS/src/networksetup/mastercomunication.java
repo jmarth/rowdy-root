@@ -36,7 +36,7 @@ import views.HomeView;
 public class mastercomunication {
 	
 	//rmi property
-	public final static int RMI_PORT = 1099;
+	public final static int RMI_PORT = 11099;
 	//network address default
 	public final static String ACCESS_CODE = "emr5187";
 	public final static String  BROADCAST_ADDR = "255.255.255.255";
@@ -97,6 +97,7 @@ public class mastercomunication {
     	owner = null;
     	islisten = true;
     	expectresponse = NO_ACTION;
+    	homeview = null;
     	try{
     		System.out.println("setup broadcasting network......");
     		mSocket.setBroadcast(true);
@@ -123,39 +124,21 @@ public class mastercomunication {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("asking question");
 				AskQuesttion();
 				if(askcount >=3 && askquestion.getDelay()==3000){
 					askcount=0;
-						startsetup();
+						startnewserversetup();
 						System.out.println("change delay to 10000");
 						askquestion.setDelay(10000);
 						System.out.println("Server Created!");
-						runserver = new Thread( new Runnable(){
-
-							@Override
-							public void run() {
-								// TODO Auto-generated method stub
-								try {
-									rserver = new impserver(owner,homeview);
-									reg = LocateRegistry.createRegistry(RMI_PORT);
-									reg.rebind("rmiemr", rserver);
-								} catch (AccessException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} catch (RemoteException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-							}
-							
-						});
-						runserver.start();
+						
 				}
 				
 				askcount++;
 			}	
     	});
-    	startsetup();
+    	startnewsetup();
     	askquestion.start();
     }
     private void AskQuesttion(){
@@ -218,29 +201,12 @@ public class mastercomunication {
 						case OLDER_SERVER:
 							if(owner!=null && owner.getType()==this.SERVER){
 								server sv = (server)msg.getData();
-								if(owner.getCreateddate().after(sv.getCreateddate())){
-									owner.setType(this.CLIENT);
-									HostSend(new message(this.ACCESS_CODE,this.SERVER_CLOSE,owner,owner.getPriority()),InetAddress.getByName(this.BROADCAST_ADDR));
-									askquestion.stop();
-									startsetup();
-									askquestion.start();
-								}
-								
+								this.stopaskserver();
+								serverturnclient(ipfrom,(server)msg.getData());
+								this.askquestion.start();
 							}
 							break;
-						case LEAVE_SERVER://TODO
-							System.out.println("receiving leaving server");
-//							if(owner.getType()==this.SERVER){
-//								NetworkObject in = (NetworkObject) msg.getData();
-//								for(NetworkObject e : this.guests){
-//									if(e.getPriority()== in.getPriority()){
-//										//this.guests.remove(e);
-//										break;
-//									}
-//								}
-//							}
-							break;
-							//from client side
+						//from client side
 						case SERVER_RESPONSE:
 							System.out.println("receiving server response "+ipfrom.getHostAddress() );
 							if(this.expectresponse == SERVER_RESPONSE && owner==null){
@@ -252,27 +218,38 @@ public class mastercomunication {
 							}else if(owner.getType()==SERVER){
 								server svo = (server)owner;
 								server svi = (server)msg.getData();
-								if(svo.getClient_num()< svi.getClient_num()){
-									if(svo.getClient_num()==0){
-										askquestion.stop();
+								if(svo.getClient_num()< svi.getClient_num()){//# of client less so turn to client
+									askquestion.stop();
+									if(svo.getClient_num()==0){//# of client = 0 so just ask server
 										this.owner = new client((server)msg.getData());
 										setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
 												new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom,owner.getPriority()));
+										
+									}else{// want to turn to client but still have some server
+										try {
+											closermiserver();
+										} catch (RemoteException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										} catch (NotBoundException e) {
+											// TODO Auto-generated catch block
+											e.printStackTrace();
+										}
 										askquestion.start();
-									}else{
-										//TODO rmi will take care of notify client cus reliable protocal
 									}
-									
-								}else if(svo.getCreateddate().after(svi.getCreateddate())){
+								}else if(svo.getCreateddate().after(svi.getCreateddate())){// == # of server but created date after so turn to client
+									askquestion.stop();
 									if(svo.getClient_num()==0){
-										askquestion.stop();
 										this.owner = new client((server)msg.getData());
 										setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
 												new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom,owner.getPriority()));
-										askquestion.start();
 									}else{
 										//TODO rmi will take care of notify client cus reliable protocal
+										serverturnclient(ipfrom,(server) msg.getData());
 									}
+									askquestion.start();
+								}else{
+									HostSend(new message(this.ACCESS_CODE,this.OLDER_SERVER,owner,owner.getPriority()),ipfrom);
 								}
 							}
 							break;
@@ -290,6 +267,12 @@ public class mastercomunication {
 								this.HostSend(new message(this.ACCESS_CODE, this.SERVER_ACCEPT_JOIN,prior,owner.getPriority()),ipfrom);
 								if(this.askquestion.isRunning())
 									this.stopaskserver();
+								if(this.homeview!=null){
+									homeview.getLbip().setText(owner.getIpaddrr().getHostAddress());
+									homeview.getLbhosttype().setText("Server");
+									homeview.getLbpriority().setText(""+owner.getPriority());
+									homeview.getLbcreateddate().setText(this.DATE_FORMAT.format(owner.getCreateddate()));
+								}
 							}
 							break;
 						case SERVER_ACCEPT_JOIN:
@@ -302,32 +285,24 @@ public class mastercomunication {
 									Registry reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
 									rserver = (rmiserver) reg.lookup("rmiemr");
 									
-									this.rclient = new impclient(homeview,rserver);
+									this.rclient = new impclient(rserver);
 									
 									this.owner.setType(this.CLIENT);
 									this.owner.setIpaddrr(ipfrom);
 									this.owner.setPriority((Integer)msg.getData());
+									if(this.homeview!=null){
+										homeview.getLbip().setText(owner.getIpaddrr().getHostAddress());
+										homeview.getLbhosttype().setText("Server");
+										homeview.getLbpriority().setText(""+owner.getPriority());
+										homeview.getLbcreateddate().setText(this.DATE_FORMAT.format(owner.getCreateddate()));
+									}
+									this.stopaskserver();
 								} catch (RemoteException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								} catch (NotBoundException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
-								}
-								//TODO create rmi client connection here
-								this.stopaskserver();
-								
-							}
-							break;
-						case SERVER_CLOSE:
-							System.out.println("receiving server close");
-							if(owner!=null && owner.getType()== this.CLIENT){
-								client clo = (client)owner;
-								client clin = (client)msg.getData();
-								if(clo.getServer().getIpaddrr().getHostAddress().equals(clin.getIpaddrr().getHostAddress())){
-									askquestion.stop();
-									this.startsetup();
-									askquestion.start();
 								}
 							}
 							break;
@@ -348,19 +323,59 @@ public class mastercomunication {
     	this.askquestion.setDelay(3000);
     	this.askcount=0;
     }
-    private void startsetup(){
+    public void startnewserversetup(){
     	
     	try {
+    		this.askquestion.stop();
 			this.toip=InetAddress.getByName(BROADCAST_ADDR);
 			this.expectresponse=this.SERVER_RESPONSE;
 	    	this.currentmsg=new message(this.ACCESS_CODE,this.ASK_SERVER,null,-1);
 	    	owner = new server(SERVER,-1);
-	    	this.askquestion.setDelay(3000);
-	    	this.askcount=0;
+	    	if(this.homeview!=null){
+				homeview.getLbhosttype().setText("Server");
+				homeview.getLbcreateddate().setText(this.DATE_FORMAT.format(owner.getCreateddate()));
+			}
+	    	this.askquestion.setDelay(10000);
+	    	this.askcount=4;
+	    	runserver = new Thread( new Runnable(){
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					try {
+						rserver = new impserver(owner);
+						creatermiserver();
+					} catch (AccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			runserver.start();
+	    	this.askquestion.start();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
     	
+    }
+    
+    private void startnewsetup(){
+    	try {
+    		this.askquestion.stop();
+			this.toip=InetAddress.getByName(BROADCAST_ADDR);
+			this.expectresponse=this.SERVER_RESPONSE;
+			this.currentmsg=new message(this.ACCESS_CODE,this.ASK_SERVER,null,-1);
+	    	owner = null;
+	    	this.askquestion.setDelay(3000);
+	    	this.askcount=0;
+	    	this.askquestion.start();
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
     private void setexpect(int expectresponse, InetAddress toip, message cmsg){
     	this.askcount=0;
@@ -383,14 +398,49 @@ public class mastercomunication {
     public void close() {
     	
     	try {
-    		if(owner.getType()== this.CLIENT){
-	    		rclient.leaveserver();
-	    	}
+    		if(owner!=null){
+	    		if(owner.getType()== this.CLIENT){
+		    		rclient.leaveserver();
+		    	}else if(owner.getType()==this.SERVER){
+		    		closermiserver();
+		    	}
+    		}
 			System.out.println("finish closing communication");
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} 
+    }
+    
+    private void creatermiserver() throws RemoteException {
+    	rserver = new impserver(owner);
+		reg = LocateRegistry.createRegistry(RMI_PORT);
+		reg.rebind("rmiemr", rserver);
+	}
+    
+    private void serverturnclient(InetAddress ipfrom, server in){
+    	server sonwer = (server)owner;
+		if(sonwer.getClient_num()>0){
+			try {
+				closermiserver();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NotBoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		owner = new client(in);
+		setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
+				new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom,owner.getPriority()));
+    }
+    private void closermiserver() throws RemoteException, NotBoundException{
+    	rserver.close();
+    	reg.unbind("rmiemr");
     }
 	public NetworkObject getOwner() {
 		return owner;

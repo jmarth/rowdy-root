@@ -3,6 +3,7 @@ package notification.client;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+import controller.EMRS;
 import networksetup.NetworkObject;
 import networksetup.message;
 import notification.server.rmiserver;
@@ -12,11 +13,9 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	
 	private transient NetworkObject client;
 	private transient rmiserver rserver;
-	private transient HomeView homeview;
 	
-	public impclient(HomeView hv,rmiserver rs) throws RemoteException {
+	public impclient(rmiserver rs) throws RemoteException {
 		super();
-		homeview=hv;
 		rserver=rs;
 		rs.registerclient(this);
 	}
@@ -48,6 +47,16 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	@Override
 	public void serverclose() throws RemoteException {
 		// TODO Auto-generated method stub
+		if(EMRS.notification.getOwner().getPriority()==0){
+			EMRS.notification.startnewserversetup();
+		}else{
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 	}
 
@@ -57,5 +66,4 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 		// TODO Auto-generated method stub
 		this.rserver.unregisterclient(this);
 	}
-	
 }

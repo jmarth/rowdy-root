@@ -68,7 +68,8 @@ public class HomeView extends JFrame implements viewinterface{
 	private JButton btnAllergyAlert;
 	
 	//connection status
-	private JLabel lbhost;
+	private JLabel lbcreateddate;
+	private JLabel lbpriority;
 	private JLabel lbhosttype;
 	private JLabel lbip;
 	private JButton btnft;
@@ -108,14 +109,16 @@ public class HomeView extends JFrame implements viewinterface{
 		btnLogout = new JButton("Logout");
 		
 		 //set up notification panel
-		JPanel npane = new JPanel(new GridLayout(1,4));
+		JPanel npane = new JPanel(new GridLayout(1,5));
 		this.add(npane,BorderLayout.SOUTH);
 		lbip = new JLabel("Current IP: N/A");
 		npane.add(lbip);
-		lbhost = new JLabel("Host: N/A");
-		npane.add(lbhost);
 		lbhosttype = new JLabel("Connection: N/A");
 		npane.add(lbhosttype);
+		lbpriority = new JLabel("Host: N/A");
+		npane.add(lbpriority);
+		lbcreateddate = new JLabel("unkonw Date");
+		npane.add(lbcreateddate);
 		btnft = new JButton("Show Notification");
 		btnft.setBorderPainted(false);
 		npane.add(btnft);
@@ -432,12 +435,28 @@ public class HomeView extends JFrame implements viewinterface{
 		return this;
 	}
 
-	public JLabel getLbhost() {
-		return lbhost;
+	public JLabel getLblPatientSearch() {
+		return lblPatientSearch;
 	}
 
-	public void setLbhost(JLabel lbhost) {
-		this.lbhost = lbhost;
+	public void setLblPatientSearch(JLabel lblPatientSearch) {
+		this.lblPatientSearch = lblPatientSearch;
+	}
+
+	public JLabel getLbcreateddate() {
+		return lbcreateddate;
+	}
+
+	public void setLbcreateddate(JLabel lbcreateddate) {
+		this.lbcreateddate = lbcreateddate;
+	}
+
+	public JLabel getLbpriority() {
+		return lbpriority;
+	}
+
+	public void setLbpriority(JLabel lbpriority) {
+		this.lbpriority = lbpriority;
 	}
 
 	public JLabel getLbhosttype() {

@@ -55,19 +55,13 @@ public class EMRS {
 		
 		// init the login view
 		try {
+			LoginView login = new LoginView();
 			notification = new mastercomunication();
+			login.newWindow();
+			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-		LoginView login = new LoginView();
-		
-		// set it visible
-		try {
-			login.newWindow();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 }

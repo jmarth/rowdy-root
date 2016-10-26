@@ -18,13 +18,11 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 	
 	private transient List<rmiclient> clientlist;
 	private transient NetworkObject sv;
-	private transient HomeView homeview;
 	
-	public impserver(NetworkObject s, HomeView hv) throws RemoteException {
+	public impserver(NetworkObject s) throws RemoteException {
 		super();
 		clientlist = new ArrayList<rmiclient>();
 		this.sv=s;
-		this.homeview=hv;
 	}
 
 	@Override
