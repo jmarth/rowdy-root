@@ -46,6 +46,8 @@ import net.java.balloontip.BalloonTip.AttachLocation;
 import net.java.balloontip.BalloonTip.Orientation;
 import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.RoundedBalloonStyle;
+import networksetup.mastercomunication;
+import networksetup.message;
 
 @SuppressWarnings("serial")
 public class AddPatientView extends JPanel implements viewinterface  {
@@ -766,14 +768,16 @@ public class AddPatientView extends JPanel implements viewinterface  {
 				}
 				if(EMRS.notification.getRclient()!=null){
 					try {
-						EMRS.notification.getRclient().notifychange(null);
+						EMRS.notification.getRclient().notifychange(new message(
+								mastercomunication.ACCESS_CODE,mastercomunication.ASK_SERVER,null,EMRS.notification.getOwner().getPriority()));
 					} catch (RemoteException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				} else if(EMRS.notification.getRserver()!=null){
 					try {
-						EMRS.notification.getRserver().notifiedall(null);
+						EMRS.notification.getRserver().notifiedall(new message(
+								mastercomunication.ACCESS_CODE,mastercomunication.ASK_SERVER,null,EMRS.notification.getOwner().getPriority()));
 					} catch (RemoteException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
