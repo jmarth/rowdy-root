@@ -111,9 +111,7 @@ public class VisitTableGatewaySQLite implements VisitTableGateway {
 			st.setString(2, v.getChiefComplaint());
 			st.setString(3, v.getAssessment());
 			st.setString(4, v.getPlan());
-			System.err.println("1");
 			st.executeUpdate();
-			System.err.println("1");
 			//get the generated key
 			rs = st.getGeneratedKeys();
 			if(rs != null && rs.next()) {

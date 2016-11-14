@@ -2,6 +2,7 @@ package models;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import database.IOPTableGateway;
@@ -11,14 +12,15 @@ import database.GatewayException;
 public class IOPList {
 
 	private IOPTableGateway myGateway;
-	private List<IOPMeasurement> myList;
+	private List<IOP> myList;
+	private HashMap<Long, IOP> myIOPMap;
 
 	/**
 	 * Construct a new IOPMeasurementList
 	 */
 	public IOPList() {
 
-		myList = new ArrayList<IOPMeasurement>();
+		myList = new ArrayList<IOP>();
 
 		try {
 			myGateway = new IOPTableGatewaySQLite();
@@ -31,18 +33,21 @@ public class IOPList {
 		}
 	}
 
-	public List<IOPMeasurement> getMyList() {
+	public List<IOP> getMyList() {
 
 		return myList;
 	}
 
 	public void loadMyListForVisit(long vid) throws GatewayException {
 		
-		myList = null;
+		myIOPMap = new HashMap<Long,IOP>();
 
 		try {
-			myList = myGateway.fetchIOPMeasurementsForVisit(vid);
-			
+			myList = myGateway.fetchIOPsForVisit(vid);
+			for(IOP i : myList) {
+				i.loadIOPsFromVisit();
+				myIOPMap.put(i.getId(), i);
+			}
 		} catch (GatewayException e) {
 			System.err.println("IOPList failed to load from its gateway. In IOPList Model");
 //			e.printStackTrace();
@@ -50,13 +55,14 @@ public class IOPList {
 
 	}
 
-	public long insert(IOPMeasurement a) throws GatewayException {
+	public long insert(IOP a) throws GatewayException {
 
-		a.setId(myGateway.insertIOPMeasurement(a));
-		this.myList.add(a);
+		a.setId(myGateway.insertIOP(a));
+		this.myList.add(0, a);
 
 		return a.getId();
 	}
+	
 // TODO
 //	public void update(IOPMeasurement a) throws GatewayException {
 //		myGateway.updateIOPMeasurement(a);

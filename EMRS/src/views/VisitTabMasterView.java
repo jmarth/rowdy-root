@@ -21,8 +21,9 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 	private JButton btnCancelNewVisit;
 	
 	private VisitDetailView visitNewView;
-	private VisitListView visit_ListView;
 	
+	private VisitListView visit_ListView;
+
 	public VisitTabMasterView() {
 		
 		setLayout(new BorderLayout(0, 0));
@@ -30,7 +31,7 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 		scrollPane = new JScrollPane();
 		
 		visit_ListView = new VisitListView();
-//		visitNewView = new VisitDetailView(); for New Visit
+//		visitNewView = new VisitDetailView(); for New Visit // Instead initialized during showList_View()
 		
 		scrollPane.add(visit_ListView);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(16);
@@ -66,7 +67,7 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 	private class CancelNewVisitListener implements ActionListener {
 		
 		public void actionPerformed(ActionEvent e) {
-			VisitTabMasterView.this.showList_VisitView();
+			VisitTabMasterView.this.showList_View();
 		}
 	}
 
@@ -77,11 +78,10 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 		add(scrollPane, BorderLayout.CENTER);
 		add(btnNewVisit, BorderLayout.SOUTH);
 		add(btnCancelNewVisit, BorderLayout.SOUTH);
-		showList_VisitView();
+		showList_View();
 	}
 	
-	public void showList_VisitView() {
-		
+	public void showList_View() {
 		this.HideallView();
 		
 		this.remove(btnCancelNewVisit);
@@ -89,7 +89,6 @@ public class VisitTabMasterView extends JPanel implements viewinterface {
 		
 		if(visit_ListView != null) {
 			scrollPane.remove(visit_ListView);
-			
 		}
 		
 		visit_ListView = new VisitListView();

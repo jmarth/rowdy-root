@@ -237,7 +237,7 @@ public class PanelRefraction extends JPanel implements viewinterface {
 		} else if (rdbtn_ManifestRefraction.isSelected()) {
 			isAutoRefrac = 0;
 		} else {
-
+			isAutoRefrac = -1;
 		}
 		
 		Refraction r = new Refraction(

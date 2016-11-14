@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -468,7 +469,7 @@ public class PanelGonio extends JPanel implements viewinterface {
 		lblSketch = new JLabel("");
 		panel_Sketch.add(lblSketch); // added by showView()
 		
-		panelNewSketch = new PanelNewSketch(lblSketch);
+		panelNewSketch = new PanelNewSketch();
 		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panelNewSketch.setBorder(new TitledBorder(null, "Gonioscopy Sketch", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_Sketch.add(panelNewSketch);
@@ -477,26 +478,17 @@ public class PanelGonio extends JPanel implements viewinterface {
 	}
 
 	private class SketchListener implements ActionListener{
-		
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			PanelGonio.this.showNewSketch();
-//			PanelGonio.this.validate();
-//			PanelGonio.this.repaint();
-			PanelGonio.this.getParent().validate();
-			PanelGonio.this.getParent().repaint();
-
-			
-//			FrameNewSketch firstSketch = new FrameNewSketch(lblSketch, "GonioTempSketch");
-//			firstSketch.setContentPane(firstSketch.getContentPane());
-//			firstSketch.setSize(new Dimension(600,600));
-//			firstSketch.setResizable(false);
-//			
-//			panel_Sketch = (JPanel) firstSketch.getContentPane();
-//			panel_Sketch.setVisible(true);
-//			firstSketch.setVisible(true);
+			if (lblSketch.getWidth() == 0 || lblSketch.getHeight() == 0) {
+				PanelGonio.this.showNewSketch();
+				PanelGonio.this.getHomeView().validate();
+				PanelGonio.this.getHomeView().repaint();
+			} else {
+				PanelGonio.this.showExsistingSketch();
+				PanelGonio.this.getHomeView().validate();
+				PanelGonio.this.getHomeView().repaint();
+			}
 		}
 			
 	}
@@ -736,10 +728,10 @@ public class PanelGonio extends JPanel implements viewinterface {
 			//none
 		}
 		
-		setSketch();
+		setSketchLabel();
 	}
 	
-	public void setSketch() {
+	public void setSketchLabel() {
 		
 		Image image_Gonio = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageGonio();
 		
@@ -753,12 +745,11 @@ public class PanelGonio extends JPanel implements viewinterface {
 		return lblSketch;
 	}
 
+	@Override
 	public void ShowView() {
 		panel_Sketch.remove(panelNewSketch);
-		
 		panel_Sketch.add(btnSketch);
 		panel_Sketch.add(lblSketch);
-
 		this.validate();
 		this.repaint();
 	}
@@ -766,22 +757,39 @@ public class PanelGonio extends JPanel implements viewinterface {
 	public void showNewSketch() {
 		panel_Sketch.remove(btnSketch);
 		panel_Sketch.remove(lblSketch);
-
+		panelNewSketch = new PanelNewSketch(lblSketch);
+		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel_Sketch.add(panelNewSketch);
-		
+		panelNewSketch.validate();
+		panelNewSketch.repaint();
 		this.validate();
 		this.repaint();
 	}
 	
-	@Override
-	public void HideallView() {
-		// TODO
+	public void showExsistingSketch() {
+		panel_Sketch.remove(btnSketch);
+		panel_Sketch.remove(lblSketch);
+		panelNewSketch = new PanelNewSketch(lblSketch);
+		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel_Sketch.add(panelNewSketch);
+		panelNewSketch.validate();
+		panelNewSketch.repaint();
+		this.validate();
+		this.repaint();
+
+		panelNewSketch.drawThis(lblSketch);
 	}
 
 	@Override
 	public void reload() {
 		this.ShowView();
 		this.setFields();
+	}
+
+	
+	@Override
+	public void HideallView() {
+		// TODO
 	}
 
 	@Override
@@ -850,8 +858,13 @@ public class PanelGonio extends JPanel implements viewinterface {
 	
 		return null;
 	}
-	
-	public Image getSketch() {
-		return panelNewSketch.getSketch();
+
+	public BufferedImage getMyBI() {
+		return panelNewSketch.getMyBI();
 	}
+	
+//	public BufferedImage createBufferedImage() {
+//		
+//		return panelNewSketch.createBufferedImage();
+//	}
 }

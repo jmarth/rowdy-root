@@ -3,9 +3,9 @@ package visitPanels;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -37,13 +37,11 @@ public class PanelSLE extends JPanel implements viewinterface {
 	private PanelNewSketch panelNewSketch;
 	private JLabel lblSketch;
 	
+	
 	public PanelSLE(int index) {
-		
 		setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Slit Lamp Exam", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, new Font("Tahoma", Font.BOLD, 20), new Color(0, 0, 0)));
 		setLayout(new MigLayout("", "[grow]", "[grow][][grow]"));
 		setBackground(CL.turq);
-		
-		
 		
 		// PUPILS
 		panel_Pupils = new PanelPupils(index);
@@ -68,62 +66,42 @@ public class PanelSLE extends JPanel implements viewinterface {
 		btnSketch.addActionListener(new SketchListener());
 		panel_Sketch.add(btnSketch); //added by showView()
 		
-		lblSketch = new JLabel("");
-		panel_Sketch.add(lblSketch); // added by showView()
+		lblSketch = new JLabel();
+		panel_Sketch.add(lblSketch); //TODO added by showView()
 		
-		panelNewSketch = new PanelNewSketch(lblSketch);
+		panelNewSketch = new PanelNewSketch(); // Place holder
 		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panelNewSketch.setBorder(new TitledBorder(null, "Slit Lamp Exam Sketch", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_Sketch.add(panelNewSketch);
-		//panelNewSketch added by showNewSketch()
-		//since showView() called first, start with panelNewSketch to remove when showView()
+		panel_Sketch.add(panelNewSketch); //panelNewSketch added by showNewSketch() since showView() called first, start with panelNewSketch to remove when showView()
 	}
 	
-	public void setSketch() {
-		Image image_SLE = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageSLE();
+	public void setSketchLabel() {
+		BufferedImage image_SLE = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageSLE();
 		if (image_SLE != null) {
-			ImageIcon iconSLE = new ImageIcon(image_SLE);
-			lblSketch.setIcon(iconSLE);
+			lblSketch.setIcon(new ImageIcon(image_SLE));
 		}
-	}
-	
-	public void setFields() {
-		setSketch();
 	}
 
 	private class SketchListener implements ActionListener  {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			PanelSLE.this.showNewSketch();
-			System.err.println(PanelSLE.this.getParent().getClass());
-			System.err.println(PanelSLE.this.getParent().getParent().getClass());
-			
-			
-
-			PanelSLE.this.getParent().validate();
-			PanelSLE.this.getParent().repaint();
-			//System.err.println(label_SLE_Sketch);
-//			FrameNewSketch firstSketch = new FrameNewSketch(label_SLE_Sketch, "firstSketch");
-//			firstSketch.setContentPane(firstSketch.getContentPane());
-//			firstSketch.setSize(new Dimension(600,600));
-//			firstSketch.setResizable(true);
-//			
-//			panel_SLE_Sketch = (JPanel) firstSketch.getContentPane();
-//			panel_SLE_Sketch.setVisible(true);
-//			firstSketch.setVisible(true);
+			if (lblSketch.getWidth() == 0 || lblSketch.getHeight() == 0) {
+				PanelSLE.this.showNewSketch();
+				PanelSLE.this.getHomeView().validate();
+				PanelSLE.this.getHomeView().repaint();
+			} else {
+				PanelSLE.this.showExsistingSketch();
+				PanelSLE.this.getHomeView().validate();
+				PanelSLE.this.getHomeView().repaint();
+			}
 		}
-		
 	}
 
 	@Override
 	public void ShowView() {
 		panel_Sketch.remove(panelNewSketch);
-		
 		panel_Sketch.add(btnSketch);
 		panel_Sketch.add(lblSketch);
-
 		this.validate();
 		this.repaint();
 	}
@@ -131,19 +109,33 @@ public class PanelSLE extends JPanel implements viewinterface {
 	public void showNewSketch() {
 		panel_Sketch.remove(btnSketch);
 		panel_Sketch.remove(lblSketch);
-
+		panelNewSketch = new PanelNewSketch(lblSketch);
+		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
 		panel_Sketch.add(panelNewSketch);
-		
+		panelNewSketch.validate();
+		panelNewSketch.repaint();
 		this.validate();
 		this.repaint();
+	}
+	
+	public void showExsistingSketch() {
+		panel_Sketch.remove(btnSketch);
+		panel_Sketch.remove(lblSketch);
+		panelNewSketch = new PanelNewSketch(lblSketch);
+		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel_Sketch.add(panelNewSketch);
+		panelNewSketch.validate();
+		panelNewSketch.repaint();
+		this.validate();
+		this.repaint();
+
+		panelNewSketch.drawThis(lblSketch);
 	}
 
 	@Override
 	public void reload() {
-		
 		this.ShowView();
-		
-		this.setFields();
+		this.setSketchLabel();
 		
 		panel_Pupils.reload();
 		panel_AC.reload();
@@ -165,10 +157,13 @@ public class PanelSLE extends JPanel implements viewinterface {
 		//TODO
 	}
 	
-	public Image getSketch() {
-		return panelNewSketch.getSketch();
+	public BufferedImage getMyBI() {
+		return panelNewSketch.getMyBI();
 	}
-
+	
+	
+	
+	// get PANELS
 	public PanelPupils getPanelPupils() {
 		return panel_Pupils;
 	}

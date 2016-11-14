@@ -1,7 +1,5 @@
 package database;
 
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -39,30 +37,18 @@ public class SketchTableGatewaySQLite implements SketchTableGateway {
 	}
 
 	@Override
-	public long insertSketchToTable(Image im, long vid, String table) throws GatewayException {
-
+	public long insertSketchToTable(BufferedImage bi, long vid, String table) throws GatewayException {
 		long newId = -1;
-
 		PreparedStatement st = null;
 		ResultSet rs = null;
-
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-		if (im == null) {
-			return -2;
-		} else {
-			
-			BufferedImage bi = new BufferedImage(im.getWidth(null), im.getHeight(null),
-					BufferedImage.TYPE_INT_RGB);
 			try {
-				
 				ImageIO.write(bi, "png", baos);
-				
+				//TODO Flush/Close
 			} catch (IOException e1) {
 				System.err.println("From Sketch TG: IO Exception on write ByteArray");
 				// e1.printStackTrace();
 			}
-	
 			InputStream is = new ByteArrayInputStream(baos.toByteArray());
 	
 			try {
@@ -70,7 +56,7 @@ public class SketchTableGatewaySQLite implements SketchTableGateway {
 						PreparedStatement.RETURN_GENERATED_KEYS);
 	
 				st.setLong(1, vid);
-				st.setBinaryStream(2, is, (int) baos.size());
+				st.setBinaryStream(2, is, (int) baos.toByteArray().length);
 	
 				st.executeUpdate();
 	
@@ -97,39 +83,45 @@ public class SketchTableGatewaySQLite implements SketchTableGateway {
 					throw new GatewayException("SQL Error: " + e.getMessage());
 				}
 			}
-		}
 		
 		return newId;
 	}
 
 	@Override
-	public Image fetchSketchForVisitByTable(long vid, String table) throws GatewayException {
+	public BufferedImage fetchSketchForVisitByTable(long vid, String table) throws GatewayException {
 
-//		BufferedImage image = null;
+		BufferedImage bi = null;
 
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		try {
 
-			st = conn.prepareStatement("SELECT image FROM " + table + " WHERE vid=?");
+			st = conn.prepareStatement("SELECT image FROM " + table + " WHERE vid = ?");
 			st.setLong(1, vid);
 
 			rs = st.executeQuery();
 
 			if (rs.next()) {
-
-				InputStream stream = rs.getBinaryStream("image");
-				ByteArrayOutputStream output = new ByteArrayOutputStream();
-
-				int i = stream.read();
-
-				while (i >= 0) {
-					output.write((char) i);
-					i = stream.read();
-				}
-
-				Image temp = Toolkit.getDefaultToolkit().createImage(output.toByteArray());
+				
+				InputStream is = new ByteArrayInputStream(rs.getBytes("image"));
+				
+				bi = ImageIO.read(is);
+			}
+			
+			return bi;
+//
+//				InputStream stream = rs.getBinaryStream("image");
+//				ByteArrayOutputStream output = new ByteArrayOutputStream();
+//
+//				int i = stream.read();
+//
+//				while (i >= 0) {
+//					output.write((char) i);
+//					i = stream.read();
+//				}
+//
+//				Image temp = Toolkit.getDefaultToolkit().createImage(output.toByteArray());
 				
 				// if(temp.getWidth(null) > 0) {//||temp.getHeight(null) > 0
 				//
@@ -140,10 +132,7 @@ public class SketchTableGatewaySQLite implements SketchTableGateway {
 				// bg.dispose();
 				// }
 
-				output.close();
-
-				return temp;
-			}
+//				output.close();
 
 		} catch (SQLException e) {
 			throw new GatewayException(e.getMessage());
@@ -172,71 +161,43 @@ public class SketchTableGatewaySQLite implements SketchTableGateway {
 	}
 
 	@Override
-	public void updateSketchToTable(Image im, long vid, String table) throws GatewayException {
-		
-//		long newId = -1;
-
+	public void updateSketchToTable(BufferedImage bi, long vid, String table) throws GatewayException {
 		PreparedStatement st = null;
-//		ResultSet rs = null;
-
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-		if (im == null) {
-			return;
-		} else {
+		try {
+			ImageIO.write(bi, "png", baos);
 			
-			BufferedImage bi = new BufferedImage(im.getWidth(null), im.getHeight(null),
-					BufferedImage.TYPE_INT_RGB);
-			try {
-				
-				ImageIO.write(bi, "png", baos);
-				
-			} catch (IOException e1) {
-				System.err.println("From Sketch TG update: IO Exception on write ByteArray");
-				// e1.printStackTrace();
-			}
-	
-			InputStream is = new ByteArrayInputStream(baos.toByteArray());
-	
-			try {
-				conn.setAutoCommit(false);
-				st = conn.prepareStatement("UPDATE " + table + " SET id = ?, image = ? WHERE id = ? ",
-						PreparedStatement.RETURN_GENERATED_KEYS);
-	
-				st.setLong(1, vid); // don't need to do this...
-				st.setBinaryStream(2, is, (int) baos.size());
-				st.setLong(3, vid);
-	
-				st.executeUpdate();
-				
-				conn.commit();
-				conn.setAutoCommit(true);
+		} catch (IOException e1) {
+			System.err.println("From Sketch TG update: IO Exception on write ByteArray");
+			// e1.printStackTrace();
+		}
+		InputStream is = new ByteArrayInputStream(baos.toByteArray());
+		try {
+			conn.setAutoCommit(false);
+			st = conn.prepareStatement("UPDATE " + table + " SET vid = ?, image = ? WHERE vid = ? ",
+					PreparedStatement.RETURN_GENERATED_KEYS);
 
-//				// get the generated key
-//				rs = st.getGeneratedKeys();
-//	
-//				if (rs != null && rs.next()) {
-//	
-//					newId = rs.getLong(1);
-//	
-//				} else {
-//					throw new GatewayException("From Sketch TG: Could not insert new record.");
-//				}
-	
+			st.setLong(1, vid); // don't need to do this...
+			st.setBinaryStream(2, is, baos.toByteArray().length);
+			st.setLong(3, vid);
+
+			st.executeUpdate();
+			
+			conn.commit();
+			conn.setAutoCommit(true);
+
+		} catch (SQLException e) {
+			throw new GatewayException(e.getMessage());
+		} finally {
+			// clean up
+			try {
+				if (st != null)
+					st.close();
+
 			} catch (SQLException e) {
-				throw new GatewayException(e.getMessage());
-			} finally {
-				// clean up
-				try {
-					if (st != null)
-						st.close();
-	
-				} catch (SQLException e) {
-					throw new GatewayException("SQL Error: " + e.getMessage());
-				}
+				throw new GatewayException("SQL Error: " + e.getMessage());
 			}
 		}
 		return;
-//		return newId;
 	}
 }

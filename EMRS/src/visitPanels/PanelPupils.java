@@ -107,7 +107,7 @@ public class PanelPupils extends JPanel implements viewinterface {
 
 		comboBox_PupilsDiameterBoth = new JComboBox();
 		comboBox_PupilsDiameterBoth
-				.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+				.setModel(new DefaultComboBoxModel(new String[] { "N/A", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
 		panel_DiameterB.add(comboBox_PupilsDiameterBoth);
 
 		JLabel lblMmBoth = new JLabel("mm");
@@ -169,7 +169,7 @@ public class PanelPupils extends JPanel implements viewinterface {
 
 		comboBox_PupilDiameterRight = new JComboBox();
 		comboBox_PupilDiameterRight
-				.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+				.setModel(new DefaultComboBoxModel(new String[] { "N/A", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
 		panel_2.add(comboBox_PupilDiameterRight);
 
 		JLabel lbl_MmRight = new JLabel("mm");
@@ -228,7 +228,7 @@ public class PanelPupils extends JPanel implements viewinterface {
 
 		comboBox_PupilDiameterLeft = new JComboBox();
 		comboBox_PupilDiameterLeft
-				.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
+				.setModel(new DefaultComboBoxModel(new String[] { "N/A", "1", "2", "3", "4", "5", "6", "7", "8", "9" }));
 		panel_6.add(comboBox_PupilDiameterLeft);
 
 		JLabel label_1 = new JLabel("mm");
@@ -269,6 +269,11 @@ public class PanelPupils extends JPanel implements viewinterface {
 				comboBox_PupilsDiameterBoth.setSelectedIndex(2);
 				rdbtn_N_RAPDBoth.setSelected(true);
 				rdbtn_N_SynechiaBoth.setSelected(true);
+			} else {
+				rdbtn_RoundPupilsBoth.setSelected(true);
+				comboBox_PupilsDiameterBoth.setSelectedIndex(0);
+				rdbtn_N_RAPDBoth.setSelected(true);
+				rdbtn_N_SynechiaBoth.setSelected(true);
 			}
 
 		}
@@ -285,6 +290,8 @@ public class PanelPupils extends JPanel implements viewinterface {
 				comboBox_PupilDiameterRight.setSelectedIndex(2);
 				rdbtn_N_RAPDRight.setSelected(true);
 				rdbtn_N_SynechiaRight.setSelected(true);
+			} else {
+				
 			}
 		}
 
@@ -299,6 +306,8 @@ public class PanelPupils extends JPanel implements viewinterface {
 				comboBox_PupilDiameterLeft.setSelectedIndex(2);
 				rdbtn_N_RAPDLeft.setSelected(true);
 				rdbtn_N_SynechiaLeft.setSelected(true);
+				
+			} else {
 				
 			}
 		}

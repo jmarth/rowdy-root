@@ -9,6 +9,7 @@ import javax.swing.JTextField;
 import javax.swing.border.MatteBorder;
 import javax.swing.border.TitledBorder;
 
+import models.IOP;
 import models.IOPMeasurement;
 import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
@@ -77,7 +78,7 @@ public class PanelIOP extends JPanel implements viewinterface {
 		add(textField_IOP_Notes_OS, "cell 3 2,growx");
 	}
 
-	public IOPMeasurement createNewIOP() {
+	public IOP createNewIOP() {
 		
 		IOPMeasurement iop = new IOPMeasurement(
 				

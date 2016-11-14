@@ -1,6 +1,6 @@
 package models;
 
-import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import database.GatewayException;
@@ -10,7 +10,7 @@ import database.SketchTableGatewaySQLite;
 public class Sketches {
 	
 	private SketchTableGateway myGateway;
-	private Image imageSLE, imageGonio, imageFundus;
+	private BufferedImage imageSLE, imageGonio, imageFundus;
 	
 	public Sketches() {
 		try {
@@ -74,34 +74,34 @@ public class Sketches {
 		}
 	}
 	
-	public void setSketches(Image imageSLE, Image imageGonio, Image imageFundus) {
+	public void setSketches(BufferedImage imageSLE, BufferedImage imageGonio, BufferedImage imageFundus) {
 		this.imageSLE = imageSLE;
 		this.imageGonio = imageGonio;
 		this.imageFundus = imageFundus;
 
 	}
 
-	public Image getImageSLE() {
+	public BufferedImage getImageSLE() {
 		return imageSLE;
 	}
 
-	public void setImageSLE(Image imageSLE) {
+	public void setImageSLE(BufferedImage imageSLE) {
 		this.imageSLE = imageSLE;
 	}
 
-	public Image getImageGonio() {
+	public BufferedImage getImageGonio() {
 		return imageGonio;
 	}
 
-	public void setImageGonio(Image imageGonio) {
+	public void setImageGonio(BufferedImage imageGonio) {
 		this.imageGonio = imageGonio;
 	}
 
-	public Image getImageFundus() {
+	public BufferedImage getImageFundus() {
 		return imageFundus;
 	}
 
-	public void setImageFundus(Image imageFundus) {
+	public void setImageFundus(BufferedImage imageFundus) {
 		this.imageFundus = imageFundus;
 	}
 

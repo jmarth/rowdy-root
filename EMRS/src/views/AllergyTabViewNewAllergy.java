@@ -112,7 +112,8 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 			System.out.println("Could not connect to DB");
 			e.printStackTrace();
 		}*/
-		
+		//createExistingView(tabbedPane, patient, allergiesPanel, atg, a, allergyTable);
+
 		if(exists){
 			//TODO createExistingView(tabbedPane, patient, allergiesPanel, atg, a, allergyTable);
 		} else {

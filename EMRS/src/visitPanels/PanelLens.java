@@ -79,7 +79,7 @@ public class PanelLens extends JPanel implements viewinterface {
 		add(lblNs, "cell 0 3,alignx trailing");
 		
 		comboBox_SLE_NS_OD = new JComboBox();
-		comboBox_SLE_NS_OD.setModel(new DefaultComboBoxModel(new String[] {"Clear", "Trace", "+1", "+2", "+3", "+4", "Brunescent"}));
+		comboBox_SLE_NS_OD.setModel(new DefaultComboBoxModel(new String[] {"N/A", "Clear", "Trace", "+1", "+2", "+3", "+4", "Brunescent"}));
 		add(comboBox_SLE_NS_OD, "flowx,cell 1 3");
 		
 		textField_SLE_NS_OD = new JTextField();
@@ -87,7 +87,7 @@ public class PanelLens extends JPanel implements viewinterface {
 		add(textField_SLE_NS_OD, "cell 1 3,growx");
 		
 		comboBox_SLE_NS_OS = new JComboBox();
-		comboBox_SLE_NS_OS.setModel(new DefaultComboBoxModel(new String[] {"Clear", "Trace", "+1", "+2", "+3", "+4", "Brunescent"}));
+		comboBox_SLE_NS_OS.setModel(new DefaultComboBoxModel(new String[] {"N/A","Clear", "Trace", "+1", "+2", "+3", "+4", "Brunescent"}));
 		add(comboBox_SLE_NS_OS, "flowx,cell 3 3");
 		
 		textField_SLE_NS_OS = new JTextField();
@@ -116,7 +116,7 @@ public class PanelLens extends JPanel implements viewinterface {
 		add(lblCortical, "cell 0 4,alignx trailing");
 		
 		comboBox_SLE_Coritcal_OD = new JComboBox();
-		comboBox_SLE_Coritcal_OD.setModel(new DefaultComboBoxModel(new String[] {"Clear", "Trace", "+1", "+2", "+3", "+4"}));
+		comboBox_SLE_Coritcal_OD.setModel(new DefaultComboBoxModel(new String[] {"N/A","Clear", "Trace", "+1", "+2", "+3", "+4"}));
 		add(comboBox_SLE_Coritcal_OD, "flowx,cell 1 4");
 		
 		textField_SLE_Cortical_OD = new JTextField();
@@ -124,7 +124,7 @@ public class PanelLens extends JPanel implements viewinterface {
 		add(textField_SLE_Cortical_OD, "cell 1 4,growx");
 		
 		comboBox_SLE_Coritcal_OS = new JComboBox();
-		comboBox_SLE_Coritcal_OS.setModel(new DefaultComboBoxModel(new String[] {"Clear", "Trace", "+1", "+2", "+3", "+4"}));
+		comboBox_SLE_Coritcal_OS.setModel(new DefaultComboBoxModel(new String[] {"N/A","Clear", "Trace", "+1", "+2", "+3", "+4"}));
 		add(comboBox_SLE_Coritcal_OS, "flowx,cell 3 4");
 		
 		textField_SLE_Cortical_OS = new JTextField();
@@ -135,7 +135,7 @@ public class PanelLens extends JPanel implements viewinterface {
 		add(lblPsc, "cell 0 5,alignx trailing");
 		
 		comboBox_SLE_PSC_OD = new JComboBox();
-		comboBox_SLE_PSC_OD.setModel(new DefaultComboBoxModel(new String[] {"Clear", "Trace", "+1", "+2", "+3", "+4"}));
+		comboBox_SLE_PSC_OD.setModel(new DefaultComboBoxModel(new String[] {"N/A","Clear", "Trace", "+1", "+2", "+3", "+4"}));
 		add(comboBox_SLE_PSC_OD, "flowx,cell 1 5");
 		
 		textField_SLE_PSC_OD = new JTextField();
@@ -143,7 +143,7 @@ public class PanelLens extends JPanel implements viewinterface {
 		add(textField_SLE_PSC_OD, "cell 1 5,growx");
 		
 		comboBox_SLE_PSC_OS = new JComboBox();
-		comboBox_SLE_PSC_OS.setModel(new DefaultComboBoxModel(new String[] {"Clear", "Trace", "+1", "+2", "+3", "+4"}));
+		comboBox_SLE_PSC_OS.setModel(new DefaultComboBoxModel(new String[] {"N/A","Clear", "Trace", "+1", "+2", "+3", "+4"}));
 		add(comboBox_SLE_PSC_OS, "flowx,cell 3 5");
 		
 		textField_SLE_PSC_OS = new JTextField();

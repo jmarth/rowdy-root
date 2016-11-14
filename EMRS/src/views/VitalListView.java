@@ -18,9 +18,9 @@ import javax.swing.table.DefaultTableModel;
 
 import database.GatewayException;
 import models.MasterModel;
-import models.Tabs;
 import models.Vital;
 
+@SuppressWarnings("serial")
 public class VitalListView extends JPanel implements viewinterface {
 	
 	private JTable vitalsTable;
