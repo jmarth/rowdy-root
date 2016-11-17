@@ -98,10 +98,9 @@ public class LoginView extends JFrame {
 				//Create home view
 				HomeView home  = new HomeView();
 				EMRS.notification.setHomeview(home);
-				if(EMRS.notification.getOwner()!=null){
+				//if(EMRS.notification.getOwner()!=null){
 					NetworkObject owner = EMRS.notification.getOwner();
-					home.getLbip().setText("" + (owner.getIpaddrr()==null? "N/A":
-						owner.getIpaddrr().getHostAddress()));
+					home.getLbip().setText("" + owner.getIpaddrr().getHostAddress());
 					switch (owner.getType()){
 						case mastercomunication.CLIENT:
 							home.getLbhosttype().setText("Client");
@@ -116,7 +115,7 @@ public class LoginView extends JFrame {
 					
 					home.getLbpriority().setText(""+owner.getPriority());
 					home.getLbcreateddate().setText(""+mastercomunication.DATE_FORMAT.format(owner.getCreateddate()));
-				}
+				//}
 				
 				home.setBounds(100, 100, 1080,720);
 				home.launchUI();

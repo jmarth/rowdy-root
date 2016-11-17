@@ -13,7 +13,7 @@ public class NetworkObject implements Serializable {
 	
 	public NetworkObject (int type, int priority) throws UnknownHostException{
 		super();
-		ipaddrr = null;
+		ipaddrr = InetAddress.getLocalHost();
 		createddate = new Date();
 		this.type = type;
 		this.priority = priority;
@@ -33,9 +33,9 @@ public class NetworkObject implements Serializable {
 		priority = -1;
 	}
 	
-	public NetworkObject (){
+	public NetworkObject () throws UnknownHostException{
 		super();
-		this.ipaddrr = null;
+		this.ipaddrr = InetAddress.getLocalHost();
 		createddate = new Date();
 		type = mastercomunication.UNKNOWN;
 		priority = -1;

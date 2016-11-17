@@ -94,7 +94,7 @@ public class mastercomunication {
     	mSocket.setLoopbackMode(true);
     	mSocket.setTimeToLive(2);
     	askcount = 0;
-    	owner = null;
+    	owner = new NetworkObject();
     	islisten = true;
     	expectresponse = NO_ACTION;
     	homeview = null;
@@ -123,7 +123,6 @@ public class mastercomunication {
     	mlistener.start();
     	
     	askquestion = new Timer(3000,new ActionListener(){
-
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("asking question");
@@ -286,7 +285,11 @@ public class mastercomunication {
 									nclient.setIpaddrr((InetAddress)msg.getData());
 									nclient.getServer().setIpaddrr(ipfrom);
 									System.out.println("creating rmi client and server: "+nclient.getServer().getIpaddrr().getHostAddress());
-									reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
+									if(reg!=null){
+										reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
+									}else{
+										reg.unbind("rmiemr");
+									}
 									//reg = LocateRegistry.getRegistry("192.168.1.104", this.RMI_PORT);
 									System.out.println("lookup object from rmiserver");
 									rserver = (rmiserver) reg.lookup("rmiemr");
@@ -333,7 +336,7 @@ public class mastercomunication {
     	try {
     		this.rclient=null;
     		this.askquestion.stop();
-			this.toip=InetAddress.getByName(BROADCAST_ADDR);
+			//this.toip=InetAddress.getByName(BROADCAST_ADDR);
 			this.expectresponse=this.SERVER_RESPONSE;
 	    	this.currentmsg=new message(this.ACCESS_CODE,this.ASK_SERVER,null,-1);
 	    	owner = new server(SERVER,-1);
@@ -357,7 +360,7 @@ public class mastercomunication {
 			this.toip=InetAddress.getByName(BROADCAST_ADDR);
 			this.expectresponse=this.SERVER_RESPONSE;
 			this.currentmsg=new message(this.ACCESS_CODE,this.ASK_SERVER,null,-1);
-	    	owner = null;
+	    	owner = new NetworkObject(InetAddress.getLocalHost());
 	    	this.askquestion.setDelay(3000);
 	    	this.askcount=0;
 	    	this.askquestion.start();
@@ -438,13 +441,20 @@ public class mastercomunication {
 			public void run() {
 				// TODO Auto-generated method stub
 				try {
-					rserver = new impserver(owner);
+					if(rserver==null)
+						rserver = new impserver(owner);
+					if(reg!=null){
+						reg.unbind("rmiemr");
+					}
 					reg = LocateRegistry.createRegistry(RMI_PORT);
 					reg.rebind("rmiemr", rserver);
 				} catch (AccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotBoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -468,7 +478,12 @@ public class mastercomunication {
 				e.printStackTrace();
 			}
 		}
-		owner = new client(in);
+		try {
+			owner = new client(in);
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
 				new message(this.ACCESS_CODE,this.CLIENT_REQUEST_JOIN,ipfrom,owner.getPriority()));
     }
