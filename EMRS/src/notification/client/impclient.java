@@ -54,6 +54,7 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 		}else{
 			try {
 				Thread.sleep(2000);
+				EMRS.notification.startnewsetup();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

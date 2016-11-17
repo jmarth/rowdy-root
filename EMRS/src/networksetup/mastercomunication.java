@@ -19,6 +19,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -127,7 +128,7 @@ public class mastercomunication {
 			public void actionPerformed(ActionEvent arg0) {
 				System.out.println("asking question");
 				AskQuesttion();
-				if(askcount >=3 && askquestion.getDelay()==3000){
+				if(askcount >=5 && askquestion.getDelay()==3000){
 					askcount=0;
 					startnewserversetup();
 					System.out.println("change delay to 10000");
@@ -187,19 +188,22 @@ public class mastercomunication {
     	//TODO
     	try {
     		toip = ipfrom;
-			if(InetAddress.getLocalHost().getHostAddress().equals(ipfrom.getHostAddress())==false){
+			if(owner.getIpaddrr().getHostAddress().equals(ipfrom.getHostAddress())==false){
 				//check the message is for the program
 				if(msg.getAcceptcode().equals(this.ACCESS_CODE)==true){
 					switch(msg.getCommand()){
 						case ASK_SERVER://server will get this message
-							System.out.println("receiving asking server from "+ ipfrom.getHostAddress());
+							
 							//only server proccess this message
 							if(owner!=null && owner.getType()==this.SERVER){
+								System.out.println("receiving asking server from "+ ipfrom.getHostAddress());
 								HostSend(new message(this.ACCESS_CODE,this.SERVER_RESPONSE,owner,owner.getPriority()),ipfrom);
 							}
 							break;
 						case OLDER_SERVER:
+							
 							if(owner!=null && owner.getType()==this.SERVER){
+								System.out.println("receiving older server from "+ipfrom.getHostAddress());
 								server sv = (server)msg.getData();
 								this.stopaskserver();
 								serverturnclient(ipfrom,(server)msg.getData());
@@ -254,8 +258,9 @@ public class mastercomunication {
 							}
 							break;
 						case CLIENT_REQUEST_JOIN:
-							System.out.println("receiving client request join "+ipfrom.getHostAddress());
+							
 							if(owner.getType()==this.SERVER ){
+								System.out.println("receiving client request join "+ipfrom.getHostAddress());
 								server sv = (server)owner;
 								owner.setIpaddrr((InetAddress)msg.getData());
 								int prior = this.checkexistclient(ipfrom);
@@ -276,9 +281,10 @@ public class mastercomunication {
 							}
 							break;
 						case SERVER_ACCEPT_JOIN:
-							System.out.println("receiving server accept join "+ ipfrom.getHostAddress());
+							
 							this.stopaskserver();
 							if(owner.getType()!=this.SERVER && this.expectresponse==SERVER_ACCEPT_JOIN){
+								System.out.println("receiving server accept join "+ ipfrom.getHostAddress());
 								try {
 									client nclient = (client) owner;
 									nclient.setPriority(msg.getIndex());
@@ -485,7 +491,9 @@ public class mastercomunication {
     }
     private void closermiserver() throws RemoteException, NotBoundException{
     	rserver.close();
+    	UnicastRemoteObject.unexportObject(rserver,true);
     	reg.unbind("rmiemr");
+    	
     }
 	public NetworkObject getOwner() {
 		return owner;

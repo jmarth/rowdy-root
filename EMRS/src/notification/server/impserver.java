@@ -89,5 +89,6 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 		for(rmiclient e: this.clientlist){
 			e.serverclose();
 		}
+		clientlist.clear();
 	}
 }
