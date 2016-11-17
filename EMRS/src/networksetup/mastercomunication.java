@@ -291,11 +291,12 @@ public class mastercomunication {
 									nclient.setIpaddrr((InetAddress)msg.getData());
 									nclient.getServer().setIpaddrr(ipfrom);
 									System.out.println("creating rmi client and server: "+nclient.getServer().getIpaddrr().getHostAddress());
-									if(reg==null){
+									/*if(reg==null){
 										reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
 									}else{
 										reg.unbind("rmiemr");
-									}
+									}*/
+									reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
 									//reg = LocateRegistry.getRegistry("192.168.1.104", this.RMI_PORT);
 									System.out.println("lookup object from rmiserver");
 									rserver = (rmiserver) reg.lookup("rmiemr");
@@ -493,6 +494,7 @@ public class mastercomunication {
     	rserver.close();
     	UnicastRemoteObject.unexportObject(rserver,true);
     	reg.unbind("rmiemr");
+    	reg=null;
     	
     }
 	public NetworkObject getOwner() {
