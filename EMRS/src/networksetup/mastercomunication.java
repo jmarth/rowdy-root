@@ -213,7 +213,7 @@ public class mastercomunication {
 						//from client side
 						case SERVER_RESPONSE:
 							System.out.println("receiving server response "+ipfrom.getHostAddress() );
-							if(this.expectresponse == SERVER_RESPONSE && owner==null){
+							if(this.expectresponse == SERVER_RESPONSE && owner.getType()!=SERVER){
 								askquestion.stop();
 								this.owner = new client((server)msg.getData());
 								setexpect(this.SERVER_ACCEPT_JOIN,ipfrom,
