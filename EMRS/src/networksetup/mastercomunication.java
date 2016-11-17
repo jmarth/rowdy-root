@@ -446,14 +446,9 @@ public class mastercomunication {
 			public void run() {
 				// TODO Auto-generated method stub
 				try {
-					if(rserver==null)
-						rserver = new impserver(owner);
-					if(reg!=null){
-						reg = LocateRegistry.createRegistry(RMI_PORT);
-					}else{
-						reg = LocateRegistry.createRegistry(RMI_PORT);
-						reg.rebind("rmiemr", rserver);
-					}
+					rserver = new impserver(owner);
+					reg = LocateRegistry.createRegistry(RMI_PORT);
+					reg.rebind("rmiemr", rserver);
 				} catch (AccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
