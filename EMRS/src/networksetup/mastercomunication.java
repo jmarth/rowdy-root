@@ -285,7 +285,7 @@ public class mastercomunication {
 									nclient.setIpaddrr((InetAddress)msg.getData());
 									nclient.getServer().setIpaddrr(ipfrom);
 									System.out.println("creating rmi client and server: "+nclient.getServer().getIpaddrr().getHostAddress());
-									if(reg!=null){
+									if(reg==null){
 										reg = LocateRegistry.getRegistry(nclient.getServer().getIpaddrr().getHostAddress(), this.RMI_PORT);
 									}else{
 										reg.unbind("rmiemr");
@@ -354,7 +354,7 @@ public class mastercomunication {
     	
     }
     
-    private void startnewsetup(){
+    public void startnewsetup(){
     	try {
     		this.askquestion.stop();
 			this.toip=InetAddress.getByName(BROADCAST_ADDR);
@@ -418,13 +418,11 @@ public class mastercomunication {
     public void close() {
     	
     	try {
-    		if(owner!=null){
-	    		if(owner.getType()== this.CLIENT){
-		    		rclient.leaveserver();
-		    	}else if(owner.getType()==this.SERVER){
-		    		closermiserver();
-		    	}
-    		}
+    		if(owner.getType()== this.CLIENT){
+	    		rclient.leaveserver();
+	    	}else if(owner.getType()==this.SERVER){
+	    		closermiserver();
+	    	}
 			System.out.println("finish closing communication");
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -444,17 +442,15 @@ public class mastercomunication {
 					if(rserver==null)
 						rserver = new impserver(owner);
 					if(reg!=null){
-						reg.unbind("rmiemr");
+						reg = LocateRegistry.createRegistry(RMI_PORT);
+					}else{
+						reg = LocateRegistry.createRegistry(RMI_PORT);
+						reg.rebind("rmiemr", rserver);
 					}
-					reg = LocateRegistry.createRegistry(RMI_PORT);
-					reg.rebind("rmiemr", rserver);
 				} catch (AccessException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NotBoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
