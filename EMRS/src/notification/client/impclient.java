@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 import controller.EMRS;
+import controller.rminotification;
 import networksetup.NetworkObject;
 import networksetup.message;
 import notification.server.rmiserver;
@@ -32,6 +33,7 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 		if(EMRS.notification.getHomeview()!=null){
 			EMRS.notification.getHomeview().getBtnft().setEnabled(true);
 		}
+		rminotification.messageaction(msg);
 	}
 	
 	@Override
