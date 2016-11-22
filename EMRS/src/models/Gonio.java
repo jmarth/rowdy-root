@@ -1,12 +1,13 @@
 package models;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import database.GatewayException;
 import database.GonioTableGateway;
 import database.GonioTableGatewaySQLite;
 
-public class Gonio {
+public class Gonio implements Serializable{
 	
 	private long id, vid;
 	
@@ -33,7 +34,7 @@ public class Gonio {
 	private String osPigment;
 	private int isOSAntPigLine;
 	
-	private GonioTableGateway myGateway;
+	private transient GonioTableGateway myGateway;
 	
 	public Gonio () {
 		try {

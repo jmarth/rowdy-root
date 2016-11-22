@@ -1,10 +1,12 @@
 package models;
 
-public class Comment {
+import java.io.Serializable;
+
+public class Comment implements Serializable{
 	
-	public final static int allergiesType = 1;
-	public static final int visitsType = 2;
-	public static final int vitalsType =3;
+	public transient final static int allergiesType = 1;
+	public transient static final int visitsType = 2;
+	public transient static final int vitalsType =3;
 	
 	private long id;
 	private long pid;

@@ -1,12 +1,13 @@
 package models;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import database.GatewayException;
 import database.GlassesRxTableGateway;
 import database.GlassesRxTableGatewaySQLite;
 
-public class GlassesRx {
+public class GlassesRx implements Serializable {
 	
 	private long id;
 	private long vid;
@@ -21,7 +22,7 @@ public class GlassesRx {
 	private String rx_OS_Add;
 	private String glassesRxNotes;
 	
-	private GlassesRxTableGateway myGateway;
+	private transient GlassesRxTableGateway myGateway;
 	
 	public GlassesRx () {
 		try {

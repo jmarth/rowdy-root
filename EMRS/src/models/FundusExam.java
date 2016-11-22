@@ -1,12 +1,13 @@
 package models;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import database.FundusTableGateway;
 import database.FundusTableGatewaySQLite;
 import database.GatewayException;
 
-public class FundusExam {
+public class FundusExam implements Serializable {
 
 	
 	private long id;
@@ -37,7 +38,7 @@ public class FundusExam {
 	private int maculaOSAb; 
 	private String maculaOSNotes;
 	
-	private FundusTableGateway myGateway;
+	private transient FundusTableGateway myGateway;
 	
 	public FundusExam(){
 		try {

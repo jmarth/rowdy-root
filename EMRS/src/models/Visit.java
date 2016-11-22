@@ -1,8 +1,9 @@
 package models;
 
 import java.io.File;
+import java.io.Serializable;
 
-public class Visit {
+public class Visit implements Serializable{
 	
 	private long id;
 	private long pid;

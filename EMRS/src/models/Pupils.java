@@ -1,12 +1,13 @@
 package models;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import database.GatewayException;
 import database.PupilsTableGateway;
 import database.PupilsTableGatewaySQLite;
 
-public class Pupils {
+public class Pupils implements Serializable{
 	
 	private long id;
 	private long vid;
@@ -29,7 +30,7 @@ public class Pupils {
 	private int isLeftRAPD;
 	private int isLeftSynechia;
 	
-	private PupilsTableGateway myGateway;
+	private transient PupilsTableGateway myGateway;
 	
 	public Pupils() {
 		try {

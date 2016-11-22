@@ -1,6 +1,8 @@
 package models;
 
-public class SurgeryTemplate {
+import java.io.Serializable;
+
+public class SurgeryTemplate implements Serializable{
 		
 	private String title;
 	

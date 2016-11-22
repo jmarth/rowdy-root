@@ -1,12 +1,13 @@
 package models;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import database.GatewayException;
 import database.RefractionTableGateway;
 import database.RefractionTableGatewaySQLite;
 
-public class Refraction {
+public class Refraction implements Serializable{
 	
 	private long id;
 	private long vid;
@@ -23,7 +24,7 @@ public class Refraction {
 	private String CC_OS_Sphere;
 	private String CC_OS_Cyl;
 	private String CC_OS_Axis;
-	private RefractionTableGateway myGateway;
+	private transient RefractionTableGateway myGateway;
 	
 	public Refraction() {
 		try {

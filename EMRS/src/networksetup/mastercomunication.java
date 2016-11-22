@@ -67,7 +67,9 @@ public class mastercomunication {
 	public static final transient int SERVER_ACCEPT_JOIN = 7;
 	public static final transient int NO_ACTION=8;
 	
-	
+	public transient static final int PATIENT_INSERT =8;
+	public transient static final int PATIENT_UPDATE =9;
+	public transient static final int PATIENT_DELETE =10;
 	
     private MulticastSocket mSocket;
     

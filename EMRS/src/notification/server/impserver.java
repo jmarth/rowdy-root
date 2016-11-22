@@ -32,17 +32,24 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 	}
 
 	@Override
-	public synchronized void unregisterclient(rmiclient client) throws RemoteException {
+	public synchronized void unregisterclient(rmiclient client){
 		System.out.println("client leave server");
-		EMRS.notification.backtoaskingsetup();
 		int index = clientlist.indexOf(client);
 		clientlist.remove(index);
 		server s = (server)sv;
 		s.getClientlist().remove(index);
 		s.decreaseclientnum(); 
-		for(rmiclient e:this.clientlist){
-			e.decreasepriority();
-		}
+		if(clientlist.size()==0)
+			EMRS.notification.backtoaskingsetup();
+		else
+			for(int i =index;i<clientlist.size();i++){
+				try{
+					clientlist.get(i).decreasepriority();
+				} catch (RemoteException ex){
+					clientlist.remove(i--);
+					System.err.println("cann't send to client" + i +" in notifiedall");
+				}
+			}
 	}
 
 	@Override
@@ -59,8 +66,9 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 				clientlist.get(i).messsagereaction(msg);
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
-				clientlist.remove(i);
-				e.printStackTrace();
+				clientlist.remove(i--);
+				System.err.println("cann't send to client" + i +" in notifiedall");
+				//e.printStackTrace();
 			}
 		}
 		for(int i=index+1;i<s.getClient_num();i++){
@@ -68,9 +76,9 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 				clientlist.get(i).messsagereaction(msg);
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
-				clientlist.remove(i);
-				e.printStackTrace();
-				
+				clientlist.remove(i--);
+				System.err.println("cann't send to client" + i +" in notifiedall");
+				//e.printStackTrace();	
 			}
 		}
 	}

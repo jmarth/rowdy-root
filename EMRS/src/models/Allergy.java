@@ -1,6 +1,8 @@
 package models;
 
-public class Allergy {
+import java.io.Serializable;
+
+public class Allergy implements Serializable {
 	
 	private long id;
 	private long pid;

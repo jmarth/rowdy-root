@@ -1,11 +1,12 @@
 package models;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class Patient {
+public class Patient implements Serializable{
 	
 	private long id;
 	

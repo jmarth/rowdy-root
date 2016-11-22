@@ -46,7 +46,7 @@ public class AnteriorChamber {
 	private int KSpindleOD;
 	private int KSpindleOS;
 
-	private ACTableGateway myGateway;
+	private transient ACTableGateway myGateway;
 	
 	public AnteriorChamber() {
 		try {
