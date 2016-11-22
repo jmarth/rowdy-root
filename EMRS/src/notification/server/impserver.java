@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.EMRS;
+import controller.rminotification;
 import networksetup.NetworkObject;
 import networksetup.mastercomunication;
 import networksetup.message;
@@ -58,8 +59,6 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 	@Override
 	public synchronized void notifiedall(message msg) {
 		System.out.println("server receive notification message");
-		// TODO Auto-generated method stub
-		
 		int index = msg.getIndex();
 		if(index !=-1)
 			EMRS.notification.getHomeview().getBtnft().setEnabled(true);
@@ -90,6 +89,8 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 				//e.printStackTrace();	
 			}
 		}
+		if(msg.getIndex()==-1)
+			rminotification.messageaction(msg);
 	}
 
 	public NetworkObject getSv() {

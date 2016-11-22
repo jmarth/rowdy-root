@@ -5,6 +5,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 import controller.EMRS;
 import controller.rminotification;
+import models.Patient;
 import networksetup.NetworkObject;
 import networksetup.message;
 import notification.server.rmiserver;
@@ -33,6 +34,8 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 		if(EMRS.notification.getHomeview()!=null){
 			EMRS.notification.getHomeview().getBtnft().setEnabled(true);
 		}
+		Patient p = (Patient) msg.getData();
+		System.out.println(p.getFirstName());
 		rminotification.messageaction(msg);
 	}
 	
