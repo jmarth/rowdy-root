@@ -89,7 +89,7 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 				//e.printStackTrace();	
 			}
 		}
-		if(msg.getIndex()==-1)
+		if(msg.getIndex()!=-1)
 			rminotification.messageaction(msg);
 	}
 
