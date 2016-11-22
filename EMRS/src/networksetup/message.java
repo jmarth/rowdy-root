@@ -3,10 +3,6 @@ package networksetup;
 import java.io.Serializable;
 //for all network communication
 public class message implements Serializable {
-	public transient static int PATIENT_INSERT =1;
-	public transient static int PATIENT_UPDATE =2;
-	public transient static int PATIENT_DELETE =3;
-	
 	private String acceptcode;
 	private int command;
 	private Object data;
