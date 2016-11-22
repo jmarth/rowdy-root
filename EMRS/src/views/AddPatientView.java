@@ -776,13 +776,13 @@ public class AddPatientView extends JPanel implements viewinterface  {
 								EMRS.notification.getRserver().notifiedall(m);
 							} catch (RemoteException e1) {
 								// TODO Auto-generated catch block
-								e1.printStackTrace();
+								System.err.println("Cann't notified to rmiserver in addpatientview. \n Thus asked new server");
 							}
 						}
 						hv.ShowPatientRecode();
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						System.err.println("Cann't notified to all rmiclient in addpatientview.");
 					}
 					
 				}
