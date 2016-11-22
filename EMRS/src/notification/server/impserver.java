@@ -67,16 +67,18 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				clientlist.remove(i--);
+				s.setClient_num(s.getClient_num()-1);
 				System.err.println("cann't send to client" + i +" in notifiedall");
 				//e.printStackTrace();
 			}
 		}
-		for(int i=index+1;i<s.getClient_num();i++){
+		for(int i=index+1;i<this.clientlist.size();i++){
 			try {
 				clientlist.get(i).messsagereaction(msg);
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				clientlist.remove(i--);
+				s.setClient_num(s.getClient_num()-1);
 				System.err.println("cann't send to client" + i +" in notifiedall");
 				//e.printStackTrace();	
 			}
@@ -98,5 +100,8 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 			e.serverclose();
 		}
 		clientlist.clear();
+	}
+	private void messageanalyze(message m){
+		
 	}
 }
