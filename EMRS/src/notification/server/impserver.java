@@ -110,6 +110,6 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 		clientlist.clear();
 	}
 	private void messageanalyze(message m){
-		
+		rminotification.messageaction(m);
 	}
 }
