@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.Timer;
 
+import controller.EMRS;
 import notification.client.impclient;
 import notification.client.rmiclient;
 import notification.server.impserver;
@@ -66,10 +67,6 @@ public class mastercomunication {
 	public static final transient int SERVER_RESPONSE = 6;
 	public static final transient int SERVER_ACCEPT_JOIN = 7;
 	public static final transient int NO_ACTION=8;
-	
-	public transient static final int PATIENT_INSERT =8;
-	public transient static final int PATIENT_UPDATE =9;
-	public transient static final int PATIENT_DELETE =10;
 	
     private MulticastSocket mSocket;
     
@@ -513,5 +510,7 @@ public class mastercomunication {
 	public void setRclient(rmiclient rclient) {
 		this.rclient = rclient;
 	}
-    
+    public void clientnotification(message m){
+    	
+    }
 }

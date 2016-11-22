@@ -745,34 +745,53 @@ public class AddPatientView extends JPanel implements viewinterface  {
 					phoneNumberTextField.getText(),
 					imagePath!=null?imagePath:"");
 					try {
-						message m = new message(mastercomunication.ACCESS_CODE,0,null,EMRS.notification.getOwner().getPriority());
+						
 						String fullName =  firstNameTextField.getText()+" "+
 								middleNameTextField.getText()+" "+
 								lastNameTextField.getText();
 						MasterModel model = AddPatientView.this.getMasterModel();
 						if(AddPatientView.this.updateorinsert==AddPatientView.INSERTPATIENT){
 							model.getpL().insert(patient);
-							m.setCommand(mastercomunication.PATIENT_INSERT);
+							//m.setCommand(mastercomunication.PATIENT_INSERT);
 						}else{
 							model = AddPatientView.this.getMasterModel();
 							patient.setId(model.getCurrPatient().getId());
 							model.getpL().update(patient);
-							m.setCommand(mastercomunication.PATIENT_UPDATE);
+							//m.setCommand(mastercomunication.PATIENT_UPDATE);
 						}
 						model.setCurrPatient(patient);
-						m.setData(patient);
+						//m.setData(patient);
 						HomeView hv =AddPatientView.this.getHomeView();
 						//hv.getPrview().ShowDemographicsView();
 						if(EMRS.notification.getRclient()!=null){
-							try {
-								EMRS.notification.getRclient().notifychange(m);
-							} catch (RemoteException e1) {
-								EMRS.notification.startnewsetup();
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
+							new Thread(new Runnable(){
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									try {
+										message m = new message(mastercomunication.ACCESS_CODE,0,null,EMRS.notification.getOwner().getPriority());
+										if(AddPatientView.this.updateorinsert==AddPatientView.INSERTPATIENT)
+											m.setCommand(message.PATIENT_INSERT);
+										else
+											m.setCommand(message.PATIENT_UPDATE);
+										MasterModel mod = getMasterModel();
+										m.setData(mod.getCurrPatient());
+										EMRS.notification.getRclient().notifychange(m);
+									} catch (RemoteException e1) {
+										EMRS.notification.startnewsetup();
+										// TODO Auto-generated catch block
+										System.err.println("Cann't notified to rmiserver in addpatientview. \n Thus asked new server");
+									}
+								}	
+					    	}).start();
 						} else if(EMRS.notification.getRserver()!=null){
 							try {
+								message m = new message(mastercomunication.ACCESS_CODE,0,null,EMRS.notification.getOwner().getPriority());
+								if(AddPatientView.this.updateorinsert==AddPatientView.INSERTPATIENT)
+									m.setCommand(message.PATIENT_INSERT);
+								else
+									m.setCommand(message.PATIENT_UPDATE);
+								m.setData(patient);
 								EMRS.notification.getRserver().notifiedall(m);
 							} catch (RemoteException e1) {
 								// TODO Auto-generated catch block
