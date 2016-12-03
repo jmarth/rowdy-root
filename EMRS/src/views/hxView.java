@@ -798,14 +798,12 @@ public class hxView extends JPanel implements viewinterface {
 
 	@Override
 	public void HideallView() {
-		// TODO Auto-generated method stub
-		
+				
 	}
 
 
 	@Override
 	public MasterModel getMasterModel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

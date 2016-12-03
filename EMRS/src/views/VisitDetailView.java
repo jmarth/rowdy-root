@@ -120,7 +120,7 @@ public class VisitDetailView extends JPanel implements viewinterface {
 
 				// TODO IOP
 				
-				IOP iop = panel_IOP.createNewIOP();
+//				IOP iop = panel_IOP.createNewIOP();
 				
 				
 				
