@@ -14,6 +14,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,6 +37,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import controller.EMRS;
+import controller.rminotification;
 import database.GatewayException;
 import models.MasterModel;
 import models.Patient;
@@ -44,6 +47,8 @@ import net.java.balloontip.BalloonTip.AttachLocation;
 import net.java.balloontip.BalloonTip.Orientation;
 import net.java.balloontip.styles.BalloonTipStyle;
 import net.java.balloontip.styles.RoundedBalloonStyle;
+import networksetup.mastercomunication;
+import networksetup.message;
 
 @SuppressWarnings("serial")
 public class AddPatientView extends JPanel implements viewinterface  {
@@ -705,8 +710,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 		panel_14.add(btnNewButton, gbc_btnNewButton);
 		btnNewButton.addActionListener(new ActionListener()
 		{
-			public void actionPerformed(ActionEvent e)
-			  {
+			public void actionPerformed(ActionEvent e){
 				//check for fields errors
 				if(!checkForErrors()) {
 					//set default values
@@ -742,28 +746,68 @@ public class AddPatientView extends JPanel implements viewinterface  {
 					phoneNumberTextField.getText(),
 					imagePath!=null?imagePath:"");
 					try {
+						
 						String fullName =  firstNameTextField.getText()+" "+
 								middleNameTextField.getText()+" "+
 								lastNameTextField.getText();
 						MasterModel model = AddPatientView.this.getMasterModel();
 						if(AddPatientView.this.updateorinsert==AddPatientView.INSERTPATIENT){
 							model.getpL().insert(patient);
+							//m.setCommand(mastercomunication.PATIENT_INSERT);
 						}else{
 							model = AddPatientView.this.getMasterModel();
 							patient.setId(model.getCurrPatient().getId());
 							model.getpL().update(patient);
+							//m.setCommand(mastercomunication.PATIENT_UPDATE);
 						}
 						model.setCurrPatient(patient);
+						//m.setData(patient);
 						HomeView hv =AddPatientView.this.getHomeView();
 						//hv.getPrview().ShowDemographicsView();
+						if(EMRS.notification.getRclient()!=null){
+							new Thread(new Runnable(){
+								@Override
+								public void run() {
+									// TODO Auto-generated method stub
+									try {
+										message m = new message(mastercomunication.ACCESS_CODE,0,null,EMRS.notification.getOwner().getPriority());
+										if(AddPatientView.this.updateorinsert==AddPatientView.INSERTPATIENT)
+											m.setCommand(rminotification.PATIENT_INSERT);
+										else
+											m.setCommand(rminotification.PATIENT_UPDATE);
+										MasterModel mod = getMasterModel();
+										m.setData(mod.getCurrPatient());
+										EMRS.notification.getRclient().notifychange(m);
+									} catch (RemoteException e1) {
+										EMRS.notification.startnewsetup();
+										// TODO Auto-generated catch block
+										System.err.println("Cann't notified to rmiserver in addpatientview. \n Thus asked new server");
+									}
+								}	
+					    	}).start();
+						} else if(EMRS.notification.getRserver()!=null){
+							try {
+								message m = new message(mastercomunication.ACCESS_CODE,0,null,EMRS.notification.getOwner().getPriority());
+								if(AddPatientView.this.updateorinsert==AddPatientView.INSERTPATIENT)
+									m.setCommand(rminotification.PATIENT_INSERT);
+								else
+									m.setCommand(rminotification.PATIENT_UPDATE);
+								m.setData(patient);
+								EMRS.notification.getRserver().notifiedall(m);
+							} catch (RemoteException e1) {
+								// TODO Auto-generated catch block
+								System.err.println("Cann't notified to rmiserver in addpatientview. \n Thus asked new server");
+							}
+						}
 						hv.ShowPatientRecode();
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						System.err.println("Cann't notified to all rmiclient in addpatientview.");
 					}
 					
 				}
-			  }
+				
+			 }
 		});
 	}
 	/**

@@ -6,6 +6,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import controller.EMRS;
+import controller.rminotification;
 import networksetup.NetworkObject;
 import networksetup.mastercomunication;
 import networksetup.message;
@@ -18,47 +20,77 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 	
 	private transient List<rmiclient> clientlist;
 	private transient NetworkObject sv;
-	private transient HomeView homeview;
 	
-	public impserver(NetworkObject s, HomeView hv) throws RemoteException {
+	public impserver(NetworkObject s) throws RemoteException {
 		super();
 		clientlist = new ArrayList<rmiclient>();
 		this.sv=s;
-		this.homeview=hv;
 	}
 
 	@Override
 	public synchronized void registerclient(rmiclient client) throws RemoteException {
-		// TODO Auto-generated method stub
 		clientlist.add(client);
 	}
 
 	@Override
-	public synchronized void unregisterclient(rmiclient client) throws RemoteException {
-		// TODO Auto-generated method stub
+	public synchronized void unregisterclient(rmiclient client){
+		System.out.println("client leave server");
 		int index = clientlist.indexOf(client);
 		clientlist.remove(index);
 		server s = (server)sv;
-		s.decreaseclientnum();
-		for(InetAddress e : s.getClientlist()){
-			if(e.getHostName().equals(client.getClient().getIpaddrr().getHostName())){
-				s.getClientlist().remove(e);
-				break;
+		s.getClientlist().remove(index);
+		s.decreaseclientnum(); 
+		if(clientlist.size()==0)
+			EMRS.notification.backtoaskingsetup();
+		else
+			for(int i =index;i<clientlist.size();i++){
+				try{
+					clientlist.get(i).decreasepriority();
+				} catch (RemoteException ex){
+					clientlist.remove(i--);
+					s.setClient_num(s.getClient_num()-1);
+					System.err.println("cann't send to client" + i +" in notifiedall");
+					if(clientlist.size()==0)
+						EMRS.notification.backtoaskingsetup();
+				}
 			}
-		}
-		message msg = new message(mastercomunication.ACCESS_CODE,mastercomunication.LEAVE_SERVER,null,index); 
-		for(int i =0;i< clientlist.size();i++){
-			clientlist.get(i).messsagereaction(msg);
-		}
 	}
 
 	@Override
-	public synchronized void notifiedall(message msg) throws RemoteException {
-		// TODO Auto-generated method stub
-		for(int i=0;i< clientlist.size();i++){
-			if(i!=msg.getIndex())
+	public synchronized void notifiedall(message msg) {
+		System.out.println("server receive notification message");
+		int index = msg.getIndex();
+		if(index !=-1)
+			EMRS.notification.getHomeview().getBtnft().setEnabled(true);
+		server s = (server)sv;
+		for(int i=0;i<index;i++){
+			try {
 				clientlist.get(i).messsagereaction(msg);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				clientlist.remove(i--);
+				s.setClient_num(s.getClient_num()-1);
+				System.err.println("cann't send to client" + i +" in notifiedall");
+				if(clientlist.size()==0)
+					EMRS.notification.backtoaskingsetup();
+				//e.printStackTrace();
+			}
 		}
+		for(int i=index+1;i<this.clientlist.size();i++){
+			try {
+				clientlist.get(i).messsagereaction(msg);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				clientlist.remove(i--);
+				s.setClient_num(s.getClient_num()-1);
+				System.err.println("cann't send to client" + i +" in notifiedall");
+				if(clientlist.size()==0)
+					EMRS.notification.backtoaskingsetup();
+				//e.printStackTrace();	
+			}
+		}
+		if(msg.getIndex()!=-1)
+			rminotification.messageaction(msg);
 	}
 
 	public NetworkObject getSv() {
@@ -67,5 +99,17 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 
 	public void setSv(server sv) {
 		this.sv = sv;
+	}
+
+	@Override
+	public void close() throws RemoteException {
+		// TODO Auto-generated method stub
+		for(rmiclient e: this.clientlist){
+			e.serverclose();
+		}
+		clientlist.clear();
+	}
+	private void messageanalyze(message m){
+		rminotification.messageaction(m);
 	}
 }

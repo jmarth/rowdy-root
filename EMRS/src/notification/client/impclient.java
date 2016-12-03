@@ -3,6 +3,9 @@ package notification.client;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+import controller.EMRS;
+import controller.rminotification;
+import models.Patient;
 import networksetup.NetworkObject;
 import networksetup.message;
 import notification.server.rmiserver;
@@ -12,12 +15,11 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	
 	private transient NetworkObject client;
 	private transient rmiserver rserver;
-	private transient HomeView homeview;
 	
-	public impclient(rmiserver rs, HomeView hv) throws RemoteException {
+	public impclient(rmiserver rs) throws RemoteException {
 		super();
-		rserver =rs;
-		homeview=hv;
+		rserver=rs;
+		rs.registerclient(this);
 	}
 
 
@@ -29,7 +31,12 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 	public void messsagereaction(message msg) throws RemoteException {
 		// TODO Auto-generated method stub
 		System.out.println("receiving notification");
-		
+		if(EMRS.notification.getHomeview()!=null){
+			EMRS.notification.getHomeview().getBtnft().setEnabled(true);
+		}
+		Patient p = (Patient) msg.getData();
+		System.out.println(p.getFirstName());
+		rminotification.messageaction(msg);
 	}
 	
 	@Override
@@ -42,5 +49,36 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 		// TODO Auto-generated method stub
 		this.client.decreasepriority();
 	}
-	
+
+
+	@Override
+	public void serverclose() throws RemoteException {
+		// TODO Auto-generated method stub
+		if(EMRS.notification.getOwner().getPriority()==0){
+			EMRS.notification.startnewserversetup();
+		}else{
+			try {
+				Thread.sleep(2000);
+				EMRS.notification.startnewsetup();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+
+	@Override
+	public void leaveserver() throws RemoteException {
+		// TODO Auto-generated method stub
+		this.rserver.unregisterclient(this);
+	}
+
+
+	@Override
+	public void notifychange(message msg) throws RemoteException {
+		// TODO Auto-generated method stub
+		this.rserver.notifiedall(msg);
+	}
 }

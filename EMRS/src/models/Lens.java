@@ -1,12 +1,13 @@
 package models;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import database.GatewayException;
 import database.LensTableGateway;
 import database.LensTableGatewaySQLite;
 
-public class Lens {
+public class Lens implements Serializable{
 	
 	private long id;
 	private long vid;
@@ -29,7 +30,7 @@ public class Lens {
 	private String PSC_OS;
 	private String PSC_OS_Notes;
 	
-	private LensTableGateway myGateway;
+	private transient LensTableGateway myGateway;
 	
 	public Lens() {
 		try {

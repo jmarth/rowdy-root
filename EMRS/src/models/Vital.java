@@ -1,10 +1,11 @@
 package models;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Vital {
+public class Vital implements Serializable{
 
 	public static final String MMHG = "mm/Hg";
 	public static final String PA = "Pa";

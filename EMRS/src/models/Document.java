@@ -1,8 +1,10 @@
 package models;
 
-public class Document {
+import java.io.Serializable;
+
+public class Document implements Serializable {
 	
-	public static final String DEFAULT_EMPTY_NAME = "Unknown";
+	public transient static final String DEFAULT_EMPTY_NAME = "Unknown";
 
 
 	private long id;

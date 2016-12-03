@@ -8,6 +8,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import networksetup.mastercomunication;
 import views.LoginView;
 
 public class EMRS {
@@ -21,6 +22,7 @@ public class EMRS {
 	// bilateral symmetry solution: what has changed? highlight changes of document, (no b/c doesn't handle previous 
 	
 	private static final Logger logger = LogManager.getLogger(EMRS.class);
+	public static mastercomunication notification;
 	
 	public static void main(String[] args) {
 		
@@ -28,6 +30,13 @@ public class EMRS {
 		 * Sets look and feel of the swing UI to that of the native operating system.
 		 * I.e. The tabs will either be Mac style or Windows style
 		 */
+		Runtime.getRuntime().addShutdownHook(new Thread(){
+			@Override
+			public void run()
+			{
+				EMRS.notification.close();
+			}
+		});
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
@@ -45,14 +54,14 @@ public class EMRS {
 		
 		
 		// init the login view
-		LoginView login = new LoginView();
-		
-		// set it visible
 		try {
+			LoginView login = new LoginView();
+			notification = new mastercomunication();
 			login.newWindow();
 			
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 	}
 }

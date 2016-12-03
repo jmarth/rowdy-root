@@ -20,6 +20,10 @@ import javax.swing.border.EmptyBorder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import controller.EMRS;
+import networksetup.NetworkObject;
+import networksetup.mastercomunication;
+
 @SuppressWarnings("serial")
 public class LoginView extends JFrame {
 	
@@ -93,6 +97,26 @@ public class LoginView extends JFrame {
 				
 				//Create home view
 				HomeView home  = new HomeView();
+				EMRS.notification.setHomeview(home);
+				//if(EMRS.notification.getOwner()!=null){
+					NetworkObject owner = EMRS.notification.getOwner();
+					home.getLbip().setText("" + owner.getIpaddrr().getHostAddress());
+					switch (owner.getType()){
+						case mastercomunication.CLIENT:
+							home.getLbhosttype().setText("Client");
+							break;
+						case mastercomunication.SERVER:
+							home.getLbhosttype().setText("Server");
+							break;
+						case mastercomunication.UNKNOWN:
+							home.getLbhosttype().setText("Unknown");
+							break;
+					}
+					
+					home.getLbpriority().setText(""+owner.getPriority());
+					home.getLbcreateddate().setText(""+mastercomunication.DATE_FORMAT.format(owner.getCreateddate()));
+				//}
+				
 				home.setBounds(100, 100, 1080,720);
 				home.launchUI();
 			}

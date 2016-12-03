@@ -1,6 +1,8 @@
 package models;
 
-public class Surgery {
+import java.io.Serializable;
+
+public class Surgery implements Serializable{
 	
 	private long id;
 	

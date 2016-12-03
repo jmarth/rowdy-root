@@ -1,11 +1,13 @@
 package models;
 
 import java.io.IOException;
+import java.io.Serializable;
+
 import database.DistanceVisionTableGateway;
 import database.DistanceVisionTableGatewaySQLite;
 import database.GatewayException;
 
-public class DistanceVision {
+public class DistanceVision implements Serializable{
 	
 	private long id;
 	private long vid;
@@ -14,7 +16,7 @@ public class DistanceVision {
 	private String DVODCC;
 	private String DVOSCC;
 	
-	private DistanceVisionTableGateway myGateway;
+	private transient DistanceVisionTableGateway myGateway;
 	
 	public DistanceVision() {
 		try {

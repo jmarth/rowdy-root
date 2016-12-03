@@ -1,6 +1,8 @@
 package models;
 
-public class Hx {
+import java.io.Serializable;
+
+public class Hx implements Serializable{
 	private Long id;
 	private Long pid;
 	private String presentCondition;

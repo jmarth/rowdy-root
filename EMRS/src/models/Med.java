@@ -1,7 +1,9 @@
 package models;
 
+import java.io.Serializable;
+
 //extend Drug
-public class Med {
+public class Med implements Serializable{
 	private Long id;
 	private Long pid;
 	private String tradeName;// move to medication

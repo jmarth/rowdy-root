@@ -14,6 +14,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+
 import javax.swing.AbstractButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -31,8 +36,10 @@ import javax.swing.SwingUtilities;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import controller.EMRS;
 import models.CL;
 import models.MasterModel;
+import networksetup.mastercomunication;
 
 @SuppressWarnings("serial")
 public class HomeView extends JFrame implements viewinterface{
@@ -61,8 +68,9 @@ public class HomeView extends JFrame implements viewinterface{
 	private JButton btnAllergyAlert;
 	
 	//connection status
-	private JLabel lbhost;
-	private JLabel lbconnect;
+	private JLabel lbcreateddate;
+	private JLabel lbpriority;
+	private JLabel lbhosttype;
 	private JLabel lbip;
 	private JButton btnft;
 	
@@ -101,19 +109,29 @@ public class HomeView extends JFrame implements viewinterface{
 		btnLogout = new JButton("Logout");
 		
 		 //set up notification panel
-		JPanel npane = new JPanel(new GridLayout(1,4));
+		JPanel npane = new JPanel(new GridLayout(1,5));
 		this.add(npane,BorderLayout.SOUTH);
 		lbip = new JLabel("Current IP: N/A");
 		npane.add(lbip);
-		lbhost = new JLabel("Host: N/A");
-		npane.add(lbhost);
-		lbconnect = new JLabel("Connection: N/A");
-		npane.add(lbconnect);
+		lbhosttype = new JLabel("Connection: N/A");
+		npane.add(lbhosttype);
+		lbpriority = new JLabel("Host: N/A");
+		npane.add(lbpriority);
+		lbcreateddate = new JLabel("unkonw Date");
+		npane.add(lbcreateddate);
 		btnft = new JButton("Show Notification");
 		btnft.setBorderPainted(false);
 		npane.add(btnft);
 		btnft.setEnabled(false);
-		
+		btnft.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				btnft.setEnabled(false);
+			}
+			
+		});
 		//set up top bar panel
 		
 		JPanel northPanel = new JPanel();
@@ -222,10 +240,10 @@ public class HomeView extends JFrame implements viewinterface{
 				
 				if (response == JOptionPane.YES_OPTION) {
 					logger.info("User pressed 'YES' in logout dialogue");
+					EMRS.notification.setHomeview(null);
 					dispose();
 					LoginView login = new LoginView();
 					login.setVisible(true);
-					
 				}
 			}
 		});
@@ -422,4 +440,58 @@ public class HomeView extends JFrame implements viewinterface{
 	public HomeView getHomeView() {
 		return this;
 	}
+
+	public JLabel getLblPatientSearch() {
+		return lblPatientSearch;
+	}
+
+	public void setLblPatientSearch(JLabel lblPatientSearch) {
+		this.lblPatientSearch = lblPatientSearch;
+	}
+
+	public JLabel getLbcreateddate() {
+		return lbcreateddate;
+	}
+
+	public void setLbcreateddate(JLabel lbcreateddate) {
+		this.lbcreateddate = lbcreateddate;
+	}
+
+	public JLabel getLbpriority() {
+		return lbpriority;
+	}
+
+	public void setLbpriority(JLabel lbpriority) {
+		this.lbpriority = lbpriority;
+	}
+
+	public JLabel getLbhosttype() {
+		return lbhosttype;
+	}
+
+	public void setLbhosttype(JLabel lbhosttype) {
+		this.lbhosttype = lbhosttype;
+	}
+
+	public JLabel getLbip() {
+		return lbip;
+	}
+
+	public void setLbip(JLabel lbip) {
+		this.lbip = lbip;
+	}
+	private void closehomeview(){
+		System.out.println("Unregistering observer...");
+		EMRS.notification.setHomeview(null);
+		
+	}
+
+	public JButton getBtnft() {
+		return btnft;
+	}
+
+	public void setBtnft(JButton btnft) {
+		this.btnft = btnft;
+	}
+	
 }

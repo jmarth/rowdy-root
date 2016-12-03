@@ -28,15 +28,15 @@ public class NetworkObject implements Serializable {
 	public NetworkObject (InetAddress ipaddr){
 		super();
 		this.ipaddrr = ipaddr;
-		createddate = null;
+		createddate = new Date();
 		type = mastercomunication.UNKNOWN;
 		priority = -1;
 	}
 	
-	public NetworkObject (){
+	public NetworkObject () throws UnknownHostException{
 		super();
-		this.ipaddrr = null;
-		createddate = null;
+		this.ipaddrr = InetAddress.getLocalHost();
+		createddate = new Date();
 		type = mastercomunication.UNKNOWN;
 		priority = -1;
 	}
