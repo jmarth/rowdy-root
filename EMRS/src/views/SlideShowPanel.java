@@ -67,6 +67,7 @@ public class SlideShowPanel extends JPanel implements viewinterface {
 		super.paintComponent(g);
 		g.drawImage(currentimage,0,0,
 				SlideShowPanel.this.getWidth(),SlideShowPanel.this.getHeight(),null);
+//		g.draw3DRect(100, 100, , height, raised);
 	}
 	 
 	@Override

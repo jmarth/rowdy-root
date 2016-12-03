@@ -52,7 +52,7 @@ public class PanelVision extends JPanel implements viewinterface {
 	}
 	@Override
 	public HomeView getHomeView() {
-		return ((VisitDetailView)this.getParent()).getHomeView();
+		return ((VisitDetailView)this.getParent().getParent()).getHomeView();
 	}
 	
 	public PanelDistanceVision getPDV() {

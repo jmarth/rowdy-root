@@ -1,10 +1,7 @@
 package models;
 
-import java.awt.Image;
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 import database.GatewayException;
 import database.SketchTableGateway;
@@ -13,16 +10,11 @@ import database.SketchTableGatewaySQLite;
 public class Sketches {
 	
 	private SketchTableGateway myGateway;
-	
-	private Image imageSLE, imageGonio, imageFundus;
+	private BufferedImage imageSLE, imageGonio, imageFundus;
 	
 	public Sketches() {
-		
-		
-				
 		try {
 			myGateway = new SketchTableGatewaySQLite();
-
 		} catch (IOException e) {
 			System.err.println("From Sketches, SQLite DB file not found.");
 		} catch (GatewayException e) {
@@ -31,6 +23,7 @@ public class Sketches {
 	}
 	
 	public void loadSketches(long vid) {
+		//TODO what if load null?
 		try {
 			imageSLE = myGateway.fetchSketchForVisitByTable(vid, "sketches_SLE");
 			imageGonio = myGateway.fetchSketchForVisitByTable(vid, "sketches_gonio");
@@ -41,70 +34,116 @@ public class Sketches {
 		}
 	}
 	
-	public void insertSLESketch(File file, long vid) {
+	public void insertSLESketch(long vid) {
 		try {
-			myGateway.insertSketchToTable(file, vid, "sketches_sle");
-			imageSLE = ImageIO.read(file);
+			if (imageSLE == null) {
+				return;
+			} else {
+				myGateway.insertSketchToTable(imageSLE, vid, "sketches_sle");
+			}
 		} catch (GatewayException e) {
 			System.err.println("From Sketches: cannot insert to DB.");
-//			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("From Sketches: cannot read image file");
 //			e.printStackTrace();
 		}
 	}
 	
-	public void insertFundusSketch(File file, long vid) {
+	public void insertFundusSketch(long vid) {
 		try {
-			myGateway.insertSketchToTable(file, vid, "sketches_fundus");
-			imageFundus = ImageIO.read(file);
-
+			if (imageFundus == null) {
+				return;
+			} else {
+				myGateway.insertSketchToTable(imageFundus, vid, "sketches_fundus");
+			}
 		} catch (GatewayException e) {
 			System.err.println("From Sketches: cannot insert to DB.");
-//			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("From Sketches: cannot read image file");
 //			e.printStackTrace();
 		}
 		
 	}
 	
-	public void insertGonioSketch(File file, long vid) {
+	public void insertGonioSketch(long vid) {
 		try {
-			myGateway.insertSketchToTable(file, vid, "sketches_gonio");
-			imageGonio = ImageIO.read(file);
-
+			if (imageGonio == null) {
+				return;
+			} else {
+				myGateway.insertSketchToTable(imageGonio, vid, "sketches_gonio");
+			}
 		} catch (GatewayException e) {
 			System.err.println("From Sketches: cannot insert to DB.");
 //			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("From Sketches: cannot read image file");
+		}
+	}
+	
+	public void setSketches(BufferedImage imageSLE, BufferedImage imageGonio, BufferedImage imageFundus) {
+		this.imageSLE = imageSLE;
+		this.imageGonio = imageGonio;
+		this.imageFundus = imageFundus;
+
+	}
+
+	public BufferedImage getImageSLE() {
+		return imageSLE;
+	}
+
+	public void setImageSLE(BufferedImage imageSLE) {
+		this.imageSLE = imageSLE;
+	}
+
+	public BufferedImage getImageGonio() {
+		return imageGonio;
+	}
+
+	public void setImageGonio(BufferedImage imageGonio) {
+		this.imageGonio = imageGonio;
+	}
+
+	public BufferedImage getImageFundus() {
+		return imageFundus;
+	}
+
+	public void setImageFundus(BufferedImage imageFundus) {
+		this.imageFundus = imageFundus;
+	}
+
+	public void updateSLESketch(long vid) {
+		try {
+			if (imageSLE == null) {
+				return;
+			} else {
+				myGateway.updateSketchToTable(imageSLE, vid, "sketches_sle");
+			}
+		} catch (GatewayException e) {
+			System.err.println("From Sketches: cannot update to DB.");
 //			e.printStackTrace();
 		}
 	}
 
-	public Image getImageSLE() {
-		return imageSLE;
+	public void updateFundusSketch(long vid) {
+		try {
+			if (imageFundus == null) {
+				return;
+			} else {
+				myGateway.updateSketchToTable(imageFundus, vid, "sketches_fundus");
+			}
+		} catch (GatewayException e) {
+			System.err.println("From Sketches: cannot update to DB.");
+//			e.printStackTrace();
+		}
+		
 	}
 
-	public void setImageSLE(Image imageSLE) {
-		this.imageSLE = imageSLE;
-	}
-
-	public Image getImageGonio() {
-		return imageGonio;
-	}
-
-	public void setImageGonio(Image imageGonio) {
-		this.imageGonio = imageGonio;
-	}
-
-	public Image getImageFundus() {
-		return imageFundus;
-	}
-
-	public void setImageFundus(Image imageFundus) {
-		this.imageFundus = imageFundus;
+	public void updateGonioSketch(long vid) {
+		try {
+			if (imageGonio == null) {
+				return;
+			} else {
+				myGateway.updateSketchToTable(imageGonio, vid, "sketches_gonio");
+			}
+		} catch (GatewayException e) {
+			System.err.println("From Sketches: cannot update to DB.");
+//			e.printStackTrace();
+		}
+		
 	}
 	
 	

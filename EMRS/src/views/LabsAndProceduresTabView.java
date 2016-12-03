@@ -31,6 +31,7 @@ public class LabsAndProceduresTabView  extends JPanel implements viewinterface {
 	// Containers --------------------------------------
 	private JSplitPane splitPane;
 	private JPanel labsPanel;
+	
 	private JPanel proceduresParentPanel;
 	private JPanel proceduresContentPanel;
 	private JPanel proceduresHeaderPanel;

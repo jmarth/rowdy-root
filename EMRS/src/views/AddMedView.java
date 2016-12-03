@@ -41,6 +41,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
 
 public class AddMedView extends JPanel implements viewinterface  {
+	
 	private JTextField textField;
 	
 	private JList list;

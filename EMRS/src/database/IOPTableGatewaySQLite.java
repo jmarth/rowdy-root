@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import models.IOPMeasurement;
+import models.IOP;
 
 public class IOPTableGatewaySQLite implements IOPTableGateway {
 	
@@ -35,91 +35,33 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 	}
 	
 	/**
-	 * Fetch all IOPs from DB
-	 * @return list of all IOPs
-	 * @throws GatewayException
-	 * 
-	 */
-	@Deprecated
-	public List<IOPMeasurement> fetchIOPMeasurements() throws GatewayException {
-		
-		ArrayList<IOPMeasurement> iops = new ArrayList<IOPMeasurement>();
-		
-		PreparedStatement st = null;
-		ResultSet rs = null;
-		
-		try {
-			
-			st = conn.prepareStatement("select * from iops");
-			rs = st.executeQuery();
-			
-			
-			while(rs.next()) {
-				
-				IOPMeasurement v = new IOPMeasurement(
-						rs.getLong("id"),
-						rs.getLong("vid"),
-						rs.getString("ODValue"),
-						rs.getString("ODType"),
-						rs.getString("ODNotes"),
-						rs.getString("OSValue"),
-						rs.getString("OSType"),
-						rs.getString("OSNotes"),
-						rs.getString("dateCreated")
-						);
-				
-				iops.add(v);
-				
-			}
-		} catch (SQLException e) {
-			throw new GatewayException(e.getMessage());
-		} finally {
-			//clean up
-			try {
-				if(rs != null)
-					rs.close();
-				
-				if(st != null)
-					st.close();
-				
-			} catch (SQLException e) {
-				throw new GatewayException("SQL Error: " + e.getMessage());
-			}
-		}
-		
-		return iops;
-	}
-	
-	/**
 	 * Fetch IOPs from DB for Visit
 	 * @return list of IOPs for a Visit
 	 * @throws GatewayException
 	 */
-	public List<IOPMeasurement> fetchIOPMeasurementsForVisit(long vid) throws GatewayException {
+	public List<IOP> fetchIOPsForVisit(long vid) throws GatewayException {
 		
-		List<IOPMeasurement> iops = new ArrayList<IOPMeasurement>();
+		List<IOP> iops = new ArrayList<IOP>();
 		
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		
 		try {
 			//fetch parts
-			st = conn.prepareStatement("SELECT * FROM iops WHERE vid=?");
+			st = conn.prepareStatement("SELECT * FROM iopms WHERE vid=?");
 			st.setLong(1, vid);
 			
 			rs = st.executeQuery();
 			
 			//add each to list of parts to return
 			while(rs.next()) {
-				IOPMeasurement iop = new IOPMeasurement(
+				IOP iop = new IOP(
 						rs.getLong("id"),
 						rs.getLong("vid"),
-						rs.getString("ODValue"),
-						rs.getString("ODType"),
-						rs.getString("ODNotes"),
-						rs.getString("OSValue"),
-						rs.getString("OSType"),
-						rs.getString("OSNotes"),
+						rs.getString("which"),
+						rs.getString("type"),
+						rs.getString("measurement"),
+						rs.getString("notes"),
 						rs.getString("dateCreated")
 						);
 				iops.add(iop);
@@ -151,7 +93,7 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 	/**
 	 * Inserts iop into iops table
 	 */
-	public long insertIOPMeasurement(IOPMeasurement iop) throws GatewayException {
+	public long insertIOP(IOP iop) throws GatewayException {
 		
 		//init new id to invalid
 		long newId = 0;
@@ -161,24 +103,20 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 				
 		try {
 			st = conn.prepareStatement(
-					"insert INTO iops"
+					"insert INTO iopms"
 					+ "(vid,"
-					+ " ODValue,"
-					+ " ODType,"
-					+ " ODNotes,"
-					+ " OSValue,"
-					+ " OSType,"
-					+ " OSNotes )"
-					+ " values ( ?, ?, ?, ?, ?, ?, ? ) ",
+					+ " which,"
+					+ " type,"
+					+ " measurment,"
+					+ " notes )"
+					+ " values ( ?, ?, ?, ?, ? ) ",
 					PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			st.setLong(1, iop.getVid());
-			st.setString(2, iop.getODValue());
-			st.setString(3, iop.getODType());
-			st.setString(4, iop.getODNotes());
-			st.setString(5, iop.getOSValue());
-			st.setString(6, iop.getOSType());
-			st.setString(7, iop.getOSNotes());
+			st.setString(2, iop.getWhich());
+			st.setString(3, iop.getType());
+			st.setString(4, iop.getMeasurement());
+			st.setString(5, iop.getNotes());
 	
 			st.executeUpdate();
 			
@@ -207,25 +145,16 @@ public class IOPTableGatewaySQLite implements IOPTableGateway {
 	}
 	
 	@Override
-	public long updateIOPMeasurements(IOPMeasurement v) throws GatewayException {
-		// TODO Auto-generated method stub
+	public long updateIOP(IOP v) throws GatewayException {
 		return 0;
 	}
 	
 	@Override
-	public void removeIOPMeasurements(Long vid) throws GatewayException {
-		// TODO Auto-generated method stub
+	public void removeIOP(Long vid) throws GatewayException {
 		
 	}
 
 	public void close() {
-		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public IOPMeasurement fetchIOPMeasurementForVisit(long vid) throws GatewayException {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

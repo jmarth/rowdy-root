@@ -1,11 +1,12 @@
 package visitPanels;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
@@ -24,7 +25,6 @@ import javax.swing.border.TitledBorder;
 import models.FundusExam;
 import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
-import views.FrameNewSketch;
 import views.HomeView;
 import views.VisitDetailView;
 import views.viewinterface;
@@ -50,10 +50,11 @@ public class PanelFundus extends JPanel implements viewinterface {
 	private JCheckBox checkBox_Retina_OD;
 	private JCheckBox checkBox_Retina_OS;
 	private JTextField textField_Macula_Notes_OS;
-	private JButton btnFundusSketch;
-	private JLabel lblFundusSketch;
-		
-	private JPanel panel_1 = new JPanel();
+	
+	private JButton btnSketch;
+	private JLabel lblSketch;
+	private JPanel panel_Sketch;
+	private PanelNewSketch panelNewSketch;
 
 	/**
 	 * Create the panel.
@@ -180,30 +181,40 @@ public class PanelFundus extends JPanel implements viewinterface {
 		
 		
 		// FUNDUS SKETCH
-		JPanel panel_FundusImage = new JPanel();
-		panel_FundusImage.setBorder(new TitledBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)), "Fundus Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		add(panel_FundusImage, "cell 0 2,grow");
-		panel_FundusImage.setLayout(new BoxLayout(panel_FundusImage, BoxLayout.Y_AXIS));
+		panel_Sketch = new JPanel();
+		panel_Sketch.setBorder(new TitledBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)), "Fundus Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_Sketch.setLayout(new BoxLayout(panel_Sketch, BoxLayout.Y_AXIS));
+		add(panel_Sketch, "cell 0 2,grow"); //added by showView()
 		
-		btnFundusSketch = new JButton("Sketch");
-		panel_FundusImage.add(btnFundusSketch);
-		btnFundusSketch.addActionListener(new FundusSketchListener());
-		lblFundusSketch = new JLabel("");
-		panel_FundusImage.add(lblFundusSketch);
+		btnSketch = new JButton("Sketch");
+		btnSketch.setHorizontalAlignment(SwingConstants.LEFT);
+		btnSketch.addActionListener(new SketchListener());
+		panel_Sketch.add(btnSketch); //added by showView()
+		
+		lblSketch = new JLabel("");
+		panel_Sketch.add(lblSketch); // added by showView()
+		
+		panelNewSketch = new PanelNewSketch();
+		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panelNewSketch.setBorder(new TitledBorder(null, "Fundus Exam Sketch", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_Sketch.add(panelNewSketch);
+		//panelNewSketch added by showNewSketch()
+		//since showView() called first, start with panelNewSketch to remove when showView()
 	}
 	
-	private class FundusSketchListener implements ActionListener {
+	private class SketchListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			FrameNewSketch firstSketch = new FrameNewSketch(lblFundusSketch, "FundusTempSketch");
-			firstSketch.setContentPane(firstSketch.getContentPane());
-			firstSketch.setSize(new Dimension(600,600));
-			firstSketch.setResizable(false);
-			
-			panel_1 = (JPanel) firstSketch.getContentPane();
-			panel_1.setVisible(true);
-			firstSketch.setVisible(true);
+			if (lblSketch.getWidth() == 0 || lblSketch.getHeight() == 0) {
+				PanelFundus.this.showNewSketch();
+				PanelFundus.this.getHomeView().validate();
+				PanelFundus.this.getHomeView().repaint();
+			} else {
+				PanelFundus.this.showExsistingSketch();
+				PanelFundus.this.getHomeView().validate();
+				PanelFundus.this.getHomeView().repaint();
+			}
 		}
 		
 	}
@@ -211,11 +222,10 @@ public class PanelFundus extends JPanel implements viewinterface {
 	public void setSketch() {
 		Image image_Fundus = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageFundus();
 		if (image_Fundus != null) {
-			ImageIcon iconFundus = new ImageIcon(image_Fundus);
-			lblFundusSketch.setIcon(iconFundus);
+			lblSketch.setIcon(new ImageIcon(image_Fundus));
 		}
 	}
-	
+
 	public void setFields() {
 
 		FundusExam f = getMasterModel().getCurrentPatientVisitList().get(index).getMyFE();
@@ -266,26 +276,61 @@ public class PanelFundus extends JPanel implements viewinterface {
 		
 		setSketch();
 	}
+
+	@Override
+	public void ShowView() {
+		panel_Sketch.remove(panelNewSketch);
+		panel_Sketch.add(btnSketch);
+		panel_Sketch.add(lblSketch);
+		this.validate();
+		this.repaint();
+	}
+	
+	public void showNewSketch() {
+		panel_Sketch.remove(btnSketch);
+		panel_Sketch.remove(lblSketch);
+		panelNewSketch = new PanelNewSketch(lblSketch);
+		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel_Sketch.add(panelNewSketch);
+		panelNewSketch.validate();
+		panelNewSketch.repaint();
+		this.validate();
+		this.repaint();
+	}
+	
+	public void showExsistingSketch() {
+		panel_Sketch.remove(btnSketch);
+		panel_Sketch.remove(lblSketch);
+		panelNewSketch = new PanelNewSketch(lblSketch);
+		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel_Sketch.add(panelNewSketch);
+		panelNewSketch.validate();
+		panelNewSketch.repaint();
+		this.validate();
+		this.repaint();
+
+		panelNewSketch.drawThis(lblSketch);
+	}
 	
 	@Override
 	public void HideallView() {
 		//TODO
 	}
+	
+	@Override
+	public void reload() {
+		this.ShowView();
+		this.setFields();
+	}
+	
 	@Override
 	public MasterModel getMasterModel() {
 		return ((HomeView)this.getHomeView()).getMasterModel();
 	}
-	@Override
-	public void ShowView() {
-		//TODO
-	}
-	@Override
-	public void reload() {
-		this.setFields();
-	}
+	
 	@Override
 	public HomeView getHomeView() {
-		return ((VisitDetailView)this.getParent()).getHomeView();
+		return ((VisitDetailView)this.getParent().getParent()).getHomeView();
 	}
 	
 	public FundusExam createNewFundusExam() {
@@ -320,4 +365,13 @@ public class PanelFundus extends JPanel implements viewinterface {
 		
 		return fe;
 	}
+
+	public BufferedImage getMyBI() {
+		return panelNewSketch.getMyBI();
+	}
+	
+//	public BufferedImage createBufferedImage() {
+//		
+//		return panelNewSketch.createBufferedImage();
+//	}
 }

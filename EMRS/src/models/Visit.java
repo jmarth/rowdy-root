@@ -236,7 +236,8 @@ public class Visit {
 	}
 	
 	public void setSketches(Sketches s) {
-		mySketches =s;
+		mySketches = null;
+		mySketches = s;
 	}
 	public Sketches getSketches() {
 		return mySketches;

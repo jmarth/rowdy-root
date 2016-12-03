@@ -1,11 +1,12 @@
 package visitPanels;
 
 import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
@@ -27,7 +28,6 @@ import javax.swing.border.TitledBorder;
 import models.Gonio;
 import models.MasterModel;
 import net.miginfocom.swing.MigLayout;
-import views.FrameNewSketch;
 import views.HomeView;
 import views.VisitDetailView;
 import views.viewinterface;
@@ -91,9 +91,7 @@ public class PanelGonio extends JPanel implements viewinterface {
 	private JRadioButton rdbtn_PigmentOS_4;
 	private JRadioButton rdbtn_Y_AntPigLineOS;
 	private JRadioButton rdbtn_N_AntPigLineOS;
-	
-	private JButton btnGonioSketch;
-	private JLabel lblGonioSketch;
+
 	
 	private final NoneSelectedButtonGroup bgHxFHA = new NoneSelectedButtonGroup();
 	private final NoneSelectedButtonGroup bgSide = new NoneSelectedButtonGroup();
@@ -111,7 +109,12 @@ public class PanelGonio extends JPanel implements viewinterface {
 	private final NoneSelectedButtonGroup bgOSAntPig = new NoneSelectedButtonGroup();
 	
 	
-	private JPanel panel_Sketch = new JPanel();
+	private JPanel panel_Sketch;
+	
+	private JButton btnSketch;
+	private JLabel lblSketch;
+
+	private PanelNewSketch panelNewSketch;
 	
 	/*
 	public void clearSelections(Container container) {
@@ -453,31 +456,39 @@ public class PanelGonio extends JPanel implements viewinterface {
 		bgOSAntPig.add(rdbtn_N_AntPigLineOS);
 		panel_16.add(rdbtn_N_AntPigLineOS);
 		
-		JPanel panel_GonioSketch = new JPanel();
-		panel_GonioSketch.setBorder(new TitledBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(0, 0, 0)), "Gonioscopy Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		add(panel_GonioSketch, "cell 0 3,growx,aligny top");
-		panel_GonioSketch.setLayout(new BoxLayout(panel_GonioSketch, BoxLayout.Y_AXIS));
+		panel_Sketch = new JPanel();
+		add(panel_Sketch, "cell 0 3,growx");
+		panel_Sketch.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "Diagram", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_Sketch.setLayout(new BoxLayout(panel_Sketch, BoxLayout.Y_AXIS));
+	
+		btnSketch = new JButton("Sketch");
+		btnSketch.setHorizontalAlignment(SwingConstants.LEFT);
+		btnSketch.addActionListener(new SketchListener());
+		panel_Sketch.add(btnSketch); //added by showView()
 		
-		btnGonioSketch = new JButton("Sketch");
-		btnGonioSketch.addActionListener(new GonioSketchListener());
-		panel_GonioSketch.add(btnGonioSketch);
+		lblSketch = new JLabel("");
+		panel_Sketch.add(lblSketch); // added by showView()
 		
-		lblGonioSketch = new JLabel("");
-		panel_GonioSketch.add(lblGonioSketch);
+		panelNewSketch = new PanelNewSketch();
+		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panelNewSketch.setBorder(new TitledBorder(null, "Gonioscopy Sketch", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_Sketch.add(panelNewSketch);
+		//panelNewSketch added by showNewSketch()
+		//since showView() called first, start with panelNewSketch to remove when showView()
 	}
 
-	private class GonioSketchListener implements ActionListener{
-
+	private class SketchListener implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			FrameNewSketch firstSketch = new FrameNewSketch(lblGonioSketch, "GonioTempSketch");
-			firstSketch.setContentPane(firstSketch.getContentPane());
-			firstSketch.setSize(new Dimension(600,600));
-			firstSketch.setResizable(false);
-			
-			panel_Sketch = (JPanel) firstSketch.getContentPane();
-			panel_Sketch.setVisible(true);
-			firstSketch.setVisible(true);
+			if (lblSketch.getWidth() == 0 || lblSketch.getHeight() == 0) {
+				PanelGonio.this.showNewSketch();
+				PanelGonio.this.getHomeView().validate();
+				PanelGonio.this.getHomeView().repaint();
+			} else {
+				PanelGonio.this.showExsistingSketch();
+				PanelGonio.this.getHomeView().validate();
+				PanelGonio.this.getHomeView().repaint();
+			}
 		}
 			
 	}
@@ -517,15 +528,6 @@ public class PanelGonio extends JPanel implements viewinterface {
 		
 	}
 
-	public void setSketch() {
-		Image image_Gonio = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageGonio();
-		
-		if (image_Gonio != null) {
-			ImageIcon iconGonio = new ImageIcon(image_Gonio);
-			lblGonioSketch.setIcon(iconGonio);
-		}
-	}
-	
 	// also, sets the sketch at end
 	public void setFields() {
 		
@@ -726,58 +728,81 @@ public class PanelGonio extends JPanel implements viewinterface {
 			//none
 		}
 		
-		setSketch();
+		setSketchLabel();
 	}
 	
-	/**
-	 * Gets the selected button's name from a button group.
-	 * 
-	 * @param buttonGroup
-	 * @return The string of the name of the selected radio button of the
-	 *         buttonGroup
-	 */
-	public String getSelectedButtonText(NoneSelectedButtonGroup buttonGroup) {
-		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
-			AbstractButton button = buttons.nextElement();
-
-			if (button.isSelected()) {
-				return button.getText();
-			}
+	public void setSketchLabel() {
+		
+		Image image_Gonio = getMasterModel().getCurrentPatientVisitList().get(index).getSketches().getImageGonio();
+		
+		if (image_Gonio != null) {
+			ImageIcon iconGonio = new ImageIcon(image_Gonio);
+			lblSketch.setIcon(iconGonio);
 		}
-
-		return null;
 	}
-
+	
 	public JLabel getSketchLabel() {
-		return lblGonioSketch;
+		return lblSketch;
 	}
 
 	@Override
+	public void ShowView() {
+		panel_Sketch.remove(panelNewSketch);
+		panel_Sketch.add(btnSketch);
+		panel_Sketch.add(lblSketch);
+		this.validate();
+		this.repaint();
+	}
+	
+	public void showNewSketch() {
+		panel_Sketch.remove(btnSketch);
+		panel_Sketch.remove(lblSketch);
+		panelNewSketch = new PanelNewSketch(lblSketch);
+		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel_Sketch.add(panelNewSketch);
+		panelNewSketch.validate();
+		panelNewSketch.repaint();
+		this.validate();
+		this.repaint();
+	}
+	
+	public void showExsistingSketch() {
+		panel_Sketch.remove(btnSketch);
+		panel_Sketch.remove(lblSketch);
+		panelNewSketch = new PanelNewSketch(lblSketch);
+		panelNewSketch.setAlignmentX(Component.LEFT_ALIGNMENT);
+		panel_Sketch.add(panelNewSketch);
+		panelNewSketch.validate();
+		panelNewSketch.repaint();
+		this.validate();
+		this.repaint();
+
+		panelNewSketch.drawThis(lblSketch);
+	}
+
+	@Override
+	public void reload() {
+		this.ShowView();
+		this.setFields();
+	}
+
+	
+	@Override
 	public void HideallView() {
-		//TODO
+		// TODO
 	}
 
 	@Override
 	public MasterModel getMasterModel() {
 		return ((HomeView)this.getHomeView()).getMasterModel();
 	}
-
-	@Override
-	public void ShowView() {
-		//TODO
-	}
-
-	@Override
-	public void reload() {
-		this.setFields();
-	}
-
+	
 	@Override
 	public HomeView getHomeView() {
-		return ((VisitDetailView)this.getParent()).getHomeView();
+		return ((VisitDetailView)this.getParent().getParent()).getHomeView();
 	}
 	
-public Gonio createNewGonio() {
+	public Gonio createNewGonio() {
 		
 		String ODDegreeN = (String)comboBox_GonioODN.getSelectedItem();
 		String ODDegreeC = (String)comboBox_GonioODC.getSelectedItem();
@@ -814,4 +839,32 @@ public Gonio createNewGonio() {
 		
 		return g;
 	}
+
+	/**
+	 * Gets the selected button's name from a button group.
+	 * 
+	 * @param buttonGroup
+	 * @return The string of the name of the selected radio button of the
+	 *         buttonGroup
+	 */
+	public String getSelectedButtonText(NoneSelectedButtonGroup buttonGroup) {
+		for (Enumeration<AbstractButton> buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+	
+			if (button.isSelected()) {
+				return button.getText();
+			}
+		}
+	
+		return null;
+	}
+
+	public BufferedImage getMyBI() {
+		return panelNewSketch.getMyBI();
+	}
+	
+//	public BufferedImage createBufferedImage() {
+//		
+//		return panelNewSketch.createBufferedImage();
+//	}
 }

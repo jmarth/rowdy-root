@@ -15,8 +15,24 @@ public class IOPMeasurement {
 	private String OSNotes;
 	private String dateCreated;
 	
+	private String which;
+	private String measurement;
+	private String type;
+	private String notes;
+	
+	
 	public IOPMeasurement () {
 		
+	}
+	
+	public IOPMeasurement(long id, long vid, String which, String measurement, String type, String notes) {
+		super();
+		this.id = id;
+		this.vid = vid;
+		this.which = which;
+		this.measurement = measurement;
+		this.type = type;
+		this.notes = notes;
 	}
 	
 	public IOPMeasurement(long id, long vid, String oDValue, String oDType, String oDNotes, String oSValue, String oSType,
@@ -114,6 +130,10 @@ public class IOPMeasurement {
 
 	public void setDateCreated(String dateCreated) {
 		this.dateCreated = dateCreated;
+	}
+
+	public void loadIOPFromVisit() {
+		
 	}
 	
 	

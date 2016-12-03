@@ -1,14 +1,6 @@
 package views;
 
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.text.DateFormat;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
+import org.jdesktop.swingx.JXTaskPane;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 
 import models.CL;
@@ -20,8 +12,7 @@ import models.VisitList;
 public class VisitListContainer extends JXTaskPaneContainer implements viewinterface {
 
 	private int size;
-	private JLabel iconLabel;
-//	private JPanel jp;
+//	VisitDetailView vdv;
 	
 	public VisitListContainer () {
 		
@@ -57,7 +48,12 @@ public class VisitListContainer extends JXTaskPaneContainer implements viewinter
 			
 			Visit v = vl.getMyList().get(size);
 			
-			JXTaskPaneVisitDetailView jxtp = new JXTaskPaneVisitDetailView(size);
+//			JXTaskPaneVisitDetailView jxtp = new JXTaskPaneVisitDetailView(size);
+			JXTaskPane jxtp = new JXTaskPane();
+			
+			VisitDetailView vdv = new VisitDetailView(size);
+			jxtp.add(vdv);
+			vdv.showEditView();
 
 			String date = v.getDateCreated();
 			if (date != null) {
@@ -90,7 +86,7 @@ public class VisitListContainer extends JXTaskPaneContainer implements viewinter
 			
 			add(jxtp);
 			
-			jxtp.reload();
+			vdv.reload();
 		}
 		
 		this.validate();

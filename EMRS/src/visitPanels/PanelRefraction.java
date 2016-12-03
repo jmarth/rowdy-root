@@ -231,8 +231,17 @@ public class PanelRefraction extends JPanel implements viewinterface {
 	
 	public Refraction newRefrac() {
 		
+		int isAutoRefrac = -1;
+		if (rdbtn_AutoRefraction.isSelected()){
+			isAutoRefrac = 1;
+		} else if (rdbtn_ManifestRefraction.isSelected()) {
+			isAutoRefrac = 0;
+		} else {
+			isAutoRefrac = -1;
+		}
+		
 		Refraction r = new Refraction(
-				rdbtn_AutoRefraction.isSelected() ? 0 : 1,
+				isAutoRefrac,
 				textField_ARSC_OD_Sphere.getText(),
 				textField_ARSC_OD_Cyl.getText(),
 				textField_ARSC_OD_Axis.getText(),
