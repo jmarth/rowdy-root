@@ -38,8 +38,6 @@ public class Visit implements Serializable{
 		this.plan = plan;
 		this.dateCreated = dateCreated;
 		
-		
-		
 		myAC = new AnteriorChamber();
 		myDV = new DistanceVision();
 		myFE = new FundusExam();
@@ -50,7 +48,6 @@ public class Visit implements Serializable{
 		myPupils = new Pupils();
 		myRefraction = new Refraction();
 		mySketches = new Sketches();
-		
 	}
 
 

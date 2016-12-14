@@ -1,15 +1,17 @@
 package models;
 
+import database.DrugTableGateway;
+import database.DrugTableGatewaySQLite;
 import database.GatewayException;
+
+import java.io.IOException;
 import java.util.List;
 
 public class MasterModel {
 	
 	private Patient currPatient;
 	
-	private Hx hx;
-	//private HxList hxL;
-	
+	private HxList hxL;
 	private AllergyList aL;
 	private MedList mL;
 	private DocumentList dL;
@@ -18,13 +20,12 @@ public class MasterModel {
 	private VisitList vL;
 	private VitalsList vitalsL;
 	private SurgeryTemplatesList stll;
+	private DrugTableGateway rtg;
 
-
-		
 	public MasterModel () {
 		
-		currPatient=null;
-		hx=null;
+		currPatient = null;
+		hxL = new HxList();
 		aL = new AllergyList();
 		mL = new MedList();
 		dL = new DocumentList();
@@ -33,15 +34,23 @@ public class MasterModel {
 		vL = new VisitList();
 		vitalsL = new VitalsList();
 		stll = new SurgeryTemplatesList();
-		
-		
+		try {
+			rtg = new DrugTableGatewaySQLite();
+		} catch (GatewayException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void loadmaster(Patient patient){
 		
 		try {
 			
-			this.currPatient=patient;
+			this.currPatient = patient;
+			hxL.loadMyListForPatient(currPatient.getId());
 			aL.loadMyListForPatient(currPatient);
 			mL.loadMyListForPatient(currPatient);
 			dL.loadMyListForPatient(currPatient);
@@ -52,9 +61,8 @@ public class MasterModel {
 		} catch (GatewayException e) {
 			System.err.println("from MasterModel, can not fetch from database");
 		}
-		
-			
 	}
+	
 	public Patient getCurrPatient() {
 		return currPatient;
 	}
@@ -63,12 +71,12 @@ public class MasterModel {
 		this.currPatient = currPatient;
 	}
 
-	public Hx getHx() {
-		return hx;
+	public HxList getHx() {
+		return hxL;
 	}
 
-	public void setHx(Hx hx) {
-		this.hx = hx;
+	public void setHx(HxList hxl) {
+		this.hxL = hxl;
 	}
 
 	public AllergyList getaL() {
@@ -137,5 +145,8 @@ public class MasterModel {
 		this.stll = stll;
 	}
 	
+	public DrugTableGateway getDrugTableGateway() {
+		return rtg;
+	}
 
 }

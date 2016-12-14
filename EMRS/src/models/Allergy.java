@@ -2,6 +2,7 @@ package models;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Allergy implements Serializable {
 	
 	private long id;
@@ -21,6 +22,7 @@ public class Allergy implements Serializable {
 	 */
 	public Allergy(long id, long pid, String allergy, String severity, String adverseReaction) {
 		super();
+		
 		this.id = id;
 		this.pid = pid;
 		this.allergy = allergy;

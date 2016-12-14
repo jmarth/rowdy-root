@@ -56,6 +56,8 @@ public class AllergyList {
 
 	public void update(Allergy a) throws GatewayException {
 		myGateway.updateAllergy(a);
+//		myList.remove(a);
+//		myList.add(a);
 	}
 
 	public void delete(long id) throws GatewayException {

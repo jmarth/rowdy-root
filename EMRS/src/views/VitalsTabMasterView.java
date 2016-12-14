@@ -37,15 +37,17 @@ public class VitalsTabMasterView extends JPanel implements viewinterface {
 		this.validate();
 		this.repaint();
 	}
+	
 	public void ShowVitalSCRUDView(){
 		this.HideallView();
 		int index = this.vldv.getSelectedRow();
-		vscv=new VitalCRUDView(index);
+		vscv = new VitalCRUDView(index);
 		this.add(vscv,BorderLayout.CENTER);
 		this.vscv.ShowView();
 		this.validate();
 		this.repaint();
 	}
+	
 	@Override
 	public void HideallView() {
 		this.remove(vldv);

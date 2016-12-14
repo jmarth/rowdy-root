@@ -8,6 +8,7 @@ import javax.swing.border.TitledBorder;
 
 import models.CL;
 import models.Hx;
+import models.HxList;
 import models.MasterModel;
 import models.Patient;
 import models.Tabs;
@@ -43,14 +44,13 @@ import java.awt.event.ActionEvent;
 
 @SuppressWarnings("serial")
 public class hxForm extends JPanel implements viewinterface  {
+	
 	private JTextField pcTextField;
 	private JTextField hasDATextField;
 	private JTextField pshTextField;
 	private JTextField fhTextField;
-	
-	private HxTableGateway htg;
-	
-	private Patient patient;
+		
+//	private Patient patient;
 	private JRadioButton nkda;
 	private JRadioButton hasDA;
 	private JRadioButton sickleYes;
@@ -97,52 +97,31 @@ public class hxForm extends JPanel implements viewinterface  {
 	 * @param tabbedPane 
 	 * @wbp.parser.constructor
 	 */
-	public hxForm(Patient p, HxTableGateway hxTableGateway, final hxView prevPanel, final JTabbedPane tabbedPane) {
-		
-		this.htg = hxTableGateway;
-		this.patient = p;
-		this.prevPanel = prevPanel;
-		this.tabbedPane = tabbedPane;
-		createView();
-	}
 	
 	/*
 	 * Constructor for editing
 	 */
-	public hxForm(Patient p, HxTableGateway hxTableGateway, final hxView prevPanel, final JTabbedPane tabbedPane, boolean editView) {
+	public hxForm(boolean editView) {
 		
-		this.htg = hxTableGateway;
-		this.patient = p;
-		this.prevPanel = prevPanel;
-		this.tabbedPane = tabbedPane;
 		this.isEditView = editView;
-		
-		if (editView) {
-			createView();
+		createView();
+
+		if (editView)
 			populateView();
-		}
 	}
-	//TODO
+	
 	private void populateView() {
 		
 		//presentConditionPanel.removeAll();
 		
+		List<Hx> healthHistory = getMasterModel().getHx().getMyList();
 		
-		List<Hx> healthHistory = new ArrayList<Hx>();
-		
-		// TODO convert to reading from list
-		try {
-			healthHistory = htg.fetchHxForPatient(patient);
-		} catch (GatewayException e) {
-			e.printStackTrace();
-		}
 		Hx hx = null;
 		
 		if (healthHistory.size() > 0)
 			hx = healthHistory.get(0);
 		else
 			return;
-		
 		
 		//presentConditionPanel.add(new JLabel(hx.getPc()));
 		pcTextField.setText(hx.getPc());
@@ -238,7 +217,117 @@ public class hxForm extends JPanel implements viewinterface  {
 			i++;
 		}
 	}
+	
+	private class SaveListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Hx tmpHx = hxForm.this.getAllFields();
+			try {
+				getMasterModel().getHx().insert(tmpHx);
+			} catch (GatewayException e1) {
+				e1.printStackTrace();
+			}
+			getHomeView().getPrview().ShowHxView();
+		}
+	}
+	
+	private class UpdateListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Hx tmpHx = hxForm.this.getAllFields();
+			try {
+				getMasterModel().getHx().update(tmpHx);
+			} catch (GatewayException e1) {
+				e1.printStackTrace();
+			}
+			getHomeView().getPrview().ShowHxView();
+		}
+	}
+	
+	private class CancelListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			HomeView parent = getHomeView();
+			parent.getPrview().ShowHxView();
+		}
+	}
+	
+	protected Hx getAllFields() {
+		
+		String drugAllergy = "";
+		drugAllergy += (nkda.isSelected()) ? "NKDA" : hasDATextField.getText();
+		
+		// bleedingTendency => aspirin:plavix:bleedingdisorder:sicklecell
+		
+		String bleedingTendency = "";
+		
+		for (JCheckBox c : bleedingTendencyGroup) {
+			bleedingTendency += (c.isSelected()) ? "1" : "0";
+		}
+		
+		bleedingTendency += (sickleYes.isSelected()) ? "1" : "0";
+		
+		String pastMedicalHistory = "";
+		for (JCheckBox c : pmhGroup) {
+			pastMedicalHistory += (c.isSelected()) ? "1" : "0";
+		}
+		
+		String law = "Risks, benefits, potential complications, and alternatives for surgery discussed with patient?  ";
+		
+		if (lawYes.isSelected())
+			law += "YES";
+		else if (lawNo.isSelected())
+			law += "NO";
+		else
+			law += "NOT YET";
+		
+		String pe = "";
+		
+		for (JCheckBox c : peGroup) {
+			pe += (c.isSelected()) ? "1" : "0";
+		}
+		
+		 Hx tmpHx = new Hx(
+				(long) 0, 
+				getHomeView().getMasterModel().getCurrPatient().getId(), 
+				pcTextField.getText(), 
+				drugAllergy, 
+				bleedingTendency, 
+				pastMedicalHistory, 
+				pshTextField.getText(), 
+				fhTextField.getText(), 
+				law, 
+				pe);
+				
+		
+		return tmpHx;
+	}
 
+	
+	@Override
+	public void HideallView() {
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return getHomeView().getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		
+	}
+
+	@Override
+	public void reload() {
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HxMasterView)this.getParent()).getHomeView();
+	}
 	
 	private void createView() {
 
@@ -679,7 +768,6 @@ public class hxForm extends JPanel implements viewinterface  {
 		
 		
 		
-		
 		if (isEditView) {
 			JButton btnUpdate = new JButton("Update");
 			btnUpdate.addActionListener(new UpdateListener());
@@ -697,134 +785,4 @@ public class hxForm extends JPanel implements viewinterface  {
 		setLayout(groupLayout);
 
 	}
-	
-	private class CancelListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			int index = tabbedPane.indexOfTab(Tabs.hx);
-			tabbedPane.setComponentAt(index, null);
-			tabbedPane.setComponentAt(index, prevPanel);
-		}
-		
-	}
-	
-	private class SaveListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			Hx tmpHx = hxForm.this.getAllFields();
-			try {
-				htg.insertHx(tmpHx);
-			} catch (GatewayException e1) {
-				e1.printStackTrace();
-			}
-			((hxView) prevPanel).populateHealthHistory();
-			int index = tabbedPane.indexOfTab(Tabs.hx);
-			tabbedPane.setComponentAt(index, null);
-			tabbedPane.setComponentAt(index, prevPanel);
-			
-		}
-		
-	}
-	
-	private class UpdateListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			Hx tmpHx = hxForm.this.getAllFields();
-			
-			try {
-				htg.updateHx(tmpHx);
-			} catch (GatewayException e1) {
-				e1.printStackTrace();
-			}
-			((hxView) prevPanel).populateHealthHistory();
-			int index = tabbedPane.indexOfTab(Tabs.hx);
-			tabbedPane.setComponentAt(index, null);
-			tabbedPane.setComponentAt(index, prevPanel);
-			
-		}
-		
-	}
-	
-	protected Hx getAllFields() {
-		String drugAllergy = "";
-		drugAllergy += (nkda.isSelected()) ? "NKDA" : hasDATextField.getText();
-		
-		// bleedingTendency = aspirin:plavix:bleedingdisorder:sicklecell
-		String bleedingTendency = "";
-		for (JCheckBox c : bleedingTendencyGroup) {
-			bleedingTendency += (c.isSelected()) ? "1" : "0";
-		}
-		bleedingTendency += (sickleYes.isSelected()) ? "1" : "0";
-		
-		String pastMedicalHistory = "";
-		for (JCheckBox c : pmhGroup) {
-			pastMedicalHistory += (c.isSelected()) ? "1" : "0";
-		}
-		
-		String law = "Risks, benefits, potential complications, and alternatives for surgery discussed with patient?  ";
-		
-		if (lawYes.isSelected())
-			law += "YES";
-		else if (lawNo.isSelected())
-			law += "NO";
-		else
-			law += "NOT YET";
-		
-		String pe = "";
-		
-		for (JCheckBox c : peGroup) {
-			pe += (c.isSelected()) ? "1" : "0";
-		}
-		
-		 Hx tmpHx = new Hx(
-				(long) 0, 
-				patient.getId(), 
-				pcTextField.getText(), 
-				drugAllergy, 
-				bleedingTendency, 
-				pastMedicalHistory, 
-				pshTextField.getText(), 
-				fhTextField.getText(), 
-				law, 
-				pe);
-				
-		
-		return tmpHx;
-	}
-
-	
-	@Override
-	public void HideallView() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public MasterModel getMasterModel() {
-		return ((HomeView)this.getParent()).getMasterModel();
-	}
-
-	@Override
-	public void ShowView() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void reload() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public HomeView getHomeView() {
-		return ((HomeView)this.getParent()).getHomeView();
-	}
 }
-
-
-
-

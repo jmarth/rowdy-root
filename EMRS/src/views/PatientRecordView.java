@@ -21,7 +21,7 @@ import models.Tabs;
 public class PatientRecordView extends JTabbedPane implements viewinterface {
 	
 	private DemographicView dgv;
-	private hxView hxv;
+	private HxMasterView hxmv;
 	private VisitTabMasterView visitTab;
 	private VitalsTabMasterView vtv;
 	private LabsAndProceduresTabView lpv;
@@ -35,7 +35,6 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		
 		setBounds(100, 100, 987, 1105);
 		
-		
 		// Create demographics tab
 		JLabel lab1 = new JLabel(Tabs.demographics);
 		lab1.setPreferredSize(new Dimension(145, 30));
@@ -44,15 +43,13 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 		this.addTab("", null, dgv, null);
 		this.setTabComponentAt(0, lab1);
 		
-		
 		// Create allergies & meds tab
 		JLabel lab2 = new JLabel(Tabs.hx);
 		lab2.setPreferredSize(new Dimension(145, 30));
 		lab2.setHorizontalAlignment(JLabel.CENTER);
-		//TODO hxv = new hxView();
-		this.addTab(Tabs.hx, null,null, null);//TODO this.addTab(Tabs.hx, null,hxv, null);
+		hxmv = new HxMasterView();
+		this.addTab(Tabs.hx, null,hxmv, null);//TODO this.addTab(Tabs.hx, null,hxv, null);
 		this.setTabComponentAt(1, lab2);
-		
 		
 		// create visits tab
 		JLabel lab3 = new JLabel(Tabs.ped);
@@ -117,7 +114,7 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 			        }else if(selectedTab.equals(Tabs.docs)){
 			        	dtv.reload();
 			        }else if(selectedTab.equals(Tabs.hx)){
-			        	hxv.reload();
+			        	hxmv.reload();
 			        }
 		      }
 		};
@@ -139,10 +136,19 @@ public class PatientRecordView extends JTabbedPane implements viewinterface {
 //		dtv.HideallView();	
 	}
 	
+	public HxMasterView getHxMasterView() {
+		return hxmv;
+	}
+	
 	public void ShowHxView(){
 		this.ShowView();
 		this.setSelectedIndex(1);
-		this.hxv.ShowView();
+		this.hxmv.ShowView();
+	}
+	public void ShowHxFormView(boolean edit){
+		this.ShowView();
+		this.setSelectedIndex(1);
+		this.hxmv.showHxForm(edit);
 	}
 	
 	public void ShowVisitsView(){

@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@SuppressWarnings("serial")
 public class Vital implements Serializable{
 
 	public static final String MMHG = "mm/Hg";

@@ -2,7 +2,9 @@ package models;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Hx implements Serializable{
+	
 	private Long id;
 	private Long pid;
 	private String presentCondition;
@@ -13,10 +15,15 @@ public class Hx implements Serializable{
 	private String fh;
 	private String law;
 	private String pe;
+	
+
 
 	public Hx(Long id, Long pid, String pc, String da, String bt, String pmh, String psh, String fh, String law,
 			String pe) {
+		
 		super();
+
+		
 		this.id = id;
 		this.pid = pid;
 		this.presentCondition = pc;

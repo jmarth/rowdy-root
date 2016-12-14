@@ -38,13 +38,6 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 	
 	// Variable for Allergy Name textfield
 	private JTextField textField;
-	
-	// Patient this Allergy corresponds to
-	//Patient patient;
-	Allergy a;//TODO
-	//private List<Allergy> allergyList;
-	//AllergyList al;
-	
 	JPanel oldPanel;
 	
 	// Table Gateway
@@ -82,70 +75,29 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 	private JRadioButton rdbtnModerate;
 	private JRadioButton rdbtnMild;
 	
-	// JTable from caller
-	JTable allergyTable;
+	private Allergy a;
 	
-
 	/**
 	 * Create the panel.
 	 */
-	public AllergyTabViewNewAllergy(final JTabbedPane tabbedPane, Patient patient, JPanel allergiesPanel, AllergyTableGateway gateway, JTable allergyTable, List<Allergy> allergyList, AllergyList al, Allergy a, Boolean exists) {
-		//this.patient = patient;
-		//this.a = a;
-		//this.atg = gateway;
-		//this.allergyTable = allergyTable;
-		//this.allergyList = allergyList;
-		//this.al = al;
-		oldPanel = allergiesPanel;
-		
-		/**
-		 * Try to connect to DB through AllergyTableGateway
-		 * Set the gateway of the AllergyList
-		 * Load Allergies into the AllergyList
-		 */
-		/*try {
-			//atg = new AllergyTableGatewaySQLite();
-		} catch (GatewayException e) {
-			System.out.println("Could not connect to DB");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.out.println("Could not connect to DB");
-			e.printStackTrace();
-		}*/
-		//createExistingView(tabbedPane, patient, allergiesPanel, atg, a, allergyTable);
+	public AllergyTabViewNewAllergy(boolean exists, Allergy a) {
 
 		if(exists){
-			//TODO createExistingView(tabbedPane, patient, allergiesPanel, atg, a, allergyTable);
+			this.a = a;
+			createExistingView();
 		} else {
-			//TODO createNewView(tabbedPane, patient, allergiesPanel, atg, allergyTable);
+			createNewView();
 		}
 
 	}
 	
-	/**
-	 * Called from ActionListener for Cancel button
-	 * @param tabbedPane JTabbedPane to alter
-	 * @param oldPanel Panel to switch back to
-	 */
-	public void cancel(JTabbedPane tabbedPane, JPanel oldPanel){
-		int index = tabbedPane.indexOfTab(Tabs.hx);
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
+	public void cancel(){
+		getHomeView().getPrview().ShowHxView();
 	}
 	
-	/**
-	 * Save Allergy to database for patient
-	 * @param patient Patient that Allergy belongs to
-	 * @param atg AllergyTableGateway
-	 * @param tabbedPane JTabbedPane to change when done saving
-	 * @param oldPanel JPanel to change back to when done saving
-	 */
-	public void save(Patient patient, AllergyTableGateway atg, JTabbedPane tabbedPane, JPanel oldPanel, JTable allergyTable){
+	public void save(){
 		StringBuilder strBuild = new StringBuilder();
 		
-		/**
-		 * Iterate over collection of JCheckBoxes and if the check box is selected, append the label of the chckbox to the string (adverse_reaction)
-		 */
 		Iterator<JCheckBox> chckbxIterator = checkboxes.iterator();
 		while(chckbxIterator.hasNext()){
 			JCheckBox tmpBox = chckbxIterator.next();
@@ -164,10 +116,7 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 		// Need to delete last "/" in adverse_reaction string
 		strBuild.deleteCharAt(strBuild.length()-1);
 		
-		/**
-		 * Determine what severity radio button is selected
-		 * Set severity string accordingly
-		 */
+
 		if(rdbtnSevere.isSelected()){
 			severity = "Severe";
 		} else if (rdbtnModerate.isSelected()){
@@ -176,41 +125,26 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 			severity = "Mild";
 		}
 		
-		/**
-		 * Create new Allergy object with correct parameters
-		 * Insert the allery to the DB through the Gateway
-		 */
-		Allergy allergy = new Allergy(0, patient.getId(), textField.getText(), severity, strBuild.toString());
+		Allergy allergy = new Allergy(0, getMasterModel().getCurrPatient().getId(), textField.getText(), severity, strBuild.toString());
 		try {
-			/*long aid = atg.insertAllergy(allergy);
-			allergy.setId(aid);*/
 			allergy.setId(this.getMasterModel().getaL().insert(allergy));
 		} catch (GatewayException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+//		getHomeView().getPrview().ShowHxView();
+//
+//		
+//		// Change the panel back to allergy table
+//		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
+//		
+//		DefaultTableModel model = (DefaultTableModel) getHomeView().getPrview().getHxMasterView().getHxView().getAllergyTable().getModel();
+//		model.addRow(new Object[]{
+//				allergy.getAllergy(), 
+//				allergy.getSeverity(), 
+//				allergy.getAdverseReaction()
+//		});
 		
-		
-		// Change the panel back to allergy table
-		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
-		
-		// Add the allergy to the JTable
-		// Get model of AllergyTable in order to add rows
-		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
-		// Add row		
-		model.addRow(new Object[]{
-				allergy.getAllergy(), 
-				allergy.getSeverity(), 
-				allergy.getAdverseReaction()
-		});
-		
-		// Add allergy to allergyList
-		//allergyList.add(allergy);
-		
-		int index = tabbedPane.indexOfTab(Tabs.hx);
-		
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
+		getHomeView().getPrview().ShowHxView();
 	}
 	
 	/**
@@ -220,7 +154,8 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 	 * @param tabbedPane JTabbedPane to change when done saving
 	 * @param oldPanel JPanel to change back to when done saving
 	 */
-	public void updateAllergy(Patient patient, AllergyTableGateway atg, JTabbedPane tabbedPane, JPanel oldPanel, JTable allergyTable){
+	public void updateAllergy(){
+
 		StringBuilder strBuild = new StringBuilder();
 		
 		/**
@@ -260,34 +195,62 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 		 * Create new Allergy object with correct parameters
 		 * Insert the allery to the DB through the Gateway
 		 */
-		Allergy allergy = new Allergy(a.getId(), patient.getId(), textField.getText(), severity, strBuild.toString());
+//		Allergy allergy = new Allergy(a.getId(), getMasterModel().getCurrPatient().getId(), textField.getText(), severity, strBuild.toString());
+		
+		a.setAllergy(textField.getText());
+		a.setSeverity(severity);
+		a.setAdverseReaction(strBuild.toString());
+		
 		try {
-			/*atg.updateAllergy(allergy);
-			al.loadFromGateway();
-			allergyList = al.getAllergyList();*/
-			this.getMasterModel().getaL().update(allergy);
+			this.getMasterModel().getaL().update(a);
 		} catch (GatewayException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		getHomeView().getPrview().ShowHxView();
+		
 		// Update row in JTable
-		int selectedRow = allergyTable.getSelectedRow();
-		allergyTable.setValueAt(allergy.getAllergy(), selectedRow, 0);
-		allergyTable.setValueAt(allergy.getSeverity(), selectedRow, 1);
-		allergyTable.setValueAt(allergy.getAdverseReaction(), selectedRow, 2);
+//		int selectedRow = allergyTable.getSelectedRow();
+//		allergyTable.setValueAt(allergy.getAllergy(), selectedRow, 0);
+//		allergyTable.setValueAt(allergy.getSeverity(), selectedRow, 1);
+//		allergyTable.setValueAt(allergy.getAdverseReaction(), selectedRow, 2);
 		
 		// Update the Allergy in the allergyList
 		//allergyList.set(selectedRow, allergy);
 		
-		DefaultTableModel dtm = (DefaultTableModel)allergyTable.getModel();
+//		DefaultTableModel dtm = (DefaultTableModel)allergyTable.getModel();
 		
 		// Change the panel back to allergy table
 		// NEED TO FIGURE HOW TO UPDATE TABLE WHEN SWITCHING BACK TO SHOW NEW ALLERGY
 		
-		int index = tabbedPane.indexOfTab(Tabs.hx);
-		tabbedPane.setComponentAt(index, null);
-		tabbedPane.setComponentAt(index, oldPanel);
+//		int index = tabbedPane.indexOfTab(Tabs.hx);
+//		tabbedPane.setComponentAt(index, null);
+//		tabbedPane.setComponentAt(index, oldPanel);
+	}
+	
+	@Override
+	public void HideallView() {
+		
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return getHomeView().getMasterModel();
+	}
+
+	@Override
+	public void ShowView() {
+		
+	}
+
+	@Override
+	public void reload() {
+		
+	}
+
+	@Override
+	public HomeView getHomeView() {
+		return ((HxMasterView)this.getParent()).getHomeView();
 	}
 	
 	/**
@@ -297,7 +260,7 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 	 * @param allergiesPanel Old JPanel to set back to on cancel or save
 	 * @param atg Gateway for Allergy table
 	 */
-	public void createNewView(final JTabbedPane tabbedPane, final Patient patient, JPanel allergiesPanel, final AllergyTableGateway atg, final JTable allergyTable){
+	public void createNewView(){
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -584,7 +547,7 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				save(patient, atg, tabbedPane, oldPanel, allergyTable);
+				save();
 			}
 		});
 		
@@ -601,7 +564,7 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cancel(tabbedPane, oldPanel);
+				cancel();
 			}
 		});
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
@@ -618,7 +581,7 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 	 * @param allergiesPanel Old JPanel to set back to on cancel or save
 	 * @param atg Gateway for Allergy table
 	 */
-	public void createExistingView(final JTabbedPane tabbedPane, final Patient patient, JPanel allergiesPanel, final AllergyTableGateway atg, Allergy a, final JTable allergyTable){
+	public void createExistingView(){
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -962,7 +925,7 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 		JButton btnUpdate = new JButton("Update");
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateAllergy(patient, atg, tabbedPane, oldPanel, allergyTable);
+				updateAllergy();
 			}
 		});
 		
@@ -979,7 +942,7 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				cancel(tabbedPane, oldPanel);
+				cancel();
 			}
 		});
 		GridBagConstraints gbc_btnCancel = new GridBagConstraints();
@@ -988,38 +951,4 @@ public class AllergyTabViewNewAllergy extends JPanel implements viewinterface  {
 		gbc_btnCancel.gridy = 16;
 		add(btnCancel, gbc_btnCancel);
 	}
-
-	
-
-	@Override
-	public void HideallView() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public MasterModel getMasterModel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void ShowView() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void reload() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public HomeView getHomeView() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 }

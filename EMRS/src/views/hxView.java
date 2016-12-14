@@ -15,26 +15,17 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
-import database.AllergyTableGateway;
-import database.DrugTableGateway;
-import database.GatewayException;
-import database.HxTableGateway;
-import database.MedicationsTableGateway;
 import models.Allergy;
-import models.AllergyList;
 import models.CL;
 import models.Hx;
 import models.MasterModel;
 import models.Med;
-import models.Patient;
-import models.Tabs;
 import javax.swing.JLabel;
 
 import java.awt.GridLayout;
@@ -47,29 +38,20 @@ import javax.swing.border.MatteBorder;
 import javax.swing.BoxLayout;
 
 
+@SuppressWarnings("serial")
 public class hxView extends JPanel implements viewinterface {
-	//private AllergyList al = new AllergyList(); // no make here, in constructor
-	//private List<Allergy> allergyList;
-	// Do not need this List<Allergy>, we have an AllergyList and Allergy, AllergyList.getList() instead
+		
+	private JTable allergyTable;
 	
-	//private AllergyTableGateway atg; // Gateways should be in the Model, not the view, view holds model.
-	
-	//private MedicationsTableGateway mtg; // Med Model
-	
-	//private DrugTableGateway rtg; // Drug Model
-	
-	//private HxTableGateway htg; //
-	
-	
-	
-	private Patient patient;
-	private JTable allergyTable = new JTable();
-	
-	private List<Hx> healthHistory;
+	private List<Hx> hxList;
 	
 	private JScrollPane allergyScroller;
 	private JScrollPane medScroller;
+
+//	private JTabbedPane tabbedPane;
+	private GroupLayout groupLayout;
 	
+	private JPanel presentConditionPanel;
 	private JPanel allergyMasterPanel;
 	private JPanel medMasterPanel;
 	private JTable medTable;
@@ -84,6 +66,7 @@ public class hxView extends JPanel implements viewinterface {
 	private JPanel fhPanel;
 	private JPanel lawPanel;
 	private JPanel pePanel;
+	
 	private JCheckBox ck1;
 	private JCheckBox ck2;
 	private JCheckBox ck3;
@@ -97,254 +80,45 @@ public class hxView extends JPanel implements viewinterface {
 	private JCheckBox ck11;
 	private JCheckBox ck12;
 	private JCheckBox ck13;
-	private JPanel presentConditionPanel;
+
+//	private hxForm hxform;
+	
 	private JButton btnNewForm;
 	private JButton btnEditForm;
 	//private JScrollPane hxScroller; TODO what is this doing here
 	
 	private List<JCheckBox> peList;
-	private JTabbedPane tabbedPane;
-
-	/**
-	 * Create the panel.
-	 * @param drugTableGateway 
-	 * @param hxTableGateway 
-	 */
-	//public hxView(final Patient patient, final JTabbedPane tabbedPane, final AllergyTableGateway atg, final MedicationsTableGateway mtg, DrugTableGateway drugTableGateway, HxTableGateway hxTableGateway) {
-	public hxView(){	
-		//this.atg = atg;
-		//this.mtg = mtg;
-		//this.rtg = drugTableGateway;
-		//this.htg = hxTableGateway;
-		this.patient = patient;
-		this.tabbedPane = tabbedPane;
-		
-		
-		setBackground(CL.colorBlue);
-		
-		allergyMasterPanel = new JPanel();
-		allergyMasterPanel.setBackground(new Color(250, 250, 250));
-		allergyMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "Allergies", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		
-		medMasterPanel = new JPanel();
-		medMasterPanel.setBackground(new Color(250, 250, 250));
-		medMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "Medications", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
-		
-		hxMasterPanel = new JPanel();
-		hxMasterPanel.setBackground(CL.colorBlue);
-		hxMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "Health History", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.BOLD, 20), Color.WHITE));
-		
-		presentConditionPanel = new JPanel();
-		presentConditionPanel.setBackground(new Color(255, 250, 250));
-		presentConditionPanel.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "History of Present Condition", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
-		GroupLayout groupLayout = new GroupLayout(this);
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(hxMasterPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addComponent(allergyMasterPanel, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-								.addComponent(presentConditionPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(medMasterPanel, GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)))
-					.addContainerGap())
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(presentConditionPanel, GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(allergyMasterPanel, GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
-						.addComponent(medMasterPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(hxMasterPanel, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
-		presentConditionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
-		/** CODE CUT FROM HERE **/
-		buildHx();
-
-		
-		btnNewForm = new JButton("Fill out Health History");
-		btnNewForm.addActionListener(new NewFormListener());
-		
-		btnEditForm = new JButton("Edit Form TEST");
-		btnEditForm.addActionListener(new EditFormListener());
-		
-		/*try {
-			healthHistory = htg.fetchHxForPatient(this.patient);
-		} catch (GatewayException e1) {
-			e1.printStackTrace();
-		}*/
-		//just hightlight make it work
-		/*if (!(healthHistory.isEmpty())) {
-			//TODO populateHealthHistory();
-			//presentConditionPanel.add(btnEditForm);
-		}
-		else {
+	
+//	private AllergyTabViewNewAllergy atvna;
+	
+	public hxView() {
+		initMasterPanels();
+		buildAll();
+	}
+	
+	public void populateAll(){
+		hxList = getMasterModel().getHx().getMyList();
+		if (!(hxList.isEmpty())) {
+			populateHealthHistory(); //removes all from present condition
+			presentConditionPanel.add(btnEditForm);
+		} else {
 			presentConditionPanel.add(btnNewForm);
-		}*/
-		
-		
-		medMasterPanel.setLayout(new BorderLayout(0, 0));
-		
-		medPanel = new JPanel();
-		medMasterPanel.add(medPanel, BorderLayout.CENTER);
-		medPanel.setLayout(new BorderLayout(0, 0));
-		
-		JPanel medButtonPanel = new JPanel();
-		medButtonPanel.setBackground(CL.cararra);
-		medPanel.add(medButtonPanel, BorderLayout.NORTH);
-
-		
-		JButton btnAddMED = new JButton("ADD");
-		btnAddMED.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnAddMED.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//JPanel prevPanel = hxView.this; TODO why this here
-				int index = tabbedPane.indexOfTab("Health History");
-				//TODO tabbedPane.setComponentAt(index, new AddMedView(rtg, hxView.this.mtg, tabbedPane, hxView.this, hxView.this.patient));
-				revalidate();
-				repaint();
-			}
-			
-		});
-		medButtonPanel.add(btnAddMED);
-		
-		
-		medTable = new JTable();
-		medTable.setEnabled(false);
-		
-		medTable.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"Trade Name", "Generic Name", "Directions"
-				}
-		));
-		
-		//TODO populateMedTable();
-		
-		medScroller = new JScrollPane(medTable);
-		
-		medPanel.add(medScroller, BorderLayout.CENTER);
-		
-		allergyTable.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-					"Allergy", "Severity", "Adverse Reaction"
-				}
-		));
-		
-		
-
-		//TODO populateAllergyTable();
-		
-		allergyPanel = new JPanel();
-		allergyPanel.setLayout(new BorderLayout(0, 0));
-		
-		JPanel allergyButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		allergyPanel.add(allergyButtonPanel, BorderLayout.NORTH);
-		allergyButtonPanel.setBackground(CL.cararra);
-		
-		JButton btnAddAllergy = new JButton("ADD");
-		btnAddAllergy.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnAddAllergy.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int index = tabbedPane.indexOfTab(Tabs.hx);
-				tabbedPane.setComponentAt(index, null);
-				//TODO tabbedPane.setComponentAt(index, new AllergyTabViewNewAllergy(tabbedPane, patient, hxView.this, atg, allergyTable, allergyList, al, null, false));				
-			}
-		});
-		allergyButtonPanel.add(btnAddAllergy);
-		
-		JButton btnEditAllergy = new JButton("EDIT");
-		btnEditAllergy.setFont(new Font("Tahoma", Font.PLAIN, 10));
-		btnEditAllergy.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int selection = allergyTable.getSelectedRow();
-				if  (selection == -1) {
-					return;
-				}
-				//al.loadFromGateway();
-				//allergyList = al.getAllergyListForPatient(patient);
-				Allergy tmp = hxView.this.getMasterModel().getaL().getMyList().get(selection);
-				
-				//TODO AllergyTabViewNewAllergy anv = new AllergyTabViewNewAllergy(tabbedPane, patient, hxView.this, atg, allergyTable, allergyList, al, tmp, true);
-				
-				int index = tabbedPane.indexOfTab(Tabs.hx);
-				tabbedPane.setComponentAt(index, null);
-				//TODO tabbedPane.setComponentAt(index, anv);
-			}
-			
-		});
-		allergyMasterPanel.setLayout(new BorderLayout(0, 0));
-		allergyButtonPanel.add(btnEditAllergy);
-		
-		
-		allergyScroller = new JScrollPane(allergyTable);
-		allergyPanel.add(allergyScroller, BorderLayout.CENTER);
-		allergyMasterPanel.add(allergyPanel);
-		setLayout(groupLayout);
-
-	}
-	
-	
-	
-	private class NewFormListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			hxView prevPanel = hxView.this;
-			int index = tabbedPane.indexOfTab(Tabs.hx);
-			tabbedPane.setComponentAt(index, null);
-			//TODO tabbedPane.setComponentAt(index, new hxForm(patient, htg, prevPanel, tabbedPane));
 		}
-		
-	}
-	
-	private class EditFormListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			hxView prevPanel = hxView.this;
-			int index = tabbedPane.indexOfTab(Tabs.hx);
-			tabbedPane.setComponentAt(index, null);
-			//TODO tabbedPane.setComponentAt(index, new hxForm(patient, htg, prevPanel, tabbedPane, true));
-		}
-		
+		populateMedTable();
+		populateAllergyTable();
 	}
 	
 	public void populateHealthHistory() {
-		presentConditionPanel.removeAll();
-		healthHistory = new ArrayList<Hx>();
 		
-		/*try {
-			healthHistory = htg.fetchHxForPatient(patient);
-			System.out.println("SIZESIZESIZESIZESIZESIZE\n: " + healthHistory.size());
-
-		} catch (GatewayException e) {
-			e.printStackTrace();
-		}*/
+		presentConditionPanel.removeAll();
+//		hxList = getMasterModel().getHx().getMyList();
+		
 		Hx hx = null;
 		
-		if (healthHistory.size() > 0)
-			hx = healthHistory.get(0);
+		if (hxList.size() > 0)
+			hx = hxList.get(0);
 		else
 			return;
-		
 		
 		presentConditionPanel.add(new JLabel(hx.getPc()));
 		
@@ -414,28 +188,15 @@ public class hxView extends JPanel implements viewinterface {
 		}
 	}
 
-
-	/**
-	 * Populates the AllergyTable with all allergies related current Patient
-	 * @param allergyTable JTable to populate
-	 * @param patient Patient JTable to populate
-	 */
 	public void populateAllergyTable(){
 		
 		// Get model of AllergyTable in order to add rows
 		// Declare variables
 		DefaultTableModel model = (DefaultTableModel) allergyTable.getModel();
 		
-		/*al.setGateway(atg);
-		al.loadFromGateway();*/
-		
 		// Find all allergies for the given patient
 		//allergyList = al.getAllergyListForPatient(patient);
 		
-		/**
-		 * For every allergy in the allergyList
-		 * .. Add that model the JTable
-		 */
 		for(Allergy allergy : this.getMasterModel().getaL().getMyList()) {
 			model.addRow(new Object[]{
 					allergy.getAllergy(), 
@@ -446,23 +207,12 @@ public class hxView extends JPanel implements viewinterface {
 	}
 	
 	public void populateMedTable(){
-		List<Med> tmpList = new ArrayList<Med>();
-		
-		/*try {
-			tmpList = mtg.fetchMedsForPatient(patient);
-		} catch (GatewayException e) {
-			e.printStackTrace();
-		}*/
-		//System.out.println(tmpList.size());
-		
-		
 		// Get model of MedTable in order to add rows
 		// Declare variables
 		DefaultTableModel model = (DefaultTableModel) medTable.getModel();
 		
 		// reset data in table
 		model.setRowCount(0);
-		
 						
 		/**
 		 * For every med in the medList
@@ -476,8 +226,199 @@ public class hxView extends JPanel implements viewinterface {
 			});
 		}
 	}
+
+	@Override
+	public void HideallView() {
+				
+	}
+
+	@Override
+	public void ShowView() {
+		populateAll();
+		this.validate();
+		this.repaint();
+	}
+
+	@Override
+	public void reload() {
+		ShowView();
+	}
+
+	@Override
+	public MasterModel getMasterModel() {
+		return getHomeView().getMasterModel();
+	}
+	
+	@Override
+	public HomeView getHomeView() {
+		return ((HxMasterView)this.getParent()).getHomeView();
+	}
+	
+	private class NewFormListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			HomeView parent = getHomeView();
+			parent.getPrview().ShowHxFormView(false);
+		}
+	}
+	
+	private class EditFormListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			HomeView parent = getHomeView();
+			parent.getPrview().ShowHxFormView(true);
+		}
+		
+	}
+	
+	public void initMasterPanels() {
+		
+		allergyTable = new JTable();
+
+		setBackground(CL.colorBlue);
+		
+		allergyMasterPanel = new JPanel();
+		allergyMasterPanel.setBackground(new Color(250, 250, 250));
+		allergyMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "Allergies", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		
+		medMasterPanel = new JPanel();
+		medMasterPanel.setBackground(new Color(250, 250, 250));
+		medMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "Medications", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
+		
+		hxMasterPanel = new JPanel();
+		hxMasterPanel.setBackground(CL.colorBlue);
+		hxMasterPanel.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2, true), "Health History", TitledBorder.LEADING, TitledBorder.TOP, new Font("Tahoma", Font.BOLD, 20), Color.WHITE));
+		
+		presentConditionPanel = new JPanel();
+		presentConditionPanel.setBackground(new Color(255, 250, 250));
+		presentConditionPanel.setBorder(new TitledBorder(new MatteBorder(2, 0, 0, 0, (Color) new Color(0, 0, 0)), "History of Present Condition", TitledBorder.LEADING, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
+		groupLayout = new GroupLayout(this);
+		groupLayout.setHorizontalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(hxMasterPanel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(allergyMasterPanel, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+								.addComponent(presentConditionPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(medMasterPanel, GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE)))
+					.addContainerGap())
+		);
+		groupLayout.setVerticalGroup(
+			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(groupLayout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(presentConditionPanel, GroupLayout.DEFAULT_SIZE, 61, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(allergyMasterPanel, GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE))
+						.addComponent(medMasterPanel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(hxMasterPanel, GroupLayout.PREFERRED_SIZE, 415, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
+		presentConditionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+	}
+
+	public void buildAll() {
+				
+		buildHx();
+		
+		medMasterPanel.setLayout(new BorderLayout(0, 0));
+		
+		medPanel = new JPanel();
+		medMasterPanel.add(medPanel, BorderLayout.CENTER);
+		medPanel.setLayout(new BorderLayout(0, 0));
+		
+		JPanel medButtonPanel = new JPanel();
+		medButtonPanel.setBackground(CL.cararra);
+		medPanel.add(medButtonPanel, BorderLayout.NORTH);
+
+		JButton btnAddMED = new JButton("ADD");
+		btnAddMED.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnAddMED.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+//				JPanel prevPanel = hxView.this;
+//				int index = tabbedPane.indexOfTab("Health History");
+//				tabbedPane.setComponentAt(index, new AddMedView(tabbedPane, hxView.this));
+//				revalidate();
+//				repaint();
+				getHomeView().getPrview().getHxMasterView().showMedicationForm();
+			}
+		});
+		medButtonPanel.add(btnAddMED);
+		
+		medTable = new JTable();
+		medTable.setEnabled(false);
+		
+		medTable.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"Trade Name", "Generic Name", "Directions"
+				}
+		));
+		
+		
+		medScroller = new JScrollPane(medTable);
+		
+		medPanel.add(medScroller, BorderLayout.CENTER);
+		
+		allergyTable.setModel(new DefaultTableModel(
+				new Object[][] {
+				},
+				new String[] {
+					"Allergy", "Severity", "Adverse Reaction"
+				}
+		));
+		
+		
+		allergyPanel = new JPanel();
+		allergyPanel.setLayout(new BorderLayout(0, 0));
+		
+		JPanel allergyButtonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		allergyPanel.add(allergyButtonPanel, BorderLayout.NORTH);
+		allergyButtonPanel.setBackground(CL.cararra);
+		
+		JButton btnAddAllergy = new JButton("ADD");
+		btnAddAllergy.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnAddAllergy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				getHomeView().getPrview().getHxMasterView().showAllergyForm(false, null);
+			}
+		});
+		allergyButtonPanel.add(btnAddAllergy);
+		
+		JButton btnEditAllergy = new JButton("EDIT");
+		btnEditAllergy.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		btnEditAllergy.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selection = allergyTable.getSelectedRow();
+				if  (selection == -1) {
+					return;
+				}
+				Allergy tmp = hxView.this.getMasterModel().getaL().getMyList().get(selection);
+				getHomeView().getPrview().getHxMasterView().showAllergyForm(true, tmp); // this.HxMasterView?>
+			}
+		});
+		allergyMasterPanel.setLayout(new BorderLayout(0, 0));
+		allergyButtonPanel.add(btnEditAllergy);
+		
+		allergyScroller = new JScrollPane(allergyTable);
+		allergyPanel.add(allergyScroller, BorderLayout.CENTER);
+		allergyMasterPanel.add(allergyPanel);
+		setLayout(groupLayout);
+	}
 	
 	public void buildHx() {
+		
 		drugAllergyPanel = new JPanel();
 		drugAllergyPanel.setBackground(new Color(255, 250, 250));
 		drugAllergyPanel.setBorder(new TitledBorder(new MatteBorder(3, 0, 0, 0, (Color) new Color(0, 0, 0)), "Major Drug Allergy", TitledBorder.LEFT, TitledBorder.ABOVE_TOP, null, new Color(0, 0, 0)));
@@ -794,37 +735,19 @@ public class hxView extends JPanel implements viewinterface {
 		pmhPanel.setLayout(new BoxLayout(pmhPanel, BoxLayout.Y_AXIS));
 		drugAllergyPanel.setLayout(new BoxLayout(drugAllergyPanel, BoxLayout.Y_AXIS));
 		hxMasterPanel.setLayout(gl_hxMasterPanel);
-	}
-
-	@Override
-	public void HideallView() {
-				
-	}
-
-
-	@Override
-	public MasterModel getMasterModel() {
-		return null;
-	}
-
-
-	@Override
-	public void ShowView() {
-		// TODO Auto-generated method stub
 		
-	}
-
-
-	@Override
-	public void reload() {
-		// TODO Auto-generated method stub
+		btnNewForm = new JButton("Fill out Health History");
+		btnNewForm.addActionListener(new NewFormListener());
 		
+		btnEditForm = new JButton("Edit Form TEST");
+		btnEditForm.addActionListener(new EditFormListener());
 	}
-
-
-	@Override
-	public HomeView getHomeView() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public JTable getAllergyTable() {
+		return allergyTable;
+	}
+	
+	public JTable getMedTable() {
+		return medTable;
 	}
 }

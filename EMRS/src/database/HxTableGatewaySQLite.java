@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Hx;
-import models.Patient;
 
 public class HxTableGatewaySQLite implements HxTableGateway {
 	
@@ -77,7 +76,8 @@ public class HxTableGatewaySQLite implements HxTableGateway {
 	}
 
 	@Override
-	public List<Hx> fetchHxForPatient(Patient p) throws GatewayException {
+	public List<Hx> fetchHxForPatient(long pid) throws GatewayException {
+		
 		ArrayList<Hx> hxList = new ArrayList<Hx>();
 		
 		PreparedStatement st = null;
@@ -87,7 +87,7 @@ public class HxTableGatewaySQLite implements HxTableGateway {
 			
 			//fetch hxList
 			st = conn.prepareStatement("select * from hx WHERE pid=?");
-			st.setLong(1, p.getId());
+			st.setLong(1, pid);
 			
 			rs = st.executeQuery();
 			
@@ -164,7 +164,7 @@ public class HxTableGatewaySQLite implements HxTableGateway {
 
 					if(rs != null && rs.next()) {
 						newId = rs.getLong(1);
-						System.out.println("Hx is ID: " + newId + "");
+//						System.out.println("Hx is ID: " + newId + "");
 
 					} else {
 						throw new GatewayException("Could not insert new record.");

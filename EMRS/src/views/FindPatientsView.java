@@ -1,9 +1,7 @@
 package views;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
@@ -33,7 +31,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 	 */
 	public FindPatientsView() {
 		super();
-		this.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.setBorder(new EmptyBorder(5, 5, 5, 5	));
 		this.setLayout(new GridLayout(0,1,0,0));
 		//this.setLayout(new BorderLayout());
 		scrollPane = new JScrollPane();
@@ -63,6 +61,7 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		      table.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		   }
 		});
+		
 		table.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent evt) {
 				int row = table.rowAtPoint(evt.getPoint());
@@ -73,11 +72,13 @@ public class FindPatientsView extends JPanel implements viewinterface  {
 		});
 		
 	}
+	
 	private void showdemographic(){
 		HomeView hv = this.getHomeView();
 		hv.ShowPatientRecode();
 		hv.getPrview().ShowDemographicsView();
-	}	
+	}
+	
 	public void filter(String searchText) {
 		DefaultTableModel dtm = (DefaultTableModel) table.getModel();
 		TableRowSorter<DefaultTableModel> trs = new TableRowSorter<DefaultTableModel>(dtm);

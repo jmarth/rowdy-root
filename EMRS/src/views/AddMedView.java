@@ -10,7 +10,6 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JList;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -21,40 +20,34 @@ import java.util.ArrayList;
 
 import javax.swing.border.TitledBorder;
 
-import database.DrugTableGateway;
 import database.GatewayException;
-import database.MedicationsTableGateway;
 import models.CL;
 import models.Drug;
 import models.MasterModel;
 import models.Med;
-import models.Patient;
-import models.Tabs;
 
 import javax.swing.border.LineBorder;
 import java.awt.Color;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JCheckBox;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.BoxLayout;
 import javax.swing.ListSelectionModel;
 
+@SuppressWarnings("serial")
 public class AddMedView extends JPanel implements viewinterface  {
 	
 	private JTextField textField;
 	
 	private JList list;
 	
-	private DrugTableGateway rtg;
 	
-	private MedicationsTableGateway mtg;
+//	private MedicationsTableGateway mtg;
 	
-	private JTabbedPane tabbedPane;
+//	private JTabbedPane tabbedPane;
 	
-	private hxView hxView;
+//	private hxView hxView;
 	
-	private Patient patient;
+//	private Patient patient;
 	private JTextField directionsField;
 
 	/**
@@ -62,12 +55,12 @@ public class AddMedView extends JPanel implements viewinterface  {
 	 * @param hxView 
 	 * @param tabbedPane 
 	 */
-	public AddMedView(DrugTableGateway gt, MedicationsTableGateway mtg, final JTabbedPane tabbedPane, final hxView hxView, Patient p) {
-		this.rtg = gt;
-		this.mtg = mtg;
-		this.tabbedPane = tabbedPane;
-		this.hxView = hxView;
-		this.patient = p;
+	public AddMedView() {
+
+//		this.mtg = mtg;
+//		this.tabbedPane = tabbedPane;
+//		this.hxView = hxView;
+//		this.patient = p;
 		setBackground(CL.belize);
 		
 		JPanel panel = new JPanel();
@@ -148,7 +141,7 @@ public class AddMedView extends JPanel implements viewinterface  {
 				
 				ArrayList<Drug> drugs = null;
 				try {
-					drugs = (ArrayList<Drug>) rtg.searchByPrefix(query);
+					drugs = (ArrayList<Drug>) getMasterModel().getDrugTableGateway().searchByPrefix(query);
 				} catch (GatewayException e1) {
 					e1.printStackTrace();
 				}
@@ -193,18 +186,16 @@ public class AddMedView extends JPanel implements viewinterface  {
 				for (Object s : selectedValues) {
 					String[] pieces = ((String) s).split("\\|");
 					String directions = directionsField.getText();
-					Med tmp = new Med((long) 0, patient.getId(), pieces[0].trim(), pieces[1].trim(), directions);
+					
+					Med tmp = new Med((long) 0, getMasterModel().getCurrPatient().getId(), pieces[0].trim(), pieces[1].trim(), directions);
+					
 					try {
-						AddMedView.this.mtg.insertMed(tmp);
+						getMasterModel().getmL().insert(tmp);
 					} catch (GatewayException e1) {
 						e1.printStackTrace();
 					}
 				}
-				hxView.populateMedTable();
-				
-				int index = tabbedPane.indexOfTab(Tabs.hx);
-				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, hxView);
+				getHomeView().getPrview().ShowHxView();
 			}
 			
 		});
@@ -216,11 +207,7 @@ public class AddMedView extends JPanel implements viewinterface  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				list.setModel(new DefaultListModel());
-				int index = tabbedPane.indexOfTab(Tabs.hx);
-				tabbedPane.setComponentAt(index, null);
-				tabbedPane.setComponentAt(index, hxView);
-				
-				
+				getHomeView().getPrview().ShowHxView();
 			}
 			
 		});
@@ -237,7 +224,7 @@ public class AddMedView extends JPanel implements viewinterface  {
 	@Override
 	public MasterModel getMasterModel() {
 		
-		return null;
+		return getHomeView().getMasterModel();
 	}
 	@Override
 	public void ShowView() {
@@ -251,7 +238,6 @@ public class AddMedView extends JPanel implements viewinterface  {
 	}
 	@Override
 	public HomeView getHomeView() {
-		// TODO Auto-generated method stub
-		return null;
+		return ((HxMasterView)this.getParent()).getHomeView();
 	}
 }
