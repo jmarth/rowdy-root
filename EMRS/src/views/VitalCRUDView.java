@@ -8,6 +8,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.rmi.RemoteException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -19,10 +23,14 @@ import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
+import controller.EMRS;
+import controller.rminotification;
 import database.GatewayException;
 import models.MasterModel;
 import models.Vital;
 import net.miginfocom.swing.MigLayout;
+import networksetup.mastercomunication;
+import networksetup.message;
 
 @SuppressWarnings("serial")
 public class VitalCRUDView extends JPanel implements viewinterface {
@@ -80,7 +88,8 @@ public class VitalCRUDView extends JPanel implements viewinterface {
 		// uncomment to view in windowbuilder
 		createView();
 	}
-
+	private Vital vital;
+	
 	private void populateVital() {
 		if(index!=-1){
 			Vital vitals = getMasterModel().getVitalsL().getMyList().get(index);
@@ -190,17 +199,56 @@ public class VitalCRUDView extends JPanel implements viewinterface {
 			cm=0;
 		}
 		// getSelectedButtonText(buttonGroupHeight) to get unit for DB
-		Vital vitals = new Vital(0, this.getMasterModel().getCurrPatient().getId(),
+		vital = new Vital(0, this.getMasterModel().getCurrPatient().getId(),
 				bps, bpd,cbBP_unit.getSelectedItem().toString(),chckbxFasting.isSelected(),
 				bg, cbBG_unit.getSelectedItem().toString(),o2,hb,
 				ft, in,cm,"ft:in:cm",w,cbWeight_unit.getSelectedItem().toString(),
 				textArea_Notes.getText());
 		try {
 			if(index==-1)
-				vitals.setId(this.getMasterModel().getVitalsL().insert(vitals));
+				vital.setId(this.getMasterModel().getVitalsL().insert(vital));
+				
 			else{
-				vitals.setId(this.getMasterModel().getVitalsL().getMyList().get(index).getId());
-				this.getMasterModel().getVitalsL().update(vitals,this.index);
+				vital.setId(this.getMasterModel().getVitalsL().getMyList().get(index).getId());
+				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				vital.setDateCreated(dateFormat.format(new Date()));
+				this.getMasterModel().getVitalsL().update(vital,this.index);
+			}
+			if(EMRS.notification.getRclient()!=null && EMRS.notification.getOwner().getPriority()!=-1){
+				new Thread(new Runnable(){
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						try {
+							message m = new message(mastercomunication.ACCESS_CODE,0,null,EMRS.notification.getOwner().getPriority());
+							if(index==-1)
+								m.setCommand(rminotification.VITAL_INSERT);
+							else
+								m.setCommand(rminotification.VITAL_UPDATE);
+							MasterModel mod = getMasterModel();
+							m.setData(vital);
+							EMRS.notification.getRclient().notifychange(m);
+						} catch (RemoteException e1) {
+							EMRS.notification.startnewsetup();
+							// TODO Auto-generated catch block
+							System.err.println(e1.getMessage());
+						}
+					}	
+		    	}).start();
+			} else if(EMRS.notification.getRserver()!=null && EMRS.notification.getOwner().getPriority()==-1){
+				try {
+					message m = new message(mastercomunication.ACCESS_CODE,0,null,EMRS.notification.getOwner().getPriority());
+					if(index==-1)
+						m.setCommand(rminotification.VITAL_INSERT);
+					else
+						m.setCommand(rminotification.VITAL_UPDATE);
+					MasterModel mod = getMasterModel();
+					m.setData(vital);
+					EMRS.notification.getRserver().notifiedall(m);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					System.err.println("Cann't notified to rmiserver in addpatientview. \n Thus asked new server");
+				}
 			}
 		} catch (GatewayException e) {
 			System.err.println("from VitalNewView, can not insert to DB.");
