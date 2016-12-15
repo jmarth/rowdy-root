@@ -61,8 +61,6 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 	public synchronized void notifiedall(message msg) {
 		System.out.println("server receive notification message");
 		int index = msg.getIndex();
-		if(index !=-1)
-			EMRS.notification.getHomeview().getBtnft().setEnabled(true);
 		server s = (server)sv;
 		for(int i=0;i<index;i++){
 			try {

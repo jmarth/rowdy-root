@@ -7,8 +7,11 @@ import javax.swing.JOptionPane;
 import database.GatewayException;
 import database.PatientTableGatewaySQLite;
 import database.SurgeryTableGatewaySQLite;
+import database.VitalsTableGateway;
+import database.VitalsTableGatewaySQLite;
 import models.Patient;
 import models.Surgery;
+import models.Vital;
 import networksetup.message;
 import views.HomeView;
 
@@ -18,6 +21,8 @@ public class rminotification {
 	public transient static final int PATIENT_UPDATE =9;
 	public transient static final int PATIENT_DELETE =10;
 	public transient static final int SURGERY_INSERT=11;
+	public transient static final int VITAL_INSERT=12;
+	public transient static final int VITAL_UPDATE=13;
 	public static void messageaction(message m){
 		try{
 			switch (m.getCommand()){
@@ -48,6 +53,20 @@ public class rminotification {
 						myGateway.insertSurgery(s);
 					}
 					break;
+				case VITAL_INSERT:
+				case VITAL_UPDATE:
+					System.out.println("receive notification addddddddd");
+					Vital v = (Vital) m.getData();
+					if(checkcurrentpatient(v.getPid()) == true){
+						HomeView hv = EMRS.notification.getHomeview();
+						hv.getMasterModel().getVitalsL().insert(v);
+						shownotified("Patient Vital got modified on " + v.getDateCreated());
+					}else{
+						VitalsTableGateway myGateway = new VitalsTableGatewaySQLite();
+						myGateway.insertVitals(v);
+					}
+					break;
+				default:
 			}
 		}catch (GatewayException e) {
 			// TODO Auto-generated catch block
