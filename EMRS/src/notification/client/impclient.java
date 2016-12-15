@@ -34,8 +34,6 @@ public class impclient extends UnicastRemoteObject implements rmiclient {
 		if(EMRS.notification.getHomeview()!=null){
 			EMRS.notification.getHomeview().getBtnft().setEnabled(true);
 		}
-		Patient p = (Patient) msg.getData();
-		System.out.println(p.getFirstName());
 		rminotification.messageaction(msg);
 	}
 	
