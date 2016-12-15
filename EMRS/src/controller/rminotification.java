@@ -30,7 +30,7 @@ public class rminotification {
 					Patient p = (Patient) m.getData();
 					if(checkcurrentpatient(p.getId()) == true){
 						shownotified("Current patient Demographics update!");						
-					}else if(p==null){
+					}else if(p==null && EMRS.notification.getHomeview()!=null){
 						shownotified("New patient inserted");
 					}
 					
@@ -39,11 +39,13 @@ public class rminotification {
 					break;
 				case SURGERY_INSERT:
 					Surgery s = (Surgery) m.getData();
-					SurgeryTableGatewaySQLite myGateway = new SurgeryTableGatewaySQLite();
-					myGateway.insertSurgery(s);
 					if(checkcurrentpatient(s.getPid()) == true){
 						HomeView hv = EMRS.notification.getHomeview();
+						hv.getMasterModel().getsL().insert(s);
 						shownotified("New Surgical Procedure inserted!");
+					}else{
+						SurgeryTableGatewaySQLite myGateway = new SurgeryTableGatewaySQLite();
+						myGateway.insertSurgery(s);
 					}
 					break;
 			}
