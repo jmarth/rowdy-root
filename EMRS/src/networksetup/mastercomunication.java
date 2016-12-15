@@ -263,6 +263,7 @@ public class mastercomunication {
 								server sv = (server)owner;
 								owner.setIpaddrr((InetAddress)msg.getData());
 								int prior = this.checkexistclient(ipfrom);
+								System.setProperty("java.rmi.server.hostname",owner.getIpaddrr().getHostAddress());
 								if(sv.getClient_num()==prior){
 									sv.getClientlist().add(ipfrom);
 									sv.increaseclientnum();
@@ -436,6 +437,7 @@ public class mastercomunication {
 				try {
 					rserver = new impserver(owner);
 					reg = LocateRegistry.createRegistry(RMI_PORT);
+					//reg.
 					reg.rebind("rmiemr", rserver);
 				} catch (AccessException e) {
 					// TODO Auto-generated catch block
