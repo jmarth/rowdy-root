@@ -77,7 +77,8 @@ public class rminotification {
 					if(checkcurrentpatient(vv.getPid()) == true){
 						HomeView hv = EMRS.notification.getHomeview();
 						List<Vital> vl = hv.getMasterModel().getVitalsL().getMyList();
-						for(int i =0;i<vl.size();i++){
+						int i;
+						for(i =0;i<vl.size();i++){
 							if(vv.getPid()== vl.get(i).getPid() && vv.getDateCreated().compareTo(vl.get(i).getDateCreated())==0){
 								vl.remove(i);
 								vl.add(i, vv);
