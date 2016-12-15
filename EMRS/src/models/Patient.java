@@ -8,6 +8,11 @@ import java.util.Locale;
 
 public class Patient implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private long id;
 	
 	private boolean hasPatientName;

@@ -764,7 +764,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 						//m.setData(patient);
 						HomeView hv =AddPatientView.this.getHomeView();
 						//hv.getPrview().ShowDemographicsView();
-						if(EMRS.notification.getRclient()!=null){
+						if(EMRS.notification.getRclient()!=null && EMRS.notification.getOwner().getPriority()!=-1){
 							new Thread(new Runnable(){
 								@Override
 								public void run() {
@@ -781,11 +781,11 @@ public class AddPatientView extends JPanel implements viewinterface  {
 									} catch (RemoteException e1) {
 										EMRS.notification.startnewsetup();
 										// TODO Auto-generated catch block
-										System.err.println("Cann't notified to rmiserver in addpatientview. \n Thus asked new server");
+										System.err.println(e1.getMessage());
 									}
 								}	
 					    	}).start();
-						} else if(EMRS.notification.getRserver()!=null){
+						} else if(EMRS.notification.getRserver()!=null && EMRS.notification.getOwner().getPriority()==-1){
 							try {
 								message m = new message(mastercomunication.ACCESS_CODE,0,null,EMRS.notification.getOwner().getPriority());
 								if(AddPatientView.this.updateorinsert==AddPatientView.INSERTPATIENT)
@@ -802,7 +802,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 						hv.ShowPatientRecode();
 					} catch (GatewayException e1) {
 						// TODO Auto-generated catch block
-						System.err.println("Cann't notified to all rmiclient in addpatientview.");
+						System.err.println(e1.getMessage());
 					}
 					
 				}

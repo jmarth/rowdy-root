@@ -2,9 +2,13 @@ package controller;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import database.GatewayException;
 import database.PatientTableGatewaySQLite;
+import database.SurgeryTableGatewaySQLite;
 import models.Patient;
+import models.Surgery;
 import networksetup.message;
 import views.HomeView;
 
@@ -13,18 +17,34 @@ public class rminotification {
 	public transient static final int PATIENT_INSERT =8;
 	public transient static final int PATIENT_UPDATE =9;
 	public transient static final int PATIENT_DELETE =10;
+	public transient static final int SURGERY_INSERT=11;
 	public static void messageaction(message m){
 		try{
 			switch (m.getCommand()){
+				case PATIENT_UPDATE:
 				case PATIENT_INSERT:
 					PatientTableGatewaySQLite pgateway = new PatientTableGatewaySQLite();
 					pgateway.insertPatient((Patient) m.getData());
-					break;
-				case PATIENT_UPDATE:
 					PatientTableGatewaySQLite pgateway1 = new PatientTableGatewaySQLite();
 					pgateway1.updatePatient((Patient) m.getData());
+					Patient p = (Patient) m.getData();
+					if(checkcurrentpatient(p.getId()) == true){
+						shownotified("Current patient Demographics update!");						
+					}else if(p==null){
+						shownotified("New patient inserted");
+					}
+					
 					break;
 				case PATIENT_DELETE:
+					break;
+				case SURGERY_INSERT:
+					Surgery s = (Surgery) m.getData();
+					SurgeryTableGatewaySQLite myGateway = new SurgeryTableGatewaySQLite();
+					myGateway.insertSurgery(s);
+					if(checkcurrentpatient(s.getPid()) == true){
+						HomeView hv = EMRS.notification.getHomeview();
+						shownotified("New Surgical Procedure inserted!");
+					}
 					break;
 			}
 		}catch (GatewayException e) {
@@ -34,6 +54,21 @@ public class rminotification {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	static private 	boolean checkcurrentpatient(long pid){
+		HomeView hv = EMRS.notification.getHomeview();
+		if(hv!=null){
+			Patient p = hv.getMasterModel().getCurrPatient();
+			if(p!=null){
+				if(p.getId() == pid)
+					return true;
+			}
+			return false;	
+		}
+		return false;
+	}
+	static private void shownotified(String message){	
+		JOptionPane.showMessageDialog(null, message);
 	}
 	
 	

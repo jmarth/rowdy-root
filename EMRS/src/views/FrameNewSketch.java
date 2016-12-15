@@ -62,7 +62,7 @@ public class FrameNewSketch extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 
 		// create draw area
-		drawArea = new DrawArea();
+		drawArea = new DrawArea(null);
 		
 		// add drawArea to scroll pane
 		scrollPane.add(drawArea);

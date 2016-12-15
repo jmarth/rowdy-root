@@ -29,6 +29,7 @@ public class impserver extends UnicastRemoteObject implements rmiserver {
 
 	@Override
 	public synchronized void registerclient(rmiclient client) throws RemoteException {
+		System.out.println("client register");
 		clientlist.add(client);
 	}
 

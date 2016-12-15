@@ -7,13 +7,18 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.rmi.RemoteException;
 
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import controller.EMRS;
+import controller.rminotification;
 import models.CL;
 import models.MasterModel;
 import models.Surgery;
 import models.Tabs;
+import networksetup.mastercomunication;
+import networksetup.message;
 
 import javax.swing.SwingConstants;
 
@@ -141,6 +146,36 @@ public class SafeSurgery extends JPanel implements viewinterface {
 				long newID = 0;
 				try {
 					SafeSurgery.this.getMasterModel().getsL().insert(surgery);
+					if(EMRS.notification.getRclient()!=null && EMRS.notification.getOwner().getPriority()!=-1){
+						new Thread(new Runnable(){
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								try {
+									message m = new message(mastercomunication.ACCESS_CODE,0,null,EMRS.notification.getOwner().getPriority());
+									m.setCommand(rminotification.SURGERY_INSERT);
+									MasterModel mod = getMasterModel();
+									m.setData(surgery);
+									EMRS.notification.getRclient().notifychange(m);
+								} catch (RemoteException e1) {
+									EMRS.notification.startnewsetup();
+									// TODO Auto-generated catch block
+									System.err.println(e1.getMessage());
+								}
+							}	
+				    	}).start();
+					} else if(EMRS.notification.getRserver()!=null && EMRS.notification.getOwner().getPriority()==-1){
+						try {
+							message m = new message(mastercomunication.ACCESS_CODE,0,null,EMRS.notification.getOwner().getPriority());
+							m.setCommand(rminotification.SURGERY_INSERT);
+							MasterModel mod = getMasterModel();
+							m.setData(surgery);
+							EMRS.notification.getRserver().notifiedall(m);
+						} catch (RemoteException e1) {
+							// TODO Auto-generated catch block
+							System.err.println("Cann't notified to rmiserver in addpatientview. \n Thus asked new server");
+						}
+					}
 				} catch (GatewayException e1) {
 					e1.printStackTrace();
 				}
