@@ -210,6 +210,7 @@ public class VitalCRUDView extends JPanel implements viewinterface {
 				
 			else{
 				vital.setId(this.getMasterModel().getVitalsL().getMyList().get(index).getId());
+				vital.setDateCreated(this.getMasterModel().getVitalsL().getMyList().get(index).getDateCreated());
 				this.getMasterModel().getVitalsL().update(vital,this.index);
 			}
 			if(EMRS.notification.getRclient()!=null && EMRS.notification.getOwner().getPriority()!=-1){

@@ -183,8 +183,8 @@ public class VitalsTableGatewaySQLite implements VitalsTableGateway {
 					+ " weight = ?,"
 					+ " wunit = ?,"
 					+ " notes = ?"
-					+ " WHERE id = ? ",
-					PreparedStatement.RETURN_GENERATED_KEYS);
+					+ " WHERE id = ? ");
+					//PreparedStatement.RETURN_GENERATED_KEYS);
 			
 			st.setFloat(1, v.getBps());
 			st.setFloat(2, v.getBpd());
