@@ -67,8 +67,10 @@ public class VitalListView extends JPanel implements viewinterface {
 		btnRemoveVital.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					VitalListView.this.getMasterModel().getVitalsL().delete(selectedRow);
-					((DefaultTableModel) vitalsTable.getModel()).removeRow(selectedRow);
+					if(selectedRow>=0){
+						VitalListView.this.getMasterModel().getVitalsL().delete(selectedRow);
+						((DefaultTableModel) vitalsTable.getModel()).removeRow(selectedRow);
+					}
 				} catch (GatewayException e1) {
 					e1.printStackTrace();
 				}

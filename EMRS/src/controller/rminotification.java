@@ -78,7 +78,7 @@ public class rminotification {
 						HomeView hv = EMRS.notification.getHomeview();
 						List<Vital> vl = hv.getMasterModel().getVitalsL().getMyList();
 						for(int i =0;i<vl.size();i++){
-							if(vv.getId() == vl.get(i).getId()){
+							if(vv.getPid()== vl.get(i).getPid() && vv.getDateCreated().compareTo(vl.get(i).getDateCreated())==0){
 								vl.remove(i);
 								vl.add(i, vv);
 								break;
