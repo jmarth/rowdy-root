@@ -32,7 +32,7 @@ public class rminotification {
 					pgateway1.updatePatient((Patient) m.getData());
 					Patient p = (Patient) m.getData();
 					if(checkcurrentpatient(p.getId()) == true){
-						shownotified("Current patient Demographics update!");						
+						shownotified("Current patient Demographics update!");					
 					}
 					break;
 					
