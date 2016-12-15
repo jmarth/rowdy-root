@@ -995,6 +995,7 @@ public class AddPatientView extends JPanel implements viewinterface  {
 	@Override
 	public void HideallView() {
 		// TODO Auto-generated method stub
+		hideBalloonTips();
 		this.setVisible(false);
 		
 	}

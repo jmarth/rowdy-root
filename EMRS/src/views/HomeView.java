@@ -364,6 +364,7 @@ public class HomeView extends JFrame implements viewinterface{
 	
 	@Override // hide all children
 	public void HideallView() {
+		paview.hideBalloonTips();
 		this.remove(fpview);
 		this.remove(prview);
 		this.remove(paview);
