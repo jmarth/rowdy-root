@@ -71,23 +71,21 @@ public class rminotification {
 					break;
 				case VITAL_UPDATE:
 					System.out.println("receive notification addddddddd");
-					Vital v = (Vital) m.getData();
-					if(checkcurrentpatient(v.getPid()) == true){
+					Vital vv = (Vital) m.getData();
+					VitalsTableGateway myGateway = new VitalsTableGatewaySQLite();
+					myGateway.updateVitals(vv);
+					if(checkcurrentpatient(vv.getPid()) == true){
 						HomeView hv = EMRS.notification.getHomeview();
 						List<Vital> vl = hv.getMasterModel().getVitalsL().getMyList();
 						for(int i =0;i<vl.size();i++){
-							if(v.getId() == vl.get(i).getId()){
+							if(vv.getId() == vl.get(i).getId()){
 								vl.remove(i);
-								vl.add(i, v);
+								vl.add(i, vv);
 								break;
 							}
 								
 						}
-						hv.getMasterModel().getVitalsL().insert(v);
-						shownotified("Patient Vital update on " + v.getDateCreated());
-					}else{
-						VitalsTableGateway myGateway = new VitalsTableGatewaySQLite();
-						myGateway.insertVitals(v);
+						shownotified("Patient Vital update on " + vv.getDateCreated());
 					}
 					break;
 				default:
