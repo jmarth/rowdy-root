@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -27,18 +28,21 @@ public class rminotification {
 		try{
 			switch (m.getCommand()){
 				case PATIENT_UPDATE:
-				case PATIENT_INSERT:
-					PatientTableGatewaySQLite pgateway = new PatientTableGatewaySQLite();
-					pgateway.insertPatient((Patient) m.getData());
 					PatientTableGatewaySQLite pgateway1 = new PatientTableGatewaySQLite();
 					pgateway1.updatePatient((Patient) m.getData());
 					Patient p = (Patient) m.getData();
 					if(checkcurrentpatient(p.getId()) == true){
 						shownotified("Current patient Demographics update!");						
-					}else if(p==null && EMRS.notification.getHomeview()!=null){
-						shownotified("New patient inserted");
 					}
+					break;
 					
+				case PATIENT_INSERT:
+					PatientTableGatewaySQLite pgateway = new PatientTableGatewaySQLite();
+					pgateway.insertPatient((Patient) m.getData());
+					Patient pp = (Patient) m.getData();
+					if(checkcurrentpatient(pp.getId()) == false){
+						shownotified("New patient inserted");
+					}					
 					break;
 				case PATIENT_DELETE:
 					break;
@@ -54,13 +58,33 @@ public class rminotification {
 					}
 					break;
 				case VITAL_INSERT:
-				case VITAL_UPDATE:
 					System.out.println("receive notification addddddddd");
 					Vital v = (Vital) m.getData();
 					if(checkcurrentpatient(v.getPid()) == true){
 						HomeView hv = EMRS.notification.getHomeview();
 						hv.getMasterModel().getVitalsL().insert(v);
-						shownotified("Patient Vital got modified on " + v.getDateCreated());
+						shownotified("Patient Vital inserted on " + v.getDateCreated());
+					}else{
+						VitalsTableGateway myGateway = new VitalsTableGatewaySQLite();
+						myGateway.insertVitals(v);
+					}
+					break;
+				case VITAL_UPDATE:
+					System.out.println("receive notification addddddddd");
+					Vital v = (Vital) m.getData();
+					if(checkcurrentpatient(v.getPid()) == true){
+						HomeView hv = EMRS.notification.getHomeview();
+						List<Vital> vl = hv.getMasterModel().getVitalsL().getMyList();
+						for(int i =0;i<vl.size();i++){
+							if(v.getId() == vl.get(i).getId()){
+								vl.remove(i);
+								vl.add(i, v);
+								break;
+							}
+								
+						}
+						hv.getMasterModel().getVitalsL().insert(v);
+						shownotified("Patient Vital update on " + v.getDateCreated());
 					}else{
 						VitalsTableGateway myGateway = new VitalsTableGatewaySQLite();
 						myGateway.insertVitals(v);
